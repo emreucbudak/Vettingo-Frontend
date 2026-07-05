@@ -1,0 +1,1 @@
+export { CandidateDashboardPage } from "./ui/candidate-dashboard-page";

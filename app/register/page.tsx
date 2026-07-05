@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AuthPage from "../components/auth-page";
+import { AuthPage } from "@/widgets/auth";
 
 export const metadata: Metadata = {
   title: "Kayıt Ol | Vettingo",

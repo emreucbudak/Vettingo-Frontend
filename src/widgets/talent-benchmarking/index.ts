@@ -1,0 +1,1 @@
+export { TalentBenchmarkingPage } from "./ui/talent-benchmarking-page";
