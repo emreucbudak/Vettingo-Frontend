@@ -1,10 +1,31 @@
-﻿import { AuthForm, type AuthMode } from "@/features/auth";
+﻿import Image from "next/image";
+import { AuthForm, type AuthMode } from "@/features/auth";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { authBenefits, authHeroImageUrl } from "../model/auth-hero-content";
+
+const vettingoLogoSrc = "/assets/vettingo-logo.png";
 
 type AuthPageProps = {
   mode: AuthMode;
 };
+
+function BrandMark({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <Image
+        alt="Vettingo logosu"
+        className={`${compact ? "h-8 w-8" : "h-10 w-10"} rounded object-contain`}
+        height={compact ? 32 : 40}
+        src={vettingoLogoSrc}
+        width={compact ? 32 : 40}
+        priority
+      />
+      <span className={`${compact ? "text-xl text-[#091426]" : "text-2xl text-white"} font-bold tracking-[-0.01em]`}>
+        Vettingo
+      </span>
+    </div>
+  );
+}
 
 export function AuthPage({ mode }: AuthPageProps) {
   return (
@@ -23,9 +44,8 @@ export function AuthPage({ mode }: AuthPageProps) {
             className="absolute bottom-0 right-0 h-64 w-64 bg-[radial-gradient(ellipse_at_bottom_right,_rgba(30,41,59,0.5),_transparent_70%)]"
           />
 
-          <div className="relative z-10 flex items-center gap-2">
-            <MaterialIcon className="text-[32px] text-[#6ffbbe]">radar</MaterialIcon>
-            <span className="text-2xl font-bold tracking-[-0.01em]">Vettingo</span>
+          <div className="relative z-10">
+            <BrandMark />
           </div>
 
           <div className="relative z-10 mt-auto max-w-md">
@@ -59,9 +79,8 @@ export function AuthPage({ mode }: AuthPageProps) {
         </aside>
 
         <div className="flex w-full flex-col bg-white p-6 lg:w-1/2 lg:p-8">
-          <div className="mb-6 flex items-center gap-2 lg:hidden">
-            <MaterialIcon className="text-[24px] text-[#091426]">radar</MaterialIcon>
-            <span className="text-xl font-bold text-[#091426]">Vettingo</span>
+          <div className="mb-6 lg:hidden">
+            <BrandMark compact />
           </div>
 
           <AuthForm mode={mode} />
