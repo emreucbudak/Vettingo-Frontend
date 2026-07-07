@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -21,7 +21,7 @@ function Header() {
         <div className="ml-4 hidden gap-6 md:flex">
           {navItems.map((item) => (
             <a
-              className={`py-2 transition-colors ${item.label === "Compare" ? "border-b-2 border-[#091426] font-bold text-[#091426]" : "text-[#45474c] hover:bg-[#eff4ff]"}`}
+              className={`py-2 transition-colors ${item.label === "Karşılaştır" ? "border-b-2 border-[#091426] font-bold text-[#091426]" : "text-[#45474c] hover:bg-[#eff4ff]"}`}
               href={item.href}
               key={item.label}
             >
@@ -37,7 +37,7 @@ function Header() {
           </MaterialIcon>
           <input
             className="w-64 rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] py-1.5 pl-10 pr-4 text-sm leading-5 text-[#0b1c30] outline-none transition-all placeholder:text-[#75777d] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]"
-            placeholder="Search..."
+            placeholder="Ara..."
             type="text"
           />
         </div>
@@ -45,7 +45,7 @@ function Header() {
           className="hidden rounded-lg border border-[#c5c6cd] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:bg-[#eff4ff] lg:block"
           href={ROUTES.employer}
         >
-          Switch to Employer
+          İşveren Paneline Geç
         </a>
         <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
           <MaterialIcon>notifications</MaterialIcon>
@@ -55,7 +55,7 @@ function Header() {
         </button>
         <div className="ml-1 h-8 w-8 overflow-hidden rounded-full border border-[#c5c6cd] bg-[#d3e4fe]">
           <Image
-            alt="User profile avatar"
+            alt="Kullanıcı profil fotoğrafı"
             className="h-full w-full object-cover"
             height={32}
             src={benchmarkingProfile.avatarUrl}
@@ -95,7 +95,7 @@ function Sidebar() {
       <div className="mb-2 flex items-center gap-2 border-b border-[#c5c6cd] p-4">
         <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg border border-[#c5c6cd] bg-white">
           <Image
-            alt="Organization logo"
+            alt="Kurum logosu"
             className="h-full w-full object-contain p-1"
             height={40}
             src={benchmarkingProfile.organizationLogoUrl}
@@ -139,11 +139,11 @@ function PageHeader() {
       <div className="flex gap-2">
         <button className="flex items-center gap-1 rounded-lg border border-[#c5c6cd] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#f8f9ff]" type="button">
           <MaterialIcon className="text-[18px]">download</MaterialIcon>
-          Export PDF
+          PDF Dışa Aktar
         </button>
         <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="button">
           <MaterialIcon className="text-[18px]">share</MaterialIcon>
-          Share View
+          Görünümü Paylaş
         </button>
       </div>
     </div>
@@ -155,7 +155,7 @@ function CandidateHeader() {
     <div className="grid min-w-[900px] grid-cols-4 border-b border-[#c5c6cd] bg-[#f8f9ff]">
       <div className="flex flex-col justify-end p-4">
         <span className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-          Metrics
+          Metrikler
         </span>
       </div>
       {benchmarkCandidates.map((candidate) => (
@@ -179,7 +179,7 @@ function CandidateHeader() {
             {candidate.match}
           </span>
           <a className="mt-2 text-[11px] font-medium leading-[14px] text-[#091426] hover:underline" href={ROUTES.candidateAnalysis}>
-            View Profile
+            Profili Gör
           </a>
         </div>
       ))}
@@ -266,13 +266,13 @@ function Footer() {
   return (
     <footer className="relative z-50 mt-auto flex flex-col gap-3 border-t border-[#c5c6cd] bg-[#f8f9ff] px-6 py-6 text-[11px] font-medium leading-[14px] text-[#45474c] md:flex-row md:items-center md:justify-between md:px-8">
       <div className="text-xs font-semibold uppercase tracking-[0.05em]">
-        (c) 2024 TalentPulse Enterprise. All rights reserved.
+        (c) 2024 TalentPulse Enterprise. Tüm hakları saklıdır.
       </div>
       <div className="flex flex-wrap gap-4">
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Privacy Policy</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Terms of Service</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Help Center</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Support</a>
+        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Gizlilik Politikası</a>
+        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Kullanım Şartları</a>
+        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Yardım Merkezi</a>
+        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Destek</a>
       </div>
     </footer>
   );

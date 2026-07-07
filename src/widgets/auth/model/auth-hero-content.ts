@@ -1,4 +1,4 @@
-export const authHeroImageUrl =
+﻿export const authHeroImageUrl =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBzqC9JmeDIn719J8YgjH4a_HZBYRRU-XUR7zcaYheiqF_qk3ftr4MoB64i7ibnzCDDBhT6wNcJYVVErY4tdbxYAsAE4YkgBI1AiDzNYghEDfWqJT3pa6Zi0ZG4_Afil-wvG6qHBWJ9YQjrUma3SZMxTO1wV6tJLokkXtafvMyniLj0QUicZpvW6P3xhAL9zzuJZ_m3TayjUpzIldprWvV7O0F-vbi1LMliD2QeUUBhH8jMDzme1wJ-8IglDeK2RIO17fYU_R7fOWo";
 
 export const authBenefits = [
@@ -12,6 +12,6 @@ export const authBenefits = [
     icon: "analytics",
     title: "Veri Odaklı Kararlar",
     description:
-      "İşe alım metriklerinizi ve pipeline performansınızı gerçek zamanlı izleyin.",
+      "İşe alım metriklerinizi ve aday hattı performansınızı gerçek zamanlı izleyin.",
   },
 ] as const;

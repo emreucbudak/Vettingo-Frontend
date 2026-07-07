@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -43,7 +43,7 @@ function Sidebar() {
       <div className="px-6 pb-8 pt-4">
         <div className="mb-6 flex items-center gap-4">
           <Image
-            alt="Executive Recruitment logo"
+            alt="Executive Recruitment logosu"
             className="h-10 w-10 rounded object-cover"
             height={40}
             src={employerProfile.logoUrl}
@@ -84,7 +84,7 @@ function TopBar() {
         </MaterialIcon>
         <input
           className="w-64 rounded border border-[#75777d] bg-[#f8f9ff] py-2 pl-10 pr-4 text-sm outline-none focus:border-[#091426] focus:ring-2 focus:ring-[#091426]/20"
-          placeholder="Search candidates, jobs..."
+          placeholder="Aday, iş veya ilan ara..."
           type="text"
         />
       </div>
@@ -94,12 +94,12 @@ function TopBar() {
           className="rounded border border-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
           href={ROUTES.candidate}
         >
-          Switch to Candidate
+          Aday Paneline Geç
         </a>
         <div className="flex items-center gap-2">
           {[
-            { icon: "notifications", label: "Notifications" },
-            { icon: "settings", label: "Settings" },
+            { icon: "notifications", label: "Bildirimler" },
+            { icon: "settings", label: "Ayarlar" },
           ].map((item) => (
             <button
               aria-label={item.label}
@@ -112,7 +112,7 @@ function TopBar() {
           ))}
         </div>
         <Image
-          alt="User profile avatar"
+          alt="Kullanıcı profil fotoğrafı"
           className="ml-1 h-8 w-8 rounded-full border border-[#c5c6cd] object-cover"
           height={32}
           src={employerProfile.avatarUrl}
@@ -127,7 +127,7 @@ function MobileBrand() {
   return (
     <div className="flex items-center gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-4 py-3 md:hidden">
       <Image
-        alt="Executive Recruitment logo"
+        alt="Executive Recruitment logosu"
         className="h-9 w-9 rounded object-cover"
         height={36}
         src={employerProfile.logoUrl}
@@ -135,7 +135,7 @@ function MobileBrand() {
       />
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-          Employer Panel
+          İşveren Paneli
         </p>
         <h1 className="text-xl font-bold text-[#091426]">Vettingo</h1>
       </div>
@@ -171,10 +171,10 @@ function AiProcessingCard() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-            AI Candidate Processing
+            Yapay Zeka Aday İşleme
           </h3>
           <p className="mt-1 text-sm leading-5 text-[#45474c]">
-            Time to shortlist reduced by 40%
+            Kısa listeye alma süresi %40 azaldı
           </p>
         </div>
         <MaterialIcon className="text-[#040057]">psychology</MaterialIcon>
@@ -185,11 +185,11 @@ function AiProcessingCard() {
             18
           </span>
           <span className="ml-2 text-sm leading-5 text-[#45474c]">
-            Top Matches Today
+            Bugünün En İyi Eşleşmeleri
           </span>
         </div>
         <button className="flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:underline">
-          Review Matches
+          Eşleşmeleri İncele
           <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
         </button>
       </div>
@@ -202,19 +202,19 @@ function RequisitionsTable() {
     <section className="flex flex-col gap-4 lg:col-span-2">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">
-          Active Requisitions
+          Aktif İlan Talepleri
         </h3>
         <a className="text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:underline" href="#">
-          View All
+          Tümünü Gör
         </a>
       </div>
 
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
         <div className="hidden grid-cols-12 gap-2 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] md:grid">
-          <div className="col-span-5">Role Title</div>
-          <div className="col-span-2">Department</div>
-          <div className="col-span-2">Applicants</div>
-          <div className="col-span-3 text-right">Status</div>
+          <div className="col-span-5">Rol Unvanı</div>
+          <div className="col-span-2">Departman</div>
+          <div className="col-span-2">Adaylar</div>
+          <div className="col-span-3 text-right">Durum</div>
         </div>
 
         <div className="divide-y divide-[#c5c6cd]">
@@ -257,7 +257,7 @@ function AiMatchesCard() {
       <div className="mb-4 flex items-center justify-between">
         <h3 className="flex items-center gap-2 text-lg font-medium leading-6 text-[#0b1c30]">
           <MaterialIcon className="text-[#040057]">auto_awesome</MaterialIcon>
-          Top AI Matches
+          En İyi YZ Eşleşmeleri
         </h3>
       </div>
 
@@ -290,7 +290,7 @@ function AiMatchesCard() {
                 </span>
               </div>
               <div className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
-                for {candidate.role}
+                {candidate.role} için
               </div>
             </div>
           </article>
@@ -298,7 +298,7 @@ function AiMatchesCard() {
       </div>
 
       <button className="mt-4 w-full rounded border border-[#c5c6cd] py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:bg-[#eff4ff]">
-        View All AI Insights
+        Tümünü Gör AI Insights
       </button>
     </section>
   );
@@ -308,7 +308,7 @@ function FunnelMetrics() {
   return (
     <section className="mt-8 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6">
       <h3 className="mb-6 text-lg font-medium leading-6 text-[#0b1c30]">
-        Recruitment Funnel Metrics
+        İşe Alım Hunisi Metrikleri
       </h3>
       <div className="flex flex-col items-center gap-8 md:flex-row">
         <div className="flex w-full flex-col items-center gap-1 md:w-1/2">
@@ -357,7 +357,7 @@ function DashboardFooter() {
         <span className="mr-2 text-xs font-bold uppercase tracking-[0.05em] text-[#0b1c30]">
           Vettingo
         </span>
-        © 2026 Vettingo. All rights reserved.
+        © 2026 Vettingo. Tüm hakları saklıdır.
       </div>
       <div className="flex flex-wrap gap-4 text-[11px] font-medium leading-4">
         {employerFooterLinks.map((link) => (
@@ -382,15 +382,15 @@ export function EmployerDashboardPage() {
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-                Dashboard Overview
+                Panel Özeti
               </h2>
               <p className="mt-1 text-sm leading-5 text-[#45474c]">
-                Real-time metrics for open positions and applicant flow.
+                Açık pozisyonlar ve başvuru akışı için gerçek zamanlı metrikler.
               </p>
             </div>
             <button className="flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 md:w-auto">
               <MaterialIcon>add</MaterialIcon>
-              New Job Requisition
+              Yeni İş İlanı Talebi
             </button>
           </div>
 

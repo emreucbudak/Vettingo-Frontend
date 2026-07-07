@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   activeApplications,
@@ -46,7 +46,7 @@ function Sidebar() {
           <Image
             className="h-12 w-12 rounded border border-[#c5c6cd] bg-white object-cover"
             src={candidateProfile.logoUrl}
-            alt="Executive Recruitment logo"
+            alt="Executive Recruitment logosu"
             width={48}
             height={48}
           />
@@ -98,19 +98,19 @@ function TopBar() {
           </MaterialIcon>
           <input
             className="w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] py-2 pl-8 pr-2 text-sm outline-none focus:border-[#091426] focus:ring-1 focus:ring-[#091426]"
-            placeholder="Search..."
+            placeholder="Ara..."
             type="text"
           />
         </div>
 
         <div className="flex items-center gap-4">
           <button className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:text-[#091426]">
-            Switch to Employer
+            İşveren Paneline Geç
           </button>
           <div className="h-6 w-px bg-[#c5c6cd]" />
           {[
-            { icon: "notifications", label: "Notifications" },
-            { icon: "settings", label: "Settings" },
+            { icon: "notifications", label: "Bildirimler" },
+            { icon: "settings", label: "Ayarlar" },
           ].map((item) => (
             <button
               aria-label={item.label}
@@ -122,7 +122,7 @@ function TopBar() {
             </button>
           ))}
           <Image
-            alt="User profile avatar"
+            alt="Kullanıcı profil fotoğrafı"
             className="ml-2 h-8 w-8 rounded-full border border-[#c5c6cd] object-cover"
             src={candidateProfile.avatarUrl}
             width={32}
@@ -139,12 +139,12 @@ function MobileHeader() {
     <header className="flex items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 py-3 md:hidden">
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-          Candidate Panel
+          Aday Paneli
         </p>
         <h1 className="text-xl font-bold text-[#091426]">Vettingo</h1>
       </div>
       <Image
-        alt="User profile avatar"
+        alt="Kullanıcı profil fotoğrafı"
         className="h-9 w-9 rounded-full border border-[#c5c6cd] object-cover"
         src={candidateProfile.avatarUrl}
         width={36}
@@ -163,7 +163,7 @@ function ApplicationCard({ application }: { application: (typeof activeApplicati
             {application.role}
           </h4>
           <p className="text-sm leading-5 text-[#45474c]">
-            {application.company} • {application.location}
+            {application.company} â€¢ {application.location}
           </p>
         </div>
         <span className="rounded bg-[#e5eeff] px-2 py-1 text-[11px] font-medium uppercase tracking-wider text-[#0b1c30]">
@@ -187,7 +187,7 @@ function RecommendedJobs() {
     <section>
       <h3 className="mb-4 flex items-center gap-1 text-lg font-medium leading-6 text-[#0b1c30]">
         <MaterialIcon className="text-[#006c49]">psychology</MaterialIcon>
-        AI Recommended Opportunities
+        Yapay Zeka Önerili Fırsatlar
       </h3>
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-white">
         {recommendedJobs.map((job, index) => (
@@ -206,7 +206,7 @@ function RecommendedJobs() {
                   {job.role}
                 </h4>
                 <p className="text-sm leading-5 text-[#45474c]">
-                  {job.company} • {job.location}
+                  {job.company} â€¢ {job.location}
                 </p>
               </div>
             </div>
@@ -229,7 +229,7 @@ function InterviewsCard() {
   return (
     <section className="rounded border border-[#c5c6cd] bg-white p-4">
       <h3 className="mb-4 text-lg font-medium leading-6 text-[#0b1c30]">
-        Upcoming Interviews
+        Yaklaşan Mülakatlar
       </h3>
       <div className="space-y-4">
         {upcomingInterviews.map((interview) => (
@@ -262,7 +262,7 @@ function SkillRadarCard() {
   return (
     <section className="flex h-64 flex-col rounded border border-[#c5c6cd] bg-white p-4">
       <h3 className="mb-2 text-lg font-medium leading-6 text-[#0b1c30]">
-        Skill Competency Radar
+        Yetkinlik Radar Grafiği
       </h3>
       <div className="relative flex h-full w-full flex-1 items-center justify-center overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
         <div
@@ -275,7 +275,7 @@ function SkillRadarCard() {
           }}
         />
         <p className="z-10 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-          [Chart Visualization Area]
+          [Grafik Görselleştirme Alanı]
         </p>
       </div>
     </section>
@@ -313,14 +313,14 @@ export function CandidateDashboardPage() {
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-                Welcome back, {candidateProfile.name}.
+                Tekrar hoş geldin, {candidateProfile.name}.
               </h2>
               <p className="mt-2 text-base leading-6 text-[#45474c]">
-                Here is your professional standing and activity overview for today.
+                Bugünkü profesyonel durumun ve aktivite özetin burada.
               </p>
             </div>
             <button className="w-full rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b] md:w-auto">
-              Update Profile
+              Profili Güncelle
             </button>
           </div>
 
@@ -328,7 +328,7 @@ export function CandidateDashboardPage() {
             <div className="space-y-6 md:col-span-8">
               <section>
                 <h3 className="mb-4 text-lg font-medium leading-6 text-[#0b1c30]">
-                  Active Applications
+                  Aktif Başvurular
                 </h3>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {activeApplications.map((application) => (

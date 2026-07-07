@@ -1,4 +1,4 @@
-import { ROUTES } from "@/shared/config/routes";
+﻿import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   parsedEducation,
@@ -48,7 +48,7 @@ function SummaryCard() {
     <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-4">
       <h2 className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
         <MaterialIcon className="text-sm">person</MaterialIcon>
-        Summary
+        Özet
       </h2>
       <p className="text-sm leading-6 text-[#0b1c30]">{parsedResume.summary}</p>
     </section>
@@ -60,7 +60,7 @@ function SkillsCard() {
     <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-4">
       <h2 className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
         <MaterialIcon className="text-sm">bolt</MaterialIcon>
-        Core Skills
+        Temel Yetkinlikler
       </h2>
       <div className="flex flex-wrap gap-2">
         {parsedResume.skills.map((skill) => (
@@ -87,10 +87,10 @@ function ExperienceCard() {
       <div className="mb-4 flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
           <MaterialIcon className="text-sm">work</MaterialIcon>
-          Professional Experience
+          Profesyonel Deneyim
         </h2>
         <button className="text-[11px] font-medium leading-4 text-[#091426] hover:underline" type="button">
-          Edit
+          Düzenle
         </button>
       </div>
 
@@ -133,10 +133,10 @@ function EducationCard() {
       <div className="mb-4 flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
           <MaterialIcon className="text-sm">school</MaterialIcon>
-          Education
+          Eğitim
         </h2>
         <button className="text-[11px] font-medium leading-4 text-[#091426] hover:underline" type="button">
-          Edit
+          Düzenle
         </button>
       </div>
       <div>
@@ -159,10 +159,10 @@ function ParsedDataPanel() {
     <section className="mb-6 rounded border border-[#c5c6cd] bg-white p-6 md:p-8">
       <div className="mb-6">
         <h1 className="mb-1 text-xl font-semibold leading-7 text-[#091426]">
-          Review Parsed Data
+          Ayrıştırılan Veriyi İncele
         </h1>
         <p className="text-sm leading-5 text-[#45474c]">
-          Our AI has extracted the following information from your resume. Please verify its accuracy.
+          Yapay zeka CV bilginden aşağıdaki verileri çıkardı. Lütfen doğruluğunu kontrol et.
         </p>
       </div>
 
@@ -184,14 +184,14 @@ function ActionBar() {
   return (
     <div className="flex flex-col gap-4 border-t border-[#c5c6cd] pt-6 sm:flex-row sm:items-center sm:justify-between">
       <button className="rounded border border-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]" type="button">
-        Back
+        Geri
       </button>
       <div className="flex flex-col gap-2 sm:flex-row">
         <button className="rounded border border-[#c5c6cd] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
-          Re-upload Resume
+          CV Yüklemesini Yenile
         </button>
         <button className="flex items-center justify-center gap-2 rounded bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="button">
-          Continue to Analysis
+          Analize Devam Et
           <MaterialIcon className="text-sm">arrow_forward</MaterialIcon>
         </button>
       </div>
@@ -207,7 +207,7 @@ function Header() {
         className="flex items-center gap-2 rounded p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
         href={ROUTES.candidate}
       >
-        <span className="text-xs font-semibold uppercase tracking-[0.05em]">Save & Exit</span>
+        <span className="text-xs font-semibold uppercase tracking-[0.05em]">Kaydet ve Çık</span>
         <MaterialIcon>close</MaterialIcon>
       </a>
     </header>

@@ -1,33 +1,33 @@
-export const requisitionProfile = {
+﻿export const requisitionProfile = {
   productName: "Vettingo",
   avatarUrl:
     "https://lh3.googleusercontent.com/aida-public/AB6AXuDuQANAz6hYOvN2WquMVuQErcJFN9udX4F5FzWJKWSOavNzjfRXD_1hEJtmxDJzVxPehhXhTxyMs3TRUEupYi6lA3T-KPyj0bXpwNnD_55RTvKgIvV6M-p8CffPyP-dz0vi5i1BrxWRkP8zfr2Z9Vu4XqI1svN6QBn3lxoe_zSz6PCUC3XCTyA_C_anH55JLH9Kgc956Drno1xwtGkpTiQCT6YcTHURUi6XO1aJGscgppahlRHd7jLGkifhjkYvhTIgXilNcMDLSZ4",
 } as const;
 
 export const requisitionSteps = [
-  { label: "Role Definition", value: "1", active: true },
-  { label: "Requirements", value: "2", active: false },
-  { label: "Review & Publish", value: "3", active: false },
+  { label: "Rol Tanımı", value: "1", active: true },
+  { label: "Gereksinimler", value: "2", active: false },
+  { label: "İnceleme ve Yayın", value: "3", active: false },
 ] as const;
 
 export const requisitionForm = {
-  title: "New Job Requisition",
+  title: "Yeni İş İlanı Talebi",
   description:
-    "Define the role and requirements. Our AI will assist in shaping the ideal candidate profile.",
-  jobTitle: "Senior Product Manager",
-  departmentOptions: ["Product & Engineering", "Marketing", "Sales"],
-  locationTypeOptions: ["Hybrid", "Remote", "On-site"],
+    "Rolü ve gereksinimleri tanımlayın. Yapay zeka ideal aday profilini netleştirmenize yardımcı olur.",
+  jobTitle: "Kıdemli Ürün Yöneticisi",
+  departmentOptions: ["Ürün ve Mühendislik", "Pazarlama", "Satış"],
+  locationTypeOptions: ["Hibrit", "Uzaktan", "Ofisten"],
   responsibilities:
-    "Lead the development and execution of the product roadmap for our enterprise analytics suite. Collaborate with engineering, design, and marketing to deliver high-impact features.",
-  suggestionHint: "AI generated suggestions available based on this title.",
+    "Kurumsal analitik ürün ailemiz için ürün yol haritasının geliştirilmesine ve uygulanmasına liderlik edin. Yüksek etkili özellikler sunmak için mühendislik, tasarım ve pazarlama ekipleriyle çalışın.",
+  suggestionHint: "Bu unvana göre yapay zeka önerileri hazır.",
 } as const;
 
 export const assistantInsights = {
-  title: "AI Requisition Assistant",
+  title: "Yapay Zeka İlan Asistanı",
   intro:
-    "Based on the title \"Senior Product Manager\" in \"Product & Engineering\", here are market-aligned suggestions.",
-  skills: ["Agile Methodology", "Data Analysis", "Stakeholder Mgmt"],
+    "\"Kıdemli Ürün Yöneticisi\" ve \"Ürün ve Mühendislik\" bilgilerine göre pazarla uyumlu öneriler aşağıda.",
+  skills: ["Çevik Metodoloji", "Veri Analizi", "Paydaş Yönetimi"],
   compensation: "$140,000 - $180,000",
-  compensationUnit: "/ yr",
-  compensationNote: "Typical range for this title and location type.",
+  compensationUnit: "/ yıl",
+  compensationNote: "Bu unvan ve lokasyon türü için tipik aralık.",
 } as const;

@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { JobRequisitionWizardPage } from "@/widgets/job-requisition-wizard";
 
 export const metadata: Metadata = {
-  title: "New Job Requisition | Vettingo",
+  title: "Yeni İş İlanı | Vettingo",
 };
 
 export default function NewJobRoute() {

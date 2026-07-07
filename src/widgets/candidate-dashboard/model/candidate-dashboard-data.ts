@@ -1,7 +1,7 @@
-export const candidateProfile = {
+﻿export const candidateProfile = {
   name: "Sarah",
   companyLabel: "Executive Recruitment",
-  edition: "Enterprise Edition",
+  edition: "Kurumsal Paket",
   avatarUrl:
     "https://lh3.googleusercontent.com/aida-public/AB6AXuDDsphwRVoRUDrgzfSRfnnofvMHH00bJ_aq2wVLZVXbiJzU4AtDVCM0joSEnUKG2Mlg22FSrdxb0in2BkohAORmRasc1L4uPUN_8DTeosIxV7JQ1x0LYAOmLJBz9-CWVTVDQlACqd7mA7EymUmfxOsSoAV7trP4e2u-8V6Y3hr8e_ljkxBMeaxxRXeYGU5yJMYsqLCXWEQCQ6vVhx-i-WAGrIUa15jyK5_Tcjg6lSWzlW2zheH6f137tFoYzNPQt-CR68HClETAnh4",
   logoUrl:
@@ -9,70 +9,70 @@ export const candidateProfile = {
 } as const;
 
 export const navigationItems = [
-  { label: "Dashboard", icon: "dashboard", active: true },
-  { label: "Applications", icon: "description" },
-  { label: "AI Analysis", icon: "psychology" },
-  { label: "Jobs", icon: "work" },
+  { label: "Panel", icon: "dashboard", active: true },
+  { label: "Başvurular", icon: "description" },
+  { label: "Yapay Zeka Analizi", icon: "psychology" },
+  { label: "İşler", icon: "work" },
 ] as const;
 
 export const utilityItems = [
-  { label: "Help Center", icon: "help" },
-  { label: "Settings", icon: "settings" },
+  { label: "Yardım Merkezi", icon: "help" },
+  { label: "Ayarlar", icon: "settings" },
 ] as const;
 
 export const activeApplications = [
   {
-    role: "Senior Product Manager",
+    role: "Kıdemli Ürün Yöneticisi",
     company: "Global Tech Corp",
     location: "San Francisco, CA",
-    status: "Interviewing",
+    status: "Mülakat Aşamasında",
     progressClassName: "w-2/3",
-    currentStep: "Step 3 of 4: Technical Interview",
+    currentStep: "4 adımın 3.'sü: Teknik Mülakat",
   },
   {
-    role: "VP of Engineering",
+    role: "Mühendislik Başkan Yardımcısı",
     company: "Innovate Solutions",
-    location: "Remote",
-    status: "Under Review",
+    location: "Uzaktan",
+    status: "Değerlendiriliyor",
     progressClassName: "w-1/3",
-    currentStep: "Step 1 of 4: Initial Screen",
+    currentStep: "4 adımın 1.'i: İlk Görüşme",
   },
 ] as const;
 
 export const recommendedJobs = [
   {
-    role: "Director of UX",
+    role: "UX Direktörü",
     company: "Creative Dynamics",
     location: "New York, NY",
     icon: "domain",
-    match: "98% Match",
-    postedAt: "Posted 2d ago",
+    match: "98% Eşleşme",
+    postedAt: "2 gün önce yayınlandı",
   },
   {
-    role: "Chief Design Officer",
+    role: "Tasarım Direktörü",
     company: "Fintech Partners",
-    location: "London, UK",
+    location: "Londra, Birleşik Krallık",
     icon: "account_balance",
-    match: "94% Match",
-    postedAt: "Posted 5h ago",
+    match: "94% Eşleşme",
+    postedAt: "5 saat önce yayınlandı",
   },
 ] as const;
 
 export const upcomingInterviews = [
   {
-    month: "Oct",
+    month: "Eki",
     day: "12",
-    title: "System Design Round",
+    title: "Sistem Tasarımı Görüşmesi",
     company: "Global Tech Corp",
-    time: "10:00 AM - 11:30 AM PST",
+    time: "10:00 - 11:30 PST",
   },
   {
-    month: "Oct",
+    month: "Eki",
     day: "15",
-    title: "Cultural Fit Chat",
+    title: "Kültür Uyumu Görüşmesi",
     company: "Innovate Solutions",
-    time: "2:00 PM - 2:30 PM EST",
+    time: "14:00 - 14:30 EST",
   },
 ] as const;
 
-export const footerLinks = ["Privacy Policy", "Terms of Service", "Help Center", "Support"] as const;
+export const footerLinks = ["Gizlilik Politikası", "Kullanım Şartları", "Yardım Merkezi", "Destek"] as const;
