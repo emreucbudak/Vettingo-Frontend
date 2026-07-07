@@ -17,12 +17,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
+
 .logo-marquee {
   animation: logo-marquee 28s linear infinite;
-}
-
-.logo-marquee:hover {
-  animation-play-state: paused;
+  will-change: transform;
 }
 
 @keyframes logo-marquee {
@@ -34,3 +32,61 @@ body {
     transform: translateX(-50%);
   }
 }
+.theme-dark {
+  background: #07111f !important;
+  color: #eef4ff !important;
+}
+
+.theme-dark nav,
+.theme-dark footer,
+.theme-dark article,
+.theme-dark [class*="bg-white"] {
+  background: #101c2f !important;
+  border-color: #2d3d58 !important;
+}
+
+.theme-dark section[class*="bg-[#eff4ff]"],
+.theme-dark footer[class*="bg-[#e5eeff]"],
+.theme-dark [class*="bg-[#f8f9ff]"],
+.theme-dark [class*="bg-[#e5eeff]"],
+.theme-dark [class*="bg-[#d3e4fe]"] {
+  background: #0d1829 !important;
+}
+
+.theme-dark h1,
+.theme-dark h2,
+.theme-dark h3,
+.theme-dark a,
+.theme-dark [class*="text-[#091426]"],
+.theme-dark [class*="text-[#0b1c30]"] {
+  color: #f4f8ff !important;
+}
+
+.theme-dark p,
+.theme-dark [class*="text-[#45474c]"],
+.theme-dark [class*="text-[#8590a6]"] {
+  color: #b8c5d9 !important;
+}
+
+.theme-dark [class*="border-[#c5c6cd]"],
+.theme-dark [class*="border-[#bcc7de]"] {
+  border-color: #2d3d58 !important;
+}
+
+
+.theme-dark .logo-marquee + *,
+.theme-dark .logo-marquee [class*="bg-white"] {
+  background: #f8fbff !important;
+}
+
+.theme-dark .logo-marquee img {
+  filter: none;
+}
+
+.theme-dark button[aria-label="Aydınlık moda geç"] {
+  background: #eaf2ff !important;
+  color: #07111f !important;
+  border-color: #94a3b8 !important;
+}
+
+

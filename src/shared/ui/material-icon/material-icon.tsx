@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 
 type MaterialIconProps = {
   children: string;
@@ -126,7 +126,11 @@ const iconPaths: Record<string, ReactNode> = {
       <rect height="7" rx="1" width="7" x="14" y="14" />
     </>
   ),
-  description: (
+  dark_mode: (
+    <>
+      <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8z" />
+    </>
+  ),  description: (
     <>
       <path d="M7 3h7l4 4v14H7z" />
       <path d="M14 3v5h5" />
@@ -171,7 +175,19 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M12 17h.01" />
     </>
   ),
-  location_on: (
+  light_mode: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.9 4.9 1.4 1.4" />
+      <path d="m17.7 17.7 1.4 1.4" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m4.9 19.1 1.4-1.4" />
+      <path d="m17.7 6.3 1.4-1.4" />
+    </>
+  ),  location_on: (
     <>
       <path d="M12 21s7-5.4 7-12a7 7 0 1 0-14 0c0 6.6 7 12 7 12z" />
       <circle cx="12" cy="9" r="2.5" />
@@ -363,3 +379,4 @@ export function MaterialIcon({ children, className = "" }: MaterialIconProps) {
     </svg>
   );
 }
+
