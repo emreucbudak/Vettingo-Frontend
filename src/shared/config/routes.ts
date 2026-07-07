@@ -1,8 +1,8 @@
-export const ROUTES = {
+﻿export const ROUTES = {
   home: "/",
   login: "/login",
   register: "/register",
-  dashboard: "/dashboard",
+  dashboard: "/",
   candidate: "/candidate",
   employer: "/employer",
   candidateAnalysis: "/candidate-analysis",

@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -86,12 +86,12 @@ function TopBar() {
           className="rounded border border-[#c5c6cd] bg-[#f8f9ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
           href={ROUTES.employer}
         >
-          Switch to Employer
+          İşveren Paneline Geç
         </a>
         <div className="hidden gap-2 sm:flex">
           {[
-            { icon: "notifications", label: "Notifications" },
-            { icon: "settings", label: "Settings" },
+            { icon: "notifications", label: "Bildirimler" },
+            { icon: "settings", label: "Ayarlar" },
           ].map((item) => (
             <button
               aria-label={item.label}
@@ -104,7 +104,7 @@ function TopBar() {
           ))}
         </div>
         <Image
-          alt="User profile avatar"
+          alt="Kullanıcı profil fotoğrafı"
           className="h-8 w-8 rounded-full border border-[#c5c6cd] object-cover"
           height={32}
           src={analysisProfile.avatarUrl}
@@ -120,11 +120,11 @@ function BreadcrumbActions() {
     <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-wrap items-center gap-2 text-sm leading-5 text-[#45474c]">
         <a className="transition-colors hover:text-[#091426]" href="#">
-          Applications
+          Başvurular
         </a>
         <MaterialIcon className="text-[16px]">chevron_right</MaterialIcon>
         <a className="transition-colors hover:text-[#091426]" href="#">
-          Senior Product Manager
+          Kıdemli Ürün Yöneticisi
         </a>
         <MaterialIcon className="text-[16px]">chevron_right</MaterialIcon>
         <span className="font-semibold text-[#0b1c30]">{candidateDetails.name}</span>
@@ -133,10 +133,10 @@ function BreadcrumbActions() {
       <div className="flex flex-col gap-3 sm:flex-row">
         <button className="flex items-center justify-center gap-2 rounded border border-[#75777d] bg-[#f8f9ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]">
           <MaterialIcon className="text-[18px]">download</MaterialIcon>
-          Export PDF
+          PDF Dışa Aktar
         </button>
         <button className="rounded bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90">
-          Schedule Interview
+          Mülakat Planla
         </button>
       </div>
     </div>
@@ -147,7 +147,7 @@ function CandidateHeader() {
   return (
     <section className="mb-8 flex flex-col items-start gap-6 rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 md:flex-row md:items-center">
       <Image
-        alt="Candidate photo"
+        alt="Aday fotoğrafı"
         className="h-24 w-24 rounded-full border-2 border-[#dce9ff] object-cover"
         height={96}
         src={candidateDetails.photoUrl}
@@ -184,7 +184,7 @@ function CandidateHeader() {
       <div className="flex w-full min-w-[200px] flex-col gap-2 md:w-auto">
         <div className="flex items-center justify-between rounded border border-[#c5c6cd] bg-[#eff4ff] p-2">
           <span className="text-[11px] font-medium leading-4 text-[#45474c]">
-            Current Status
+            Current Durum
           </span>
           <span className="flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
             <span className="h-2 w-2 rounded-full bg-[#3b82f6]" />
@@ -193,7 +193,7 @@ function CandidateHeader() {
         </div>
         <div className="flex items-center justify-between rounded border border-[#c5c6cd] bg-[#eff4ff] p-2">
           <span className="text-[11px] font-medium leading-4 text-[#45474c]">
-            Expected Salary
+            Beklenen Maaş
           </span>
           <span className="text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
             {candidateDetails.expectedSalary}
@@ -204,7 +204,7 @@ function CandidateHeader() {
   );
 }
 
-function SummaryList({
+function ÖzetList({
   title,
   items,
   icon,
@@ -240,22 +240,22 @@ function ExecutiveSummaryCard() {
       <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
         <MaterialIcon className="text-[#040057]">psychology</MaterialIcon>
         <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">
-          AI Executive Summary
+          Yapay Zeka Yönetici Özeti
         </h3>
       </div>
       <p className="flex-1 text-sm leading-6 text-[#45474c]">{executiveSummary.text}</p>
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <SummaryList
+        <ÖzetList
           icon="check_circle"
           iconClassName="text-[#10b981]"
           items={executiveSummary.strengths}
-          title="Key Strengths"
+          title="Temel Güçlü Yönler"
         />
-        <SummaryList
+        <ÖzetList
           icon="warning"
           iconClassName="text-[#f59e0b]"
           items={executiveSummary.risks}
-          title="Potential Risk Areas"
+          title="Olası Risk Alanları"
         />
       </div>
     </section>
@@ -267,10 +267,10 @@ function SuitabilityScoreCard() {
     <section className="relative flex flex-col items-center justify-center overflow-hidden rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 text-center">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#d8e3fb,_transparent_70%)] opacity-40" />
       <h3 className="relative z-10 mb-1 text-lg font-medium leading-6 text-[#0b1c30]">
-        Role Suitability
+        Role Uygunluk
       </h3>
       <p className="relative z-10 mb-6 text-[11px] font-medium leading-4 text-[#45474c]">
-        Based on JD semantic matching
+        İş tanımı semantik eşleşmesine göre
       </p>
 
       <div className="relative z-10 mb-4 flex h-32 w-32 items-center justify-center">
@@ -324,7 +324,7 @@ function ExperienceCard() {
       <div className="mb-6 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
         <MaterialIcon className="text-[#091426]">work</MaterialIcon>
         <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">
-          Professional Experience
+          Profesyonel Deneyim
         </h3>
       </div>
       <div className="relative space-y-8 before:absolute before:inset-y-0 before:left-[11px] before:w-[2px] before:bg-[#d3e4fe]">
@@ -360,7 +360,7 @@ function EducationCard() {
       <div>
         <div className="mb-6 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
           <MaterialIcon className="text-[#091426]">school</MaterialIcon>
-          <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">Education</h3>
+          <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">Eğitim</h3>
         </div>
         <ul className="space-y-4">
           {educationItems.map((item) => (
@@ -383,7 +383,7 @@ function EducationCard() {
       <div className="mt-auto">
         <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
           <MaterialIcon className="text-[#091426]">workspace_premium</MaterialIcon>
-          <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">Certifications</h3>
+          <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">Sertifikalar</h3>
         </div>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {certifications.map((certification) => (
@@ -404,7 +404,7 @@ function DashboardFooter() {
   return (
     <footer className="mt-auto flex flex-col gap-4 border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:flex-row md:items-center md:justify-between md:px-8">
       <span className="text-xs font-bold uppercase tracking-[0.05em] text-[#45474c]">
-        (c) 2026 Vettingo. All rights reserved.
+        (c) 2026 Vettingo. Tüm hakları saklıdır.
       </span>
       <div className="flex flex-wrap gap-4">
         {analysisFooterLinks.map((link) => (

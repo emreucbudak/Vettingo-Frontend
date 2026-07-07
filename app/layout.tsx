@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Vettingo",
-  description: "Vettingo işe alım ve aday yönetim platformu",
+  description: "Vettingo işe alım ve aday yÃ¶netim platformu",
 };
 
 export default function RootLayout({

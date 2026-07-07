@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { EmployerDashboardPage } from "@/widgets/employer-dashboard";
 
 export const metadata: Metadata = {
-  title: "Isveren Paneli | Vettingo",
+  title: "İşveren Paneli | Vettingo",
 };
 
 export default function EmployerPage() {

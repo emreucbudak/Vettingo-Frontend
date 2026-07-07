@@ -1,4 +1,4 @@
-import { AuthForm, type AuthMode } from "@/features/auth";
+﻿import { AuthForm, type AuthMode } from "@/features/auth";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { authBenefits, authHeroImageUrl } from "../model/auth-hero-content";
 

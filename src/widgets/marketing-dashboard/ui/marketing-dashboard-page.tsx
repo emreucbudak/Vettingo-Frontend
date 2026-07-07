@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { marketingDashboard } from "../model/marketing-dashboard-data";
@@ -23,10 +23,10 @@ function Header() {
         </div>
         <div className="flex items-center space-x-4">
           <a className="text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:text-[#006c49]" href={ROUTES.login}>
-            Log In
+            Giriş Yap
           </a>
           <a className="rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90" href={ROUTES.register}>
-            Get Started
+            Başla
           </a>
         </div>
       </div>
@@ -58,7 +58,7 @@ function Hero() {
       <div className="relative h-[400px] w-full overflow-hidden rounded-lg border border-[#c5c6cd] bg-white">
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#d3e4fe] to-[#e5eeff]">
           <Image
-            alt="Data analytics and professional recruitment illustration"
+            alt="Veri analitiği ve profesyonel işe alım görseli"
             className="h-full w-full object-cover opacity-80 mix-blend-multiply"
             height={400}
             src={marketingDashboard.hero.imageUrl}
@@ -89,14 +89,25 @@ function TrustBar() {
     <section className="border-y border-[#c5c6cd] bg-[#eff4ff] py-8">
       <div className="mx-auto max-w-[1440px] px-6 text-center">
         <h3 className="mb-6 text-xs font-semibold uppercase tracking-[0.15em] text-[#45474c]">
-          Trusted by leading enterprises globally
+          Dünyanın önde gelen şirketleri tarafından güveniliyor
         </h3>
-        <div className="flex flex-wrap items-center justify-center gap-8 opacity-70 grayscale">
-          {marketingDashboard.trustIcons.map((icon) => (
-            <MaterialIcon className="text-[48px]" key={icon}>
-              {icon}
-            </MaterialIcon>
-          ))}
+        <div className="relative overflow-hidden py-2 [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
+          <div className="logo-marquee flex w-max items-center gap-10">
+            {[...marketingDashboard.trustedCompanies, ...marketingDashboard.trustedCompanies].map((company, index) => (
+              <div
+                className="flex h-14 w-36 shrink-0 items-center justify-center rounded border border-[#c5c6cd] bg-white px-5 shadow-sm"
+                key={`${company.name}-${index}`}
+              >
+                <Image
+                  alt={`${company.name} logosu`}
+                  className="max-h-8 w-auto object-contain"
+                  height={32}
+                  src={company.logoUrl}
+                  width={120}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -108,9 +119,9 @@ function DashboardSnippet() {
     <div className="relative flex flex-1 flex-col gap-2 overflow-hidden rounded border border-[#c5c6cd] bg-[#e5eeff] p-4">
       <div className="flex items-center justify-between border-b border-[#c5c6cd] pb-2">
         <span className="text-[11px] font-medium uppercase leading-4 text-[#45474c]">
-          Pipeline Status
+          Aday Hattı Durumu
         </span>
-        <span className="text-[11px] font-medium leading-4 text-[#006c49]">Active</span>
+        <span className="text-[11px] font-medium leading-4 text-[#006c49]">Aktif</span>
       </div>
       <div className="mt-2 flex gap-2">
         <div className="h-16 flex-1 rounded-sm bg-[#091426] opacity-20" />
@@ -202,10 +213,10 @@ function Features() {
     <section className="mx-auto max-w-[1440px] px-6 py-24">
       <div className="mb-16 space-y-2 text-center">
         <h2 className="text-2xl font-semibold leading-8 tracking-[-0.01em] text-[#091426]">
-          Enterprise-Grade Architecture
+          Kurumsal Ölçekli Mimari
         </h2>
         <p className="mx-auto max-w-2xl text-sm leading-5 text-[#45474c]">
-          Built for high-density information processing and objective candidate evaluation.
+          Yoğun bilgi işleme ve nesnel aday değerlendirmesi için tasarlandı.
         </p>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

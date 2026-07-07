@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { AuthPage } from "@/widgets/auth";
 
 export const metadata: Metadata = {

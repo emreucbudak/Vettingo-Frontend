@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -43,7 +43,7 @@ function Header() {
           <MaterialIcon className="mr-1 text-sm text-[#45474c]">search</MaterialIcon>
           <input
             className="w-32 border-none bg-transparent p-0 text-sm outline-none placeholder:text-[#45474c] focus:ring-0"
-            placeholder="Search..."
+            placeholder="Ara..."
             type="text"
           />
         </div>
@@ -57,10 +57,10 @@ function Header() {
           className="ml-1 hidden border-l border-[#c5c6cd] pl-4 text-[11px] font-medium leading-4 text-[#45474c] transition-colors hover:text-[#091426] xl:block"
           href={ROUTES.employer}
         >
-          Switch to Employer
+          İşveren Paneline Geç
         </a>
         <Image
-          alt="User profile avatar"
+          alt="Kullanıcı profil fotoğrafı"
           className="ml-1 h-8 w-8 rounded-full object-cover"
           height={32}
           src={jobDiscoveryProfile.avatarUrl}
@@ -75,10 +75,10 @@ function SearchHero() {
   return (
     <section className="mb-8">
       <h1 className="mb-4 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426]">
-        Discover Your Next Role
+        Sonraki Rolünü Keşfet
       </h1>
       <p className="mb-6 max-w-2xl text-base leading-6 text-[#45474c]">
-        Leverage our AI-driven insights to find enterprise opportunities that perfectly align with your executive profile and technical expertise.
+        Yönetici profilin ve teknik uzmanlığınla örtüşen kurumsal fırsatları bulmak için yapay zeka destekli içgörülerden yararlan.
       </p>
 
       <div className="flex flex-col items-center gap-2 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-4 md:flex-row md:gap-4 md:p-6">
@@ -86,7 +86,7 @@ function SearchHero() {
           <MaterialIcon className="mr-2 text-[#45474c]">search</MaterialIcon>
           <input
             className="w-full border-none bg-transparent p-0 text-sm outline-none placeholder:text-[#45474c] focus:ring-0"
-            placeholder="Job title, keywords, or company"
+            placeholder="İş unvanı, anahtar kelime veya şirket"
             type="text"
           />
         </div>
@@ -94,12 +94,12 @@ function SearchHero() {
           <MaterialIcon className="mr-2 text-[#45474c]">location_on</MaterialIcon>
           <input
             className="w-full border-none bg-transparent p-0 text-sm outline-none placeholder:text-[#45474c] focus:ring-0"
-            placeholder="Location or Remote"
+            placeholder="Lokasyon veya uzaktan"
             type="text"
           />
         </div>
         <button className="flex w-full items-center justify-center rounded bg-[#091426] px-8 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 md:w-auto" type="button">
-          Find Jobs
+          İşleri Bul
         </button>
       </div>
 
@@ -170,10 +170,10 @@ function JobList() {
     <section className="flex flex-1 flex-col gap-4">
       <div className="mb-2 flex items-end justify-between border-b border-[#c5c6cd] pb-1">
         <h2 className="text-xl font-semibold leading-7 text-[#091426]">
-          Recommended Matches
+          Önerilen Eşleşmeler
         </h2>
         <span className="text-[11px] font-medium uppercase leading-4 tracking-wider text-[#45474c]">
-          Sorted by Relevance
+          Uygunluğa Göre Sıralandı
         </span>
       </div>
       {recommendedJobs.map((job) => (
@@ -190,17 +190,17 @@ function MarketIntelligence() {
         <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
           <MaterialIcon className="text-[#091426]">analytics</MaterialIcon>
           <h3 className="text-lg font-medium leading-6 text-[#091426]">
-            Market Intelligence
+            Pazar İçgörüsü
           </h3>
         </div>
         <p className="mb-4 text-[11px] font-medium uppercase leading-4 tracking-wider text-[#45474c]">
-          Based on your profile ({marketIntelligence.profile})
+          Profiline göre ({marketIntelligence.profile})
         </p>
 
         <div className="flex flex-col gap-4">
           <div>
             <div className="mb-1 flex items-end justify-between">
-              <span className="text-sm leading-5 text-[#0b1c30]">Demand Trend</span>
+              <span className="text-sm leading-5 text-[#0b1c30]">Talep Trendi</span>
               <span className="flex items-center text-xs font-semibold uppercase tracking-[0.05em] text-[#10b981]">
                 <MaterialIcon className="text-[16px]">trending_up</MaterialIcon>
                 {marketIntelligence.demandTrend}
@@ -216,7 +216,7 @@ function MarketIntelligence() {
 
           <div className="border-t border-[#c5c6cd] pt-2">
             <span className="mb-2 block text-[11px] font-medium uppercase leading-4 tracking-wider text-[#45474c]">
-              Salary Percentiles
+              Maaş Yüzdelikleri
             </span>
             {marketIntelligence.salaryPercentiles.map((item) => (
               <div className="mb-1 flex items-center justify-between last:mb-0" key={item.label}>
@@ -235,13 +235,13 @@ function MarketIntelligence() {
       <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-4 text-center">
         <MaterialIcon className="mb-2 text-[32px] text-[#091426]">notifications_active</MaterialIcon>
         <h4 className="mb-1 text-lg font-medium leading-6 text-[#091426]">
-          Never miss an opportunity
+          Hiçbir fırsatı kaçırma
         </h4>
         <p className="mb-4 text-sm leading-5 text-[#45474c]">
-          Get notified when new executive roles matching your AI profile are posted.
+          YZ profiline uyan yeni yönetici rolleri yayınlandığında bildirim al.
         </p>
         <button className="w-full rounded border border-[#091426] bg-white py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#f8f9ff]" type="button">
-          Set Up Alert
+          Uyarı Kur
         </button>
       </section>
     </aside>
@@ -259,7 +259,7 @@ function Footer() {
           </a>
         ))}
       </div>
-      <span>(c) 2026 Vettingo. All rights reserved.</span>
+      <span>(c) 2026 Vettingo. Tüm hakları saklıdır.</span>
     </footer>
   );
 }

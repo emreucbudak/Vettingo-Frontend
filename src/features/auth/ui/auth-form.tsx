@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -126,7 +126,7 @@ export function AuthForm({ mode }: AuthFormProps) {
               type={showPassword ? "text" : "password"}
             />
             <button
-              aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
+              aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi gÃ¶ster"}
               className="absolute right-3 top-1/2 text-[#45474c] transition-colors hover:text-[#0b1c30] -translate-y-1/2"
               onClick={() => setShowPassword((value) => !value)}
               type="button"

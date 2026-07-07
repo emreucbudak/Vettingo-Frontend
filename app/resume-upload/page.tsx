@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { ResumeUploadWizardPage } from "@/widgets/resume-upload-wizard";
 
 export const metadata: Metadata = {
-  title: "Smart Resume Upload | Vettingo",
+  title: "CV Yükleme | Vettingo",
 };
 
 export default function ResumeUploadRoute() {

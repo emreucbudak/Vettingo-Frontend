@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -21,7 +21,7 @@ function Header() {
       </div>
       <div className="flex items-center gap-4">
         <a className="rounded-lg px-2 py-1 text-sm leading-5 text-[#45474c] transition-colors hover:bg-[#eff4ff]" href={ROUTES.employer}>
-          Switch to Employer
+          İşveren Paneline Geç
         </a>
         <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
           <MaterialIcon>notifications</MaterialIcon>
@@ -31,7 +31,7 @@ function Header() {
         </button>
         <div className="h-8 w-8 overflow-hidden rounded-full border border-[#c5c6cd] bg-[#dce9ff]">
           <Image
-            alt="User profile avatar"
+            alt="Kullanıcı profil fotoğrafı"
             className="h-full w-full object-cover"
             height={32}
             src={requisitionProfile.avatarUrl}
@@ -67,7 +67,7 @@ function PageIntro() {
       <div className="mb-1 flex items-center gap-2">
         <a className="flex items-center gap-1 text-sm leading-5 text-[#45474c] transition-colors hover:text-[#091426]" href={ROUTES.employer}>
           <MaterialIcon className="text-[16px]">arrow_back</MaterialIcon>
-          Back to Requisitions
+          İlan Taleplerine Dön
         </a>
       </div>
       <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426]">
@@ -83,11 +83,11 @@ function PageIntro() {
 function CoreDetailsCard() {
   return (
     <section className="rounded-lg border border-[#c5c6cd] bg-white p-6 shadow-sm">
-      <h2 className="mb-4 text-lg font-medium leading-6 text-[#091426]">Core Details</h2>
+      <h2 className="mb-4 text-lg font-medium leading-6 text-[#091426]">Temel Bilgiler</h2>
       <div className="flex flex-col gap-4">
         <div>
           <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
-            Job Title
+            İş Unvanı
           </label>
           <div className="relative">
             <input className={inputClass} defaultValue={requisitionForm.jobTitle} type="text" />
@@ -104,7 +104,7 @@ function CoreDetailsCard() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
-              Department
+              Departman
             </label>
             <select className={inputClass} defaultValue={requisitionForm.departmentOptions[0]}>
               {requisitionForm.departmentOptions.map((option) => (
@@ -114,7 +114,7 @@ function CoreDetailsCard() {
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
-              Location Type
+              Çalışma Türü
             </label>
             <select className={inputClass} defaultValue={requisitionForm.locationTypeOptions[0]}>
               {requisitionForm.locationTypeOptions.map((option) => (
@@ -131,9 +131,9 @@ function CoreDetailsCard() {
 function ResponsibilitiesCard() {
   return (
     <section className="rounded-lg border border-[#c5c6cd] bg-white p-6 shadow-sm">
-      <h2 className="mb-4 text-lg font-medium leading-6 text-[#091426]">Key Responsibilities</h2>
+      <h2 className="mb-4 text-lg font-medium leading-6 text-[#091426]">Temel Sorumluluklar</h2>
       <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
-        Description
+        Açıklama
       </label>
       <textarea className={inputClass} defaultValue={requisitionForm.responsibilities} rows={4} />
     </section>
@@ -144,10 +144,10 @@ function ActionRow() {
   return (
     <div className="mt-4 flex justify-end gap-2">
       <button className="rounded-lg border border-[#c5c6cd] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30] transition-colors hover:bg-[#eff4ff]" type="button">
-        Save Draft
+        Taslak Kaydet
       </button>
       <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="button">
-        Continue
+        Devam Et
         <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
       </button>
     </div>
@@ -170,19 +170,19 @@ function AssistantSidebar() {
           <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-2">
             <div className="mb-1 flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
-                Suggested Skills
+                Önerilen Yetkinlikler
               </span>
               <button className="flex items-center gap-[2px] text-[12px] text-[#0d0093] transition-colors hover:text-[#091426]" type="button">
                 <MaterialIcon className="text-[14px]">add_circle</MaterialIcon>
-                Add All
+                Tümünü Ekle
               </button>
             </div>
             <div className="mt-2 flex flex-wrap gap-1">
               {assistantInsights.skills.map((skill) => (
                 <span className="inline-flex items-center gap-1 rounded-full bg-[#6cf8bb] px-2 py-[2px] text-[11px] font-medium leading-4 text-[#00714d]" key={skill}>
                   {skill}
-                  <button className="material-symbols-outlined text-[12px] hover:text-[#091426]" type="button">
-                    add
+                  <button className="text-[12px] hover:text-[#091426]" type="button">
+                    <MaterialIcon>add</MaterialIcon>
                   </button>
                 </span>
               ))}
@@ -192,7 +192,7 @@ function AssistantSidebar() {
           <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-2">
             <div className="mb-1 flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
-                Market Comp Range
+                Pazar Ücret Aralığı
               </span>
             </div>
             <div className="mt-1 text-sm leading-5 text-[#0b1c30]">
