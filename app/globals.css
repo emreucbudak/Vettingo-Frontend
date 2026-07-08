@@ -90,4 +90,7 @@ body {
   border-color: #94a3b8 !important;
 }
 
-
+.theme-dark .talent-highlight {
+  background: transparent !important;
+  border-color: transparent !important;
+}

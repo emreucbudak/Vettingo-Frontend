@@ -30,7 +30,24 @@ export const landingPage = {
       },
     ],
   },
-  trustedCompanies: [
+  talentHighlights: [
+    {
+      title: "Doğru yetenekle gerçek fark yaratın",
+      description:
+        "Vettingo, rolün ihtiyaçlarını adayların gerçek yetkinlikleriyle buluşturur. Ekipler daha az manuel eleme yapar, güçlü adaylara daha hızlı odaklanır ve her kararı ortak bir değerlendirme zemini üzerinde verir.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=90",
+      imageAlt: "Birlikte çalışan profesyonel ekip",
+    },
+    {
+      title: "En iyi adayları ekibinize daha hızlı katın",
+      description:
+        "Yapay zeka destekli kısa liste, karşılaştırma ve ekip notları tek akışta birleşir. Böylece aday deneyimi kesintiye uğramadan ilerler, işe alım süreci hızlanır ve yeni ekip arkadaşları güvenle göreve başlar.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=90",
+      imageAlt: "Toplantıda fikir paylaşan ekip üyeleri",
+    },
+  ],  trustedCompanies: [
     { name: "Google", logoUrl: "https://cdn.simpleicons.org/google" },
     { name: "Apple", logoUrl: "https://cdn.simpleicons.org/apple" },
     { name: "Netflix", logoUrl: "https://cdn.simpleicons.org/netflix" },
@@ -100,6 +117,7 @@ export const landingPage = {
     { label: "Kurumsal Çözümler", href: ROUTES.employer },
   ],
 } as const;
+
 
 
 
