@@ -40,7 +40,6 @@ body {
 
 .theme-dark nav,
 .theme-dark footer,
-.theme-dark article,
 .theme-dark [class*="bg-white"] {
   background: #101c2f !important;
   border-color: #2d3d58 !important;
