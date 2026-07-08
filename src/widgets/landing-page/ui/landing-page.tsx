@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -355,6 +355,66 @@ function TalentHighlightsSection() {
     </section>
   );
 }
+function TestimonialsSection() {
+  const rows = [
+    landingPage.testimonials.slice(0, 6),
+    landingPage.testimonials.slice(6, 12),
+    landingPage.testimonials.slice(12, 18),
+  ];
+
+  return (
+    <section className="overflow-hidden border-t border-[#c5c6cd] bg-[#eff4ff] py-20 md:py-24">
+      <div className="mx-auto mb-12 max-w-[1440px] px-6 text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#45474c]">
+          Gerçek deneyimler
+        </p>
+        <h2 className="mt-3 text-4xl font-bold leading-[46px] text-[#091426] md:text-5xl md:leading-[58px]">
+          Vettingo ile işe alımın değişen yüzü
+        </h2>
+      </div>
+
+      <div className="space-y-5 [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)]">
+        {rows.map((row, rowIndex) => {
+          const repeatedRow = [...row, ...row];
+
+          return (
+            <div className="overflow-hidden" key={rowIndex}>
+              <div
+                className={`testimonial-marquee flex w-max gap-5 ${
+                  rowIndex === 1 ? "testimonial-marquee-left" : "testimonial-marquee-right"
+                }`}
+              >
+                {repeatedRow.map((testimonial, index) => (
+                  <article
+                    className="w-[340px] shrink-0 rounded-lg border border-[#c5c6cd] bg-white p-6 shadow-[0_8px_28px_rgba(9,20,38,0.07)] sm:w-[410px]"
+                    key={`${testimonial.name}-${rowIndex}-${index}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Image
+                        alt={`${testimonial.name} profil fotoğrafı`}
+                        className="h-11 w-11 rounded-full object-cover"
+                        height={44}
+                        src={testimonial.imageUrl}
+                        width={44}
+                      />
+                      <div>
+                        <h3 className="text-sm font-bold text-[#091426]">{testimonial.name}</h3>
+                        <p className="mt-0.5 text-xs text-[#45474c]">{testimonial.role}</p>
+                      </div>
+                    </div>
+                    <div className="testimonial-separator my-4 h-px bg-[#d9dee8]" />
+                    <p className="text-sm leading-6 text-[#45474c]">{testimonial.comment}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="mt-auto w-full border-t border-[#c5c6cd] bg-white py-8">
@@ -389,19 +449,10 @@ export function LandingPage() {
         <HrPlatformSection />
         <CompactStatsSection />
         <TalentHighlightsSection />
+        <TestimonialsSection />
       </main>
       <Footer />
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
 
