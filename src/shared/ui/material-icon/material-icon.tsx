@@ -95,6 +95,16 @@ const iconPaths: Record<string, ReactNode> = {
     </>
   ),
   check: <path d="m5 12 4 4L19 6" />,
+  checklist_edit: (
+    <>
+      <rect height="15" rx="2" width="13" x="4" y="4" />
+      <path d="M8 8h5" />
+      <path d="M8 12h4" />
+      <path d="M8 16h3" />
+      <path d="m14 18 5-5 2 2-5 5h-2z" />
+      <path d="m18.5 13.5 2 2" />
+    </>
+  ),
   check_circle: (
     <>
       <circle cx="12" cy="12" r="9" />
@@ -175,7 +185,16 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M12 17h.01" />
     </>
   ),
-  light_mode: (
+  lightbulb: (
+    <>
+      <path d="M9 18h6" />
+      <path d="M10 22h4" />
+      <path d="M10 18v-2.5a6 6 0 1 1 4 0V18" />
+      <path d="M12 2v2" />
+      <path d="M4.9 5.6 6.3 7" />
+      <path d="M19.1 5.6 17.7 7" />
+    </>
+  ),  light_mode: (
     <>
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2v2" />
@@ -375,7 +394,7 @@ export function MaterialIcon({ children, className = "" }: MaterialIconProps) {
       strokeWidth="2"
       viewBox="0 0 24 24"
     >
-      {iconPaths[iconName] ?? iconPaths.help}
+      {iconPaths[iconName]}
     </svg>
   );
 }

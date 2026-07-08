@@ -11,8 +11,7 @@ export const marketingDashboard = {
     title: "Modern Şirketler İçin Hassas Yetenek Zekası",
     description:
       "İşe alım stratejinizi yapay zeka destekli içgörülerle dönüştürün. Üst düzey yetenekleri belirlemek, değerlendirmek ve karşılaştırmak için kurumsal ölçekte netlik sunuyoruz.",
-    primaryCta: "Demo Talep Et",
-    secondaryCta: "İşe Alıma Başla",
+    primaryCta: "Başla",
     imageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA7Vo7uQOcHy9Pqg6Rp2IIa3HryznxT58-qfEDPQd6gvj7MP2BWERYfLbkB-1AN4dC0FcBRH8Q0JGJxszK9BVdX5oYBHd4w49hMeruW_ED5vc98AH-DZXyGVNA2DwAG9L3yB2OUtRSk0mYWMGp7orVBWsT9Ix5_Y2R6dak94cGGQbzbNUr-uSqvWf2JOApZQzZvk37_5oLnBRiRADMmxC8eLRNoHnseie8GXx4JlwMNKY8Y9YWOkreRPEn-KHjBYT41flYAE0hkBWI",
   },

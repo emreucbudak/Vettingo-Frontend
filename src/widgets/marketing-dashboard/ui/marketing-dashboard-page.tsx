@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { marketingDashboard } from "../model/marketing-dashboard-data";
@@ -13,14 +13,6 @@ function Header() {
         <a className="text-2xl font-bold tracking-[-0.01em] text-[#091426]" href={ROUTES.dashboard}>
           {marketingDashboard.productName}
         </a>
-        <div className="flex items-center space-x-4">
-          <a className="text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:text-[#006c49]" href={ROUTES.login}>
-            Giriş Yap
-          </a>
-          <a className="rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90" href={ROUTES.register}>
-            Başla
-          </a>
-        </div>
       </div>
     </nav>
   );
@@ -41,9 +33,6 @@ function Hero() {
             {marketingDashboard.hero.primaryCta}
             <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
           </a>
-          <a className="rounded border border-[#c5c6cd] bg-white px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#d3e4fe]" href={ROUTES.jobs}>
-            {marketingDashboard.hero.secondaryCta}
-          </a>
         </div>
       </div>
 
@@ -63,6 +52,105 @@ function Hero() {
   );
 }
 
+
+type NetworkCardProps = {
+  className: string;
+  children: ReactNode;
+};
+
+function NetworkCard({ className, children }: NetworkCardProps) {
+  return (
+    <div
+      className={`absolute flex items-center justify-center rounded-2xl border border-[#e2e7f1] bg-white shadow-[0_18px_45px_rgba(9,20,38,0.12)] ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+
+
+function HrPlatformSection() {
+  return (
+    <section className="overflow-hidden bg-white px-6 py-24">
+      <div className="mx-auto max-w-[1180px] text-center">
+        <div className="relative mx-auto h-[320px] max-w-[1160px] sm:h-[390px]">
+          <svg
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full overflow-visible"
+            fill="none"
+            preserveAspectRatio="none"
+            shapeRendering="geometricPrecision"
+            viewBox="0 0 1160 390"
+          >
+            <g
+              stroke="#dfe4ee"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.4"
+              vectorEffect="non-scaling-stroke"
+            >
+              <path d="M112 183H508" />
+              <path d="M652 183H1048" />
+              <path d="M249 79H342L420 183" />
+              <path d="M249 289H365L420 183" />
+              <path d="M911 79H818L740 183" />
+              <path d="M911 289H795L740 183" />
+            </g>
+            <g fill="#8b5cf6">
+              <circle cx="342" cy="79" r="4.5" />
+              <circle cx="365" cy="289" r="4.5" />
+              <circle cx="818" cy="79" r="4.5" />
+              <circle cx="795" cy="289" r="4.5" />
+            </g>
+          </svg>
+
+          <NetworkCard className="left-0 top-[33%] h-20 w-20 sm:h-28 sm:w-28">
+            <div className="flex h-full w-full items-center justify-center rounded-[inherit] bg-gradient-to-br from-[#d9f0ff] to-[#f7fbff] text-2xl font-semibold text-[#091426] sm:text-3xl">
+              HR
+            </div>
+          </NetworkCard>
+          <NetworkCard className="left-[18%] top-[10%] h-16 w-16 rounded-2xl bg-[#ffd94d] text-[#091426] sm:h-20 sm:w-20">
+            <MaterialIcon className="text-[30px] sm:text-[36px]">search</MaterialIcon>
+          </NetworkCard>
+          <NetworkCard className="left-[18%] bottom-[16%] h-16 w-16 rounded-2xl bg-white text-[#091426] sm:h-20 sm:w-20">
+            <MaterialIcon className="text-[30px] sm:text-[36px]">person</MaterialIcon>
+          </NetworkCard>
+
+          <div className="absolute left-1/2 top-[44%] flex h-28 w-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-3xl bg-gradient-to-br from-[#b08cff] to-[#6f42e8] text-white shadow-[0_24px_65px_rgba(111,66,232,0.34)] sm:h-36 sm:w-36">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full border-[5px] border-white/80 sm:h-20 sm:w-20">
+              <MaterialIcon className="text-[38px] sm:text-[48px]">check</MaterialIcon>
+            </div>
+          </div>
+
+          <NetworkCard className="right-[18%] top-[10%] h-16 w-16 rounded-2xl bg-white text-[#091426] sm:h-20 sm:w-20">
+            <MaterialIcon className="text-[30px] sm:text-[36px]">work</MaterialIcon>
+          </NetworkCard>
+          <NetworkCard className="right-[18%] bottom-[16%] h-16 w-16 text-[#091426] sm:h-20 sm:w-20">
+            <MaterialIcon className="text-[30px] sm:text-[36px]">auto_awesome</MaterialIcon>
+          </NetworkCard>
+          <NetworkCard className="right-0 top-[33%] h-20 w-20 overflow-hidden sm:h-28 sm:w-28">
+            <Image
+              alt="Çalışan portresi"
+              className="h-full w-full rounded-[inherit] object-cover"
+              height={112}
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=480&q=90"
+              width={112}
+            />
+          </NetworkCard>
+        </div>
+
+        <div className="mx-auto max-w-2xl space-y-5">
+          <h2 className="text-4xl font-semibold leading-[44px] tracking-[-0.02em] text-[#091426] md:text-6xl md:leading-[68px]">
+            All-in-one işe alım platformu
+          </h2>
+          <p className="mx-auto max-w-md text-base leading-6 text-[#8590a6]">
+            Vettingo, aday değerlendirme, kısa liste ve ekip kararlarını tek akışta birleştiren modern bir işe alım merkezidir.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
 function TrustBar() {
   return (
     <section className="border-y border-[#c5c6cd] bg-[#eff4ff] py-8">
@@ -185,7 +273,7 @@ function Features() {
 
 function Footer() {
   return (
-    <footer className="mt-auto w-full border-t border-[#c5c6cd] bg-[#e5eeff] py-8">
+    <footer className="mt-auto w-full border-t border-[#c5c6cd] bg-white py-8">
       <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-4 px-6 md:flex-row">
         <div className="text-xl font-bold leading-7 text-[#091426]">
           {marketingDashboard.productName}
@@ -214,6 +302,7 @@ export function MarketingDashboardPage() {
       <main className="flex-grow pt-16">
         <Hero />
         <TrustBar />
+        <HrPlatformSection />
         <Features />
         <StatsSection />
       </main>
