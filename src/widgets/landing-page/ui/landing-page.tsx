@@ -2,12 +2,44 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { landingPage } from "@/entities/landing";
 import { getAuthenticatedRoute } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
+type InViewOptions = {
+  rootMargin?: string;
+  threshold?: number;
+};
+
+function useInView<T extends HTMLElement>({
+  rootMargin = "0px 0px -10% 0px",
+  threshold = 0.35,
+}: InViewOptions = {}) {
+  const ref = useRef<T>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+
+    if (!element) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin, threshold },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [rootMargin, threshold]);
+
+  return { ref, isInView };
+}
 function Header() {
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-[#c5c6cd] bg-white">
@@ -22,10 +54,11 @@ function Header() {
 
 function Hero() {
   const router = useRouter();
+  const { ref, isInView } = useInView<HTMLElement>({ threshold: 0.45 });
 
   return (
-    <section className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-8 px-6 py-24 md:grid-cols-2">
-      <div className="space-y-6">
+    <section className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-8 overflow-hidden px-6 py-24 md:grid-cols-2" ref={ref}>
+      <div className={`space-y-6 transition-all duration-700 ease-out ${isInView ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}>
         <h1 className="max-w-2xl text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426] md:text-4xl md:leading-[48px]">
           {landingPage.hero.title}
         </h1>
@@ -44,7 +77,7 @@ function Hero() {
         </div>
       </div>
 
-      <div className="grid h-[400px] w-full grid-cols-3 gap-2 overflow-hidden rounded-lg bg-transparent p-2 sm:gap-3 sm:p-3">
+      <div className={`grid h-[400px] w-full grid-cols-3 gap-2 overflow-hidden rounded-lg bg-transparent p-2 transition-all delay-100 duration-500 ease-out sm:gap-3 sm:p-3 ${isInView ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"}`}>
         {landingPage.hero.people.map((person, index) => (
           <div
             className={`flex min-w-0 flex-col ${index === 1 ? "mt-8" : "mb-8"}`}
@@ -86,10 +119,12 @@ function NetworkCard({ className, children }: NetworkCardProps) {
 
 
 function HrPlatformSection() {
+  const { ref, isInView } = useInView<HTMLElement>({ rootMargin: "0px 0px -16% 0px", threshold: 0.5 });
+
   return (
-    <section className="overflow-hidden bg-[#f8f9ff] px-6 py-24">
+    <section className="overflow-hidden bg-[#f8f9ff] px-6 py-24" ref={ref}>
       <div className="mx-auto max-w-[1180px] text-center">
-        <div className="relative mx-auto h-[320px] max-w-[1160px] sm:h-[390px]">
+        <div className={`relative mx-auto h-[320px] max-w-[1160px] transition-all duration-500 ease-out sm:h-[390px] ${isInView ? "translate-y-0 scale-100 opacity-100" : "translate-y-8 scale-[0.97] opacity-0"}`}>
           <svg
             aria-hidden="true"
             className="absolute inset-0 h-full w-full overflow-visible"
@@ -155,13 +190,10 @@ function HrPlatformSection() {
           </NetworkCard>
         </div>
 
-        <div className="mx-auto max-w-2xl space-y-5">
+        <div className={`mx-auto max-w-2xl space-y-5 transition-all delay-100 duration-500 ease-out ${isInView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
           <h2 className="text-4xl font-semibold leading-[44px] tracking-[-0.02em] text-[#091426] md:text-6xl md:leading-[68px]">
-            All-in-one işe alım platformu
+            İşe alımda her adımda yanınızda
           </h2>
-          <p className="mx-auto max-w-md text-base leading-6 text-[#8590a6]">
-            Vettingo, aday değerlendirme, kısa liste ve ekip kararlarını tek akışta birleştiren modern bir işe alım merkezidir.
-          </p>
         </div>
       </div>
     </section>
@@ -201,10 +233,22 @@ function TrustBar() {
 }
 
 
-function AnimatedStatValue({ target, suffix }: { target: number; suffix: string }) {
+function AnimatedStatValue({
+  isActive,
+  suffix,
+  target,
+}: {
+  isActive: boolean;
+  suffix: string;
+  target: number;
+}) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
+    if (!isActive) {
+      return;
+    }
+
     let frameId = 0;
     const duration = 1200;
     const start = performance.now();
@@ -221,20 +265,22 @@ function AnimatedStatValue({ target, suffix }: { target: number; suffix: string 
 
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
-  }, [target]);
+  }, [isActive, target]);
 
   return <>{value}{suffix}</>;
 }
 
 
 function CompactStatsSection() {
+  const { ref, isInView } = useInView<HTMLElement>();
+
   return (
-    <section className="bg-[#eff4ff] px-6 py-14">
+    <section className="border-y border-[#c5c6cd] bg-[#eff4ff] px-6 py-14" ref={ref}>
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-8 text-center sm:flex-row sm:gap-14 md:gap-20">
         {landingPage.valueCards.map((card) => (
           <div className="min-w-[130px]" key={card.title}>
             <div className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426]">
-              <AnimatedStatValue suffix={card.suffix} target={card.value} />
+              <AnimatedStatValue isActive={isInView} suffix={card.suffix} target={card.value} />
             </div>
             <div className="mt-1 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
               {card.title}
@@ -245,45 +291,70 @@ function CompactStatsSection() {
     </section>
   );
 }
+function RevealOnView({
+  children,
+  className = "",
+  direction,
+}: {
+  children: ReactNode;
+  className?: string;
+  direction: "left" | "right";
+}) {
+  const { ref, isInView } = useInView<HTMLDivElement>({ threshold: 0.4 });
+  const hiddenClass = direction === "left" ? "-translate-x-12" : "translate-x-12";
 
+  return (
+    <div
+      className={`${className} transition-all duration-700 ease-out ${
+        isInView ? "translate-x-0 opacity-100" : `${hiddenClass} opacity-0`
+      }`}
+      ref={ref}
+    >
+      {children}
+    </div>
+  );
+}
 
 function TalentHighlightsSection() {
   return (
-    <section className="bg-[#f8f9ff] px-6 py-20 md:py-24">
+    <section className="overflow-hidden bg-[#f8f9ff] px-6 py-20 md:py-24">
       <div className="mx-auto max-w-[1240px] space-y-20 md:space-y-28">
         {landingPage.talentHighlights.map((highlight, index) => (
           <article
             className="talent-highlight grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(360px,1fr)] md:gap-24 lg:gap-32"
             key={highlight.title}
           >
-            <div className={index % 2 === 1 ? "md:order-2" : undefined}>
+            <RevealOnView
+              className={index % 2 === 1 ? "md:order-2" : ""}
+              direction={index % 2 === 1 ? "right" : "left"}
+            >
               <h2 className="max-w-xl text-4xl font-bold leading-[46px] text-[#091426] md:text-5xl md:leading-[58px]">
                 {highlight.title}
               </h2>
               <p className="mt-5 max-w-lg text-base leading-7 text-[#45474c]">
                 {highlight.description}
               </p>
-            </div>
-            <div
-              className={`relative aspect-[4/3] min-h-[280px] overflow-hidden rounded-md ${
-                index % 2 === 1 ? "md:order-1" : ""
-              }`}
+            </RevealOnView>
+            <RevealOnView
+              className={index % 2 === 1 ? "md:order-1" : ""}
+              direction={index % 2 === 1 ? "left" : "right"}
             >
-              <Image
-                alt={highlight.imageAlt}
-                className="object-cover"
-                fill
-                sizes="(max-width: 768px) 100vw, 520px"
-                src={highlight.imageUrl}
-              />
-            </div>
+              <div className="relative aspect-[4/3] min-h-[280px] overflow-hidden rounded-md">
+                <Image
+                  alt={highlight.imageAlt}
+                  className="object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 520px"
+                  src={highlight.imageUrl}
+                />
+              </div>
+            </RevealOnView>
           </article>
         ))}
       </div>
     </section>
   );
 }
-
 function Footer() {
   return (
     <footer className="mt-auto w-full border-t border-[#c5c6cd] bg-white py-8">
