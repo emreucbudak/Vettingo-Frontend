@@ -44,17 +44,25 @@ function Hero() {
         </div>
       </div>
 
-      <div className="relative h-[400px] w-full overflow-hidden rounded-lg border border-[#c5c6cd] bg-white">
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#d3e4fe] to-[#e5eeff]">
-          <Image
-            alt="Veri analitiği ve profesyonel işe alım görseli"
-            className="h-full w-full object-cover opacity-80 mix-blend-multiply"
-            height={400}
-            src={landingPage.hero.imageUrl}
-            width={720}
-            priority
-          />
-        </div>
+      <div className="grid h-[400px] w-full grid-cols-3 gap-2 overflow-hidden rounded-lg bg-transparent p-2 sm:gap-3 sm:p-3">
+        {landingPage.hero.people.map((person, index) => (
+          <div
+            className={`flex min-w-0 flex-col ${index === 1 ? "mt-8" : "mb-8"}`}
+            key={person.profession}
+          >
+            <div className="relative min-h-0 flex-1 overflow-hidden rounded-md">
+              <Image
+                alt={`${person.profession} çalışma ortamı`}
+                className="object-cover"
+                fill
+                priority
+                sizes="(max-width: 768px) 30vw, 16vw"
+                src={person.imageUrl}
+              />
+            </div>
+
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -275,6 +283,11 @@ export function LandingPage() {
     </div>
   );
 }
+
+
+
+
+
 
 
 

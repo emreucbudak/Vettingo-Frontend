@@ -8,12 +8,27 @@ export const landingPage = {
     { label: "Hakkımızda", href: ROUTES.home },
   ],
   hero: {
-    title: "Modern Şirketler İçin Hassas Yetenek Zekası",
+    title: "Sıradaki işini bulma vakti geldi",
     description:
-      "İşe alım stratejinizi yapay zeka destekli içgörülerle dönüştürün. Üst düzey yetenekleri belirlemek, değerlendirmek ve karşılaştırmak için kurumsal ölçekte netlik sunuyoruz.",
+      "Yetkinliklerine ve hedeflerine gerçekten uyan fırsatları yapay zeka destekli içgörülerle keşfet. Kariyer yolunu netleştir, güçlü yönlerini öne çıkar ve sana uygun şirketlerle daha hızlı buluş.",
     primaryCta: "Başla",
-    imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuA7Vo7uQOcHy9Pqg6Rp2IIa3HryznxT58-qfEDPQd6gvj7MP2BWERYfLbkB-1AN4dC0FcBRH8Q0JGJxszK9BVdX5oYBHd4w49hMeruW_ED5vc98AH-DZXyGVNA2DwAG9L3yB2OUtRSk0mYWMGp7orVBWsT9Ix5_Y2R6dak94cGGQbzbNUr-uSqvWf2JOApZQzZvk37_5oLnBRiRADMmxC8eLRNoHnseie8GXx4JlwMNKY8Y9YWOkreRPEn-KHjBYT41flYAE0hkBWI",
+    people: [
+      {
+        profession: "Yazılım Geliştirici",
+        imageUrl:
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=960&q=95",
+      },
+      {
+        profession: "Doktor",
+        imageUrl:
+          "https://images.unsplash.com/photo-1645066928295-2506defde470?auto=format&fit=crop&w=960&q=95",
+      },
+      {
+        profession: "Mimar",
+        imageUrl:
+          "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=960&q=95",
+      },
+    ],
   },
   trustedCompanies: [
     { name: "Google", logoUrl: "https://cdn.simpleicons.org/google" },
@@ -85,5 +100,8 @@ export const landingPage = {
     { label: "Kurumsal Çözümler", href: ROUTES.employer },
   ],
 } as const;
+
+
+
 
 
