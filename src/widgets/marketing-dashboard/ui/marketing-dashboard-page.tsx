@@ -104,10 +104,10 @@ function HrPlatformSection() {
             </g>
           </svg>
 
-          <NetworkCard className="left-0 top-[33%] h-20 w-20 sm:h-28 sm:w-28">
-            <div className="flex h-full w-full items-center justify-center rounded-[inherit] bg-gradient-to-br from-[#d9f0ff] to-[#f7fbff] text-2xl font-semibold text-[#091426] sm:text-3xl">
+          <NetworkCard className="left-0 top-[33%] h-20 w-20 bg-white text-[#091426] sm:h-28 sm:w-28">
+            <span className="text-2xl font-semibold text-[#091426] sm:text-3xl">
               HR
-            </div>
+            </span>
           </NetworkCard>
           <NetworkCard className="left-[18%] top-[10%] h-16 w-16 rounded-2xl bg-[#ffd94d] text-[#091426] sm:h-20 sm:w-20">
             <MaterialIcon className="text-[30px] sm:text-[36px]">search</MaterialIcon>
@@ -182,16 +182,6 @@ function TrustBar() {
   );
 }
 
-function FeatureCard({ feature }: { feature: (typeof marketingDashboard.features)[number] }) {
-  return (
-    <article className="group flex min-h-40 flex-col justify-between rounded-lg border border-[#c5c6cd] bg-white p-6 transition-colors hover:border-[#bcc7de]">
-      <div className="space-y-3">
-        <h3 className="text-lg font-medium leading-6 text-[#091426]">{feature.title}</h3>
-        <p className="text-sm leading-5 text-[#45474c]">{feature.description}</p>
-      </div>
-    </article>
-  );
-}
 
 function AnimatedStatValue({ target, suffix }: { target: number; suffix: string }) {
   const [value, setValue] = useState(0);
@@ -218,58 +208,26 @@ function AnimatedStatValue({ target, suffix }: { target: number; suffix: string 
   return <>{value}{suffix}</>;
 }
 
-function StatsSection() {
+
+function CompactStatsSection() {
   return (
-    <section className="mx-auto max-w-[1440px] px-6 pb-24">
-      <div className="mb-12 space-y-2 text-center">
-        <h2 className="text-2xl font-semibold leading-8 tracking-[-0.01em] text-[#091426]">
-          Sayılarla Vettingo
-        </h2>
-        <p className="mx-auto max-w-2xl text-sm leading-5 text-[#45474c]">
-          İşe alım ekiplerinin daha hızlı, ölçülebilir ve tutarlı karar almasına yardımcı olan platform etkisi.
-        </p>
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <section className="bg-[#eff4ff] px-6 py-14">
+      <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-8 text-center sm:flex-row sm:gap-14 md:gap-20">
         {marketingDashboard.valueCards.map((card) => (
-          <article
-            className="group flex min-h-40 flex-col justify-between rounded-lg border border-[#c5c6cd] bg-white p-6 text-[#091426] transition-colors hover:border-[#bcc7de]"
-            key={card.title}
-          >
-            <div className="text-3xl font-semibold leading-10 tracking-[-0.02em]">
+          <div className="min-w-[130px]" key={card.title}>
+            <div className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426]">
               <AnimatedStatValue suffix={card.suffix} target={card.value} />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.05em] text-[#091426]">
-                {card.title}
-              </h3>
-              <p className="text-sm leading-5 text-[#45474c]">{card.description}</p>
+            <div className="mt-1 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
+              {card.title}
             </div>
-          </article>
+          </div>
         ))}
       </div>
     </section>
   );
 }
 
-function Features() {
-  return (
-    <section className="mx-auto max-w-[1440px] px-6 py-24">
-      <div className="mb-16 space-y-2 text-center">
-        <h2 className="text-2xl font-semibold leading-8 tracking-[-0.01em] text-[#091426]">
-          Kurumsal Ölçekli Mimari
-        </h2>
-        <p className="mx-auto max-w-2xl text-sm leading-5 text-[#45474c]">
-          Yoğun bilgi işleme ve nesnel aday değerlendirmesi için tasarlandı.
-        </p>
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {marketingDashboard.features.map((feature) => (
-          <FeatureCard feature={feature} key={feature.title} />
-        ))}
-      </div>
-    </section>
-  );
-}
 
 function Footer() {
   return (
@@ -303,8 +261,7 @@ export function MarketingDashboardPage() {
         <Hero />
         <TrustBar />
         <HrPlatformSection />
-        <Features />
-        <StatsSection />
+        <CompactStatsSection />
       </main>
       <Footer />
     </div>

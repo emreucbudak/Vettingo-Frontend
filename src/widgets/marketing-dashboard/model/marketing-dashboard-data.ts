@@ -66,7 +66,7 @@ export const marketingDashboard = {
     {
       value: 3,
       suffix: "x",
-      title: "Daha Hızlı Kısa Liste",
+      title: "Daha Kısa Liste",
       description:
         "Yüksek potansiyelli adayları öne çıkararak değerlendirme yoğunluğunu azaltır.",
     },
