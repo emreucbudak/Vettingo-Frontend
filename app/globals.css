@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
   --background: #f8f9ff;
@@ -31,6 +31,31 @@ body {
   to {
     transform: translateX(-50%);
   }
+}
+.testimonial-marquee {
+  will-change: transform;
+}
+
+.testimonial-marquee-right {
+  animation: testimonial-marquee-right 52s linear infinite;
+}
+
+.testimonial-marquee-left {
+  animation: testimonial-marquee-left 48s linear infinite;
+}
+
+@keyframes testimonial-marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes testimonial-marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-marquee { animation-play-state: paused; }
 }
 .theme-dark,
 .theme-dark body {
@@ -92,4 +117,13 @@ body {
 .theme-dark .talent-highlight {
   background: transparent !important;
   border-color: transparent !important;
+}
+
+.theme-dark .testimonial-marquee article {
+  background: #101c2f !important;
+  border-color: #2d3d58 !important;
+}
+
+.theme-dark .testimonial-separator {
+  background: #2d3d58 !important;
 }
