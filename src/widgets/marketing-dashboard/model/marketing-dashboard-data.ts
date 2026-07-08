@@ -51,9 +51,32 @@ export const marketingDashboard = {
   ],
   valueCards: [
     {
-      title: "40%",
-      description: "İşe Alım Süresinde Azalma",
-      featured: true,
+      value: 40,
+      suffix: "%",
+      title: "İşe Alım Süresinde Azalma",
+      description:
+        "Otomatik ön eleme ve aday karşılaştırma akışlarıyla ekiplerin karar süresini kısaltır.",
+    },
+    {
+      value: 92,
+      suffix: "%",
+      title: "Aday Uyum Skoru",
+      description:
+        "Rol gereksinimleriyle aday yetkinliklerini daha tutarlı ve ölçülebilir şekilde eşleştirir.",
+    },
+    {
+      value: 3,
+      suffix: "x",
+      title: "Daha Hızlı Kısa Liste",
+      description:
+        "Yüksek potansiyelli adayları öne çıkararak değerlendirme yoğunluğunu azaltır.",
+    },
+    {
+      value: 24,
+      suffix: "/7",
+      title: "Sürekli Analiz",
+      description:
+        "Başvuruları anlık olarak işler, ekiplerin güncel aday görünümünü korumasına yardımcı olur.",
     },
   ],
   footerLinks: [

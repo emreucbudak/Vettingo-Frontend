@@ -32,7 +32,8 @@ body {
     transform: translateX(-50%);
   }
 }
-.theme-dark {
+.theme-dark,
+.theme-dark body {
   background: #07111f !important;
   color: #eef4ff !important;
 }

@@ -13,17 +13,6 @@ function Header() {
         <a className="text-2xl font-bold tracking-[-0.01em] text-[#091426]" href={ROUTES.dashboard}>
           {marketingDashboard.productName}
         </a>
-        <div className="hidden items-center space-x-6 md:flex">
-          {marketingDashboard.navItems.map((item) => (
-            <a
-              className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:text-[#006c49]"
-              href={item.href}
-              key={item.label}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
         <div className="flex items-center space-x-4">
           <a className="text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:text-[#006c49]" href={ROUTES.login}>
             Giriş Yap
@@ -105,12 +94,10 @@ function TrustBar() {
   );
 }
 
-function WideDashboardFeature() {
-  const feature = marketingDashboard.features[0];
-
+function FeatureCard({ feature }: { feature: (typeof marketingDashboard.features)[number] }) {
   return (
-    <article className="group rounded-lg border border-[#c5c6cd] bg-white p-6 transition-colors hover:border-[#bcc7de] md:col-span-2">
-      <div className="max-w-2xl space-y-4">
+    <article className="group flex min-h-40 flex-col justify-between rounded-lg border border-[#c5c6cd] bg-white p-6 transition-colors hover:border-[#bcc7de]">
+      <div className="space-y-3">
         <h3 className="text-lg font-medium leading-6 text-[#091426]">{feature.title}</h3>
         <p className="text-sm leading-5 text-[#45474c]">{feature.description}</p>
       </div>
@@ -118,29 +105,7 @@ function WideDashboardFeature() {
   );
 }
 
-function SmartCvFeature() {
-  const feature = marketingDashboard.features[1];
-
-  return (
-    <article className="group rounded-lg border border-[#c5c6cd] bg-white p-6 transition-colors hover:border-[#bcc7de]">
-      <h3 className="mb-2 text-lg font-medium leading-6 text-[#091426]">{feature.title}</h3>
-      <p className="text-sm leading-5 text-[#45474c]">{feature.description}</p>
-    </article>
-  );
-}
-
-function BenchmarkFeature() {
-  const feature = marketingDashboard.features[2];
-
-  return (
-    <article className="group rounded-lg border border-[#c5c6cd] bg-white p-6 transition-colors hover:border-[#bcc7de]">
-      <h3 className="mb-2 text-lg font-medium leading-6 text-[#091426]">{feature.title}</h3>
-      <p className="text-sm leading-5 text-[#45474c]">{feature.description}</p>
-    </article>
-  );
-}
-
-function AnimatedPercentage({ target }: { target: number }) {
+function AnimatedStatValue({ target, suffix }: { target: number; suffix: string }) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -162,26 +127,39 @@ function AnimatedPercentage({ target }: { target: number }) {
     return () => cancelAnimationFrame(frameId);
   }, [target]);
 
-  return <>{value}%</>;
+  return <>{value}{suffix}</>;
 }
 
-function ValueCards() {
+function StatsSection() {
   return (
-    <div className="grid grid-cols-1 gap-4 md:col-span-1">
-      {marketingDashboard.valueCards.map((card) => (
-        <article
-          className="flex flex-col justify-center rounded-lg border border-[#c5c6cd] bg-white p-6 text-[#091426]"
-          key={card.title}
-        >
-          <div className="mb-2 text-3xl font-semibold leading-10 tracking-[-0.02em]">
-            {card.title === "40%" ? <AnimatedPercentage target={40} /> : card.title}
-          </div>
-          <div className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-            {card.description}
-          </div>
-        </article>
-      ))}
-    </div>
+    <section className="mx-auto max-w-[1440px] px-6 pb-24">
+      <div className="mb-12 space-y-2 text-center">
+        <h2 className="text-2xl font-semibold leading-8 tracking-[-0.01em] text-[#091426]">
+          Sayılarla Vettingo
+        </h2>
+        <p className="mx-auto max-w-2xl text-sm leading-5 text-[#45474c]">
+          İşe alım ekiplerinin daha hızlı, ölçülebilir ve tutarlı karar almasına yardımcı olan platform etkisi.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {marketingDashboard.valueCards.map((card) => (
+          <article
+            className="group flex min-h-40 flex-col justify-between rounded-lg border border-[#c5c6cd] bg-white p-6 text-[#091426] transition-colors hover:border-[#bcc7de]"
+            key={card.title}
+          >
+            <div className="text-3xl font-semibold leading-10 tracking-[-0.02em]">
+              <AnimatedStatValue suffix={card.suffix} target={card.value} />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.05em] text-[#091426]">
+                {card.title}
+              </h3>
+              <p className="text-sm leading-5 text-[#45474c]">{card.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -197,10 +175,9 @@ function Features() {
         </p>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <WideDashboardFeature />
-        <SmartCvFeature />
-        <BenchmarkFeature />
-        <ValueCards />
+        {marketingDashboard.features.map((feature) => (
+          <FeatureCard feature={feature} key={feature.title} />
+        ))}
       </div>
     </section>
   );
@@ -229,32 +206,18 @@ function Footer() {
   );
 }
 
-function ThemeToggle({ isDark, onToggle }: { isDark: boolean; onToggle: () => void }) {
-  return (
-    <button
-      aria-label={isDark ? "Aydınlık moda geç" : "Karanlık moda geç"}
-      className="fixed bottom-6 right-6 z-[80] flex h-14 w-14 items-center justify-center rounded-full border border-[#c5c6cd] bg-white text-[#091426] shadow-[0_14px_35px_rgba(9,20,38,0.18)] transition-transform hover:scale-105"
-      onClick={onToggle}
-      type="button"
-    >
-      <MaterialIcon className="text-[24px]">{isDark ? "light_mode" : "dark_mode"}</MaterialIcon>
-    </button>
-  );
-}
 
 export function MarketingDashboardPage() {
-  const [isDark, setIsDark] = useState(false);
-
   return (
-    <div className={`${isDark ? "theme-dark" : ""} flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30]`}>
+    <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30]">
       <Header />
       <main className="flex-grow pt-16">
         <Hero />
         <TrustBar />
         <Features />
+        <StatsSection />
       </main>
       <Footer />
-      <ThemeToggle isDark={isDark} onToggle={() => setIsDark((value) => !value)} />
     </div>
   );
 }
