@@ -1,5 +1,4 @@
 ﻿import Image from "next/image";
-import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   activeRequisitions,
@@ -11,7 +10,7 @@ import {
   funnelStages,
   monthlyBars,
   topAiMatches,
-} from "../model/employer-dashboard-data";
+} from "@/entities/employer-dashboard";
 
 function SidebarLink({
   icon,
@@ -84,22 +83,15 @@ function TopBar() {
         </MaterialIcon>
         <input
           className="w-64 rounded border border-[#75777d] bg-[#f8f9ff] py-2 pl-10 pr-4 text-sm outline-none focus:border-[#091426] focus:ring-2 focus:ring-[#091426]/20"
-          placeholder="Aday, iş veya ilan ara..."
+          placeholder="Aday, iÅŸ veya ilan ara..."
           type="text"
         />
       </div>
 
       <div className="flex items-center gap-3 md:gap-4">
-        <a
-          className="rounded border border-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
-          href={ROUTES.candidate}
-        >
-          Aday Paneline Geç
-        </a>
         <div className="flex items-center gap-2">
           {[
             { icon: "notifications", label: "Bildirimler" },
-            { icon: "settings", label: "Ayarlar" },
           ].map((item) => (
             <button
               aria-label={item.label}
@@ -112,7 +104,7 @@ function TopBar() {
           ))}
         </div>
         <Image
-          alt="Kullanıcı profil fotoğrafı"
+          alt="KullanÄ±cÄ± profil fotoÄŸrafÄ±"
           className="ml-1 h-8 w-8 rounded-full border border-[#c5c6cd] object-cover"
           height={32}
           src={employerProfile.avatarUrl}
@@ -135,7 +127,7 @@ function MobileBrand() {
       />
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-          İşveren Paneli
+          Ä°ÅŸveren Paneli
         </p>
         <h1 className="text-xl font-bold text-[#091426]">Vettingo</h1>
       </div>
@@ -171,10 +163,10 @@ function AiProcessingCard() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-            Yapay Zeka Aday İşleme
+            Yapay Zeka Aday Ä°ÅŸleme
           </h3>
           <p className="mt-1 text-sm leading-5 text-[#45474c]">
-            Kısa listeye alma süresi %40 azaldı
+            KÄ±sa listeye alma sÃ¼resi %40 azaldÄ±
           </p>
         </div>
         <MaterialIcon className="text-[#040057]">psychology</MaterialIcon>
@@ -185,11 +177,11 @@ function AiProcessingCard() {
             18
           </span>
           <span className="ml-2 text-sm leading-5 text-[#45474c]">
-            Bugünün En İyi Eşleşmeleri
+            BugÃ¼nÃ¼n En Ä°yi EÅŸleÅŸmeleri
           </span>
         </div>
         <button className="flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:underline">
-          Eşleşmeleri İncele
+          EÅŸleÅŸmeleri Ä°ncele
           <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
         </button>
       </div>
@@ -202,16 +194,16 @@ function RequisitionsTable() {
     <section className="flex flex-col gap-4 lg:col-span-2">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">
-          Aktif İlan Talepleri
+          Aktif Ä°lan Talepleri
         </h3>
         <a className="text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:underline" href="#">
-          Tümünü Gör
+          TÃ¼mÃ¼nÃ¼ GÃ¶r
         </a>
       </div>
 
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
         <div className="hidden grid-cols-12 gap-2 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] md:grid">
-          <div className="col-span-5">Rol Unvanı</div>
+          <div className="col-span-5">Rol UnvanÄ±</div>
           <div className="col-span-2">Departman</div>
           <div className="col-span-2">Adaylar</div>
           <div className="col-span-3 text-right">Durum</div>
@@ -257,7 +249,7 @@ function AiMatchesCard() {
       <div className="mb-4 flex items-center justify-between">
         <h3 className="flex items-center gap-2 text-lg font-medium leading-6 text-[#0b1c30]">
           <MaterialIcon className="text-[#040057]">auto_awesome</MaterialIcon>
-          En İyi YZ Eşleşmeleri
+          En Ä°yi YZ EÅŸleÅŸmeleri
         </h3>
       </div>
 
@@ -290,7 +282,7 @@ function AiMatchesCard() {
                 </span>
               </div>
               <div className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
-                {candidate.role} için
+                {candidate.role} iÃ§in
               </div>
             </div>
           </article>
@@ -298,7 +290,7 @@ function AiMatchesCard() {
       </div>
 
       <button className="mt-4 w-full rounded border border-[#c5c6cd] py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:bg-[#eff4ff]">
-        Tümünü Gör AI Insights
+        TÃ¼mÃ¼nÃ¼ GÃ¶r AI Insights
       </button>
     </section>
   );
@@ -308,7 +300,7 @@ function FunnelMetrics() {
   return (
     <section className="mt-8 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6">
       <h3 className="mb-6 text-lg font-medium leading-6 text-[#0b1c30]">
-        İşe Alım Hunisi Metrikleri
+        Ä°ÅŸe AlÄ±m Hunisi Metrikleri
       </h3>
       <div className="flex flex-col items-center gap-8 md:flex-row">
         <div className="flex w-full flex-col items-center gap-1 md:w-1/2">
@@ -357,7 +349,7 @@ function DashboardFooter() {
         <span className="mr-2 text-xs font-bold uppercase tracking-[0.05em] text-[#0b1c30]">
           Vettingo
         </span>
-        © 2026 Vettingo. Tüm hakları saklıdır.
+        Â© 2026 Vettingo. TÃ¼m haklarÄ± saklÄ±dÄ±r.
       </div>
       <div className="flex flex-wrap gap-4 text-[11px] font-medium leading-4">
         {employerFooterLinks.map((link) => (
@@ -382,15 +374,15 @@ export function EmployerDashboardPage() {
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-                Panel Özeti
+                Panel Ã–zeti
               </h2>
               <p className="mt-1 text-sm leading-5 text-[#45474c]">
-                Açık pozisyonlar ve başvuru akışı için gerçek zamanlı metrikler.
+                AÃ§Ä±k pozisyonlar ve baÅŸvuru akÄ±ÅŸÄ± iÃ§in gerÃ§ek zamanlÄ± metrikler.
               </p>
             </div>
             <button className="flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 md:w-auto">
               <MaterialIcon>add</MaterialIcon>
-              Yeni İş İlanı Talebi
+              Yeni Ä°ÅŸ Ä°lanÄ± Talebi
             </button>
           </div>
 
@@ -414,3 +406,4 @@ export function EmployerDashboardPage() {
     </div>
   );
 }
+

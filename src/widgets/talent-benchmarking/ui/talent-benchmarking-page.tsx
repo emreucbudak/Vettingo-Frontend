@@ -9,7 +9,7 @@ import {
   sidebarItems,
   supportItems,
   type CandidateMetric,
-} from "../model/talent-benchmarking-data";
+} from "@/entities/talent-benchmark";
 
 function Header() {
   return (
@@ -269,10 +269,10 @@ function Footer() {
         (c) 2024 TalentPulse Enterprise. Tüm hakları saklıdır.
       </div>
       <div className="flex flex-wrap gap-4">
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Gizlilik Politikası</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Kullanım Şartları</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Yardım Merkezi</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.dashboard}>Destek</a>
+        <a className="transition-colors hover:text-[#091426]" href={ROUTES.landing}>Gizlilik Politikası</a>
+        <a className="transition-colors hover:text-[#091426]" href={ROUTES.landing}>Kullanım Şartları</a>
+        <a className="transition-colors hover:text-[#091426]" href={ROUTES.landing}>Yardım Merkezi</a>
+        <a className="transition-colors hover:text-[#091426]" href={ROUTES.landing}>Destek</a>
       </div>
     </footer>
   );
@@ -293,3 +293,4 @@ export function TalentBenchmarkingPage() {
     </div>
   );
 }
+

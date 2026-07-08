@@ -12,7 +12,7 @@ import {
   executiveSummary,
   experienceTimeline,
   suitabilityScores,
-} from "../model/candidate-analysis-data";
+} from "@/entities/candidate-analysis";
 
 function SidebarLink({
   icon,
@@ -442,3 +442,4 @@ export function CandidateAnalysisPage() {
     </div>
   );
 }
+

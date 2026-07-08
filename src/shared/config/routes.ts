@@ -1,8 +1,8 @@
 ﻿export const ROUTES = {
   home: "/",
+  landing: "/",
   login: "/login",
   register: "/register",
-  dashboard: "/",
   candidate: "/candidate",
   employer: "/employer",
   candidateAnalysis: "/candidate-analysis",
@@ -11,3 +11,5 @@
   newJob: "/jobs/new",
   talentBenchmarking: "/talent-benchmarking",
 } as const;
+
+

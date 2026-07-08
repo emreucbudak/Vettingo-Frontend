@@ -6,7 +6,7 @@ import {
   requisitionForm,
   requisitionProfile,
   requisitionSteps,
-} from "../model/job-requisition-data";
+} from "@/entities/job-requisition";
 
 const inputClass =
   "w-full rounded-lg border border-[#c5c6cd] bg-white px-4 py-2 text-sm leading-5 text-[#0b1c30] outline-none transition-all placeholder:text-[#c5c6cd] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
@@ -231,3 +231,4 @@ export function JobRequisitionWizardPage() {
     </div>
   );
 }
+

@@ -5,7 +5,7 @@ import {
   parsedExperiences,
   parsedResume,
   wizardSteps,
-} from "../model/resume-upload-data";
+} from "@/entities/resume";
 
 function WizardStep({ step }: { step: (typeof wizardSteps)[number] }) {
   const stateClasses = {
@@ -228,3 +228,4 @@ export function ResumeUploadWizardPage() {
     </div>
   );
 }
+

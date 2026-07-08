@@ -1,17 +1,19 @@
 ﻿"use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import { landingPage } from "@/entities/landing";
+import { getAuthenticatedRoute } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-import { marketingDashboard } from "../model/marketing-dashboard-data";
 
 function Header() {
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-[#c5c6cd] bg-white">
       <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-6">
-        <a className="text-2xl font-bold tracking-[-0.01em] text-[#091426]" href={ROUTES.dashboard}>
-          {marketingDashboard.productName}
+        <a className="text-2xl font-bold tracking-[-0.01em] text-[#091426]" href={ROUTES.landing}>
+          {landingPage.productName}
         </a>
       </div>
     </nav>
@@ -19,20 +21,26 @@ function Header() {
 }
 
 function Hero() {
+  const router = useRouter();
+
   return (
     <section className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-8 px-6 py-24 md:grid-cols-2">
       <div className="space-y-6">
         <h1 className="max-w-2xl text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426] md:text-4xl md:leading-[48px]">
-          {marketingDashboard.hero.title}
+          {landingPage.hero.title}
         </h1>
         <p className="max-w-xl text-base leading-6 text-[#45474c]">
-          {marketingDashboard.hero.description}
+          {landingPage.hero.description}
         </p>
         <div className="flex flex-col gap-4 pt-2 sm:flex-row">
-          <a className="flex items-center justify-center gap-2 rounded bg-[#091426] px-8 py-4 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" href={ROUTES.employer}>
-            {marketingDashboard.hero.primaryCta}
+          <button
+            className="flex items-center justify-center gap-2 rounded bg-[#091426] px-8 py-4 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]"
+            onClick={() => router.push(getAuthenticatedRoute())}
+            type="button"
+          >
+            {landingPage.hero.primaryCta}
             <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -42,7 +50,7 @@ function Hero() {
             alt="Veri analitiği ve profesyonel işe alım görseli"
             className="h-full w-full object-cover opacity-80 mix-blend-multiply"
             height={400}
-            src={marketingDashboard.hero.imageUrl}
+            src={landingPage.hero.imageUrl}
             width={720}
             priority
           />
@@ -160,7 +168,7 @@ function TrustBar() {
         </h3>
         <div className="relative overflow-hidden py-2 [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
           <div className="logo-marquee flex w-max items-center gap-10">
-            {[...marketingDashboard.trustedCompanies, ...marketingDashboard.trustedCompanies].map((company, index) => (
+            {[...landingPage.trustedCompanies, ...landingPage.trustedCompanies].map((company, index) => (
               <div
                 className="flex h-14 w-36 shrink-0 items-center justify-center rounded border border-[#c5c6cd] bg-white px-5 shadow-sm"
                 key={`${company.name}-${index}`}
@@ -213,7 +221,7 @@ function CompactStatsSection() {
   return (
     <section className="bg-[#eff4ff] px-6 py-14">
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-8 text-center sm:flex-row sm:gap-14 md:gap-20">
-        {marketingDashboard.valueCards.map((card) => (
+        {landingPage.valueCards.map((card) => (
           <div className="min-w-[130px]" key={card.title}>
             <div className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426]">
               <AnimatedStatValue suffix={card.suffix} target={card.value} />
@@ -234,10 +242,10 @@ function Footer() {
     <footer className="mt-auto w-full border-t border-[#c5c6cd] bg-white py-8">
       <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-4 px-6 md:flex-row">
         <div className="text-xl font-bold leading-7 text-[#091426]">
-          {marketingDashboard.productName}
+          {landingPage.productName}
         </div>
         <div className="flex flex-wrap justify-center gap-4 md:justify-end">
-          {marketingDashboard.footerLinks.map((link) => (
+          {landingPage.footerLinks.map((link) => (
             <a
               className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:text-[#091426] hover:underline"
               href={link.href}
@@ -253,7 +261,7 @@ function Footer() {
 }
 
 
-export function MarketingDashboardPage() {
+export function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30]">
       <Header />
@@ -267,3 +275,7 @@ export function MarketingDashboardPage() {
     </div>
   );
 }
+
+
+
+

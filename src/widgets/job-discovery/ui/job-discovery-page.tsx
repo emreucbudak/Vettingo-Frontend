@@ -8,7 +8,7 @@ import {
   jobFooterLinks,
   marketIntelligence,
   recommendedJobs,
-} from "../model/job-discovery-data";
+} from "@/entities/job";
 
 function Header() {
   return (
@@ -279,3 +279,4 @@ export function JobDiscoveryPage() {
     </div>
   );
 }
+

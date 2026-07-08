@@ -1,10 +1,11 @@
 ﻿import type { Metadata } from "next";
-import { MarketingDashboardPage } from "@/widgets/marketing-dashboard";
+import { LandingPage } from "@/widgets/landing-page";
 
 export const metadata: Metadata = {
   title: "Vettingo",
 };
 
 export default function Home() {
-  return <MarketingDashboardPage />;
+  return <LandingPage />;
 }
+

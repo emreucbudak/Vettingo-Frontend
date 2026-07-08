@@ -1,6 +1,6 @@
 ﻿import { ROUTES } from "@/shared/config/routes";
 
-export const marketingDashboard = {
+export const landingPage = {
   productName: "Vettingo",
   navItems: [
     { label: "İşverenler", href: ROUTES.employer },
@@ -85,4 +85,5 @@ export const marketingDashboard = {
     { label: "Kurumsal Çözümler", href: ROUTES.employer },
   ],
 } as const;
+
 
