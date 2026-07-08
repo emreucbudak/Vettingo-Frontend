@@ -87,7 +87,7 @@ function NetworkCard({ className, children }: NetworkCardProps) {
 
 function HrPlatformSection() {
   return (
-    <section className="overflow-hidden bg-white px-6 py-24">
+    <section className="overflow-hidden bg-[#f8f9ff] px-6 py-24">
       <div className="mx-auto max-w-[1180px] text-center">
         <div className="relative mx-auto h-[320px] max-w-[1160px] sm:h-[390px]">
           <svg
@@ -181,14 +181,16 @@ function TrustBar() {
                 className="flex h-14 w-36 shrink-0 items-center justify-center rounded border border-[#c5c6cd] bg-white px-5 shadow-sm"
                 key={`${company.name}-${index}`}
               >
-                <Image
-                  alt={`${company.name} logosu`}
-                  className="max-h-8 w-auto object-contain"
-                  height={32}
-                  src={company.logoUrl}
-                  width={120}
-                  unoptimized
-                />
+                <span className="relative block h-8 w-[120px]">
+                  <Image
+                    alt={`${company.name} logosu`}
+                    className="object-contain"
+                    fill
+                    sizes="120px"
+                    src={company.logoUrl}
+                    unoptimized
+                  />
+                </span>
               </div>
             ))}
           </div>
@@ -245,6 +247,43 @@ function CompactStatsSection() {
 }
 
 
+function TalentHighlightsSection() {
+  return (
+    <section className="bg-[#f8f9ff] px-6 py-20 md:py-24">
+      <div className="mx-auto max-w-[1240px] space-y-20 md:space-y-28">
+        {landingPage.talentHighlights.map((highlight, index) => (
+          <article
+            className="talent-highlight grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(360px,1fr)] md:gap-24 lg:gap-32"
+            key={highlight.title}
+          >
+            <div className={index % 2 === 1 ? "md:order-2" : undefined}>
+              <h2 className="max-w-xl text-4xl font-bold leading-[46px] text-[#091426] md:text-5xl md:leading-[58px]">
+                {highlight.title}
+              </h2>
+              <p className="mt-5 max-w-lg text-base leading-7 text-[#45474c]">
+                {highlight.description}
+              </p>
+            </div>
+            <div
+              className={`relative aspect-[4/3] min-h-[280px] overflow-hidden rounded-md ${
+                index % 2 === 1 ? "md:order-1" : ""
+              }`}
+            >
+              <Image
+                alt={highlight.imageAlt}
+                className="object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 520px"
+                src={highlight.imageUrl}
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="mt-auto w-full border-t border-[#c5c6cd] bg-white py-8">
@@ -278,11 +317,14 @@ export function LandingPage() {
         <TrustBar />
         <HrPlatformSection />
         <CompactStatsSection />
+        <TalentHighlightsSection />
       </main>
       <Footer />
     </div>
   );
 }
+
+
 
 
 
