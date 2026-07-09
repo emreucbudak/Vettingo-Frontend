@@ -20,14 +20,8 @@ function Header() {
         </span>
       </div>
       <div className="flex items-center gap-4">
-        <a className="rounded-lg px-2 py-1 text-sm leading-5 text-[#45474c] transition-colors hover:bg-[#eff4ff]" href={ROUTES.employer}>
-          İşveren Paneline Geç
-        </a>
         <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
           <MaterialIcon>notifications</MaterialIcon>
-        </button>
-        <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
-          <MaterialIcon>settings</MaterialIcon>
         </button>
         <div className="h-8 w-8 overflow-hidden rounded-full border border-[#c5c6cd] bg-[#dce9ff]">
           <Image

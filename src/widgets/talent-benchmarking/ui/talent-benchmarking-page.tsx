@@ -5,7 +5,6 @@ import {
   benchmarkCandidates,
   benchmarkRows,
   benchmarkingProfile,
-  navItems,
   sidebarItems,
   supportItems,
   type CandidateMetric,
@@ -18,40 +17,10 @@ function Header() {
         <div className="text-2xl font-bold leading-8 text-[#091426]">
           {benchmarkingProfile.productName}
         </div>
-        <div className="ml-4 hidden gap-6 md:flex">
-          {navItems.map((item) => (
-            <a
-              className={`py-2 transition-colors ${item.label === "Karşılaştır" ? "border-b-2 border-[#091426] font-bold text-[#091426]" : "text-[#45474c] hover:bg-[#eff4ff]"}`}
-              href={item.href}
-              key={item.label}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
       </div>
       <div className="flex items-center gap-3">
-        <div className="relative hidden sm:block">
-          <MaterialIcon className="absolute left-3 top-1/2 text-[20px] text-[#c5c6cd] -translate-y-1/2">
-            search
-          </MaterialIcon>
-          <input
-            className="w-64 rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] py-1.5 pl-10 pr-4 text-sm leading-5 text-[#0b1c30] outline-none transition-all placeholder:text-[#75777d] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]"
-            placeholder="Ara..."
-            type="text"
-          />
-        </div>
-        <a
-          className="hidden rounded-lg border border-[#c5c6cd] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:bg-[#eff4ff] lg:block"
-          href={ROUTES.employer}
-        >
-          İşveren Paneline Geç
-        </a>
         <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
           <MaterialIcon>notifications</MaterialIcon>
-        </button>
-        <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
-          <MaterialIcon>settings</MaterialIcon>
         </button>
         <div className="ml-1 h-8 w-8 overflow-hidden rounded-full border border-[#c5c6cd] bg-[#d3e4fe]">
           <Image
@@ -262,21 +231,6 @@ function ComparisonGrid() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="relative z-50 mt-auto flex flex-col gap-3 border-t border-[#c5c6cd] bg-[#f8f9ff] px-6 py-6 text-[11px] font-medium leading-[14px] text-[#45474c] md:flex-row md:items-center md:justify-between md:px-8">
-      <div className="text-xs font-semibold uppercase tracking-[0.05em]">
-        (c) 2024 TalentPulse Enterprise. Tüm hakları saklıdır.
-      </div>
-      <div className="flex flex-wrap gap-4">
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.landing}>Gizlilik Politikası</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.landing}>Kullanım Şartları</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.landing}>Yardım Merkezi</a>
-        <a className="transition-colors hover:text-[#091426]" href={ROUTES.landing}>Destek</a>
-      </div>
-    </footer>
-  );
-}
 
 export function TalentBenchmarkingPage() {
   return (
@@ -289,7 +243,6 @@ export function TalentBenchmarkingPage() {
           <ComparisonGrid />
         </main>
       </div>
-      <Footer />
     </div>
   );
 }

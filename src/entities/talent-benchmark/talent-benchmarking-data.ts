@@ -41,12 +41,6 @@ export const benchmarkingProfile = {
     "https://lh3.googleusercontent.com/aida-public/AB6AXuB29-PmQ3Xu_ywRm4gtC0btd6YQErPyzY6YneEZVFu9mJ5xG304aY_7rCqs3oFYgLEVrtXre213brZU5wiC6QCd_yLHhPBdn2BppiYYztCjC7ijOyLcvF6HqPfveJ_IZfyWBoYoXM8rdlnyPGgIV8AB-h66K9BLCSYratDzyYiQ3_ob9FVWDoes-zJ9o8nTMAM0LRw3SOzhgf4QNqhod5znjWDD7FmiVMxwNaET252G21siRTlUf5WfvZJ27oRVG-2iWJn_-Fyt46I",
 };
 
-export const navItems = [
-  { label: "Ana Sayfa", href: "/" },
-  { label: "Adaylar", href: "/candidate" },
-  { label: "Karşılaştır", href: "/talent-benchmarking" },
-  { label: "Raporlar", href: "/" },
-];
 
 export const sidebarItems = [
   { label: "Panel", icon: "dashboard", active: false, href: "/" },
