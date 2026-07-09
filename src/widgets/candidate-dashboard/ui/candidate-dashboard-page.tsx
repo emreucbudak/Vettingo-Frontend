@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   activeApplications,
@@ -117,7 +117,7 @@ function TopBar() {
             </button>
           ))}
           <Image
-            alt="KullanÄ±cÄ± profil fotoÄŸrafÄ±"
+            alt="Kullanıcı profil fotoğrafı"
             className="ml-2 h-8 w-8 rounded-full border border-[#c5c6cd] object-cover"
             src={candidateProfile.avatarUrl}
             width={32}
@@ -139,7 +139,7 @@ function MobileHeader() {
         <h1 className="text-xl font-bold text-[#091426]">Vettingo</h1>
       </div>
       <Image
-        alt="KullanÄ±cÄ± profil fotoÄŸrafÄ±"
+        alt="Kullanıcı profil fotoğrafı"
         className="h-9 w-9 rounded-full border border-[#c5c6cd] object-cover"
         src={candidateProfile.avatarUrl}
         width={36}
@@ -158,7 +158,7 @@ function ApplicationCard({ application }: { application: (typeof activeApplicati
             {application.role}
           </h4>
           <p className="text-sm leading-5 text-[#45474c]">
-            {application.company} Ã¢â‚¬Â¢ {application.location}
+            {application.company} • {application.location}
           </p>
         </div>
         <span className="rounded bg-[#e5eeff] px-2 py-1 text-[11px] font-medium uppercase tracking-wider text-[#0b1c30]">
@@ -182,7 +182,7 @@ function RecommendedJobs() {
     <section>
       <h3 className="mb-4 flex items-center gap-1 text-lg font-medium leading-6 text-[#0b1c30]">
         <MaterialIcon className="text-[#006c49]">psychology</MaterialIcon>
-        Yapay Zeka Ã–nerili FÄ±rsatlar
+        Yapay Zeka Önerili Fırsatlar
       </h3>
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-white">
         {recommendedJobs.map((job, index) => (
@@ -201,7 +201,7 @@ function RecommendedJobs() {
                   {job.role}
                 </h4>
                 <p className="text-sm leading-5 text-[#45474c]">
-                  {job.company} Ã¢â‚¬Â¢ {job.location}
+                  {job.company} • {job.location}
                 </p>
               </div>
             </div>
@@ -224,7 +224,7 @@ function InterviewsCard() {
   return (
     <section className="rounded border border-[#c5c6cd] bg-white p-4">
       <h3 className="mb-4 text-lg font-medium leading-6 text-[#0b1c30]">
-        YaklaÅŸan MÃ¼lakatlar
+        Yaklaşan Mülakatlar
       </h3>
       <div className="space-y-4">
         {upcomingInterviews.map((interview) => (
@@ -257,7 +257,7 @@ function SkillRadarCard() {
   return (
     <section className="flex h-64 flex-col rounded border border-[#c5c6cd] bg-white p-4">
       <h3 className="mb-2 text-lg font-medium leading-6 text-[#0b1c30]">
-        Yetkinlik Radar GrafiÄŸi
+        Yetkinlik Radar Grafiği
       </h3>
       <div className="relative flex h-full w-full flex-1 items-center justify-center overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
         <div
@@ -270,7 +270,7 @@ function SkillRadarCard() {
           }}
         />
         <p className="z-10 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-          [Grafik GÃ¶rselleÅŸtirme AlanÄ±]
+          [Grafik Görselleştirme Alanı]
         </p>
       </div>
     </section>
@@ -281,7 +281,7 @@ function DashboardFooter() {
   return (
     <footer className="mt-auto flex flex-col gap-4 border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:flex-row md:items-center md:justify-between md:px-8">
       <span className="text-xs font-bold uppercase tracking-[0.05em] text-[#45474c]">
-        Â© 2026 Vettingo. TÃ¼m haklarÄ± saklÄ±dÄ±r.
+        © 2026 Vettingo. Tüm hakları saklıdır.
       </span>
       <ul className="flex flex-wrap gap-4 text-[11px] font-medium leading-4">
         {footerLinks.map((link) => (
@@ -308,14 +308,14 @@ export function CandidateDashboardPage() {
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-                Tekrar hoÅŸ geldin, {candidateProfile.name}.
+                Tekrar hoş geldin, {candidateProfile.name}.
               </h2>
               <p className="mt-2 text-base leading-6 text-[#45474c]">
-                BugÃ¼nkÃ¼ profesyonel durumun ve aktivite Ã¶zetin burada.
+                Bugünkü profesyonel durumun ve aktivite özetin burada.
               </p>
             </div>
             <button className="w-full rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b] md:w-auto">
-              Profili GÃ¼ncelle
+              Profili Güncelle
             </button>
           </div>
 
@@ -323,7 +323,7 @@ export function CandidateDashboardPage() {
             <div className="space-y-6 md:col-span-8">
               <section>
                 <h3 className="mb-4 text-lg font-medium leading-6 text-[#0b1c30]">
-                  Aktif BaÅŸvurular
+                  Aktif Başvurular
                 </h3>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {activeApplications.map((application) => (

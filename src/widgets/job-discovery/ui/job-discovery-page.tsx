@@ -1,8 +1,6 @@
-﻿import Image from "next/image";
-import { ROUTES } from "@/shared/config/routes";
+import Image from "next/image";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
-  jobDiscoveryNavItems,
   jobDiscoveryProfile,
   jobFilters,
   jobFooterLinks,
@@ -19,46 +17,11 @@ function Header() {
         </span>
       </div>
 
-      <nav className="hidden h-full flex-1 items-center justify-center md:flex">
-        <ul className="flex h-full items-center gap-8">
-          {jobDiscoveryNavItems.map((item) => (
-            <li className="flex h-full items-center" key={item.label}>
-              <a
-                className={`flex h-full items-center px-2 transition-colors hover:bg-[#eff4ff] ${
-                  item.active
-                    ? "border-b-2 border-[#091426] pt-1 font-bold text-[#091426]"
-                    : "text-[#45474c]"
-                }`}
-                href="#"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
 
       <div className="flex w-1/3 items-center justify-end gap-4">
-        <div className="hidden items-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] px-2 py-1 focus-within:border-[#091426] focus-within:ring-1 focus-within:ring-[#091426] lg:flex">
-          <MaterialIcon className="mr-1 text-sm text-[#45474c]">search</MaterialIcon>
-          <input
-            className="w-32 border-none bg-transparent p-0 text-sm outline-none placeholder:text-[#45474c] focus:ring-0"
-            placeholder="Ara..."
-            type="text"
-          />
-        </div>
         <button className="rounded-full p-1 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
           <MaterialIcon>notifications</MaterialIcon>
         </button>
-        <button className="hidden rounded-full p-1 text-[#45474c] transition-colors hover:bg-[#eff4ff] sm:block" type="button">
-          <MaterialIcon>settings</MaterialIcon>
-        </button>
-        <a
-          className="ml-1 hidden border-l border-[#c5c6cd] pl-4 text-[11px] font-medium leading-4 text-[#45474c] transition-colors hover:text-[#091426] xl:block"
-          href={ROUTES.employer}
-        >
-          İşveren Paneline Geç
-        </a>
         <Image
           alt="Kullanıcı profil fotoğrafı"
           className="ml-1 h-8 w-8 rounded-full object-cover"
