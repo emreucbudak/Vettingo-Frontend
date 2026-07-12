@@ -1,4 +1,4 @@
-﻿export const ROUTES = {
+export const ROUTES = {
   home: "/",
   landing: "/",
   login: "/login",
@@ -10,6 +10,6 @@
   jobs: "/jobs",
   newJob: "/jobs/new",
   talentBenchmarking: "/talent-benchmarking",
+  assessment: "/assessment",
 } as const;
-
 
