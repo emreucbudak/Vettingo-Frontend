@@ -31,15 +31,21 @@ function decodeJwtPayload(token: string): JwtPayload | null {
 
 export function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
-  return window.localStorage.getItem(AUTH_TOKEN_KEY);
+  return (
+    window.localStorage.getItem(AUTH_TOKEN_KEY) ??
+    window.sessionStorage.getItem(AUTH_TOKEN_KEY)
+  );
 }
 
-export function setAuthToken(token: string): void {
-  window.localStorage.setItem(AUTH_TOKEN_KEY, token);
+export function setAuthToken(token: string, persistent = true): void {
+  clearAuthToken();
+  const storage = persistent ? window.localStorage : window.sessionStorage;
+  storage.setItem(AUTH_TOKEN_KEY, token);
 }
 
 export function clearAuthToken(): void {
   window.localStorage.removeItem(AUTH_TOKEN_KEY);
+  window.sessionStorage.removeItem(AUTH_TOKEN_KEY);
 }
 
 export function getTokenRole(token: string): string | null {
@@ -68,8 +74,14 @@ export function getAuthenticatedRoute(): string {
   }
 
   const role = getTokenRole(token);
+  if (role === "company" || role === "human resources") {
+    return ROUTES.employer;
+  }
   if (role === "employer" || role === "işveren" || role === "isveren") {
     return ROUTES.employer;
+  }
+  if (role === "worker") {
+    return ROUTES.candidate;
   }
   if (role === "candidate" || role === "aday" || role === "jobseeker") {
     return ROUTES.candidate;
