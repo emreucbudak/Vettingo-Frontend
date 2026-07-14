@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
+import { getAuthenticatedRoute, setAuthToken } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { authContent } from "../model/auth-content";
+import { login, register } from "../api/auth-api";
 import type { AuthMode } from "../model/types";
 
 type AuthFormProps = {
@@ -137,12 +139,55 @@ export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [activeLegalDocument, setActiveLegalDocument] = useState<LegalDocument | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const isLogin = mode === "login";
   const pageContent = authContent[mode];
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    router.push(isLogin ? ROUTES.login : ROUTES.register);
+    setFormError(null);
+    setIsSubmitting(true);
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
+
+    try {
+      if (isLogin) {
+        const response = await login({ email, password });
+        const remember = formData.get("remember") === "on";
+        setAuthToken(response.accessToken, remember);
+        router.replace(getAuthenticatedRoute());
+        return;
+      }
+
+      const fullName = String(formData.get("name") ?? "").trim();
+      const [name, ...surnameParts] = fullName.split(/\s+/);
+      const surname = surnameParts.join(" ");
+
+      if (!name || !surname) {
+        throw new Error("L\u00fctfen ad\u0131n\u0131z\u0131 ve soyad\u0131n\u0131z\u0131 girin.");
+      }
+
+      await register({
+        name,
+        surname,
+        email,
+        password,
+        role: formData.get("accountType") === "employer" ? "Company" : "Worker",
+      });
+
+      router.replace(ROUTES.login);
+    } catch (error) {
+      setFormError(
+        error instanceof Error
+          ? error.message
+          : "\u0130\u015flem tamamlanamad\u0131. L\u00fctfen tekrar deneyin.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -165,7 +210,11 @@ export function AuthForm({ mode }: AuthFormProps) {
         </AuthTab>
       </nav>
 
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form
+        aria-busy={isSubmitting}
+        className="flex flex-col gap-4"
+        onSubmit={handleSubmit}
+      >
         {!isLogin && (
           <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
             Ad Soyad
@@ -173,6 +222,7 @@ export function AuthForm({ mode }: AuthFormProps) {
               <MaterialIcon className={leadingIconClass}>badge</MaterialIcon>
               <input
                 name="name"
+                required
                 autoComplete="name"
                 placeholder="Adınız ve soyadınız"
                 className={`${inputClass} pl-10 pr-3`}
@@ -188,6 +238,7 @@ export function AuthForm({ mode }: AuthFormProps) {
             <MaterialIcon className={leadingIconClass}>mail</MaterialIcon>
             <input
               name="email"
+              required
               autoComplete="email"
               placeholder="ornek@sirket.com"
               className={`${inputClass} pl-10 pr-3`}
@@ -212,6 +263,8 @@ export function AuthForm({ mode }: AuthFormProps) {
             <MaterialIcon className={leadingIconClass}>lock</MaterialIcon>
             <input
               name="password"
+              minLength={6}
+              required
               autoComplete={isLogin ? "current-password" : "new-password"}
               placeholder="••••••••"
               className={`${inputClass} pl-10 pr-10`}
@@ -260,6 +313,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           <div className="mt-1 flex items-start gap-2 text-sm leading-5 text-[#45474c]">
             <input
               id="terms"
+              required
               name="terms"
               className="mt-0.5 h-4 w-4 rounded border-[#c5c6cd] text-[#091426] focus:ring-[#091426]"
               type="checkbox"
@@ -284,12 +338,27 @@ export function AuthForm({ mode }: AuthFormProps) {
             </p>
           </div>
         )}
+        {formError && (
+          <p
+            aria-live="polite"
+            className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+            role="alert"
+          >
+            {formError}
+          </p>
+        )}
 
         <button
           className="mt-1 flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
+          disabled={isSubmitting}
           type="submit"
         >
           {pageContent.submitLabel}
+          {isSubmitting && (
+            <MaterialIcon className="animate-spin text-[18px]">
+              progress_activity
+            </MaterialIcon>
+          )}
           <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
         </button>
       </form>

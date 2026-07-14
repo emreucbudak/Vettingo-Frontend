@@ -1,5 +1,9 @@
 ﻿import type { NextConfig } from "next";
 
+const gatewayUrl = (
+  process.env.VETTINGO_GATEWAY_URL ?? "http://localhost:5135"
+).replace(/\/+$/, "");
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -20,6 +24,14 @@ const nextConfig: NextConfig = {
         hostname: "randomuser.me",
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/gateway/:path*",
+        destination: `${gatewayUrl}/:path*`,
+      },
+    ];
   },
 };
 
