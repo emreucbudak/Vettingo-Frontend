@@ -72,7 +72,10 @@ function AssessmentHeader({
     <header className="sticky top-0 z-40 border-b border-[#c5c6cd] bg-[#f8f9ff]/95 px-4 backdrop-blur md:px-8">
       <div className="mx-auto flex min-h-16 w-full max-w-[1440px] flex-wrap items-center justify-end gap-3 py-3">
         <div className="flex shrink-0 items-center gap-3 sm:gap-6">
-          <div className="flex items-center gap-2 rounded bg-[#dce9ff] px-4 py-1 text-[#75777d]" aria-live="polite">
+          <div
+            className="assessment-timer flex items-center gap-2 rounded border border-transparent bg-[#dce9ff] px-4 py-1 text-[#75777d]"
+            aria-live="polite"
+          >
             <AssessmentIcon name="timer" />
             <span className="min-w-12 text-center text-sm font-medium leading-5 text-[#0b1c30]">
               {formattedTime}

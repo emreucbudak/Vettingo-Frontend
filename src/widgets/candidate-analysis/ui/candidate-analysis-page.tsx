@@ -1,5 +1,6 @@
 ﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
+import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   analysisFooterLinks,
@@ -13,104 +14,6 @@ import {
   experienceTimeline,
   suitabilityScores,
 } from "@/entities/candidate-analysis";
-
-function SidebarLink({
-  icon,
-  label,
-  active = false,
-}: {
-  icon: string;
-  label: string;
-  active?: boolean;
-}) {
-  return (
-    <a
-      className={`flex items-center gap-4 rounded-lg px-4 py-3 text-xs font-semibold uppercase tracking-[0.05em] transition-all ${
-        active
-          ? "bg-[#6cf8bb] text-[#00714d]"
-          : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]"
-      }`}
-      href="#"
-    >
-      <MaterialIcon className="text-[22px] leading-none">{icon}</MaterialIcon>
-      {label}
-    </a>
-  );
-}
-
-function Sidebar() {
-  return (
-    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] md:flex">
-      <div className="px-6 pb-6 pt-5">
-        <h1 className="text-xl font-semibold leading-7 text-[#0b1c30]">
-          {analysisProfile.companyLabel}
-        </h1>
-        <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
-          {analysisProfile.edition}
-        </p>
-      </div>
-
-      <nav className="flex flex-1 items-center px-4 py-6">
-        <ul className="w-full space-y-2">
-          {analysisNavigationItems.map((item) => (
-            <li key={item.label}>
-              <SidebarLink {...item} />
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div className="mt-auto space-y-2 px-4 pb-6 pt-4">
-        {analysisUtilityItems.map((item) => (
-          <SidebarLink {...item} key={item.label} />
-        ))}
-      </div>
-    </aside>
-  );
-}
-
-function TopBar() {
-  return (
-    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 md:px-6">
-      <div className="flex items-center gap-4">
-        <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff] md:hidden" type="button">
-          <MaterialIcon>menu</MaterialIcon>
-        </button>
-      </div>
-
-      <div className="flex items-center gap-3 md:gap-6">
-        <a
-          className="rounded border border-[#c5c6cd] bg-[#f8f9ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
-          href={ROUTES.employer}
-        >
-          İşveren Paneline Geç
-        </a>
-        <div className="hidden gap-2 sm:flex">
-          {[
-            { icon: "notifications", label: "Bildirimler" },
-            { icon: "settings", label: "Ayarlar" },
-          ].map((item) => (
-            <button
-              aria-label={item.label}
-              className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-              key={item.icon}
-              type="button"
-            >
-              <MaterialIcon>{item.icon}</MaterialIcon>
-            </button>
-          ))}
-        </div>
-        <Image
-          alt="Kullanıcı profil fotoğrafı"
-          className="h-8 w-8 rounded-full border border-[#c5c6cd] object-cover"
-          height={32}
-          src={analysisProfile.avatarUrl}
-          width={32}
-        />
-      </div>
-    </header>
-  );
-}
 
 function BreadcrumbActions() {
   return (
@@ -416,10 +319,30 @@ function DashboardFooter() {
 
 export function CandidateAnalysisPage() {
   return (
-    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
-      <Sidebar />
-      <div className="flex min-h-screen min-w-0 flex-col md:ml-60">
-        <TopBar />
+    <DashboardShell
+      beforeTopBarActions={
+        <a
+          className="rounded border border-[#c5c6cd] bg-[#f8f9ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
+          href={ROUTES.employer}
+        >
+          İşveren Paneline Geç
+        </a>
+      }
+      navigationItems={analysisNavigationItems}
+      showSettings
+      sidebarSubtitle={analysisProfile.edition}
+      sidebarTitle={analysisProfile.companyLabel}
+      topBarLeading={
+        <button
+          aria-label="Menüyü aç"
+          className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff] md:hidden"
+          type="button"
+        >
+          <MaterialIcon>menu</MaterialIcon>
+        </button>
+      }
+      utilityItems={analysisUtilityItems}
+    >
         <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
           <BreadcrumbActions />
           <CandidateHeader />
@@ -434,9 +357,8 @@ export function CandidateAnalysisPage() {
             <EducationCard />
           </div>
         </main>
-        <DashboardFooter />
-      </div>
-    </div>
+      <DashboardFooter />
+    </DashboardShell>
   );
 }
 
