@@ -43,15 +43,15 @@ export const benchmarkingProfile = {
 
 
 export const sidebarItems = [
-  { label: "Panel", icon: "dashboard", active: false, href: "/" },
-  { label: "Başvurular", icon: "description", active: false, href: "/candidate" },
-  { label: "Yapay Zeka Analizi", icon: "psychology", active: true, href: "/candidate-analysis" },
-  { label: "İşler", icon: "work", active: false, href: "/jobs" },
+  { label: "Panel", icon: "space_dashboard", active: false, href: "/" },
+  { label: "Başvurular", icon: "assignment_ind", active: false, href: "/candidate" },
+  { label: "Yapay Zeka Analizi", icon: "auto_awesome", active: true, href: "/candidate-analysis" },
+  { label: "İşler", icon: "business_center", active: false, href: "/jobs" },
 ];
 
 export const supportItems = [
-  { label: "Yardım Merkezi", icon: "help", href: "/" },
-  { label: "Ayarlar", icon: "settings", href: "/" },
+  { label: "Yardım Merkezi", icon: "support_agent", href: "/" },
+  { label: "Ayarlar", icon: "tune", href: "/" },
 ];
 
 export const benchmarkCandidates = [

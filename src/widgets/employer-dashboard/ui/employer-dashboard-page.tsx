@@ -67,18 +67,7 @@ function Sidebar() {
 
 function TopBar() {
   return (
-    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-[#091426] md:px-6">
-      <div className="relative hidden sm:block">
-        <MaterialIcon className="absolute left-3 top-1/2 text-[#45474c] -translate-y-1/2">
-          search
-        </MaterialIcon>
-        <input
-          className="w-64 rounded border border-[#75777d] bg-[#f8f9ff] py-2 pl-10 pr-4 text-sm outline-none focus:border-[#091426] focus:ring-2 focus:ring-[#091426]/20"
-          placeholder="Aday, iş veya ilan ara..."
-          type="text"
-        />
-      </div>
-
+    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-end border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-[#091426] md:px-6">
       <div className="flex items-center gap-3 md:gap-4">
         <div className="flex items-center gap-2">
           {[
@@ -94,13 +83,13 @@ function TopBar() {
             </button>
           ))}
         </div>
-        <Image
-          alt="Kullanıcı profil fotoğrafı"
-          className="ml-1 h-8 w-8 rounded-full border border-[#c5c6cd] object-cover"
-          height={32}
-          src={employerProfile.avatarUrl}
-          width={32}
-        />
+        <div
+          aria-label="Kullanıcı profili"
+          className="ml-1 flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]"
+          role="img"
+        >
+          <MaterialIcon className="text-[22px]">person_silhouette</MaterialIcon>
+        </div>
       </div>
     </header>
   );
