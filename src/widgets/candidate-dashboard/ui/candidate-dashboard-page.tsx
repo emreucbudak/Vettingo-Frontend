@@ -21,14 +21,14 @@ function SidebarLink({
 }) {
   return (
     <a
-      className={`flex items-center gap-4 rounded px-4 py-2 transition-all ${
+      className={`flex items-center gap-4 rounded-lg px-4 py-3 transition-all ${
         active
           ? "bg-[#6cf8bb] font-semibold text-[#00714d]"
           : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]"
       }`}
       href="#"
     >
-      <MaterialIcon className={active ? "[font-variation-settings:'FILL'_1]" : ""}>
+      <MaterialIcon className="text-[22px] leading-none">
         {icon}
       </MaterialIcon>
       <span className="text-xs font-semibold uppercase tracking-[0.05em]">
@@ -40,29 +40,18 @@ function SidebarLink({
 
 function Sidebar() {
   return (
-    <nav className="fixed left-0 top-0 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] pt-16 md:flex">
-      <div className="mb-4 border-b border-[#c5c6cd] px-6 pb-8">
-        <div className="flex items-center gap-4">
-          <Image
-            className="h-12 w-12 rounded border border-[#c5c6cd] bg-white object-cover"
-            src={candidateProfile.logoUrl}
-            alt="Executive Recruitment logosu"
-            width={48}
-            height={48}
-          />
-          <div>
-            <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
-              {candidateProfile.companyLabel}
-            </h2>
-            <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
-              {candidateProfile.edition}
-            </p>
-          </div>
-        </div>
+    <nav className="fixed left-0 top-0 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] md:flex">
+      <div className="px-6 pb-6 pt-5">
+        <h2 className="text-xl font-semibold leading-7 text-[#0b1c30]">
+          {candidateProfile.companyLabel}
+        </h2>
+        <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
+          {candidateProfile.edition}
+        </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-2">
-        <ul className="space-y-1">
+      <div className="flex flex-1 items-center overflow-y-auto px-4 py-6">
+        <ul className="w-full space-y-2">
           {navigationItems.map((item) => (
             <li key={item.label}>
               <SidebarLink {...item} />
@@ -71,8 +60,8 @@ function Sidebar() {
         </ul>
       </div>
 
-      <div className="mt-auto border-t border-[#c5c6cd] p-2">
-        <ul className="space-y-1">
+      <div className="mt-auto px-4 pb-6 pt-4">
+        <ul className="space-y-2">
           {utilityItems.map((item) => (
             <li key={item.label}>
               <SidebarLink {...item} />

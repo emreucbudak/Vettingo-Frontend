@@ -56,7 +56,7 @@ function Sidebar() {
         </div>
       </div>
 
-      <div className="mt-auto space-y-2 border-t border-[#c5c6cd] px-4 pb-6 pt-4">
+      <div className="mt-auto space-y-2 px-4 pb-6 pt-4">
         {employerUtilityItems.map((item) => (
           <SidebarLink {...item} key={item.label} />
         ))}

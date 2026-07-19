@@ -7,15 +7,15 @@
 } as const;
 
 export const analysisNavigationItems = [
-  { label: "Panel", icon: "dashboard" },
-  { label: "Başvurular", icon: "description" },
-  { label: "Yapay Zeka Analizi", icon: "psychology", active: true },
-  { label: "İşler", icon: "work" },
+  { label: "Panel", icon: "space_dashboard" },
+  { label: "Başvurular", icon: "assignment_ind" },
+  { label: "Yapay Zeka Analizi", icon: "auto_awesome", active: true },
+  { label: "İşler", icon: "business_center" },
 ] as const;
 
 export const analysisUtilityItems = [
-  { label: "Yardım Merkezi", icon: "help" },
-  { label: "Ayarlar", icon: "settings" },
+  { label: "Yardım Merkezi", icon: "support_agent" },
+  { label: "Ayarlar", icon: "tune" },
 ] as const;
 
 export const candidateDetails = {
