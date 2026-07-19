@@ -119,6 +119,19 @@ body {
   border-color: transparent !important;
 }
 
+.theme-dark .talent-section-heading {
+  background: #18263a !important;
+  color: #dbe7f7 !important;
+}
+
+.theme-dark .talent-skill-track {
+  background: #2d3d58 !important;
+}
+
+.theme-dark .talent-skill-fill {
+  background: #6cf8bb !important;
+}
+
 .theme-dark .testimonial-marquee article {
   background: #101c2f !important;
   border-color: #2d3d58 !important;

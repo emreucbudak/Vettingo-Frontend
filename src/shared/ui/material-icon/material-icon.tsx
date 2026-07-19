@@ -268,6 +268,12 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M4 21a8 8 0 0 1 16 0" />
     </>
   ),
+  person_silhouette: (
+    <>
+      <circle cx="12" cy="8" fill="currentColor" r="4" stroke="none" />
+      <path d="M4 21a8 8 0 0 1 16 0z" fill="currentColor" stroke="none" />
+    </>
+  ),
   psychology: (
     <>
       <path d="M9 18a4 4 0 0 1-4-4 4 4 0 0 1 1.2-2.8A4 4 0 0 1 10 5a4 4 0 0 1 7.4 1.8A4 4 0 0 1 19 14a4 4 0 0 1-4 4" />

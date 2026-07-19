@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   activeApplications,
@@ -75,23 +74,8 @@ function Sidebar() {
 
 function TopBar() {
   return (
-    <header className="sticky top-0 z-50 hidden h-16 w-full items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-6 text-[#091426] md:flex">
-      <h1 className="text-2xl font-bold tracking-[-0.01em] text-[#091426]">
-        Vettingo
-      </h1>
-
+    <header className="sticky top-0 z-50 hidden h-16 w-full items-center justify-end border-b border-[#c5c6cd] bg-[#f8f9ff] px-6 text-[#091426] md:flex">
       <div className="flex items-center gap-6">
-        <div className="relative w-64">
-          <MaterialIcon className="absolute left-2 top-1/2 text-[#45474c] -translate-y-1/2">
-            search
-          </MaterialIcon>
-          <input
-            className="w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] py-2 pl-8 pr-2 text-sm outline-none focus:border-[#091426] focus:ring-1 focus:ring-[#091426]"
-            placeholder="Ara..."
-            type="text"
-          />
-        </div>
-
         <div className="flex items-center gap-4">
           {[
             { icon: "notifications", label: "Bildirimler" },
@@ -105,13 +89,13 @@ function TopBar() {
               <MaterialIcon>{item.icon}</MaterialIcon>
             </button>
           ))}
-          <Image
-            alt="Kullanıcı profil fotoğrafı"
-            className="ml-2 h-8 w-8 rounded-full border border-[#c5c6cd] object-cover"
-            src={candidateProfile.avatarUrl}
-            width={32}
-            height={32}
-          />
+          <div
+            aria-label="Kullanıcı profili"
+            className="ml-2 flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]"
+            role="img"
+          >
+            <MaterialIcon className="text-[22px]">person_silhouette</MaterialIcon>
+          </div>
         </div>
       </div>
     </header>
@@ -125,15 +109,14 @@ function MobileHeader() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
           Aday Paneli
         </p>
-        <h1 className="text-xl font-bold text-[#091426]">Vettingo</h1>
       </div>
-      <Image
-        alt="Kullanıcı profil fotoğrafı"
-        className="h-9 w-9 rounded-full border border-[#c5c6cd] object-cover"
-        src={candidateProfile.avatarUrl}
-        width={36}
-        height={36}
-      />
+      <div
+        aria-label="Kullanıcı profili"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]"
+        role="img"
+      >
+        <MaterialIcon className="text-[22px]">person_silhouette</MaterialIcon>
+      </div>
     </header>
   );
 }

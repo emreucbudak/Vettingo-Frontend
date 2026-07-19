@@ -76,9 +76,6 @@ function TopBar() {
         <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff] md:hidden" type="button">
           <MaterialIcon>menu</MaterialIcon>
         </button>
-        <span className="text-2xl font-bold tracking-[-0.01em] text-[#091426]">
-          {analysisProfile.productName}
-        </span>
       </div>
 
       <div className="flex items-center gap-3 md:gap-6">

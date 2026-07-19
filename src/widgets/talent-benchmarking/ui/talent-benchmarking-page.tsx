@@ -12,27 +12,24 @@ import {
 
 function Header() {
   return (
-    <nav className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-sm leading-5 text-[#091426] md:px-6">
-      <div className="flex items-center gap-4">
-        <div className="text-2xl font-bold leading-8 text-[#091426]">
-          {benchmarkingProfile.productName}
-        </div>
-      </div>
+    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-end border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-sm leading-5 text-[#091426] md:px-6">
       <div className="flex items-center gap-3">
-        <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
+        <button
+          aria-label="Bildirimler"
+          className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
+          type="button"
+        >
           <MaterialIcon>notifications</MaterialIcon>
         </button>
-        <div className="ml-1 h-8 w-8 overflow-hidden rounded-full border border-[#c5c6cd] bg-[#d3e4fe]">
-          <Image
-            alt="Kullanıcı profil fotoğrafı"
-            className="h-full w-full object-cover"
-            height={32}
-            src={benchmarkingProfile.avatarUrl}
-            width={32}
-          />
+        <div
+          aria-label="Kullanıcı profili"
+          className="ml-1 flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]"
+          role="img"
+        >
+          <MaterialIcon className="text-[22px]">person_silhouette</MaterialIcon>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }
 
@@ -49,10 +46,10 @@ function SidebarLink({
 }) {
   return (
     <a
-      className={`mb-1 flex items-center gap-4 rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] transition-all ${active ? "bg-[#6cf8bb] text-[#00714d]" : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]"}`}
+      className={"flex items-center gap-4 rounded-lg px-4 py-3 text-xs font-semibold uppercase tracking-[0.05em] transition-all " + (active ? "bg-[#6cf8bb] text-[#00714d]" : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]")}
       href={href}
     >
-      <MaterialIcon className="text-[20px]">{icon}</MaterialIcon>
+      <MaterialIcon className="text-[22px] leading-none">{icon}</MaterialIcon>
       {label}
     </a>
   );
@@ -60,37 +57,30 @@ function SidebarLink({
 
 function Sidebar() {
   return (
-    <aside className="fixed left-0 top-0 z-40 hidden h-full w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] pt-16 text-[#091426] md:flex">
-      <div className="mb-2 flex items-center gap-2 border-b border-[#c5c6cd] p-4">
-        <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg border border-[#c5c6cd] bg-white">
-          <Image
-            alt="Kurum logosu"
-            className="h-full w-full object-contain p-1"
-            height={40}
-            src={benchmarkingProfile.organizationLogoUrl}
-            width={40}
-          />
-        </div>
-        <div>
-          <div className="text-lg font-semibold leading-6 text-[#0b1c30]">
-            {benchmarkingProfile.organizationName}
-          </div>
-          <div className="text-[11px] font-medium leading-[14px] text-[#45474c]">
-            {benchmarkingProfile.planName}
-          </div>
+    <nav className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] text-[#091426] md:flex">
+      <div className="px-6 pb-6 pt-5">
+        <h1 className="text-xl font-semibold leading-7 text-[#0b1c30]">
+          {benchmarkingProfile.organizationName}
+        </h1>
+        <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
+          {benchmarkingProfile.planName}
+        </p>
+      </div>
+
+      <div className="flex flex-1 items-center overflow-y-auto px-4 py-6">
+        <div className="w-full space-y-2">
+          {sidebarItems.map((item) => (
+            <SidebarLink active={item.active} href={item.href} icon={item.icon} key={item.label} label={item.label} />
+          ))}
         </div>
       </div>
-      <div className="flex flex-1 flex-col gap-1 overflow-y-auto px-2 py-2">
-        {sidebarItems.map((item) => (
-          <SidebarLink active={item.active} href={item.href} icon={item.icon} key={item.label} label={item.label} />
-        ))}
-      </div>
-      <div className="mt-auto flex flex-col gap-1 border-t border-[#c5c6cd] p-2">
+
+      <div className="mt-auto flex flex-col gap-2 px-4 pb-6 pt-4">
         {supportItems.map((item) => (
           <SidebarLink active={false} href={item.href} icon={item.icon} key={item.label} label={item.label} />
         ))}
       </div>
-    </aside>
+    </nav>
   );
 }
 
@@ -160,8 +150,8 @@ function MetricValue({ value }: { value: CandidateMetric }) {
   if (value.kind === "skill") {
     return (
       <div className="flex w-full items-center justify-center">
-        <div className="relative h-2 w-full overflow-hidden rounded-full bg-[#e5eeff]">
-          <div className="absolute left-0 top-0 h-full bg-[#091426]" style={{ width: `${value.percent}%` }} />
+        <div className="talent-skill-track relative h-2 w-full overflow-hidden rounded-full bg-[#e5eeff]">
+          <div className="talent-skill-fill absolute left-0 top-0 h-full bg-[#091426]" style={{ width: `${value.percent}%` }} />
         </div>
         <span className="ml-2 text-[11px] font-medium leading-[14px] text-[#0b1c30]">
           {value.label}
@@ -209,7 +199,7 @@ function ComparisonGrid() {
           <div key={`${row.section}-${row.metric}`}>
             {row.showSection && (
               <div className="grid grid-cols-4 border-b border-[#c5c6cd]">
-                <div className="col-span-4 bg-[#eff4ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
+                <div className="talent-section-heading col-span-4 bg-[#eff4ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
                   {row.section}
                 </div>
               </div>
@@ -234,11 +224,11 @@ function ComparisonGrid() {
 
 export function TalentBenchmarkingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30]">
-      <Header />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="mx-auto w-full max-w-[1440px] flex-1 overflow-y-auto p-4 md:ml-60 md:p-8">
+    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
+      <Sidebar />
+      <div className="flex min-h-screen flex-col md:ml-60">
+        <Header />
+        <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
           <PageHeader />
           <ComparisonGrid />
         </main>
@@ -246,4 +236,3 @@ export function TalentBenchmarkingPage() {
     </div>
   );
 }
-
