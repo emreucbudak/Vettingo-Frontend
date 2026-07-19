@@ -132,6 +132,16 @@ body {
   background: #6cf8bb !important;
 }
 
+.theme-dark .assessment-timer {
+  background: #18263a !important;
+  border-color: #2d3d58 !important;
+  color: #b8c5d9 !important;
+}
+
+.theme-dark .assessment-timer span {
+  color: #f4f8ff !important;
+}
+
 .theme-dark .testimonial-marquee article {
   background: #101c2f !important;
   border-color: #2d3d58 !important;

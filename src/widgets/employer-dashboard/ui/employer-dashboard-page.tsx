@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   activeRequisitions,
@@ -11,89 +12,6 @@ import {
   monthlyBars,
   topAiMatches,
 } from "@/entities/employer-dashboard";
-
-function SidebarLink({
-  icon,
-  label,
-  active = false,
-}: {
-  icon: string;
-  label: string;
-  active?: boolean;
-}) {
-  return (
-    <a
-      className={`flex items-center gap-4 rounded-lg px-4 py-3 text-xs font-semibold uppercase tracking-[0.05em] transition-all ${
-        active
-          ? "bg-[#6cf8bb] text-[#00714d]"
-          : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]"
-      }`}
-      href="#"
-    >
-      <MaterialIcon className="text-[22px] leading-none">{icon}</MaterialIcon>
-      {label}
-    </a>
-  );
-}
-
-function Sidebar() {
-  return (
-    <nav className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] md:flex">
-      <div className="px-6 pb-6 pt-5">
-        <h1 className="text-xl font-semibold leading-7 text-[#0b1c30]">
-          {employerProfile.companyLabel}
-        </h1>
-        <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
-          {employerProfile.edition}
-        </p>
-      </div>
-
-      <div className="flex flex-1 items-center overflow-y-auto px-4 py-6">
-        <div className="w-full space-y-2">
-          {employerNavigationItems.map((item) => (
-            <SidebarLink {...item} key={item.label} />
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-auto space-y-2 px-4 pb-6 pt-4">
-        {employerUtilityItems.map((item) => (
-          <SidebarLink {...item} key={item.label} />
-        ))}
-      </div>
-    </nav>
-  );
-}
-
-function TopBar() {
-  return (
-    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-end border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-[#091426] md:px-6">
-      <div className="flex items-center gap-3 md:gap-4">
-        <div className="flex items-center gap-2">
-          {[
-            { icon: "notifications", label: "Bildirimler" },
-          ].map((item) => (
-            <button
-              aria-label={item.label}
-              className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-              key={item.icon}
-              type="button"
-            >
-              <MaterialIcon>{item.icon}</MaterialIcon>
-            </button>
-          ))}
-        </div>
-        <div
-          aria-label="Kullanıcı profili"
-          className="ml-1 flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]"
-          role="img"
-        >
-          <MaterialIcon className="text-[22px]">person_silhouette</MaterialIcon>
-        </div>
-      </div>
-    </header>
-  );
-}
 
 function MobileBrand() {
   return (
@@ -344,11 +262,13 @@ function DashboardFooter() {
 
 export function EmployerDashboardPage() {
   return (
-    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
-      <Sidebar />
-      <div className="flex min-h-screen flex-col md:ml-60">
-        <TopBar />
-        <MobileBrand />
+    <DashboardShell
+      navigationItems={employerNavigationItems}
+      sidebarSubtitle={employerProfile.edition}
+      sidebarTitle={employerProfile.companyLabel}
+      utilityItems={employerUtilityItems}
+    >
+      <MobileBrand />
 
         <main className="mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -381,9 +301,8 @@ export function EmployerDashboardPage() {
           <FunnelMetrics />
         </main>
 
-        <DashboardFooter />
-      </div>
-    </div>
+      <DashboardFooter />
+    </DashboardShell>
   );
 }
 

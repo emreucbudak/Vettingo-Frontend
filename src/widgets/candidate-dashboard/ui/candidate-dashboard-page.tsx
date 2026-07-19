@@ -1,3 +1,4 @@
+import { DashboardProfileIcon, DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   activeApplications,
@@ -9,99 +10,6 @@ import {
   utilityItems,
 } from "@/entities/candidate-dashboard";
 
-function SidebarLink({
-  icon,
-  label,
-  active = false,
-}: {
-  icon: string;
-  label: string;
-  active?: boolean;
-}) {
-  return (
-    <a
-      className={`flex items-center gap-4 rounded-lg px-4 py-3 transition-all ${
-        active
-          ? "bg-[#6cf8bb] font-semibold text-[#00714d]"
-          : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]"
-      }`}
-      href="#"
-    >
-      <MaterialIcon className="text-[22px] leading-none">
-        {icon}
-      </MaterialIcon>
-      <span className="text-xs font-semibold uppercase tracking-[0.05em]">
-        {label}
-      </span>
-    </a>
-  );
-}
-
-function Sidebar() {
-  return (
-    <nav className="fixed left-0 top-0 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] md:flex">
-      <div className="px-6 pb-6 pt-5">
-        <h2 className="text-xl font-semibold leading-7 text-[#0b1c30]">
-          {candidateProfile.companyLabel}
-        </h2>
-        <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
-          {candidateProfile.edition}
-        </p>
-      </div>
-
-      <div className="flex flex-1 items-center overflow-y-auto px-4 py-6">
-        <ul className="w-full space-y-2">
-          {navigationItems.map((item) => (
-            <li key={item.label}>
-              <SidebarLink {...item} />
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="mt-auto px-4 pb-6 pt-4">
-        <ul className="space-y-2">
-          {utilityItems.map((item) => (
-            <li key={item.label}>
-              <SidebarLink {...item} />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
-  );
-}
-
-function TopBar() {
-  return (
-    <header className="sticky top-0 z-50 hidden h-16 w-full items-center justify-end border-b border-[#c5c6cd] bg-[#f8f9ff] px-6 text-[#091426] md:flex">
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-4">
-          {[
-            { icon: "notifications", label: "Bildirimler" },
-          ].map((item) => (
-            <button
-              aria-label={item.label}
-              className="flex items-center justify-center rounded p-1 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-              key={item.icon}
-              type="button"
-            >
-              <MaterialIcon>{item.icon}</MaterialIcon>
-            </button>
-          ))}
-          <div
-            aria-label="Kullanıcı profili"
-            className="ml-2 flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]"
-            role="img"
-          >
-            <MaterialIcon className="text-[22px]">person_silhouette</MaterialIcon>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
-
 function MobileHeader() {
   return (
     <header className="flex items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 py-3 md:hidden">
@@ -110,13 +18,7 @@ function MobileHeader() {
           Aday Paneli
         </p>
       </div>
-      <div
-        aria-label="Kullanıcı profili"
-        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]"
-        role="img"
-      >
-        <MaterialIcon className="text-[22px]">person_silhouette</MaterialIcon>
-      </div>
+      <DashboardProfileIcon />
     </header>
   );
 }
@@ -270,11 +172,14 @@ function DashboardFooter() {
 
 export function CandidateDashboardPage() {
   return (
-    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
-      <Sidebar />
-      <div className="flex min-h-screen flex-col md:ml-60">
-        <TopBar />
-        <MobileHeader />
+    <DashboardShell
+      hideTopBarOnMobile
+      navigationItems={navigationItems}
+      sidebarSubtitle={candidateProfile.edition}
+      sidebarTitle={candidateProfile.companyLabel}
+      utilityItems={utilityItems}
+    >
+      <MobileHeader />
 
         <main className="mx-auto w-full max-w-[1440px] flex-1 overflow-x-hidden p-4 md:p-8">
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -314,9 +219,8 @@ export function CandidateDashboardPage() {
           </div>
         </main>
 
-        <DashboardFooter />
-      </div>
-    </div>
+      <DashboardFooter />
+    </DashboardShell>
   );
 }
 
