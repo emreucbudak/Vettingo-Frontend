@@ -1,7 +1,6 @@
 ﻿import Image from "next/image";
 import { AuthForm, type AuthMode } from "@/features/auth";
-import { MaterialIcon } from "@/shared/ui/material-icon";
-import { authBenefits, authHeroImageUrl } from "../model/auth-hero-content";
+import { authHeroImageUrl } from "../model/auth-hero-content";
 
 const vettingoLogoSrc = "/assets/vettingo-logo.png";
 
@@ -58,23 +57,6 @@ export function AuthPage({ mode }: AuthPageProps) {
               bugün bulun.
             </p>
 
-            <div className="flex flex-col gap-4">
-              {authBenefits.map((benefit) => (
-                <div className="flex items-start gap-4" key={benefit.title}>
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded bg-[#1e293b]">
-                    <MaterialIcon className="text-[20px] text-[#6ffbbe]">
-                      {benefit.icon}
-                    </MaterialIcon>
-                  </div>
-                  <div>
-                    <h2 className="mb-1 text-lg font-medium">{benefit.title}</h2>
-                    <p className="text-sm leading-5 text-[#bcc7de]">
-                      {benefit.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </aside>
 

@@ -8,15 +8,15 @@
 } as const;
 
 export const employerNavigationItems = [
-  { label: "Panel", icon: "dashboard", active: true },
-  { label: "Başvurular", icon: "description" },
-  { label: "Yapay Zeka Analizi", icon: "psychology" },
-  { label: "İşler", icon: "work" },
+  { label: "Panel", icon: "space_dashboard", active: true },
+  { label: "Başvurular", icon: "assignment_ind" },
+  { label: "Yapay Zeka Analizi", icon: "auto_awesome" },
+  { label: "İşler", icon: "business_center" },
 ] as const;
 
 export const employerUtilityItems = [
-  { label: "Yardım Merkezi", icon: "help" },
-  { label: "Ayarlar", icon: "settings" },
+  { label: "Yardım Merkezi", icon: "support_agent" },
+  { label: "Ayarlar", icon: "tune" },
 ] as const;
 
 export const employerStats = [
