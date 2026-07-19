@@ -23,14 +23,14 @@ function SidebarLink({
 }) {
   return (
     <a
-      className={`flex items-center gap-4 rounded px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] transition-all ${
+      className={`flex items-center gap-4 rounded-lg px-4 py-3 text-xs font-semibold uppercase tracking-[0.05em] transition-all ${
         active
           ? "bg-[#6cf8bb] text-[#00714d]"
           : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]"
       }`}
       href="#"
     >
-      <MaterialIcon>{icon}</MaterialIcon>
+      <MaterialIcon className="text-[22px] leading-none">{icon}</MaterialIcon>
       {label}
     </a>
   );
@@ -38,34 +38,25 @@ function SidebarLink({
 
 function Sidebar() {
   return (
-    <nav className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] pt-16 md:flex">
-      <div className="px-6 pb-8 pt-4">
-        <div className="mb-6 flex items-center gap-4">
-          <Image
-            alt="Executive Recruitment logosu"
-            className="h-10 w-10 rounded object-cover"
-            height={40}
-            src={employerProfile.logoUrl}
-            width={40}
-          />
-          <div>
-            <h1 className="text-xl font-semibold leading-7 text-[#0b1c30]">
-              {employerProfile.companyLabel}
-            </h1>
-            <p className="text-[11px] font-medium leading-4 text-[#45474c]">
-              {employerProfile.edition}
-            </p>
-          </div>
+    <nav className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] md:flex">
+      <div className="px-6 pb-6 pt-5">
+        <h1 className="text-xl font-semibold leading-7 text-[#0b1c30]">
+          {employerProfile.companyLabel}
+        </h1>
+        <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
+          {employerProfile.edition}
+        </p>
+      </div>
+
+      <div className="flex flex-1 items-center overflow-y-auto px-4 py-6">
+        <div className="w-full space-y-2">
+          {employerNavigationItems.map((item) => (
+            <SidebarLink {...item} key={item.label} />
+          ))}
         </div>
       </div>
 
-      <div className="flex-1 space-y-1 overflow-y-auto px-4">
-        {employerNavigationItems.map((item) => (
-          <SidebarLink {...item} key={item.label} />
-        ))}
-      </div>
-
-      <div className="mt-auto space-y-1 border-t border-[#c5c6cd] px-4 pb-6 pt-4">
+      <div className="mt-auto space-y-2 border-t border-[#c5c6cd] px-4 pb-6 pt-4">
         {employerUtilityItems.map((item) => (
           <SidebarLink {...item} key={item.label} />
         ))}
