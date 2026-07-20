@@ -1,5 +1,4 @@
 ﻿import Image from "next/image";
-import { ROUTES } from "@/shared/config/routes";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -320,16 +319,7 @@ function DashboardFooter() {
 export function CandidateAnalysisPage() {
   return (
     <DashboardShell
-      beforeTopBarActions={
-        <a
-          className="rounded border border-[#c5c6cd] bg-[#f8f9ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
-          href={ROUTES.employer}
-        >
-          İşveren Paneline Geç
-        </a>
-      }
       navigationItems={analysisNavigationItems}
-      showSettings
       sidebarSubtitle={analysisProfile.edition}
       sidebarTitle={analysisProfile.companyLabel}
       topBarLeading={
