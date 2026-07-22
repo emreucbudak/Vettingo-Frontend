@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { AssessmentPage } from "@/widgets/assessment";
+import { AssessmentIntroPage } from "@/widgets/assessment-intro";
 
 export const metadata: Metadata = {
-  title: "Değerlendirme | Vettingo",
+  title: "Sınav Bilgileri | Vettingo",
 };
 
 export default function AssessmentRoute() {
-  return <AssessmentPage />;
+  return <AssessmentIntroPage />;
 }
