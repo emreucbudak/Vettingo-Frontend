@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 import {
   assessmentAnswerOptions,
   assessmentLegend,
@@ -9,7 +11,12 @@ import {
   initialAssessmentAnswer,
   type AssessmentAnswerId,
 } from "@/entities/assessment";
+import { hasAssessmentAccess, revokeAssessmentAccess } from "@/features/assessment-access";
 import { useAssessmentSession } from "@/features/assessment-session";
+import { ROUTES } from "@/shared/config/routes";
+
+const subscribeToAssessmentAccess = () => () => undefined;
+const getServerAssessmentAccess = (): boolean | null => null;
 
 const questionStatusClasses = {
   answered: "border-[#c5c6cd] bg-[#d3e4fe] text-[#0b1c30]",
@@ -266,6 +273,12 @@ function AssessmentActions() {
 }
 
 export function AssessmentPage() {
+  const router = useRouter();
+  const assessmentAccess = useSyncExternalStore<boolean | null>(
+    subscribeToAssessmentAccess,
+    hasAssessmentAccess,
+    getServerAssessmentAccess,
+  );
   const {
     finishAssessment,
     formattedTime,
@@ -276,12 +289,31 @@ export function AssessmentPage() {
     toggleFlag,
   } = useAssessmentSession(assessmentOverview.durationInSeconds, initialAssessmentAnswer);
 
+  useEffect(() => {
+    if (assessmentAccess === false) {
+      router.replace(ROUTES.assessment);
+    }
+  }, [assessmentAccess, router]);
+
+  const handleFinish = () => {
+    finishAssessment();
+    revokeAssessmentAccess();
+  };
+
+  if (assessmentAccess !== true) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#f8f9ff] px-4 text-sm font-medium text-[#45474c]">
+        Sınav oturumu kontrol ediliyor...
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30]">
       <AssessmentHeader
         formattedTime={formattedTime}
         isFinished={isFinished}
-        onFinish={finishAssessment}
+        onFinish={handleFinish}
       />
       <div className="flex min-h-[calc(100dvh-4rem)] w-full flex-col justify-center px-4 py-6 md:px-8 md:py-8">
         <div className="mx-auto flex w-full max-w-[1056px] flex-col gap-8 lg:flex-row lg:items-start">

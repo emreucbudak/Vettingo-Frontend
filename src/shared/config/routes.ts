@@ -11,5 +11,6 @@ export const ROUTES = {
   newJob: "/jobs/new",
   talentBenchmarking: "/talent-benchmarking",
   assessment: "/assessment",
+  assessmentSession: "/assessment/session",
 } as const;
 
