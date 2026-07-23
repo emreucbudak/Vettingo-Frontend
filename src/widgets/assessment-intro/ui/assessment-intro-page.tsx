@@ -80,7 +80,7 @@ export function AssessmentIntroPage() {
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
                 {examDetails.map((detail, index) => (
                   <article className="rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-5" key={detail.label}>
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
+                    <div className="assessment-info-icon mb-4 flex h-10 w-10 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
                       <InfoIcon name={(["clock", "document", "spark", "shield"] as const)[index]} />
                     </div>
                     <p className="text-xs font-medium uppercase tracking-[0.06em] text-[#75777d]">{detail.label}</p>
