@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ROUTES } from "@/shared/config/routes";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -270,7 +272,7 @@ export function EmployerDashboardPage() {
     >
       <MobileBrand />
 
-        <main className="mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
+        <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
@@ -280,10 +282,13 @@ export function EmployerDashboardPage() {
                 Açık pozisyonlar ve başvuru akışı için gerçek zamanlı metrikler.
               </p>
             </div>
-            <button className="flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 md:w-auto">
+            <Link
+              className="flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 md:w-auto"
+              href={ROUTES.newJob}
+            >
               <MaterialIcon>add</MaterialIcon>
-              Yeni İş İlanı Talebi
-            </button>
+              Yeni İş İlanı
+            </Link>
           </div>
 
           <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">

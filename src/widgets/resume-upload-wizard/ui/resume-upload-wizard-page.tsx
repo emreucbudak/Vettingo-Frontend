@@ -1,13 +1,25 @@
-﻿import { ROUTES } from "@/shared/config/routes";
+"use client";
+
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   parsedEducation,
   parsedExperiences,
   parsedResume,
-  wizardSteps,
 } from "@/entities/resume";
 
-function WizardStep({ step }: { step: (typeof wizardSteps)[number] }) {
+type WizardStepState = "completed" | "active" | "inactive";
+
+type WizardStepData = {
+  label: string;
+  state: WizardStepState;
+  icon?: string;
+  value?: string;
+};
+
+function WizardStep({ step }: { step: WizardStepData }) {
   const stateClasses = {
     completed: "border-[#006c49] text-[#006c49]",
     active: "border-[#091426] font-semibold text-[#091426]",
@@ -18,7 +30,7 @@ function WizardStep({ step }: { step: (typeof wizardSteps)[number] }) {
     <div className="flex flex-col items-center gap-2 bg-[#f8f9ff] px-2">
       <div className={`flex h-8 w-8 items-center justify-center rounded-full border-2 bg-[#f8f9ff] ${stateClasses[step.state]}`}>
         {step.state === "completed" ? (
-          <MaterialIcon className="text-sm">{step.icon}</MaterialIcon>
+          <MaterialIcon className="text-sm">{step.icon ?? "check"}</MaterialIcon>
         ) : (
           <span className="text-xs font-semibold uppercase tracking-[0.05em]">
             {step.value}
@@ -32,14 +44,118 @@ function WizardStep({ step }: { step: (typeof wizardSteps)[number] }) {
   );
 }
 
-function WizardProgress() {
+function WizardProgress({ currentStep }: { currentStep: 1 | 2 }) {
+  const steps: WizardStepData[] = [
+    {
+      label: "Yükle",
+      state: currentStep === 1 ? "active" : "completed",
+      icon: currentStep === 2 ? "check" : undefined,
+      value: "1",
+    },
+    {
+      label: "YZ Ayrıştırma",
+      state: currentStep === 2 ? "active" : "inactive",
+      value: "2",
+    },
+    { label: "Eksik Analizi", state: "inactive", value: "3" },
+  ];
+
   return (
     <div className="relative mb-8 flex items-center justify-between">
       <div className="absolute left-0 top-1/2 -z-10 h-px w-full -translate-y-1/2 bg-[#c5c6cd]" />
-      {wizardSteps.map((step) => (
+      {steps.map((step) => (
         <WizardStep key={step.label} step={step} />
       ))}
     </div>
+  );
+}
+
+function UploadPanel({
+  error,
+  onFileSelected,
+  onContinue,
+  selectedFile,
+}: {
+  error: string | null;
+  onFileSelected: (file: File) => void;
+  onContinue: () => void;
+  selectedFile: File | null;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function chooseFile(file: File | undefined) {
+    if (file) onFileSelected(file);
+  }
+
+  return (
+    <section className="mb-6 rounded border border-[#c5c6cd] bg-white p-6 md:p-8">
+      <div className="mb-6">
+        <h1 className="mb-1 text-xl font-semibold leading-7 text-[#091426]">CV&apos;ni Yükle</h1>
+        <p className="text-sm leading-5 text-[#45474c]">
+          Yapay zeka ayrıştırma adımına geçmeden önce PDF, DOC veya DOCX formatında CV yüklemelisin.
+        </p>
+      </div>
+
+      <div
+        className="flex min-h-72 flex-col items-center justify-center rounded-lg border-2 border-dashed border-[#bcc7de] bg-[#f8f9ff] px-6 py-10 text-center transition-colors hover:bg-[#eff4ff]"
+        onDragOver={(event) => event.preventDefault()}
+        onDrop={(event) => {
+          event.preventDefault();
+          chooseFile(event.dataTransfer.files[0]);
+        }}
+      >
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#dce9ff]">
+          <MaterialIcon className="text-3xl text-[#091426]">
+            {selectedFile ? "description" : "upload_file"}
+          </MaterialIcon>
+        </div>
+        {selectedFile ? (
+          <>
+            <h2 className="text-lg font-medium text-[#0b1c30]">{selectedFile.name}</h2>
+            <p className="mt-1 text-sm text-[#45474c]">
+              {(selectedFile.size / 1_048_576).toFixed(2)} MB - Ayrıştırmaya hazır
+            </p>
+          </>
+        ) : (
+          <>
+            <h2 className="text-lg font-medium text-[#0b1c30]">CV dosyanı buraya sürükle</h2>
+            <p className="mt-1 text-sm text-[#45474c]">veya bilgisayarından bir dosya seç</p>
+          </>
+        )}
+        <input
+          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          className="hidden"
+          onChange={(event) => chooseFile(event.target.files?.[0])}
+          ref={inputRef}
+          type="file"
+        />
+        <button
+          className="mt-6 rounded border border-[#091426] px-5 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:bg-[#eff4ff]"
+          onClick={() => inputRef.current?.click()}
+          type="button"
+        >
+          {selectedFile ? "Başka Dosya Seç" : "Dosya Seç"}
+        </button>
+      </div>
+
+      {error ? (
+        <p className="mt-4 rounded border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]" role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="mt-6 flex justify-end border-t border-[#c5c6cd] pt-6">
+        <button
+          className="flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+          disabled={!selectedFile}
+          onClick={onContinue}
+          type="button"
+        >
+          CV&apos;yi Ayrıştır
+          <MaterialIcon className="text-sm">arrow_forward</MaterialIcon>
+        </button>
+      </div>
+    </section>
   );
 }
 
@@ -180,17 +296,37 @@ function ParsedDataPanel() {
   );
 }
 
-function ActionBar() {
+function ActionBar({
+  onBack,
+  onContinue,
+  onRestart,
+}: {
+  onBack: () => void;
+  onContinue: () => void;
+  onRestart: () => void;
+}) {
   return (
     <div className="flex flex-col gap-4 border-t border-[#c5c6cd] pt-6 sm:flex-row sm:items-center sm:justify-between">
-      <button className="rounded border border-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]" type="button">
+      <button
+        className="rounded border border-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
+        onClick={onBack}
+        type="button"
+      >
         Geri
       </button>
       <div className="flex flex-col gap-2 sm:flex-row">
-        <button className="rounded border border-[#c5c6cd] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
+        <button
+          className="rounded border border-[#c5c6cd] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:bg-[#eff4ff]"
+          onClick={onRestart}
+          type="button"
+        >
           CV Yüklemesini Yenile
         </button>
-        <button className="flex items-center justify-center gap-2 rounded bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="button">
+        <button
+          className="flex items-center justify-center gap-2 rounded bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]"
+          onClick={onContinue}
+          type="button"
+        >
           Analize Devam Et
           <MaterialIcon className="text-sm">arrow_forward</MaterialIcon>
         </button>
@@ -215,17 +351,68 @@ function Header() {
 }
 
 export function ResumeUploadWizardPage() {
+  const router = useRouter();
+  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  function selectFile(file: File) {
+    const extension = file.name.split(".").pop()?.toLocaleLowerCase("tr-TR");
+    if (!extension || !["pdf", "doc", "docx"].includes(extension)) {
+      setSelectedFile(null);
+      setUploadError("Lütfen PDF, DOC veya DOCX formatında bir CV seç.");
+      return;
+    }
+
+    if (file.size > 10 * 1_048_576) {
+      setSelectedFile(null);
+      setUploadError("CV dosyası 10 MB'den küçük olmalı.");
+      return;
+    }
+
+    setSelectedFile(file);
+    setUploadError(null);
+  }
+
+  function continueToParsing() {
+    if (!selectedFile) {
+      setUploadError("YZ ayrıştırma adımına geçmeden önce bir CV yüklemelisin.");
+      return;
+    }
+    setCurrentStep(2);
+  }
+
+  function restartUpload() {
+    setCurrentStep(1);
+    setSelectedFile(null);
+    setUploadError(null);
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30] antialiased">
       <Header />
       <main className="flex flex-grow flex-col items-center justify-start px-4 pb-24 pt-8 md:px-8">
         <div className="w-full max-w-4xl">
-          <WizardProgress />
-          <ParsedDataPanel />
-          <ActionBar />
+          <WizardProgress currentStep={currentStep} />
+          {currentStep === 1 ? (
+            <UploadPanel
+              error={uploadError}
+              onContinue={continueToParsing}
+              onFileSelected={selectFile}
+              selectedFile={selectedFile}
+            />
+          ) : (
+            <>
+              <ParsedDataPanel />
+              <ActionBar
+                onBack={() => setCurrentStep(1)}
+                onContinue={() => router.push(ROUTES.candidateAnalysis)}
+                onRestart={restartUpload}
+              />
+            </>
+          )}
         </div>
       </main>
     </div>
   );
 }
-

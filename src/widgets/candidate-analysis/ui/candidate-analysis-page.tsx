@@ -1,4 +1,9 @@
-﻿import Image from "next/image";
+"use client";
+
+import Image from "next/image";
+import { useSyncExternalStore } from "react";
+import { useCandidateEvaluationAnalysis, type EvaluationCategory } from "@/features/candidate-analysis";
+import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -9,10 +14,11 @@ import {
   candidateDetails,
   certifications,
   educationItems,
-  executiveSummary,
   experienceTimeline,
-  suitabilityScores,
 } from "@/entities/candidate-analysis";
+
+const subscribeToBrowserState = () => () => undefined;
+const getServerToken = (): string | null => null;
 
 function BreadcrumbActions() {
   return (
@@ -42,7 +48,15 @@ function BreadcrumbActions() {
   );
 }
 
-function CandidateHeader() {
+function CandidateHeader({
+  evaluationCount,
+  isLoading,
+  overallScore,
+}: {
+  evaluationCount: number;
+  isLoading: boolean;
+  overallScore: number;
+}) {
   return (
     <section className="mb-8 flex flex-col items-start gap-6 rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 md:flex-row md:items-center">
       <Image
@@ -60,7 +74,11 @@ function CandidateHeader() {
           </h2>
           <span className="flex items-center gap-1 rounded-full bg-[#dcfce7] px-4 py-1 text-[11px] font-medium leading-4 text-[#10b981]">
             <span className="h-2 w-2 rounded-full bg-[#10b981]" />
-            {candidateDetails.matchLabel}
+            {isLoading
+              ? "Puan yükleniyor"
+              : evaluationCount > 0
+                ? `%${overallScore} Evaluation Puanı`
+                : "Değerlendirme yok"}
           </span>
         </div>
         <p className="mb-4 text-lg font-medium leading-6 text-[#45474c]">
@@ -133,35 +151,62 @@ function ÖzetList({
   );
 }
 
-function ExecutiveSummaryCard() {
+function ExecutiveSummaryCard({
+  isLoading,
+  risks,
+  strengths,
+  summary,
+}: {
+  isLoading: boolean;
+  risks: string[];
+  strengths: string[];
+  summary: string;
+}) {
+  const visibleStrengths = strengths.length > 0
+    ? strengths
+    : ["Henüz güçlü yön değerlendirmesi bulunmuyor."];
+  const visibleRisks = risks.length > 0
+    ? risks
+    : ["Henüz risk değerlendirmesi bulunmuyor."];
+
   return (
     <section className="flex flex-col rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 lg:col-span-2">
       <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
         <MaterialIcon className="text-[#040057]">psychology</MaterialIcon>
         <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">
-          Yapay Zeka Yönetici Özeti
+          Evaluation Service Özeti
         </h3>
       </div>
-      <p className="flex-1 text-sm leading-6 text-[#45474c]">{executiveSummary.text}</p>
+      <p className="flex-1 text-sm leading-6 text-[#45474c]">
+        {isLoading ? "Aday değerlendirmeleri yükleniyor..." : summary}
+      </p>
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <ÖzetList
           icon="check_circle"
           iconClassName="text-[#10b981]"
-          items={executiveSummary.strengths}
+          items={visibleStrengths}
           title="Temel Güçlü Yönler"
         />
         <ÖzetList
           icon="warning"
           iconClassName="text-[#f59e0b]"
-          items={executiveSummary.risks}
-          title="Olası Risk Alanları"
+          items={visibleRisks}
+          title="Gelişime Açık Alanlar"
         />
       </div>
     </section>
   );
 }
 
-function SuitabilityScoreCard() {
+function SuitabilityScoreCard({
+  categories,
+  isLoading,
+  overallScore,
+}: {
+  categories: EvaluationCategory[];
+  isLoading: boolean;
+  overallScore: number;
+}) {
   return (
     <section className="relative flex flex-col items-center justify-center overflow-hidden rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 text-center">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#d8e3fb,_transparent_70%)] opacity-40" />
@@ -184,34 +229,43 @@ function SuitabilityScoreCard() {
             className="stroke-[#006c49]"
             d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             fill="none"
-            strokeDasharray={`${suitabilityScores.total}, 100`}
+            strokeDasharray={`${overallScore}, 100`}
             strokeWidth="3"
           />
         </svg>
         <div className="absolute flex flex-col items-center">
           <span className="text-3xl font-semibold leading-none tracking-[-0.02em] text-[#0b1c30]">
-            {suitabilityScores.total}
+            {overallScore}
           </span>
           <span className="text-[11px] font-medium leading-4 text-[#45474c]">%</span>
         </div>
       </div>
 
       <div className="relative z-10 mt-auto w-full space-y-2">
-        {suitabilityScores.categories.map((score) => (
-          <div key={score.label}>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-                {score.label}
-              </span>
-              <span className="text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
-                {score.value}%
-              </span>
+        {isLoading ? (
+          <div className="h-14 animate-pulse rounded bg-[#dce9ff]" />
+        ) : categories.length > 0 ? (
+          categories.map((score) => (
+            <div key={score.label}>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
+                  {score.label}
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
+                  {score.value}%
+                </span>
+              </div>
+              <div className="mt-1 h-1.5 w-full rounded-full bg-[#d3e4fe]">
+                <div
+                  className="h-1.5 rounded-full bg-[#006c49]"
+                  style={{ width: `${score.value}%` }}
+                />
+              </div>
             </div>
-            <div className="mt-1 h-1.5 w-full rounded-full bg-[#d3e4fe]">
-              <div className={`h-1.5 rounded-full bg-[#006c49] ${score.width}`} />
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-sm text-[#45474c]">Yetkinlik puanı bulunmuyor.</p>
+        )}
       </div>
     </section>
   );
@@ -316,7 +370,25 @@ function DashboardFooter() {
   );
 }
 
-export function CandidateAnalysisPage() {
+export function CandidateAnalysisPage({ candidateId }: { candidateId: string | null }) {
+  const token = useSyncExternalStore<string | null>(
+    subscribeToBrowserState,
+    getAuthToken,
+    getServerToken,
+  );
+  const sessionUser = token && !isTokenExpired(token) ? getTokenSessionUser(token) : null;
+  const resolvedCandidateId = candidateId ?? sessionUser?.id ?? null;
+  const {
+    categories,
+    error,
+    evaluationCount,
+    isLoading,
+    overallScore,
+    risks,
+    strengths,
+    summary,
+  } = useCandidateEvaluationAnalysis(resolvedCandidateId);
+
   return (
     <DashboardShell
       navigationItems={analysisNavigationItems}
@@ -333,22 +405,47 @@ export function CandidateAnalysisPage() {
       }
       utilityItems={analysisUtilityItems}
     >
-        <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
-          <BreadcrumbActions />
-          <CandidateHeader />
-
-          <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <ExecutiveSummaryCard />
-            <SuitabilityScoreCard />
+      <main className="candidate-analysis-theme mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
+        <BreadcrumbActions />
+        {error ? (
+          <div
+            className="mb-6 rounded border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]"
+            role="alert"
+          >
+            {error}
           </div>
-
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <ExperienceCard />
-            <EducationCard />
+        ) : null}
+        {!resolvedCandidateId ? (
+          <div className="mb-6 rounded border border-[#c5c6cd] bg-[#eff4ff] px-4 py-3 text-sm text-[#45474c]">
+            Bir aday değerlendirmesi görmek için URL&apos;ye candidateId parametresi ekleyin.
           </div>
-        </main>
+        ) : null}
+        <CandidateHeader
+          evaluationCount={evaluationCount}
+          isLoading={isLoading}
+          overallScore={overallScore}
+        />
+
+        <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <ExecutiveSummaryCard
+            isLoading={isLoading}
+            risks={risks}
+            strengths={strengths}
+            summary={summary}
+          />
+          <SuitabilityScoreCard
+            categories={categories}
+            isLoading={isLoading}
+            overallScore={overallScore}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <ExperienceCard />
+          <EducationCard />
+        </div>
+      </main>
       <DashboardFooter />
     </DashboardShell>
   );
 }
-

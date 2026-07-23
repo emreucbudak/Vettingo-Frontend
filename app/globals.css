@@ -150,3 +150,35 @@ body {
 .theme-dark .testimonial-separator {
   background: #2d3d58 !important;
 }
+.theme-dark .candidate-analysis-theme [class*="bg-[#f8f9ff]"],
+.theme-dark .employer-dashboard-theme [class*="bg-[#f8f9ff]"] {
+  background-color: #0d1829 !important;
+}
+
+.theme-dark .candidate-analysis-theme [class*="bg-[#eff4ff]"],
+.theme-dark .candidate-analysis-theme [class*="bg-[#d3e4fe]"],
+.theme-dark .candidate-analysis-theme [class*="bg-[#d8e3fb]"],
+.theme-dark .candidate-analysis-theme [class*="bg-[#dce9ff]"],
+.theme-dark .candidate-analysis-theme [class*="bg-[#e5eeff]"],
+.theme-dark .candidate-analysis-theme [class*="bg-[#cbdbf5]"],
+.theme-dark .employer-dashboard-theme [class*="bg-[#eff4ff]"],
+.theme-dark .employer-dashboard-theme [class*="bg-[#d3e4fe]"],
+.theme-dark .employer-dashboard-theme [class*="bg-[#d8e3fb]"],
+.theme-dark .employer-dashboard-theme [class*="bg-[#dce9ff]"],
+.theme-dark .employer-dashboard-theme [class*="bg-[#e5eeff]"],
+.theme-dark .employer-dashboard-theme [class*="bg-[#cbdbf5]"] {
+  background-color: #18263a !important;
+}
+
+.theme-dark .candidate-analysis-theme [class*="bg-[#dcfce7]"],
+.theme-dark .employer-dashboard-theme [class*="bg-[#dcfce7]"] {
+  background-color: #123c32 !important;
+}
+
+.theme-dark .candidate-analysis-theme [class*="bg-[radial-gradient"] {
+  background-image: radial-gradient(circle at center, #263956, transparent 70%) !important;
+}
+
+.theme-dark .employer-dashboard-theme [class*="bg-gradient-to"] {
+  background-image: linear-gradient(to bottom right, #18263a, #0d1829) !important;
+}
