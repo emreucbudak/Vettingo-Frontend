@@ -142,6 +142,10 @@ body {
   color: #f4f8ff !important;
 }
 
+.theme-dark .assessment-info-icon {
+  color: #091426 !important;
+}
+
 .theme-dark .testimonial-marquee article {
   background: #101c2f !important;
   border-color: #2d3d58 !important;

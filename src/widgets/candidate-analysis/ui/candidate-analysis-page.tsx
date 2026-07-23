@@ -415,11 +415,6 @@ export function CandidateAnalysisPage({ candidateId }: { candidateId: string | n
             {error}
           </div>
         ) : null}
-        {!resolvedCandidateId ? (
-          <div className="mb-6 rounded border border-[#c5c6cd] bg-[#eff4ff] px-4 py-3 text-sm text-[#45474c]">
-            Bir aday değerlendirmesi görmek için URL&apos;ye candidateId parametresi ekleyin.
-          </div>
-        ) : null}
         <CandidateHeader
           evaluationCount={evaluationCount}
           isLoading={isLoading}
