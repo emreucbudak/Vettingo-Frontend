@@ -19,7 +19,7 @@ function MobileBrand() {
   return (
     <div className="flex items-center gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-4 py-3 md:hidden">
       <Image
-        alt="Executive Recruitment logosu"
+        alt='Vettingo logosu'
         className="h-9 w-9 rounded object-cover"
         height={36}
         src={employerProfile.logoUrl}
