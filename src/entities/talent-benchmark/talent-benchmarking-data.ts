@@ -31,8 +31,8 @@ export type BenchmarkRow = {
 
 export const benchmarkingProfile = {
   productName: "TalentPulse",
-  organizationName: "Executive Recruitment",
-  planName: "Kurumsal Paket",
+  organizationName: 'Vettingo',
+  planName: '',
   title: "Aday Karşılaştırma",
   subtitle: "Kıdemli Yazılım Mühendisi (Talep #4921) için en iyi 3 aday karşılaştırılıyor",
   avatarUrl:
@@ -43,15 +43,15 @@ export const benchmarkingProfile = {
 
 
 export const sidebarItems = [
-  { label: "Panel", icon: "space_dashboard", active: false, href: "/" },
-  { label: "Başvurular", icon: "assignment_ind", active: false, href: "/candidate" },
-  { label: "Yapay Zeka Analizi", icon: "auto_awesome", active: true, href: "/candidate-analysis" },
-  { label: "İşler", icon: "business_center", active: false, href: "/jobs" },
+  { label: 'Panel', icon: 'space_dashboard', active: false, href: '/employer' },
+  { label: 'Başvurular', icon: 'assignment_ind', active: false, href: '/candidate' },
+  { label: 'Yetenekler', icon: 'auto_awesome', active: true, href: '/candidate-analysis' },
+  { label: 'İlanlarım', icon: 'business_center', active: false, href: '/jobs' },
 ];
 
 export const supportItems = [
-  { label: "Yardım Merkezi", icon: "support_agent", href: "/" },
-  { label: "Ayarlar", icon: "tune", href: "/" },
+  { label: 'Yardım Merkezi', icon: 'support_agent', href: '/employer/help-center' },
+  { label: 'Ayarlar', icon: 'tune', href: '#' },
 ];
 
 export const benchmarkCandidates = [

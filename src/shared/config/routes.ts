@@ -5,6 +5,7 @@ export const ROUTES = {
   register: "/register",
   candidate: "/candidate",
   employer: "/employer",
+  employerHelpCenter: '/employer/help-center',
   candidateAnalysis: "/candidate-analysis",
   resumeUpload: "/resume-upload",
   jobs: "/jobs",

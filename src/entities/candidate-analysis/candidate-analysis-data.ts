@@ -1,21 +1,21 @@
 ﻿export const analysisProfile = {
-  companyLabel: "Executive Recruitment",
-  edition: "Kurumsal Paket",
+  companyLabel: 'Vettingo',
+  edition: '',
   productName: "Vettingo",
   avatarUrl:
     "https://lh3.googleusercontent.com/aida-public/AB6AXuBp4-TTmz4s_isjz__hdxgCNQEZ17MBAE0O01NeZO36S-Li82jBgd7VNQWdAnue4dTsHomRmdaQcbLhzVAO_fnTwx513iA5OxmlurjikwJEwR2Izsv75XYMu3VLP37GMzrhVNDOxxc_WMF8Q6vYGvxcwsDE-7lAXsUdQ3FNgYUT1QXyiCrUE7TTExNZL12gW7OATalZ1zTgBzkwAIAdls_M6XiuNhWHIkTMNhe2772yBbdq6-WGy8YLdysMMOf9yu4feyiuheDL3XM",
 } as const;
 
 export const analysisNavigationItems = [
-  { label: "Panel", icon: "space_dashboard" },
-  { label: "Başvurular", icon: "assignment_ind" },
-  { label: "Yapay Zeka Analizi", icon: "auto_awesome", active: true },
-  { label: "İşler", icon: "business_center" },
+  { label: 'Panel', icon: 'space_dashboard', href: '/employer' },
+  { label: 'Başvurular', icon: 'assignment_ind', href: '/candidate' },
+  { label: 'Yetenekler', icon: 'auto_awesome', active: true, href: '/candidate-analysis' },
+  { label: 'İlanlarım', icon: 'business_center', href: '/jobs' },
 ] as const;
 
 export const analysisUtilityItems = [
-  { label: "Yardım Merkezi", icon: "support_agent" },
-  { label: "Ayarlar", icon: "tune" },
+  { label: 'Yardım Merkezi', icon: 'support_agent', href: '/employer/help-center' },
+  { label: 'Ayarlar', icon: 'tune', href: '#' },
 ] as const;
 
 export const candidateDetails = {
