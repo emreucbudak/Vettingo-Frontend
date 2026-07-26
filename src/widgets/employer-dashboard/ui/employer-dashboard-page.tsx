@@ -5,7 +5,6 @@ import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   activeRequisitions,
-  employerFooterLinks,
   employerNavigationItems,
   employerProfile,
   employerStats,
@@ -250,13 +249,6 @@ function DashboardFooter() {
           Vettingo
         </span>
         © 2026 Vettingo. Tüm hakları saklıdır.
-      </div>
-      <div className="flex flex-wrap gap-4 text-[11px] font-medium leading-4">
-        {employerFooterLinks.map((link) => (
-          <a className="text-[#45474c] transition-colors hover:text-[#091426]" href="#" key={link}>
-            {link}
-          </a>
-        ))}
       </div>
     </footer>
   );

@@ -66,6 +66,7 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="m12 5 7 7-7 7" />
     </>
   ),
+  expand_more: <path d="m6 9 6 6 6-6" />,
   assignment_ind: (
     <>
       <rect height="16" rx="2" width="18" x="3" y="4" />
@@ -315,15 +316,8 @@ const iconPaths: Record<string, ReactNode> = {
   ),
   settings: (
     <>
+      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
       <circle cx="12" cy="12" r="3" />
-      <path d="M12 2v3" />
-      <path d="M12 19v3" />
-      <path d="M4.9 4.9 7 7" />
-      <path d="m17 17 2.1 2.1" />
-      <path d="M2 12h3" />
-      <path d="M19 12h3" />
-      <path d="M4.9 19.1 7 17" />
-      <path d="m17 7 2.1-2.1" />
     </>
   ),
   share: (
@@ -353,6 +347,13 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M9 12h.01" />
       <path d="M15 12h.01" />
       <path d="M9.5 16a4 4 0 0 0 5 0" />
+    </>
+  ),
+  support_check: (
+    <>
+      <path d="M7 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v2" />
+      <path d="M9 7h10a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2v3l-4-3H9a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" />
+      <path d="m11 12 2 2 4-4" />
     </>
   ),
   storefront: (

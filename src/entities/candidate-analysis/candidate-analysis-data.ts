@@ -8,14 +8,14 @@
 
 export const analysisNavigationItems = [
   { label: 'Panel', icon: 'space_dashboard', href: '/employer' },
+  { label: 'İlanlarım', icon: 'business_center', href: '/jobs' },
   { label: 'Başvurular', icon: 'assignment_ind', href: '/candidate' },
   { label: 'Yetenekler', icon: 'auto_awesome', active: true, href: '/candidate-analysis' },
-  { label: 'İlanlarım', icon: 'business_center', href: '/jobs' },
 ] as const;
 
 export const analysisUtilityItems = [
   { label: 'Yardım Merkezi', icon: 'support_agent', href: '/employer/help-center' },
-  { label: 'Ayarlar', icon: 'tune', href: '#' },
+  { label: 'Ayarlar', icon: 'settings', href: '#' },
 ] as const;
 
 export const candidateDetails = {

@@ -9,14 +9,14 @@
 
 export const employerNavigationItems = [
   { label: 'Panel', icon: 'space_dashboard', active: true, href: '/employer' },
+  { label: 'İlanlarım', icon: 'business_center', href: '/jobs' },
   { label: 'Başvurular', icon: 'assignment_ind', href: '/candidate' },
   { label: 'Yetenekler', icon: 'auto_awesome', href: '/candidate-analysis' },
-  { label: 'İlanlarım', icon: 'business_center', href: '/jobs' },
 ] as const;
 
 export const employerUtilityItems = [
   { label: 'Yardım Merkezi', icon: 'support_agent', href: '/employer/help-center' },
-  { label: 'Ayarlar', icon: 'tune', href: '#' },
+  { label: 'Ayarlar', icon: 'settings', href: '#' },
 ] as const;
 
 export const employerStats = [
@@ -96,5 +96,3 @@ export const monthlyBars = [
   { label: "May", height: "h-[90%]", active: true },
   { label: "Haz", height: "h-[75%]" },
 ] as const;
-
-export const employerFooterLinks = ['Destek'] as const;
