@@ -9,9 +9,9 @@
 
 export const employerNavigationItems = [
   { label: 'Panel', icon: 'space_dashboard', active: true, href: '/employer' },
-  { label: 'İlanlarım', icon: 'business_center', href: '/jobs' },
-  { label: 'Başvurular', icon: 'assignment_ind', href: '/candidate' },
-  { label: 'Yetenekler', icon: 'auto_awesome', href: '/candidate-analysis' },
+  { label: 'İlanlarım', icon: 'business_center', href: '/employer/jobs' },
+  { label: 'Başvurular', icon: 'assignment_ind', href: '/employer/applications' },
+  { label: 'Yetenekler', icon: 'auto_awesome', href: '/employer/talents' },
 ] as const;
 
 export const employerUtilityItems = [

@@ -44,9 +44,9 @@ export const benchmarkingProfile = {
 
 export const sidebarItems = [
   { label: 'Panel', icon: 'space_dashboard', active: false, href: '/employer' },
-  { label: 'İlanlarım', icon: 'business_center', active: false, href: '/jobs' },
-  { label: 'Başvurular', icon: 'assignment_ind', active: false, href: '/candidate' },
-  { label: 'Yetenekler', icon: 'auto_awesome', active: true, href: '/candidate-analysis' },
+  { label: 'İlanlarım', icon: 'business_center', active: false, href: '/employer/jobs' },
+  { label: 'Başvurular', icon: 'assignment_ind', active: false, href: '/employer/applications' },
+  { label: 'Yetenekler', icon: 'auto_awesome', active: true, href: '/employer/talents' },
 ];
 
 export const supportItems = [

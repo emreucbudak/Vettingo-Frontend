@@ -3,13 +3,14 @@
 import { useState, type FormEvent } from 'react';
 import { ROUTES } from '@/shared/config/routes';
 import { DashboardShell } from '@/shared/ui/dashboard-shell';
+import { EmployerDashboardFooter } from '@/shared/ui/dashboard-shell/employer-dashboard-footer';
 import { MaterialIcon } from '@/shared/ui/material-icon';
 
 const navigationItems = [
   { label: 'Panel', icon: 'space_dashboard', href: ROUTES.employer },
-  { label: 'İlanlarım', icon: 'business_center', href: ROUTES.jobs },
-  { label: 'Başvurular', icon: 'assignment_ind', href: ROUTES.candidate },
-  { label: 'Yetenekler', icon: 'auto_awesome', href: ROUTES.candidateAnalysis },
+  { label: 'İlanlarım', icon: 'business_center', href: ROUTES.employerJobs },
+  { label: 'Başvurular', icon: 'assignment_ind', href: ROUTES.employerApplications },
+  { label: 'Yetenekler', icon: 'auto_awesome', href: ROUTES.employerTalents },
 ] as const;
 
 const utilityItems = [
@@ -42,6 +43,26 @@ const frequentlyAskedQuestions = [
     question: 'Ekip üyelerine farklı erişim yetkileri verebilir miyim?',
     answer:
       'Ayarlar bölümünden ekip üyelerini davet edebilir ve ilan, başvuru ya da raporlama alanları için uygun erişim seviyesini belirleyebilirsin.',
+  },
+  {
+    question: 'Vettingo Rating nasıl hesaplanır?',
+    answer:
+      '100 üzerinden hesaplanan Vettingo Rating; doğrulanmış yetkinlikler, deneyim derinliği, problem çözme, iletişim ve takım çalışması gibi alt özelliklerin birlikte değerlendirilmesiyle oluşur.',
+  },
+  {
+    question: 'Bir ilanı yayından kaldırmadan duraklatabilir miyim?',
+    answer:
+      'İlanlarım sayfasındaki seçenekler menüsünden ilanı duraklatabilirsin. Duraklatılan ilan yeni başvuru almaz; mevcut başvurular ve değerlendirme geçmişi korunur.',
+  },
+  {
+    question: 'Önerilen bir yeteneği başvuru sürecine nasıl eklerim?',
+    answer:
+      'Yetenek detayında “İletişime Geç” adımını kullanarak adayı yetenek havuzuna ekleyebilir, ardından uygun rol için başvuru veya görüşme süreci başlatabilirsin.',
+  },
+  {
+    question: 'Aday raporunu ekip arkadaşlarımla paylaşabilir miyim?',
+    answer:
+      'Aday detayındaki PDF dışa aktarma seçeneğiyle analiz özetini, role uygunluk puanını ve rating kırılımını tek raporda paylaşabilirsin.',
   },
 ] as const;
 
@@ -232,6 +253,7 @@ export function EmployerHelpCenterPage() {
 
         <FrequentlyAskedQuestions />
       </main>
+      <EmployerDashboardFooter />
     </DashboardShell>
   );
 }

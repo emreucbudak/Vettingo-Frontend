@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 export type DashboardNavigationItem = {
@@ -26,7 +27,7 @@ export function DashboardProfileIcon({ className = "" }: DashboardProfileIconPro
 
 function DashboardSidebarLink({ item }: { item: DashboardNavigationItem }) {
   return (
-    <a
+    <Link
       aria-current={item.active ? "page" : undefined}
       className={`flex items-center gap-4 rounded-lg px-4 py-3 text-xs font-semibold uppercase tracking-[0.05em] transition-all ${
         item.active
@@ -37,7 +38,7 @@ function DashboardSidebarLink({ item }: { item: DashboardNavigationItem }) {
     >
       <MaterialIcon className="text-[22px] leading-none">{item.icon}</MaterialIcon>
       {item.label}
-    </a>
+    </Link>
   );
 }
 
