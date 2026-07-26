@@ -44,14 +44,14 @@ export const benchmarkingProfile = {
 
 export const sidebarItems = [
   { label: 'Panel', icon: 'space_dashboard', active: false, href: '/employer' },
+  { label: 'İlanlarım', icon: 'business_center', active: false, href: '/jobs' },
   { label: 'Başvurular', icon: 'assignment_ind', active: false, href: '/candidate' },
   { label: 'Yetenekler', icon: 'auto_awesome', active: true, href: '/candidate-analysis' },
-  { label: 'İlanlarım', icon: 'business_center', active: false, href: '/jobs' },
 ];
 
 export const supportItems = [
   { label: 'Yardım Merkezi', icon: 'support_agent', href: '/employer/help-center' },
-  { label: 'Ayarlar', icon: 'tune', href: '#' },
+  { label: 'Ayarlar', icon: 'settings', href: '#' },
 ];
 
 export const benchmarkCandidates = [

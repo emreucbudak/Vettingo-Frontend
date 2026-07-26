@@ -7,9 +7,9 @@ import { MaterialIcon } from '@/shared/ui/material-icon';
 
 const navigationItems = [
   { label: 'Panel', icon: 'space_dashboard', href: ROUTES.employer },
+  { label: 'İlanlarım', icon: 'business_center', href: ROUTES.jobs },
   { label: 'Başvurular', icon: 'assignment_ind', href: ROUTES.candidate },
   { label: 'Yetenekler', icon: 'auto_awesome', href: ROUTES.candidateAnalysis },
-  { label: 'İlanlarım', icon: 'business_center', href: ROUTES.jobs },
 ] as const;
 
 const utilityItems = [
@@ -19,7 +19,7 @@ const utilityItems = [
     href: ROUTES.employerHelpCenter,
     active: true,
   },
-  { label: 'Ayarlar', icon: 'tune', href: '#' },
+  { label: 'Ayarlar', icon: 'settings', href: '#' },
 ] as const;
 
 const frequentlyAskedQuestions = [
@@ -211,7 +211,7 @@ export function EmployerHelpCenterPage() {
 
           <aside className='rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6'>
             <div className='flex h-10 w-10 items-center justify-center rounded bg-[#6cf8bb] text-[#00714d]'>
-              <MaterialIcon>schedule</MaterialIcon>
+              <MaterialIcon className='text-[24px]'>support_check</MaterialIcon>
             </div>
             <h2 className='mt-5 text-lg font-semibold leading-6 text-[#0b1c30]'>
               Yanıt süresi
