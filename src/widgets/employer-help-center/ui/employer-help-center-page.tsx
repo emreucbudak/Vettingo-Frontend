@@ -20,7 +20,8 @@ const utilityItems = [
     href: ROUTES.employerHelpCenter,
     active: true,
   },
-  { label: 'Ayarlar', icon: 'settings', href: '#' },
+  { label: 'Ayarlar', icon: 'settings', href: ROUTES.employerSettings },
+  { label: 'Çıkış Yap', icon: 'door_open', action: 'logout' },
 ] as const;
 
 const frequentlyAskedQuestions = [
