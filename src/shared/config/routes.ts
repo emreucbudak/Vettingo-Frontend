@@ -9,6 +9,7 @@ export const ROUTES = {
   employerJobs: "/employer/jobs",
   employerApplications: "/employer/applications",
   employerTalents: "/employer/talents",
+  employerSettings: "/employer/settings",
   candidateAnalysis: "/candidate-analysis",
   resumeUpload: "/resume-upload",
   jobs: "/jobs",

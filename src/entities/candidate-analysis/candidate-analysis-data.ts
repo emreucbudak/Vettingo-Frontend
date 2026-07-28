@@ -15,7 +15,8 @@ export const analysisNavigationItems = [
 
 export const analysisUtilityItems = [
   { label: 'Yardım Merkezi', icon: 'support_agent', href: '/employer/help-center' },
-  { label: 'Ayarlar', icon: 'settings', href: '#' },
+  { label: 'Ayarlar', icon: 'settings', href: '/employer/settings' },
+  { label: 'Çıkış Yap', icon: 'door_open', action: 'logout' },
 ] as const;
 
 export const candidateDetails = {

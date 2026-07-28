@@ -1,5 +1,10 @@
+"use client";
+
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { clearAuthToken } from "@/shared/auth";
+import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 export type DashboardNavigationItem = {
@@ -7,6 +12,7 @@ export type DashboardNavigationItem = {
   icon: string;
   active?: boolean;
   href?: string;
+  action?: "logout";
 };
 
 type DashboardProfileIconProps = {
@@ -26,14 +32,37 @@ export function DashboardProfileIcon({ className = "" }: DashboardProfileIconPro
 }
 
 function DashboardSidebarLink({ item }: { item: DashboardNavigationItem }) {
+  const router = useRouter();
+  const isLogout = item.action === "logout";
+  const className = `flex items-center gap-4 rounded-lg px-4 py-3 text-xs font-semibold uppercase tracking-[0.05em] transition-all ${
+    item.active
+      ? "bg-[#6cf8bb] text-[#00714d]"
+      : isLogout
+        ? "text-[#8c1d18] hover:bg-[#ffdad6] hover:text-[#6f1612]"
+        : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]"
+  }`;
+
+  if (isLogout) {
+    return (
+      <button
+        className={`${className} w-full`}
+        onClick={() => {
+          clearAuthToken();
+          router.replace(ROUTES.login);
+          router.refresh();
+        }}
+        type="button"
+      >
+        <MaterialIcon className="text-[22px] leading-none">{item.icon}</MaterialIcon>
+        {item.label}
+      </button>
+    );
+  }
+
   return (
     <Link
       aria-current={item.active ? "page" : undefined}
-      className={`flex items-center gap-4 rounded-lg px-4 py-3 text-xs font-semibold uppercase tracking-[0.05em] transition-all ${
-        item.active
-          ? "bg-[#6cf8bb] text-[#00714d]"
-          : "text-[#45474c] hover:bg-[#dce9ff] hover:text-[#0b1c30]"
-      }`}
+      className={className}
       href={item.href ?? "#"}
     >
       <MaterialIcon className="text-[22px] leading-none">{item.icon}</MaterialIcon>
