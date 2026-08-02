@@ -189,6 +189,14 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M12 16h1" />
     </>
   ),
+  door_open: (
+    <>
+      <path d="M4 21h16" />
+      <path d="M6 21V4.5a1 1 0 0 1 .78-.98L16 1.5V21" />
+      <path d="M16 5h2a1 1 0 0 1 1 1v15" />
+      <circle cx="12.5" cy="12" fill="currentColor" r=".75" stroke="none" />
+    </>
+  ),
   download: (
     <>
       <path d="M12 3v11" />
