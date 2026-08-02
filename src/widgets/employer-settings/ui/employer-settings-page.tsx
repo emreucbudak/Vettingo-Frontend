@@ -209,7 +209,7 @@ export function EmployerSettingsPage() {
             >
               <SectionHeader
                 description="Hesap sahibi ve bildirimler için kullanılacak iletişim bilgilerini güncelle."
-                icon="manage_accounts"
+                icon="settings"
                 title="Hesap ve İletişim"
               />
 
