@@ -406,7 +406,7 @@ export function ResumeUploadWizardPage() {
               <ParsedDataPanel />
               <ActionBar
                 onBack={() => setCurrentStep(1)}
-                onContinue={() => router.push(ROUTES.candidateAnalysis)}
+                onContinue={() => router.push(ROUTES.myCandidate)}
                 onRestart={restartUpload}
               />
             </>

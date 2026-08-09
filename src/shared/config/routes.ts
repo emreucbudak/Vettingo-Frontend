@@ -11,7 +11,7 @@ export const ROUTES = {
   employerApplications: "/employer/applications",
   employerTalents: "/employer/talents",
   employerSettings: "/employer/settings",
-  candidateAnalysis: "/candidate-analysis",
+  myCandidate: "/mycandidate",
   resumeUpload: "/resume-upload",
   jobs: "/jobs",
   newJob: "/jobs/new",

@@ -15,7 +15,7 @@ const navigationItems = [
   {
     label: "Yapay Zeka Analizi",
     icon: "auto_awesome",
-    href: ROUTES.candidateAnalysis,
+    href: ROUTES.myCandidate,
   },
   { label: "İşler", icon: "business_center", href: ROUTES.jobs },
 ] as const;
