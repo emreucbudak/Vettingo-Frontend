@@ -25,6 +25,6 @@ export default async function EmployerTalentDetailRoute({
   if (!candidate) notFound();
 
   return (
-    <CandidateAnalysisPage candidate={candidate} candidateId={null} detailKind="talent" />
+    <CandidateAnalysisPage candidate={candidate} detailKind="talent" />
   );
 }

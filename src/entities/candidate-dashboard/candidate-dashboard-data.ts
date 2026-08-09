@@ -8,7 +8,7 @@ export const candidateProfile = {
 export const navigationItems = [
   { label: "Panel", icon: "space_dashboard", active: true, href: ROUTES.candidate },
   { label: "Başvurular", icon: "assignment_ind", href: `${ROUTES.candidate}#applications` },
-  { label: "Yapay Zeka Analizi", icon: "auto_awesome", href: ROUTES.candidateAnalysis },
+  { label: "Yapay Zeka Analizi", icon: "auto_awesome", href: ROUTES.myCandidate },
   { label: "İşler", icon: "business_center", href: ROUTES.jobs },
 ] as const;
 

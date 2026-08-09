@@ -2,24 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
-import { useCandidateEvaluationAnalysis } from "@/features/candidate-analysis";
 import {
-  defaultCandidateAnalysisProfile,
   type CandidateAnalysisProfile,
   type CandidateRatingAttribute,
 } from "@/entities/candidate-analysis/candidate-analysis-profile";
 import { analysisProfile, analysisUtilityItems } from "@/entities/candidate-analysis";
-import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { EmployerDashboardFooter } from "@/shared/ui/dashboard-shell/employer-dashboard-footer";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
-const subscribeToBrowserState = () => () => undefined;
-const getServerToken = (): string | null => null;
 
-type DetailKind = "analysis" | "application" | "talent";
+type DetailKind = "application" | "talent";
 
 const employerNavigation = [
   { key: "dashboard", label: "Panel", icon: "space_dashboard", href: ROUTES.employer },
@@ -33,33 +27,12 @@ const employerNavigation = [
   { key: "talents", label: "Yetenekler", icon: "auto_awesome", href: ROUTES.employerTalents },
 ] as const;
 
-const candidateNavigation = [
-  { label: "Panel", icon: "space_dashboard", href: ROUTES.candidate },
-  { label: "Başvurular", icon: "assignment_ind", href: "/candidate#applications" },
-  { label: "Yapay Zeka Analizi", icon: "auto_awesome", href: ROUTES.candidateAnalysis, active: true },
-  { label: "İşler", icon: "business_center", href: ROUTES.jobs },
-] as const;
-
-const candidateUtilityItems = [
-  { label: "Yardım Merkezi", icon: "support_agent", href: ROUTES.candidateHelpCenter },
-  { label: "Ayarlar", icon: "settings" },
-  { label: "Çıkış Yap", icon: "door_open", action: "logout" },
-] as const;
-
 function getNavigationItems(detailKind: DetailKind) {
-  if (detailKind === "analysis") {
-    return candidateNavigation;
-  }
-
   const activeKey = detailKind === "application" ? "applications" : "talents";
   return employerNavigation.map(({ key, ...item }) => ({
     ...item,
     active: key === activeKey,
   }));
-}
-
-function getUtilityItems(detailKind: DetailKind) {
-  return detailKind === "analysis" ? candidateUtilityItems : analysisUtilityItems;
 }
 
 function BreadcrumbActions({
@@ -71,7 +44,7 @@ function BreadcrumbActions({
 }) {
   const isTalent = detailKind === "talent";
   const collectionLabel = isTalent ? "Yetenekler" : "Başvurular";
-  const collectionHref = detailKind === "analysis" ? ROUTES.candidate : isTalent ? ROUTES.employerTalents : ROUTES.employerApplications;
+  const collectionHref = isTalent ? ROUTES.employerTalents : ROUTES.employerApplications;
 
   return (
     <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -455,31 +428,18 @@ function CandidateContextCard({
 
 export function CandidateAnalysisPage({
   candidate,
-  candidateId,
-  detailKind = "analysis",
+  detailKind,
 }: {
-  candidate?: CandidateAnalysisProfile;
-  candidateId: string | null;
-  detailKind?: DetailKind;
+  candidate: CandidateAnalysisProfile;
+  detailKind: DetailKind;
 }) {
-  const token = useSyncExternalStore<string | null>(
-    subscribeToBrowserState,
-    getAuthToken,
-    getServerToken,
-  );
-  const sessionUser = token && !isTokenExpired(token) ? getTokenSessionUser(token) : null;
-  const resolvedCandidateId = candidate ? null : candidateId ?? sessionUser?.id ?? null;
-  const remoteAnalysis = useCandidateEvaluationAnalysis(resolvedCandidateId);
-  const profile = candidate ?? defaultCandidateAnalysisProfile;
-  const hasRemoteAnalysis = !candidate && remoteAnalysis.evaluationCount > 0;
-  const rating = hasRemoteAnalysis ? remoteAnalysis.overallScore : profile.rating;
-  const ratingAttributes = hasRemoteAnalysis
-    ? remoteAnalysis.categories
-    : profile.ratingAttributes;
-  const summary = hasRemoteAnalysis ? remoteAnalysis.summary : profile.summary;
-  const strengths = hasRemoteAnalysis ? remoteAnalysis.strengths : profile.strengths;
-  const risks = hasRemoteAnalysis ? remoteAnalysis.risks : profile.risks;
-  const isLoading = !candidate && remoteAnalysis.isLoading;
+  const profile = candidate;
+  const rating = profile.rating;
+  const ratingAttributes = profile.ratingAttributes;
+  const summary = profile.summary;
+  const strengths = profile.strengths;
+  const risks = profile.risks;
+  const isLoading = false;
 
   return (
     <DashboardShell
@@ -490,24 +450,24 @@ export function CandidateAnalysisPage({
         <Link
           aria-label="Listeye dön"
           className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-          href={detailKind === "analysis" ? ROUTES.candidate : detailKind === "talent" ? ROUTES.employerTalents : ROUTES.employerApplications}
+          href={
+            detailKind === "talent"
+              ? ROUTES.employerTalents
+              : ROUTES.employerApplications
+          }
         >
           <MaterialIcon>arrow_back</MaterialIcon>
         </Link>
       }
-      utilityItems={getUtilityItems(detailKind)}
+      utilityItems={analysisUtilityItems}
     >
       <main className="candidate-analysis-theme mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
         <BreadcrumbActions candidate={profile} detailKind={detailKind} />
-        {remoteAnalysis.error && !candidate ? (
-          <div
-            className="mb-6 rounded border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]"
-            role="alert"
-          >
-            {remoteAnalysis.error}
-          </div>
-        ) : null}
-        <CandidateHeader candidate={profile} isLoading={isLoading} rating={rating} />
+        <CandidateHeader
+          candidate={profile}
+          isLoading={isLoading}
+          rating={rating}
+        />
 
         <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <ExecutiveSummaryCard
@@ -518,24 +478,26 @@ export function CandidateAnalysisPage({
             strengths={strengths}
             summary={summary}
           />
-          <RoleSuitabilityCard candidate={profile} isLoading={isLoading} />
-          <RatingCard attributes={ratingAttributes} isLoading={isLoading} rating={rating} />
+          <RoleSuitabilityCard
+            candidate={profile}
+            isLoading={isLoading}
+          />
+          <RatingCard
+            attributes={ratingAttributes}
+            isLoading={isLoading}
+            rating={rating}
+          />
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <ExperienceCard candidate={profile} />
-          <CandidateContextCard candidate={profile} detailKind={detailKind} />
+          <CandidateContextCard
+            candidate={profile}
+            detailKind={detailKind}
+          />
         </div>
       </main>
-      {detailKind === "analysis" ? (
-        <footer className="mt-auto border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:px-8">
-          <span className="text-xs font-bold uppercase tracking-[0.05em] text-[#45474c]">
-            © 2026 Vettingo. Tüm hakları saklıdır.
-          </span>
-        </footer>
-      ) : (
-        <EmployerDashboardFooter />
-      )}
+      <EmployerDashboardFooter />
     </DashboardShell>
   );
 }

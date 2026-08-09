@@ -64,7 +64,7 @@ function CandidateHeader() {
           <span className="mb-1 rounded-full bg-[#dcfce7] px-2 py-1 text-[11px] font-medium leading-[14px] text-[#10b981]">
             {candidate.match}
           </span>
-          <a className="mt-2 text-[11px] font-medium leading-[14px] text-[#091426] hover:underline" href={ROUTES.candidateAnalysis}>
+          <a className="mt-2 text-[11px] font-medium leading-[14px] text-[#091426] hover:underline" href={ROUTES.employerTalents}>
             Profili Gör
           </a>
         </div>

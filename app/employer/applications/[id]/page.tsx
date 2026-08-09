@@ -27,7 +27,6 @@ export default async function EmployerApplicationDetailRoute({
   return (
     <CandidateAnalysisPage
       candidate={candidate}
-      candidateId={null}
       detailKind="application"
     />
   );
