@@ -4,6 +4,7 @@ export const ROUTES = {
   login: "/login",
   register: "/register",
   candidate: "/candidate",
+  candidateHelpCenter: "/candidate/help-center",
   employer: "/employer",
   employerHelpCenter: '/employer/help-center',
   employerJobs: "/employer/jobs",
