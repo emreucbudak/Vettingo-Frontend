@@ -1,11 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useSyncExternalStore } from "react";
-import { useRouter } from "next/navigation";
+import { useSyncExternalStore } from "react";
 import {
   candidateProfile,
-  footerLinks,
   navigationItems,
   recommendedJobs,
   utilityItems,
@@ -15,20 +13,13 @@ import {
   type CandidateApplication,
   type UpcomingInterview,
 } from "@/features/candidate-dashboard";
-import {
-  clearAuthToken,
-  getAuthToken,
-  getTokenSessionUser,
-  isTokenExpired,
-} from "@/shared/auth";
+import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
 import { DashboardProfileIcon, DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const subscribeToBrowserState = () => () => undefined;
 const getServerToken = (): string | null => null;
-const getBrowserReady = () => true;
-const getServerReady = () => false;
 
 function MobileHeader() {
   return (
@@ -78,7 +69,7 @@ function ApplicationsSection({
   isLoading: boolean;
 }) {
   return (
-    <section>
+    <section id="applications">
       <h3 className="mb-4 text-lg font-medium leading-6 text-[#0b1c30]">Başvurular</h3>
       {isLoading ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2" aria-label="Başvurular yükleniyor">
@@ -210,30 +201,16 @@ function SkillRadarCard() {
 
 function DashboardFooter() {
   return (
-    <footer className="mt-auto flex flex-col gap-4 border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:flex-row md:items-center md:justify-between md:px-8">
+    <footer className="mt-auto border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:px-8">
       <span className="text-xs font-bold uppercase tracking-[0.05em] text-[#45474c]">© 2026 Vettingo. Tüm hakları saklıdır.</span>
-      <ul className="flex flex-wrap gap-4 text-[11px] font-medium leading-4">
-        {footerLinks.map((link) => (
-          <li key={link}><a className="text-[#45474c] transition-colors hover:text-[#091426]" href="#">{link}</a></li>
-        ))}
-      </ul>
     </footer>
   );
 }
 
 export function CandidateDashboardPage() {
-  const router = useRouter();
-  const isBrowserReady = useSyncExternalStore(subscribeToBrowserState, getBrowserReady, getServerReady);
   const token = useSyncExternalStore<string | null>(subscribeToBrowserState, getAuthToken, getServerToken);
   const sessionUser = token && !isTokenExpired(token) ? getTokenSessionUser(token) : null;
   const { applications, interviews, error, isLoading } = useCandidateDashboardData(sessionUser?.id ?? null);
-
-  useEffect(() => {
-    if (isBrowserReady && !sessionUser) {
-      if (token) clearAuthToken();
-      router.replace(ROUTES.login);
-    }
-  }, [isBrowserReady, router, sessionUser, token]);
 
   return (
     <DashboardShell

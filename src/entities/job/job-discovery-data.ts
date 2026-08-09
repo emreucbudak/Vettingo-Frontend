@@ -71,5 +71,3 @@ export const marketIntelligence = {
     { label: "75. yüzdelik", value: "$280k", active: false },
   ],
 } as const;
-
-export const jobFooterLinks = ["Gizlilik Politikası", "Kullanım Şartları", "Yardım Merkezi", "Destek"] as const;

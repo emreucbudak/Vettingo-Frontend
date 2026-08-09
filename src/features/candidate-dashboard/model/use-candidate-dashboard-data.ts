@@ -163,7 +163,7 @@ function toInterviewView(interview: InterviewDto): UpcomingInterview {
 
 export function useCandidateDashboardData(candidateId: string | null) {
   const [data, setData] = useState<CandidateDashboardData>(initialData);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(Boolean(candidateId));
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -175,6 +175,7 @@ export function useCandidateDashboardData(candidateId: string | null) {
     const abortController = new AbortController();
 
     async function loadDashboard() {
+      setIsLoading(true);
       try {
         const [applications, interviews] = await Promise.all([
           getCandidateApplications(activeCandidateId, abortController.signal),

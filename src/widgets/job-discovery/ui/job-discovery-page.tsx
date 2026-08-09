@@ -10,11 +10,7 @@ import {
   type JobSearchFilters,
   type WorkingModel,
 } from "@/features/job-search";
-import {
-  jobDiscoveryProfile,
-  jobFooterLinks,
-  marketIntelligence,
-} from "@/entities/job";
+import { jobDiscoveryProfile, marketIntelligence } from "@/entities/job";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const selectClassName =
@@ -376,9 +372,6 @@ function Footer() {
   return (
     <footer className="mt-auto flex w-full flex-col gap-4 border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 text-[11px] font-medium text-[#45474c] md:flex-row md:items-center md:justify-between md:px-8">
       <span className="text-xs font-bold uppercase text-[#091426]">Vettingo</span>
-      <div className="flex flex-wrap gap-4">
-        {jobFooterLinks.map((link) => <a href="#" key={link}>{link}</a>)}
-      </div>
       <span>© 2026 Vettingo. Tüm hakları saklıdır.</span>
     </footer>
   );
