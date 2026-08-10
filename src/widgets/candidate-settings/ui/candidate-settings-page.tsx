@@ -21,8 +21,6 @@ type CandidateProfileForm = {
   location: string;
   targetRole: string;
   bio: string;
-  emailNotifications: boolean;
-  jobRecommendations: boolean;
 };
 
 const emptyProfile: CandidateProfileForm = {
@@ -33,8 +31,6 @@ const emptyProfile: CandidateProfileForm = {
   location: "",
   targetRole: "",
   bio: "",
-  emailNotifications: true,
-  jobRecommendations: true,
 };
 
 const inputClass =
@@ -77,7 +73,7 @@ function SectionHeader({
 
 type ProfileTextField = Exclude<
   keyof CandidateProfileForm,
-  "emailNotifications" | "jobRecommendations" | "bio"
+  "bio"
 >;
 
 function ProfileInput({
@@ -232,6 +228,127 @@ function ProfileForm({
   );
 }
 
+type PasswordStatus = "idle" | "mismatch" | "same" | "saved";
+
+function AccountSettingsForm() {
+  const [passwordStatus, setPasswordStatus] = useState<PasswordStatus>("idle");
+
+  function handlePasswordSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const currentPassword = String(formData.get("currentPassword") ?? "");
+    const newPassword = String(formData.get("newPassword") ?? "");
+    const confirmPassword = String(formData.get("confirmPassword") ?? "");
+
+    if (newPassword !== confirmPassword) {
+      setPasswordStatus("mismatch");
+      return;
+    }
+
+    if (currentPassword === newPassword) {
+      setPasswordStatus("same");
+      return;
+    }
+
+    form.reset();
+    setPasswordStatus("saved");
+  }
+
+  const statusMessage =
+    passwordStatus === "mismatch"
+      ? "Yeni şifreler birbiriyle eşleşmiyor."
+      : passwordStatus === "same"
+        ? "Yeni şifren mevcut şifrenden farklı olmalı."
+        : "Şifre bilgilerin güncellendi.";
+  const hasStatus = passwordStatus !== "idle";
+  const isError = passwordStatus === "mismatch" || passwordStatus === "same";
+
+  return (
+    <form
+      className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
+      onChange={() => setPasswordStatus("idle")}
+      onSubmit={handlePasswordSubmit}
+    >
+      <SectionHeader
+        description="Hesabın için güçlü ve benzersiz bir şifre kullan."
+        icon="lock"
+        title="Hesap Ayarları"
+      />
+
+      <div className="space-y-5">
+        <div>
+          <label className={labelClass} htmlFor="candidate-current-password">
+            Mevcut Şifre
+          </label>
+          <input
+            autoComplete="current-password"
+            className={inputClass}
+            id="candidate-current-password"
+            minLength={6}
+            name="currentPassword"
+            placeholder="••••••••"
+            required
+            type="password"
+          />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="candidate-new-password">
+            Yeni Şifre
+          </label>
+          <input
+            autoComplete="new-password"
+            className={inputClass}
+            id="candidate-new-password"
+            minLength={6}
+            name="newPassword"
+            placeholder="En az 6 karakter"
+            required
+            type="password"
+          />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="candidate-confirm-password">
+            Yeni Şifre Tekrar
+          </label>
+          <input
+            autoComplete="new-password"
+            className={inputClass}
+            id="candidate-confirm-password"
+            minLength={6}
+            name="confirmPassword"
+            placeholder="Yeni şifreni tekrar gir"
+            required
+            type="password"
+          />
+        </div>
+      </div>
+
+      <div className="mt-6 border-t border-[#c5c6cd] pt-5">
+        <button
+          className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
+          type="submit"
+        >
+          Şifreyi Güncelle
+          <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
+        </button>
+        <p
+          aria-live="polite"
+          className={`mt-3 flex items-start gap-2 text-sm font-medium ${
+            isError ? "text-[#8c1d18]" : "text-[#006c49]"
+          } ${hasStatus ? "" : "sr-only"}`}
+        >
+          <MaterialIcon className="mt-0.5 text-[18px]">
+            {isError ? "warning" : "check_circle"}
+          </MaterialIcon>
+          {statusMessage}
+        </p>
+      </div>
+    </form>
+  );
+}
+
 function CandidateSettingsContent({
   sessionEmail,
   sessionFullName,
@@ -295,7 +412,7 @@ function CandidateSettingsContent({
       .toLocaleUpperCase("tr-TR") || "AK";
 
   return (
-    <CandidateShell>
+    <CandidateShell showTopBarLabel={false}>
       <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
         <header className="mb-8 border-b border-[#c5c6cd] pb-7">
           <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
@@ -304,10 +421,6 @@ function CandidateSettingsContent({
           <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
             Ayarlar
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#45474c]">
-            Profil ve iletişim bilgilerini güncel tut, sana ulaşma ve iş önerisi
-            tercihlerini yönet.
-          </p>
         </header>
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
@@ -341,43 +454,7 @@ function CandidateSettingsContent({
               </div>
             </section>
 
-            <section className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6">
-              <SectionHeader
-                description="Seninle hangi konularda iletişime geçebileceğimizi seç."
-                icon="notifications_active"
-                title="Bildirim Tercihleri"
-              />
-              <div className="space-y-4">
-                {[
-                  {
-                    key: "emailNotifications" as const,
-                    label: "Başvuru durumu e-postaları",
-                  },
-                  {
-                    key: "jobRecommendations" as const,
-                    label: "Yeni iş önerileri",
-                  },
-                ].map((preference) => (
-                  <label
-                    className="flex cursor-pointer items-center justify-between gap-4 rounded border border-[#c5c6cd] bg-[#f8f9ff] px-4 py-3 text-sm font-medium text-[#0b1c30]"
-                    key={preference.key}
-                  >
-                    {preference.label}
-                    <input
-                      checked={profile[preference.key]}
-                      className="h-4 w-4 accent-[#006c49]"
-                      onChange={(event) =>
-                        updateProfile(preference.key, event.target.checked)
-                      }
-                      type="checkbox"
-                    />
-                  </label>
-                ))}
-              </div>
-              <p className="mt-4 text-[11px] leading-5 text-[#75777d]">
-                Tercihler, değişiklikleri kaydettiğinde profilinle birlikte güncellenir.
-              </p>
-            </section>
+            <AccountSettingsForm />
           </aside>
         </div>
       </main>

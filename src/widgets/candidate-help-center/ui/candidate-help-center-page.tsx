@@ -160,11 +160,10 @@ function FrequentlyAskedQuestions() {
       </div>
 
       <div className="space-y-3">
-        {frequentlyAskedQuestions.map((item, index) => (
+        {frequentlyAskedQuestions.map((item) => (
           <details
             className="group rounded border border-[#c5c6cd] bg-[#f8f9ff] open:border-[#091426]"
             key={item.question}
-            open={index === 0}
           >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold text-[#0b1c30] marker:content-none md:px-6">
               {item.question}
