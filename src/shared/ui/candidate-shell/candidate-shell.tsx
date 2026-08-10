@@ -59,7 +59,13 @@ function CandidateFooter() {
   );
 }
 
-export function CandidateShell({ children }: { children: ReactNode }) {
+export function CandidateShell({
+  children,
+  showTopBarLabel = true,
+}: {
+  children: ReactNode;
+  showTopBarLabel?: boolean;
+}) {
   const pathname = usePathname();
   const navigationItems = withActiveRoute(candidateNavigationItems, pathname);
   const utilityItems = withActiveRoute(candidateUtilityItems, pathname);
@@ -69,11 +75,11 @@ export function CandidateShell({ children }: { children: ReactNode }) {
       navigationItems={navigationItems}
       sidebarSubtitle=""
       sidebarTitle="Vettingo"
-      topBarLeading={
+      topBarLeading={showTopBarLabel ? (
         <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
           Aday Paneli
         </span>
-      }
+      ) : undefined}
       utilityItems={utilityItems}
     >
       {children}
