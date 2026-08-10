@@ -2,12 +2,7 @@
 
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
-import {
-  candidateProfile,
-  navigationItems,
-  recommendedJobs,
-  utilityItems,
-} from "@/entities/candidate-dashboard";
+import { recommendedJobs } from "@/entities/candidate-dashboard";
 import {
   useCandidateDashboardData,
   type CandidateApplication,
@@ -15,22 +10,11 @@ import {
 } from "@/features/candidate-dashboard";
 import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
-import { DashboardProfileIcon, DashboardShell } from "@/shared/ui/dashboard-shell";
+import { CandidateShell } from "@/shared/ui/candidate-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const subscribeToBrowserState = () => () => undefined;
 const getServerToken = (): string | null => null;
-
-function MobileHeader() {
-  return (
-    <header className="flex items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 py-3 md:hidden">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-        Aday Paneli
-      </p>
-      <DashboardProfileIcon />
-    </header>
-  );
-}
 
 function ApplicationCard({ application }: { application: CandidateApplication }) {
   return (
@@ -70,7 +54,15 @@ function ApplicationsSection({
 }) {
   return (
     <section id="applications">
-      <h3 className="mb-4 text-lg font-medium leading-6 text-[#0b1c30]">Başvurular</h3>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">Başvurular</h3>
+        <Link
+          className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49] hover:underline"
+          href={ROUTES.candidateApplications}
+        >
+          Tümünü Gör
+        </Link>
+      </div>
       {isLoading ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2" aria-label="Başvurular yükleniyor">
           {[0, 1].map((item) => (
@@ -199,28 +191,13 @@ function SkillRadarCard() {
   );
 }
 
-function DashboardFooter() {
-  return (
-    <footer className="mt-auto border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:px-8">
-      <span className="text-xs font-bold uppercase tracking-[0.05em] text-[#45474c]">© 2026 Vettingo. Tüm hakları saklıdır.</span>
-    </footer>
-  );
-}
-
 export function CandidateDashboardPage() {
   const token = useSyncExternalStore<string | null>(subscribeToBrowserState, getAuthToken, getServerToken);
   const sessionUser = token && !isTokenExpired(token) ? getTokenSessionUser(token) : null;
   const { applications, interviews, error, isLoading } = useCandidateDashboardData(sessionUser?.id ?? null);
 
   return (
-    <DashboardShell
-      hideTopBarOnMobile
-      navigationItems={navigationItems}
-      sidebarSubtitle={candidateProfile.edition}
-      sidebarTitle={candidateProfile.companyLabel}
-      utilityItems={utilityItems}
-    >
-      <MobileHeader />
+    <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 overflow-x-hidden p-4 md:p-8">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
@@ -229,9 +206,12 @@ export function CandidateDashboardPage() {
             </h2>
             <p className="mt-2 text-base leading-6 text-[#45474c]">Bugünkü profesyonel durumun ve aktivite özetin burada.</p>
           </div>
-          <button className="w-full rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b] md:w-auto" type="button">
+          <Link
+            className="w-full rounded bg-[#091426] px-6 py-2 text-center text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b] md:w-auto"
+            href={ROUTES.candidateSettings}
+          >
             Profili Güncelle
-          </button>
+          </Link>
         </div>
 
         {error ? (
@@ -251,7 +231,6 @@ export function CandidateDashboardPage() {
           </div>
         </div>
       </main>
-      <DashboardFooter />
-    </DashboardShell>
+    </CandidateShell>
   );
 }
