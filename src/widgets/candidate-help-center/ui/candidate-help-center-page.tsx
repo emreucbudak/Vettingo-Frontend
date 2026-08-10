@@ -1,35 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { ROUTES } from "@/shared/config/routes";
-import { DashboardShell } from "@/shared/ui/dashboard-shell";
+import { CandidateShell } from "@/shared/ui/candidate-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-
-const navigationItems = [
-  { label: "Panel", icon: "space_dashboard", href: ROUTES.candidate },
-  {
-    label: "Başvurular",
-    icon: "assignment_ind",
-    href: "/candidate#applications",
-  },
-  {
-    label: "Yapay Zeka Analizi",
-    icon: "auto_awesome",
-    href: ROUTES.myCandidate,
-  },
-  { label: "İşler", icon: "business_center", href: ROUTES.jobs },
-] as const;
-
-const utilityItems = [
-  {
-    label: "Yardım Merkezi",
-    icon: "support_agent",
-    href: ROUTES.candidateHelpCenter,
-    active: true,
-  },
-  { label: "Ayarlar", icon: "settings" },
-  { label: "Çıkış Yap", icon: "door_open", action: "logout" },
-] as const;
 
 const frequentlyAskedQuestions = [
   {
@@ -40,7 +13,7 @@ const frequentlyAskedQuestions = [
   {
     question: "Başvurularımın hangi aşamada olduğunu nereden görebilirim?",
     answer:
-      "Paneldeki Başvurular bölümünde her başvurunun güncel durumunu ve sürecin hangi adımında olduğunu görebilirsin. Görüşme planlandığında ayrıntılar Yaklaşan Mülakatlar alanında da gösterilir.",
+      "Sol menüdeki Başvurular sayfasında her başvurunun güncel durumunu ve sürecin hangi adımında olduğunu görebilirsin. Görüşme planlandığında ayrıntılar Yaklaşan Mülakatlar alanında da gösterilir.",
   },
   {
     question: "Yapay zeka eşleşme skoru neyi gösterir?",
@@ -209,24 +182,9 @@ function FrequentlyAskedQuestions() {
   );
 }
 
-function CandidateFooter() {
-  return (
-    <footer className="mt-auto border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:px-8">
-      <span className="text-xs font-bold uppercase tracking-[0.05em] text-[#45474c]">
-        © 2026 Vettingo. Tüm hakları saklıdır.
-      </span>
-    </footer>
-  );
-}
-
 export function CandidateHelpCenterPage() {
   return (
-    <DashboardShell
-      navigationItems={navigationItems}
-      sidebarSubtitle=""
-      sidebarTitle="Vettingo"
-      utilityItems={utilityItems}
-    >
+    <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
         <header className="mb-8 border-b border-[#c5c6cd] pb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
@@ -266,7 +224,6 @@ export function CandidateHelpCenterPage() {
 
         <FrequentlyAskedQuestions />
       </main>
-      <CandidateFooter />
-    </DashboardShell>
+    </CandidateShell>
   );
 }

@@ -10,37 +10,11 @@ import {
 import { useCandidateEvaluationAnalysis } from "@/features/candidate-analysis";
 import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
-import { DashboardShell } from "@/shared/ui/dashboard-shell";
+import { CandidateShell } from "@/shared/ui/candidate-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const subscribeToBrowserState = () => () => undefined;
 const getServerToken = (): string | null => null;
-
-const navigationItems = [
-  { label: "Panel", icon: "space_dashboard", href: ROUTES.candidate },
-  {
-    label: "Başvurular",
-    icon: "assignment_ind",
-    href: "/candidate#applications",
-  },
-  {
-    label: "Yapay Zeka Analizi",
-    icon: "auto_awesome",
-    href: ROUTES.myCandidate,
-    active: true,
-  },
-  { label: "İşler", icon: "business_center", href: ROUTES.jobs },
-] as const;
-
-const utilityItems = [
-  {
-    label: "Yardım Merkezi",
-    icon: "support_agent",
-    href: ROUTES.candidateHelpCenter,
-  },
-  { label: "Ayarlar", icon: "settings" },
-  { label: "Çıkış Yap", icon: "door_open", action: "logout" },
-] as const;
 
 function ScoreRing({
   isLoading,
@@ -257,16 +231,6 @@ function GrowthPlan({
   );
 }
 
-function CandidateFooter() {
-  return (
-    <footer className="mt-auto border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:px-8">
-      <span className="text-xs font-bold uppercase tracking-[0.05em] text-[#45474c]">
-        © 2026 Vettingo. Tüm hakları saklıdır.
-      </span>
-    </footer>
-  );
-}
-
 export function CandidateSelfAnalysisPage() {
   const token = useSyncExternalStore<string | null>(
     subscribeToBrowserState,
@@ -306,12 +270,7 @@ export function CandidateSelfAnalysisPage() {
     : "Profil verilerin; stratejik düşünme, problem çözme, iletişim ve liderlik sinyallerinin güçlü olduğunu gösteriyor. Aşağıdaki sonuçları kariyer hedeflerini netleştirmek ve gelişim planını oluşturmak için kullanabilirsin.";
 
   return (
-    <DashboardShell
-      navigationItems={navigationItems}
-      sidebarSubtitle=""
-      sidebarTitle="Vettingo"
-      utilityItems={utilityItems}
-    >
+    <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 pb-4 pt-3 md:px-8 md:pb-8 md:pt-6">
         <header className="mb-6 flex flex-col gap-5 border-b border-[#c5c6cd] pb-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -559,7 +518,6 @@ export function CandidateSelfAnalysisPage() {
         />
       </main>
 
-      <CandidateFooter />
-    </DashboardShell>
+    </CandidateShell>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { type FormEvent, useEffect, useState } from "react";
 import {
   searchJobPostings,
@@ -10,7 +9,8 @@ import {
   type JobSearchFilters,
   type WorkingModel,
 } from "@/features/job-search";
-import { jobDiscoveryProfile, marketIntelligence } from "@/entities/job";
+import { marketIntelligence } from "@/entities/job";
+import { CandidateShell } from "@/shared/ui/candidate-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const selectClassName =
@@ -77,32 +77,6 @@ function toSearchFilters(form: SearchFormState): JobSearchFilters {
   }
 
   return filters;
-}
-
-function Header() {
-  return (
-    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-[#091426] md:px-6">
-      <span className="text-2xl font-bold tracking-[-0.01em] text-[#091426]">
-        {jobDiscoveryProfile.productName}
-      </span>
-      <div className="flex items-center justify-end gap-4">
-        <button
-          aria-label="Bildirimler"
-          className="rounded-full p-1 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-          type="button"
-        >
-          <MaterialIcon>notifications</MaterialIcon>
-        </button>
-        <Image
-          alt="Kullanıcı profil fotoğrafı"
-          className="ml-1 h-8 w-8 rounded-full object-cover"
-          height={32}
-          src={jobDiscoveryProfile.avatarUrl}
-          width={32}
-        />
-      </div>
-    </header>
-  );
 }
 
 function SearchHero({
@@ -368,15 +342,6 @@ function MarketIntelligence() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="mt-auto flex w-full flex-col gap-4 border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 text-[11px] font-medium text-[#45474c] md:flex-row md:items-center md:justify-between md:px-8">
-      <span className="text-xs font-bold uppercase text-[#091426]">Vettingo</span>
-      <span>© 2026 Vettingo. Tüm hakları saklıdır.</span>
-    </footer>
-  );
-}
-
 export function JobDiscoveryPage() {
   const [form, setForm] = useState<SearchFormState>(initialSearchForm);
   const [jobs, setJobs] = useState<JobPostingSearchDto[]>([]);
@@ -435,8 +400,7 @@ export function JobDiscoveryPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30]">
-      <Header />
+    <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-8 md:px-8">
         <SearchHero
           form={form}
@@ -450,7 +414,6 @@ export function JobDiscoveryPage() {
           <MarketIntelligence />
         </div>
       </main>
-      <Footer />
-    </div>
+    </CandidateShell>
   );
 }
