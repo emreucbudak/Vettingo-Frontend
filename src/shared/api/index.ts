@@ -1,1 +1,1 @@
-﻿export { authFetch } from "./auth-fetch";
+﻿export { getJWTToken , apiRequest } from "./api";
