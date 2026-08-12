@@ -8,8 +8,8 @@ interface User {
 export async function proxy(request:NextRequest) {
     const pathname = request.nextUrl.pathname;
     if(pathname.startsWith("/employer")){
-        let token = await getToken();
-        let claim =  decodeJwt(token) as User;
+        const token = await getToken();
+        const claim =  decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
         if(claim.role !== "employer" ||  expire === true) {
              return NextResponse.redirect(new URL("/login", request.url));
@@ -17,8 +17,8 @@ export async function proxy(request:NextRequest) {
          return NextResponse.next();
     }
     if(pathname.startsWith("/candidate")) {
-        let token = await getToken();
-        let claim = await decodeJwt(token) as User;
+        const token = await getToken();
+        const claim = await decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
         if (claim.role!== "candidate" || expire === true) {
              return NextResponse.redirect(new URL("/login", request.url));

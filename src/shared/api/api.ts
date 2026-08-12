@@ -7,31 +7,31 @@ interface Auth{
 }
 export async function getJWTToken(loginCredentials:Auth){
   
-  let response = await fetch(basePath+"/api/auth/login",{
+  const response = await fetch(basePath+"/api/auth/login",{
     body: JSON.stringify(loginCredentials),
   });
-  let token = await response.json();
+  const token = await response.json();
   await setToken(token.AccessToken,token.RefreshToken);
 }
 export async function apiRequest (path:string,method:string,options?:RequestInit):Promise<Response> {
   const headers = new Headers(options?.headers);
-  let accessToken = await getToken();
+  const accessToken = await getToken();
   headers.set('Authorization', `Bearer ${accessToken}`);  
   headers.set('Content-Type', 'application/json');
-  let response = await fetch(basePath+path,{
+  const response = await fetch(basePath+path,{
     method: method,
     
     headers: headers
     
   });
-  let apiResponse = await response.json();
+  const apiResponse = await response.json();
   return apiResponse; 
 }
 export async function getNewJwtFromRefresh() {
-  let refresh_token = await getRefreshToken();
-  let newTokens = await fetch(basePath+"/api/auth/refresh-token",{
+  const refresh_token = await getRefreshToken();
+  const newTokens = await fetch(basePath+"/api/auth/refresh-token",{
     body: JSON.stringify(refresh_token) 
   });
-  let newTokenJson = await newTokens.json();
+  const newTokenJson = await newTokens.json();
   await setToken(newTokenJson.AccessToken,newTokenJson.RefreshToken);
 }
