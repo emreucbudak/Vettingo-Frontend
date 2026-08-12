@@ -1,8 +1,4 @@
 import { cookies } from "next/headers";
-interface Tokens {
-  accessToken? : string
-  refreshToken?: string
-}
 export async function setToken(accessToken:string,refreshToken:string){
   const cookieStore = await cookies();
   await cookieStore.set("access_token",accessToken,{
@@ -15,10 +11,20 @@ export async function setToken(accessToken:string,refreshToken:string){
   })
   
 }
-export async function getToken() : Promise<Tokens>{
+export async function getToken() : Promise<string>{
   const cookieStore = await cookies();
-  return {
-    accessToken: cookieStore.get("access_token")?.value,
-    refreshToken: cookieStore.get("refresh_token")?.value,
+  let accessToken = await cookieStore.get("access_token");
+  if(accessToken?.value === undefined) {
+    throw new Error("Token Bulunamadı!")
   }
+  return accessToken.value;
 }
+export async function getRefreshToken(): Promise<string> {
+  const cookieStore = await cookies();
+  let refreshToken = await cookieStore.get("refresh_token");
+  if(refreshToken?.value === undefined) {
+    throw new Error("Refresh Token bulunamadı!");
+  }
+  return refreshToken.value;
+}
+
