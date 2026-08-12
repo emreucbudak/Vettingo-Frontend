@@ -13,7 +13,7 @@ export async function setToken(accessToken:string,refreshToken:string){
 }
 export async function getToken() : Promise<string>{
   const cookieStore = await cookies();
-  let accessToken = await cookieStore.get("access_token");
+  const accessToken = await cookieStore.get("access_token");
   if(accessToken?.value === undefined) {
     throw new Error("Token Bulunamadı!")
   }
@@ -21,7 +21,7 @@ export async function getToken() : Promise<string>{
 }
 export async function getRefreshToken(): Promise<string> {
   const cookieStore = await cookies();
-  let refreshToken = await cookieStore.get("refresh_token");
+  const refreshToken = await cookieStore.get("refresh_token");
   if(refreshToken?.value === undefined) {
     throw new Error("Refresh Token bulunamadı!");
   }
