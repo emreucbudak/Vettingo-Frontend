@@ -1,10 +1,6 @@
 ﻿import { getToken, setToken } from "../auth";
-
+import { getRefreshToken } from "../auth/auth-token";
 const basePath = "https://localhost:3000";
-interface Token {
-  accessToken : string,
-  refreshToken : string
-}
 interface Auth{
   email : string,
   password : string,
@@ -31,4 +27,11 @@ export async function apiRequest (path:string,method:string,options?:RequestInit
   let apiResponse = await response.json();
   return apiResponse; 
 }
-
+export async function getNewJwtFromRefresh() {
+  let refresh_token = await getRefreshToken();
+  let newTokens = await fetch(basePath+"/api/auth/refresh-token",{
+    body: JSON.stringify(refresh_token) 
+  });
+  let newTokenJson = await newTokens.json();
+  await setToken(newTokenJson.AccessToken,newTokenJson.RefreshToken);
+}
