@@ -1,4 +1,4 @@
-import { HrDashboardPage } from "@/widgets/hr-dashboard";
+import { HrDashboardPage } from "@/pages/hr-dashboard";
 
 export default function HrPage() {
   return <HrDashboardPage />;

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { HrCandidatesPage } from "@/widgets/hr-dashboard";
+import { HrCandidatesPage } from "@/pages/hr-dashboard";
 
 export const metadata: Metadata = {
   title: "Aday Havuzu",

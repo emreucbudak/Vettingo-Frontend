@@ -1,5 +1,5 @@
 ﻿import type { Metadata } from "next";
-import { AuthPage } from "@/widgets/auth";
+import { AuthPage } from "@/pages/auth";
 
 export const metadata: Metadata = {
   title: "Giriş Yap | Vettingo",

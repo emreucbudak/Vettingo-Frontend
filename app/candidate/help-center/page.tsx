@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CandidateHelpCenterPage } from "@/widgets/candidate-help-center";
+import { CandidateHelpCenterPage } from "@/pages/candidate-help-center";
 
 export const metadata: Metadata = {
   title: "Yardım Merkezi | Vettingo",

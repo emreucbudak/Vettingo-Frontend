@@ -1,5 +1,5 @@
 ﻿import type { Metadata } from "next";
-import { CandidateDashboardPage } from "@/widgets/candidate-dashboard";
+import { CandidateDashboardPage } from "@/pages/candidate-dashboard";
 
 export const metadata: Metadata = {
   title: "Aday Paneli | Vettingo",

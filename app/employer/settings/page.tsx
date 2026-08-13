@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EmployerSettingsPage } from "@/widgets/employer-settings";
+import { EmployerSettingsPage } from "@/pages/employer-settings";
 
 export const metadata: Metadata = {
   title: "Hesap Ayarları | Vettingo",

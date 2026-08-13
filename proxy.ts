@@ -1,4 +1,3 @@
-import { getToken } from "@/shared/auth";
 import { decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 interface User {
@@ -7,8 +6,11 @@ interface User {
 }
 export async function proxy(request:NextRequest) {
     const pathname = request.nextUrl.pathname;
+    const token = request.cookies.get("access_token")?.value;
+    if(token === undefined) {
+        throw new Error("Token Bulunamadı!");
+    }
     if(pathname.startsWith("/employer")){
-        const token = await getToken();
         const claim =  decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
         if(claim.role !== "employer" ||  expire === true) {
@@ -17,7 +19,6 @@ export async function proxy(request:NextRequest) {
          return NextResponse.next();
     }
     if(pathname.startsWith("/candidate")) {
-        const token = await getToken();
         const claim = await decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
         if (claim.role!== "candidate" || expire === true) {
@@ -29,5 +30,5 @@ export async function proxy(request:NextRequest) {
 
 }
 export const config = {
-    matcher: ['employer/:path*','candidate/:path*']
+    matcher: ['/employer/:path*','/candidate/:path*']
 }

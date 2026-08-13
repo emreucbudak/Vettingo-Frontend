@@ -1,0 +1,450 @@
+﻿"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, type FormEvent } from "react";
+import { ROUTES } from "@/shared/config/routes";
+import { MaterialIcon } from "@/shared/ui/material-icon";
+import { authContent } from "../model/auth-content";
+import { login, register } from "../api/auth-api";
+import type { AuthMode } from "../model/types";
+
+type AuthFormProps = {
+  mode: AuthMode;
+};
+
+type LegalDocument = "terms" | "privacy";
+
+const inputClass =
+  "w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] py-2 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
+
+const leadingIconClass =
+  "absolute left-3 top-1/2 text-[18px] text-[#45474c] -translate-y-1/2";
+
+const legalContent: Record<LegalDocument, { title: string; body: string[] }> = {
+  terms: {
+    title: "Kullanım Koşulları",
+    body: [
+      "Vettingo hesabınızı oluşturduğunuzda platformu işe alım, aday değerlendirme ve kariyer süreçlerini yönetmek amacıyla kullanmayı kabul etmiş olursunuz. Hesap bilgilerinizin doğru, güncel ve size ait olması gerekir; yanlış veya başka bir kişiye ait bilgilerle hesap açılması durumunda ilgili hesabın erişimi sınırlandırılabilir.",
+      "Platform içinde paylaşılan ilan, başvuru, özgeçmiş, değerlendirme notu ve benzeri içeriklerden ilgili kullanıcı sorumludur. Yanıltıcı bilgi, izinsiz veri paylaşımı, üçüncü kişilerin haklarını ihlal eden içerik veya sistemi kötüye kullanmaya yönelik işlem yapılmamalıdır.",
+      "İşveren hesapları, aday verilerini yalnızca açık işe alım süreçleri ve meşru değerlendirme amaçları için kullanmalıdır. Adaylarla ilgili bilgiler kurum dışına aktarılırken ilgili kişinin mahremiyetine, yürürlükteki mevzuata ve şirket içi yetkilendirme kurallarına uygun hareket edilmelidir.",
+      "Aday hesapları, başvuru sırasında paylaştıkları belgelerin ve açıklamaların güncel olmasına özen göstermelidir. Başvuru süreçlerinde kullanılan değerlendirme sonuçları tek başına kesin işe alım kararı anlamına gelmez; nihai karar ilgili işverenin kendi süreçleri kapsamında verilir.",
+      "Vettingo, hizmetin güvenliğini ve sürekliliğini korumak için teknik bakım, güvenlik kontrolleri ve gerekli ürün güncellemeleri yapabilir. Bu çalışmalar sırasında kısa süreli erişim kısıtları oluşabilir; planlı bakım durumlarında kullanıcıların makul şekilde bilgilendirilmesi hedeflenir.",
+      "Hizmetleri kullanmaya devam etmeniz, yürürlükteki koşulları kabul ettiğiniz anlamına gelir. Koşullarda esaslı bir değişiklik olursa kullanıcıların bunu makul şekilde fark edebileceği kanallardan bilgilendirme yapılır.",
+    ],
+  },
+  privacy: {
+    title: "Gizlilik Politikası",
+    body: [
+      "Vettingo, hesabınızı oluşturmak, başvurularınızı yönetmek, işveren ve aday deneyimini iyileştirmek ve güvenli oturum sağlamak için ad, soyad, e-posta, hesap türü ve platform kullanım bilgileri gibi verileri işler.",
+      "Özgeçmiş, başvuru geçmişi, değerlendirme notları ve yetenek eşleştirme çıktıları yalnızca ilgili işe alım süreçleri kapsamında kullanılır. Bu bilgiler, yetkisiz kişilerle satılmaz veya bağımsız ticari amaçlarla paylaşılmaz.",
+      "Platformda yapılan işlemler, hizmet kalitesini korumak, hataları gidermek, güvenlik olaylarını araştırmak ve kullanıcı desteği sağlamak amacıyla kayıt altına alınabilir. Bu kayıtlar ihtiyaçla sınırlı şekilde tutulur ve erişim yetkileri kontrollü biçimde yönetilir.",
+      "Verileriniz, hizmet sağlayıcılarımızın teknik altyapısı üzerinde güvenlik önlemleriyle saklanabilir. Erişim yetkileri sınırlı tutulur ve kayıtlar yalnızca işin gerektirdiği kişiler tarafından görüntülenebilir.",
+      "Çerezler ve benzeri teknolojiler; oturumunuzu açık tutmak, tercihlerinizi hatırlamak ve platformun nasıl kullanıldığını anlamak için kullanılabilir. Zorunlu olmayan izleme tercihleri için tarayıcı ayarlarınızdan veya sunulan tercih araçlarından seçim yapabilirsiniz.",
+      "Hesap bilgilerinizin düzeltilmesini, silinmesini veya işleme amaçları hakkında bilgi verilmesini talep edebilirsiniz. Bu talepler, kimlik doğrulaması yapıldıktan sonra makul süre içinde değerlendirilir.",
+    ],
+  },
+};
+
+function AuthTab({
+  href,
+  active,
+  children,
+}: {
+  href: typeof ROUTES.login | typeof ROUTES.register;
+  active: boolean;
+  children: string;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={`flex-1 rounded-md px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.05em] transition-all ${
+        active
+          ? "border border-[#c5c6cd]/70 bg-white text-[#091426] shadow-sm"
+          : "text-[#45474c] hover:bg-[#dce9ff]/70 hover:text-[#0b1c30]"
+      }`}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function SelectChevron() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#45474c]"
+      fill="none"
+      focusable="false"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+function GoogleIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-[18px] w-[18px] shrink-0"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.92h5.38a4.6 4.6 0 0 1-2 3.02v2.54h3.24c1.9-1.75 2.98-4.33 2.98-7.41Z"
+        fill="#4285F4"
+      />
+      <path
+        d="M12 22c2.7 0 4.98-.9 6.63-2.43l-3.24-2.54c-.9.6-2.05.96-3.39.96-2.61 0-4.82-1.76-5.61-4.13H3.04v2.62A10 10 0 0 0 12 22Z"
+        fill="#34A853"
+      />
+      <path
+        d="M6.39 13.86a6.01 6.01 0 0 1 0-3.72V7.52H3.04a10 10 0 0 0 0 8.96l3.35-2.62Z"
+        fill="#FBBC05"
+      />
+      <path
+        d="M12 6.01c1.47 0 2.79.5 3.83 1.5l2.87-2.87A9.63 9.63 0 0 0 12 2a10 10 0 0 0-8.96 5.52l3.35 2.62C7.18 7.77 9.39 6.01 12 6.01Z"
+        fill="#EA4335"
+      />
+    </svg>
+  );
+}
+
+function LinkedInIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-[18px] w-[18px] shrink-0"
+      viewBox="0 0 24 24"
+    >
+      <rect fill="#0A66C2" height="20" rx="2.5" width="20" x="2" y="2" />
+      <circle cx="7.25" cy="7.25" fill="white" r="1.45" />
+      <path d="M5.95 10h2.6v8h-2.6z" fill="white" />
+      <path
+        d="M10.3 10h2.5v1.1h.04c.35-.66 1.2-1.45 2.47-1.45 2.64 0 3.13 1.74 3.13 4V18h-2.61v-3.86c0-.92-.02-2.1-1.28-2.1-1.28 0-1.48 1-1.48 2.03V18H10.3v-8Z"
+        fill="white"
+      />
+    </svg>
+  );
+}
+
+function LegalModal({ document, onClose }: { document: LegalDocument; onClose: () => void }) {
+  const content = legalContent[document];
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      aria-modal="true"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#091426]/45 px-4 py-6"
+      onClick={onClose}
+      role="dialog"
+    >
+      <div
+        className="relative max-h-[82vh] w-full max-w-lg overflow-y-auto rounded-lg border border-[#c5c6cd] bg-white p-6 shadow-[0_24px_80px_rgba(9,20,38,0.18)]"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          aria-label="Pencereyi kapat"
+          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded border border-[#c5c6cd] text-[#45474c] transition-colors hover:bg-[#eff4ff] hover:text-[#091426]"
+          onClick={onClose}
+          type="button"
+        >
+          <MaterialIcon className="text-[18px]">close</MaterialIcon>
+        </button>
+        <h3 className="pr-10 text-xl font-semibold tracking-[-0.01em] text-[#091426]">
+          {content.title}
+        </h3>
+        <div className="mt-4 space-y-4 text-sm leading-6 text-[#45474c]">
+          {content.body.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function AuthForm({ mode }: AuthFormProps) {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [activeLegalDocument, setActiveLegalDocument] = useState<LegalDocument | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const isLogin = mode === "login";
+  const pageContent = authContent[mode];
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setFormError(null);
+    setIsSubmitting(true);
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
+
+    try {
+      if (isLogin) {
+        const response = await login({ email, password });
+        const remember = formData.get("remember") === "on";
+        setAuthToken(response.accessToken, remember);
+        router.replace(getAuthenticatedRoute());
+        return;
+      }
+
+      const fullName = String(formData.get("name") ?? "").trim();
+      const [name, ...surnameParts] = fullName.split(/\s+/);
+      const surname = surnameParts.join(" ");
+
+      if (!name || !surname) {
+        throw new Error("L\u00fctfen ad\u0131n\u0131z\u0131 ve soyad\u0131n\u0131z\u0131 girin.");
+      }
+
+      await register({
+        name,
+        surname,
+        email,
+        password,
+        role: formData.get("accountType") === "employer" ? "Company" : "Worker",
+      });
+
+      router.replace(ROUTES.login);
+    } catch (error) {
+      setFormError(
+        error instanceof Error
+          ? error.message
+          : "\u0130\u015flem tamamlanamad\u0131. L\u00fctfen tekrar deneyin.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
+      <div className="mb-6">
+        <h2 className="mb-1 text-2xl font-semibold tracking-[-0.01em] text-[#0b1c30]">
+          {pageContent.title}
+        </h2>
+        <p className="text-sm leading-5 text-[#45474c]">
+          {pageContent.description}
+        </p>
+      </div>
+
+      <nav className="mb-6 flex rounded bg-[#eff4ff] p-1 ring-1 ring-[#c5c6cd]/40">
+        <AuthTab href={ROUTES.login} active={isLogin}>
+          Giriş Yap
+        </AuthTab>
+        <AuthTab href={ROUTES.register} active={!isLogin}>
+          Kayıt Ol
+        </AuthTab>
+      </nav>
+
+      <form
+        aria-busy={isSubmitting}
+        className="flex flex-col gap-4"
+        onSubmit={handleSubmit}
+      >
+        {!isLogin && (
+          <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
+            Ad Soyad
+            <span className="relative">
+              <MaterialIcon className={leadingIconClass}>badge</MaterialIcon>
+              <input
+                name="name"
+                required
+                autoComplete="name"
+                placeholder="Adınız ve soyadınız"
+                className={`${inputClass} pl-10 pr-3`}
+                type="text"
+              />
+            </span>
+          </label>
+        )}
+
+        <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
+          E-posta Adresi
+          <span className="relative">
+            <MaterialIcon className={leadingIconClass}>mail</MaterialIcon>
+            <input
+              name="email"
+              required
+              autoComplete="email"
+              placeholder="ornek@sirket.com"
+              className={`${inputClass} pl-10 pr-3`}
+              type="email"
+            />
+          </span>
+        </label>
+
+        <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
+          <span className="flex items-center justify-between">
+            Şifre
+            {isLogin && (
+              <Link
+                className="text-xs font-medium text-[#0d0093] hover:underline"
+                href={ROUTES.login}
+              >
+                Şifremi Unuttum?
+              </Link>
+            )}
+          </span>
+          <span className="relative">
+            <MaterialIcon className={leadingIconClass}>lock</MaterialIcon>
+            <input
+              name="password"
+              minLength={6}
+              required
+              autoComplete={isLogin ? "current-password" : "new-password"}
+              placeholder="••••••••"
+              className={`${inputClass} pl-10 pr-10`}
+              type={showPassword ? "text" : "password"}
+            />
+            <button
+              aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
+              className="absolute right-3 top-1/2 text-[#45474c] transition-colors hover:text-[#0b1c30] -translate-y-1/2"
+              onClick={() => setShowPassword((value) => !value)}
+              type="button"
+            >
+              <MaterialIcon className="text-[18px]">
+                {showPassword ? "visibility" : "visibility_off"}
+              </MaterialIcon>
+            </button>
+          </span>
+        </label>
+
+        {!isLogin && (
+          <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
+            Hesap Türü
+            <span className="relative">
+              <select
+                name="accountType"
+                className="w-full appearance-none rounded border border-[#c5c6cd] bg-[#f8f9ff] px-3 py-2 pr-10 text-sm text-[#0b1c30] outline-none transition-colors focus:border-[#091426] focus:ring-1 focus:ring-[#091426]"
+                defaultValue="candidate"
+              >
+                <option value="candidate">İş Arayan</option>
+                <option value="employer">İşveren</option>
+              </select>
+              <SelectChevron />
+            </span>
+          </label>
+        )}
+
+        {isLogin ? (
+          <label className="mt-1 flex cursor-pointer items-center gap-2 text-sm text-[#45474c]">
+            <input
+              name="remember"
+              className="h-4 w-4 rounded border-[#c5c6cd] text-[#091426] focus:ring-[#091426]"
+              type="checkbox"
+            />
+            Beni Hatırla
+          </label>
+        ) : (
+          <div className="mt-1 flex items-start gap-2 text-sm leading-5 text-[#45474c]">
+            <input
+              id="terms"
+              required
+              name="terms"
+              className="mt-0.5 h-4 w-4 rounded border-[#c5c6cd] text-[#091426] focus:ring-[#091426]"
+              type="checkbox"
+            />
+            <p>
+              <button
+                className="font-semibold text-[#091426] underline-offset-2 hover:underline"
+                onClick={() => setActiveLegalDocument("terms")}
+                type="button"
+              >
+                Kullanım koşullarını
+              </button>{" "}
+              ve{" "}
+              <button
+                className="font-semibold text-[#091426] underline-offset-2 hover:underline"
+                onClick={() => setActiveLegalDocument("privacy")}
+                type="button"
+              >
+                gizlilik politikasını
+              </button>{" "}
+              kabul ediyorum.
+            </p>
+          </div>
+        )}
+        {formError && (
+          <p
+            aria-live="polite"
+            className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+            role="alert"
+          >
+            {formError}
+          </p>
+        )}
+
+        <button
+          className="mt-1 flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {pageContent.submitLabel}
+          {isSubmitting && (
+            <MaterialIcon className="animate-spin text-[18px]">
+              progress_activity
+            </MaterialIcon>
+          )}
+          <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
+        </button>
+      </form>
+
+      <div className="flex items-center py-6">
+        <div className="h-px flex-1 bg-[#c5c6cd]" />
+        <span className="mx-4 shrink-0 text-xs font-medium text-[#45474c]">
+          {pageContent.separator}
+        </span>
+        <div className="h-px flex-1 bg-[#c5c6cd]" />
+      </div>
+
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          className="flex items-center justify-center gap-2 rounded border border-[#c5c6cd] bg-white px-4 py-2 text-xs font-semibold text-[#0b1c30] transition-colors hover:bg-[#eff4ff]"
+          type="button"
+        >
+          <GoogleIcon />
+          Google
+        </button>
+        <button
+          className="flex items-center justify-center gap-2 rounded border border-[#c5c6cd] bg-white px-4 py-2 text-xs font-semibold text-[#0b1c30] transition-colors hover:bg-[#eff4ff]"
+          type="button"
+        >
+          <LinkedInIcon />
+          LinkedIn
+        </button>
+      </div>
+
+      <p className="mt-8 text-center text-sm text-[#45474c]">
+        {pageContent.footerText}{" "}
+        <Link className="font-bold text-[#091426] hover:underline" href={pageContent.footerHref}>
+          {pageContent.footerLink}
+        </Link>
+      </p>
+
+      {activeLegalDocument && (
+        <LegalModal
+          document={activeLegalDocument}
+          onClose={() => setActiveLegalDocument(null)}
+        />
+      )}
+    </div>
+  );
+}
