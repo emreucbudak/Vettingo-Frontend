@@ -1,16 +1,18 @@
+'use server'
 import { getJWTToken } from "@/shared/api";
-import { redirect } from "next/navigation";
+import { decodeJwt } from "jose";
 export type LoginRequest = {
   email: string;
   password: string;
   kind: "login";
 };
-
+interface Role {
+  role: string
+}
 export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
 };
-
 export type RegisterRequest = {
   name: string;
   surname: string;
@@ -19,27 +21,29 @@ export type RegisterRequest = {
   role: "Worker" | "Company";
   kind: "register"
 };
-
-type ApiErrorResponse = {
-  message?: string;
-  errors?: Record<string, string[]>;
-};
-
-function getErrorMessage(response: ApiErrorResponse, fallback: string) {
-  const validationMessage = response.errors
-    ? Object.values(response.errors).flat()[0]
-    : undefined;
-
-  return validationMessage ?? response.message ?? fallback;
-}
-
-async function post<TResponse>(request : LoginRequest | RegisterRequest): Promise<TResponse> {
+async function post<TResponse>(request : LoginRequest | RegisterRequest): Promise<any> {
   let response: Response;
 
   try {
     if (request.kind === "login"){
-     await getJWTToken(request)
-     redirect("/")
+     const token = await getJWTToken(request);
+     const role = decodeJwt(token) as Role;
+     switch (role.role) {
+      case "Candidate":
+        return "/candidate"
+    
+      case "Human Resources":
+        return "/hr";
+    
+      case "Company":
+        return "/employer";      
+      default:
+        return undefined;
+    
+     }
+    }
+    if(request.kind === "register"){
+      await register(request);
 
     }
   } catch {
@@ -48,35 +52,12 @@ async function post<TResponse>(request : LoginRequest | RegisterRequest): Promis
     );
   }
 
-  if (!response.ok) {
-    let errorResponse: ApiErrorResponse = {};
-
-    try {
-      errorResponse = (await response.json()) as ApiErrorResponse;
-    } catch {
-    }
-
-    throw new Error(
-      getErrorMessage(errorResponse, "İşlem tamamlanamadı lütfen tekrar deneyin."),
-    );
-  }
-
-  if (response.status === 204 || response.headers.get("content-length") === "0") {
-    return undefined as TResponse;
-  }
-
-  const contentType = response.headers.get("content-type");
-  if (!contentType?.includes("application/json")) {
-    return undefined as TResponse;
-  }
-
-  return (await response.json()) as TResponse;
 }
 
-export function login(request: LoginRequest) {
-  return post<LoginResponse>( request);
+export async function login(request: LoginRequest) {
+  return await  post<LoginResponse>(request);
 }
 
-export function register(request: RegisterRequest) {
-  return post<void>(request);
+export async function register(request: RegisterRequest) {
+  return await  post<void>(request);
 }

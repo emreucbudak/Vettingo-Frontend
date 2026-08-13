@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState,  } from "react";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { authContent } from "../model/auth-content";
@@ -188,7 +188,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const isLogin = mode === "login";
   const pageContent = authContent[mode];
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormError(null);
     setIsSubmitting(true);
@@ -199,10 +199,11 @@ export function AuthForm({ mode }: AuthFormProps) {
 
     try {
       if (isLogin) {
-        const response = await login({ email, password });
-        const remember = formData.get("remember") === "on";
-        setAuthToken(response.accessToken, remember);
-        router.replace(getAuthenticatedRoute());
+        const response = await login({email,password,kind:"login"});
+        if(response === undefined) {
+           throw new Error("Oturum açma başarısız lütfen tekrar deneyiniz!")
+        }
+        router.replace(response);
         return;
       }
 
@@ -211,7 +212,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       const surname = surnameParts.join(" ");
 
       if (!name || !surname) {
-        throw new Error("L\u00fctfen ad\u0131n\u0131z\u0131 ve soyad\u0131n\u0131z\u0131 girin.");
+        throw new Error("Lütfen adınızı ve soyadınızı girin");
       }
 
       await register({
@@ -220,6 +221,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         email,
         password,
         role: formData.get("accountType") === "employer" ? "Company" : "Worker",
+        kind: "register"
       });
 
       router.replace(ROUTES.login);
@@ -227,7 +229,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       setFormError(
         error instanceof Error
           ? error.message
-          : "\u0130\u015flem tamamlanamad\u0131. L\u00fctfen tekrar deneyin.",
+          : "İşlem tamamlanamadı tekrar deneyiniz.",
       );
     } finally {
       setIsSubmitting(false);
