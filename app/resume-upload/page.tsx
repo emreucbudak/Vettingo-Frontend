@@ -1,5 +1,5 @@
 ﻿import type { Metadata } from "next";
-import { ResumeUploadWizardPage } from "@/widgets/resume-upload-wizard";
+import { ResumeUploadWizardPage } from "@/pages/resume-upload-wizard";
 
 export const metadata: Metadata = {
   title: "CV Yükleme | Vettingo",

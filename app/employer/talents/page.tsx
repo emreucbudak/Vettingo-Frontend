@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EmployerTalentsPage } from "@/widgets/employer-recruiting";
+import { EmployerTalentsPage } from "@/pages/employer-recruiting";
 
 export const metadata: Metadata = {
   title: "Yetenekler | Vettingo",

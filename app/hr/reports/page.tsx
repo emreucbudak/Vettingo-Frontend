@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { HrReportsPage } from "@/widgets/hr-dashboard";
+import { HrReportsPage } from "@/pages/hr-dashboard";
 
 export const metadata: Metadata = {
   title: "HR Raporları",

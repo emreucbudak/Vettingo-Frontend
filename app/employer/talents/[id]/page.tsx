@@ -4,7 +4,7 @@ import {
   getTalentCandidate,
   talentCandidates,
 } from "@/entities/employer-recruiting/employer-recruiting-data";
-import { CandidateAnalysisPage } from "@/widgets/candidate-analysis";
+import { CandidateAnalysisPage } from "@/pages/candidate-analysis";
 
 export const metadata: Metadata = {
   title: "Yetenek Detayı | Vettingo",

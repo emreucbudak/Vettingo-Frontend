@@ -1,5 +1,5 @@
 ﻿import type { Metadata } from "next";
-import { LandingPage } from "@/widgets/landing-page";
+import { LandingPage } from "@/pages/landing-page";
 
 export const metadata: Metadata = {
   title: "Vettingo",

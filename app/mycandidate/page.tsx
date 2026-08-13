@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CandidateSelfAnalysisPage } from "@/widgets/candidate-self-analysis";
+import { CandidateSelfAnalysisPage } from "@/pages/candidate-self-analysis";
 
 export const metadata: Metadata = {
   title: "Yapay Zeka Analizim | Vettingo",
