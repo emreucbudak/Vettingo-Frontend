@@ -1,36 +1,11 @@
 import Link from "next/link";
-import {
-  applicationCandidates,
-  employerJobs,
-  talentCandidates,
-  type EmployerJob,
-} from "@/entities/employer-recruiting/employer-recruiting-data";
-import { employerProfile, employerUtilityItems } from "@/entities/employer-dashboard";
+import { employerJobs } from "@/entities/employer-recruiting/employer-recruiting-data";
 import { ROUTES } from "@/shared/config/routes";
-import { DashboardShell } from "@/widgets/app-shell";
-import { EmployerDashboardFooter } from "@/widgets/app-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-
-type ActivePage = "jobs" | "applications" | "talents";
-
-const navigation = [
-  { key: "dashboard", label: "Panel", icon: "space_dashboard", href: ROUTES.employer },
-  { key: "jobs", label: "İlanlarım", icon: "business_center", href: ROUTES.employerJobs },
-  {
-    key: "applications",
-    label: "Başvurular",
-    icon: "assignment_ind",
-    href: ROUTES.employerApplications,
-  },
-  { key: "talents", label: "Yetenekler", icon: "auto_awesome", href: ROUTES.employerTalents },
-] as const;
-
-function getNavigationItems(activePage: ActivePage) {
-  return navigation.map(({ key, ...item }) => ({
-    ...item,
-    active: key === activePage,
-  }));
-}
+import { EmployerApplicationList } from "@/widgets/employer/application-list";
+import { EmployerJobList } from "@/widgets/employer/job-list";
+import { EmployerShell } from "@/widgets/employer/shell";
+import { EmployerTalentList } from "@/widgets/employer/talent-list";
 
 function PageHeader({
   action,
@@ -85,88 +60,13 @@ function StatStrip({
   );
 }
 
-function StatusBadge({ status }: { status: EmployerJob["status"] }) {
-  const className =
-    status === "Aktif"
-      ? "border-[#34d399] bg-[#dcfce7] text-[#006c49]"
-      : status === "Taslak"
-        ? "border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]"
-        : "border-[#f2c94c] bg-[#fff7d6] text-[#7a5d00]";
-
-  return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.05em] ${className}`}
-    >
-      {status}
-    </span>
-  );
-}
-
-function JobRow({ job }: { job: EmployerJob }) {
-  return (
-    <article className="grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] lg:grid-cols-12 lg:items-center lg:gap-3 lg:px-6">
-      <div className="lg:col-span-4">
-        <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-            <MaterialIcon className="text-[21px]">work</MaterialIcon>
-          </div>
-          <div className="min-w-0">
-            <h2 className="text-base font-semibold leading-6 text-[#0b1c30]">{job.title}</h2>
-            <p className="mt-0.5 text-[11px] font-medium text-[#75777d]">
-              {job.requisition} · {job.department}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-3 lg:contents">
-        <div className="lg:col-span-2">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d] lg:hidden">
-            Çalışma
-          </p>
-          <p className="text-sm text-[#45474c]">{job.location}</p>
-          <p className="text-[11px] text-[#75777d]">{job.workingModel}</p>
-        </div>
-        <div className="lg:col-span-2">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d] lg:hidden">
-            Aday Akışı
-          </p>
-          <p className="text-sm font-semibold text-[#0b1c30]">{job.applicants} başvuru</p>
-          <p className="text-[11px] text-[#75777d]">{job.shortlisted} kısa liste</p>
-        </div>
-        <div className="lg:col-span-2">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d] lg:hidden">
-            Tarih
-          </p>
-          <p className="text-sm text-[#45474c]">{job.publishedAt}</p>
-          <p className="text-[11px] text-[#75777d]">Bitiş: {job.closesAt}</p>
-        </div>
-        <div className="flex items-center justify-between gap-3 lg:col-span-2 lg:justify-end">
-          <StatusBadge status={job.status} />
-          <button
-            aria-label={`${job.title} ilan seçenekleri`}
-            className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426]"
-            type="button"
-          >
-            <MaterialIcon>more_horiz</MaterialIcon>
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-}
-
 export function EmployerJobsPage() {
   const activeJobs = employerJobs.filter((job) => job.status === "Aktif");
   const totalApplicants = employerJobs.reduce((total, job) => total + job.applicants, 0);
   const totalShortlisted = employerJobs.reduce((total, job) => total + job.shortlisted, 0);
 
   return (
-    <DashboardShell
-      navigationItems={getNavigationItems("jobs")}
-      sidebarSubtitle={employerProfile.edition}
-      sidebarTitle={employerProfile.companyLabel}
-      utilityItems={employerUtilityItems}
-    >
+    <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
         <PageHeader
           action={
@@ -192,66 +92,15 @@ export function EmployerJobsPage() {
           ]}
         />
 
-        <section className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
-          <div className="hidden grid-cols-12 gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c] lg:grid">
-            <span className="col-span-4">İlan</span>
-            <span className="col-span-2">Lokasyon</span>
-            <span className="col-span-2">Aday Akışı</span>
-            <span className="col-span-2">Yayın / Bitiş</span>
-            <span className="col-span-2 text-right">Durum</span>
-          </div>
-          <div className="divide-y divide-[#c5c6cd]">
-            {employerJobs.map((job) => (
-              <JobRow job={job} key={job.id} />
-            ))}
-          </div>
-        </section>
+        <EmployerJobList />
       </main>
-      <EmployerDashboardFooter />
-    </DashboardShell>
-  );
-}
-
-function CandidateAvatar({
-  initials,
-  tone = "blue",
-}: {
-  initials: string;
-  tone?: "blue" | "green";
-}) {
-  return (
-    <div
-      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-sm font-semibold ${
-        tone === "green"
-          ? "border-[#34d399] bg-[#dcfce7] text-[#006c49]"
-          : "border-[#c5c6cd] bg-[#dce9ff] text-[#091426]"
-      }`}
-    >
-      {initials}
-    </div>
-  );
-}
-
-function Score({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="min-w-16">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d]">{label}</p>
-      <p className="mt-1 text-lg font-semibold text-[#0b1c30]">
-        {value}
-        <span className="text-[11px] font-medium text-[#75777d]">/100</span>
-      </p>
-    </div>
+    </EmployerShell>
   );
 }
 
 export function EmployerApplicationsPage() {
   return (
-    <DashboardShell
-      navigationItems={getNavigationItems("applications")}
-      sidebarSubtitle={employerProfile.edition}
-      sidebarTitle={employerProfile.companyLabel}
-      utilityItems={employerUtilityItems}
-    >
+    <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
         <PageHeader
           description="Gelen başvuruları aşamalarına, role uygunluklarına ve Vettingo Rating puanlarına göre incele."
@@ -267,76 +116,15 @@ export function EmployerApplicationsPage() {
           ]}
         />
 
-        <section className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
-          <div className="hidden grid-cols-12 gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c] lg:grid">
-            <span className="col-span-3">Aday</span>
-            <span className="col-span-3">Başvurduğu Rol</span>
-            <span className="col-span-2">Aşama</span>
-            <span className="col-span-2">Aktivite</span>
-            <span className="col-span-1">Uygunluk</span>
-            <span className="col-span-1">Rating</span>
-          </div>
-          <div className="divide-y divide-[#c5c6cd]">
-            {applicationCandidates.map((candidate) => (
-              <Link
-                aria-label={`${candidate.name} başvuru detayını aç`}
-                className="group grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] focus-visible:bg-[#eff4ff] focus-visible:outline-none lg:grid-cols-12 lg:items-center lg:gap-3 lg:px-6"
-                href={`${ROUTES.employerApplications}/${candidate.id}`}
-                key={candidate.id}
-              >
-                <div className="flex items-center gap-3 lg:col-span-3">
-                  <CandidateAvatar
-                    initials={candidate.name
-                      .split(" ")
-                      .map((part) => part[0])
-                      .join("")}
-                  />
-                  <div>
-                    <h2 className="text-sm font-semibold text-[#0b1c30] group-hover:underline">
-                      {candidate.name}
-                    </h2>
-                    <p className="mt-1 text-[11px] text-[#75777d]">{candidate.location}</p>
-                  </div>
-                </div>
-                <div className="lg:col-span-3">
-                  <p className="text-sm font-medium text-[#0b1c30]">{candidate.targetRole}</p>
-                  <p className="mt-1 text-[11px] text-[#75777d]">{candidate.appliedAt} tarihinde başvurdu</p>
-                </div>
-                <div className="lg:col-span-2">
-                  <span className="inline-flex rounded-full bg-[#dce9ff] px-2.5 py-1 text-[11px] font-semibold text-[#091426]">
-                    {candidate.status}
-                  </span>
-                </div>
-                <p className="text-sm text-[#45474c] lg:col-span-2">{candidate.lastActivity}</p>
-                <div className="grid grid-cols-2 gap-4 lg:contents">
-                  <div className="lg:col-span-1">
-                    <Score label="Role" value={candidate.roleSuitability} />
-                  </div>
-                  <div className="flex items-center justify-between lg:col-span-1">
-                    <Score label="Rating" value={candidate.rating} />
-                    <MaterialIcon className="text-[#45474c] transition-transform group-hover:translate-x-1">
-                      arrow_forward
-                    </MaterialIcon>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <EmployerApplicationList />
       </main>
-      <EmployerDashboardFooter />
-    </DashboardShell>
+    </EmployerShell>
   );
 }
 
 export function EmployerTalentsPage() {
   return (
-    <DashboardShell
-      navigationItems={getNavigationItems("talents")}
-      sidebarSubtitle={employerProfile.edition}
-      sidebarTitle={employerProfile.companyLabel}
-      utilityItems={employerUtilityItems}
-    >
+    <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
         <PageHeader
           description="Açık rollerine göre Vettingo tarafından önerilen, iletişime geçmeye hazır yüksek potansiyelli adaylar."
@@ -355,74 +143,8 @@ export function EmployerTalentsPage() {
           </div>
         </div>
 
-        <section className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
-          <div className="hidden grid-cols-12 gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c] xl:grid">
-            <span className="col-span-3">Yetenek</span>
-            <span className="col-span-2">Önerilen Rol</span>
-            <span className="col-span-3">Neden Öneriyoruz?</span>
-            <span className="col-span-2">Öne Çıkan Beceriler</span>
-            <span className="col-span-1">Uygunluk</span>
-            <span className="col-span-1">Rating</span>
-          </div>
-          <div className="divide-y divide-[#c5c6cd]">
-            {talentCandidates.map((candidate) => (
-              <Link
-                aria-label={`${candidate.name} yetenek detayını aç`}
-                className="group grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] focus-visible:bg-[#eff4ff] focus-visible:outline-none xl:grid-cols-12 xl:items-center xl:gap-3 xl:px-6"
-                href={`${ROUTES.employerTalents}/${candidate.id}`}
-                key={candidate.id}
-              >
-                <div className="flex items-center gap-3 xl:col-span-3">
-                  <CandidateAvatar
-                    initials={candidate.name
-                      .split(" ")
-                      .map((part) => part[0])
-                      .join("")}
-                    tone="green"
-                  />
-                  <div>
-                    <h2 className="text-sm font-semibold text-[#0b1c30] group-hover:underline">
-                      {candidate.name}
-                    </h2>
-                    <p className="mt-1 text-[11px] text-[#75777d]">
-                      {candidate.experience} · {candidate.availableIn}
-                    </p>
-                  </div>
-                </div>
-                <div className="xl:col-span-2">
-                  <p className="text-sm font-medium text-[#0b1c30]">{candidate.targetRole}</p>
-                  <p className="mt-1 text-[11px] text-[#75777d]">{candidate.workingPreference}</p>
-                </div>
-                <p className="text-sm leading-5 text-[#45474c] xl:col-span-3">
-                  {candidate.recommendedBecause}
-                </p>
-                <div className="flex flex-wrap gap-1.5 xl:col-span-2">
-                  {candidate.primarySkills.map((skill) => (
-                    <span
-                      className="rounded border border-[#c5c6cd] bg-[#eff4ff] px-2 py-1 text-[10px] font-semibold text-[#45474c]"
-                      key={skill}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 gap-4 xl:contents">
-                  <div className="xl:col-span-1">
-                    <Score label="Role" value={candidate.roleSuitability} />
-                  </div>
-                  <div className="flex items-center justify-between xl:col-span-1">
-                    <Score label="Rating" value={candidate.rating} />
-                    <MaterialIcon className="text-[#45474c] transition-transform group-hover:translate-x-1">
-                      arrow_forward
-                    </MaterialIcon>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <EmployerTalentList />
       </main>
-      <EmployerDashboardFooter />
-    </DashboardShell>
+    </EmployerShell>
   );
 }

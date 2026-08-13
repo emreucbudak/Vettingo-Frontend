@@ -1,6 +1,6 @@
 ﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
-import { DashboardShell } from "@/widgets/app-shell";
+import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   benchmarkCandidates,

@@ -8,7 +8,7 @@ import {
   hrProfile,
   hrUtilityItems,
 } from "@/entities/hr-dashboard";
-import { DashboardShell } from "@/widgets/app-shell";
+import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 function isRouteActive(pathname: string, href: string) {
