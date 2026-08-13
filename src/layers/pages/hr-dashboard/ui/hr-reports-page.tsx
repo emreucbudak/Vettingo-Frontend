@@ -6,7 +6,7 @@ import {
   HrPrimaryLink,
   HrSectionHeading,
   HrStatGrid,
-} from "./hr-page-elements";
+} from "@/shared/ui/hr-page-elements";
 
 function HiringTrendChart() {
   return (

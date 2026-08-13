@@ -1,28 +1,8 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { ROUTES } from '@/shared/config/routes';
-import { DashboardShell } from '@/widgets/app-shell';
-import { EmployerDashboardFooter } from '@/widgets/app-shell';
 import { MaterialIcon } from '@/shared/ui/material-icon';
-
-const navigationItems = [
-  { label: 'Panel', icon: 'space_dashboard', href: ROUTES.employer },
-  { label: 'İlanlarım', icon: 'business_center', href: ROUTES.employerJobs },
-  { label: 'Başvurular', icon: 'assignment_ind', href: ROUTES.employerApplications },
-  { label: 'Yetenekler', icon: 'auto_awesome', href: ROUTES.employerTalents },
-] as const;
-
-const utilityItems = [
-  {
-    label: 'Yardım Merkezi',
-    icon: 'support_agent',
-    href: ROUTES.employerHelpCenter,
-    active: true,
-  },
-  { label: 'Ayarlar', icon: 'settings', href: ROUTES.employerSettings },
-  { label: 'Çıkış Yap', icon: 'door_open', action: 'logout' },
-] as const;
+import { EmployerShell } from '@/widgets/employer/shell';
 
 const frequentlyAskedQuestions = [
   {
@@ -208,12 +188,7 @@ function FrequentlyAskedQuestions() {
 
 export function EmployerHelpCenterPage() {
   return (
-    <DashboardShell
-      navigationItems={navigationItems}
-      sidebarSubtitle=''
-      sidebarTitle='Vettingo'
-      utilityItems={utilityItems}
-    >
+    <EmployerShell>
       <main className='employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8'>
         <header className='mb-8 border-b border-[#c5c6cd] pb-6'>
           <p className='text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]'>
@@ -253,7 +228,6 @@ export function EmployerHelpCenterPage() {
 
         <FrequentlyAskedQuestions />
       </main>
-      <EmployerDashboardFooter />
-    </DashboardShell>
+    </EmployerShell>
   );
 }

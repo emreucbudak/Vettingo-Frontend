@@ -15,7 +15,7 @@ import {
   HrSectionHeading,
   HrStatGrid,
   HrStatusBadge,
-} from "./hr-page-elements";
+} from "@/shared/ui/hr-page-elements";
 
 function PriorityCards() {
   return (

@@ -8,8 +8,8 @@ import {
 } from "@/entities/candidate-analysis/candidate-analysis-profile";
 import { analysisProfile, analysisUtilityItems } from "@/entities/candidate-analysis";
 import { ROUTES } from "@/shared/config/routes";
-import { DashboardShell } from "@/widgets/app-shell";
-import { EmployerDashboardFooter } from "@/widgets/app-shell";
+import { DashboardShell } from "@/shared/ui/dashboard-shell";
+import { EmployerDashboardFooter } from "@/widgets/employer/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 

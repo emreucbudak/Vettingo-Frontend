@@ -10,7 +10,7 @@ import {
 import { useCandidateEvaluationAnalysis } from "@/features/candidate-analysis";
 import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
-import { CandidateShell } from "@/widgets/app-shell";
+import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const subscribeToBrowserState = () => () => undefined;

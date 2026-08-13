@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { HrShell } from "@/pages/hr-dashboard";
+import { HrShell } from "@/widgets/hr/shell";
 
 export const metadata: Metadata = {
   title: {

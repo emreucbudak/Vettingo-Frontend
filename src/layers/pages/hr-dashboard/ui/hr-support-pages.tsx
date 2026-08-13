@@ -8,7 +8,7 @@ import {
   HrPrimaryLink,
   HrSecondaryLink,
   HrSectionHeading,
-} from "./hr-page-elements";
+} from "@/shared/ui/hr-page-elements";
 
 const inputClass =
   "w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] px-4 py-3 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426]";

@@ -1,14 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/shared/config/routes";
-import { DashboardShell } from "@/widgets/app-shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
+import { EmployerShell } from "@/widgets/employer/shell";
 import {
   activeRequisitions,
-  employerNavigationItems,
   employerProfile,
   employerStats,
-  employerUtilityItems,
   funnelStages,
   monthlyBars,
   topAiMatches,
@@ -241,65 +239,46 @@ function FunnelMetrics() {
   );
 }
 
-function DashboardFooter() {
-  return (
-    <footer className="mt-auto flex flex-col gap-4 border-t border-[#c5c6cd] bg-[#f8f9ff] px-4 py-6 md:flex-row md:items-center md:justify-between md:px-8">
-      <div className="text-[11px] font-medium leading-4 text-[#45474c]">
-        <span className="mr-2 text-xs font-bold uppercase tracking-[0.05em] text-[#0b1c30]">
-          Vettingo
-        </span>
-        © 2026 Vettingo. Tüm hakları saklıdır.
-      </div>
-    </footer>
-  );
-}
 
 export function EmployerDashboardPage() {
   return (
-    <DashboardShell
-      navigationItems={employerNavigationItems}
-      sidebarSubtitle={employerProfile.edition}
-      sidebarTitle={employerProfile.companyLabel}
-      utilityItems={employerUtilityItems}
-    >
+    <EmployerShell>
       <MobileBrand />
 
-        <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-                Panel Özeti
-              </h2>
-              <p className="mt-1 text-sm leading-5 text-[#45474c]">
-                Açık pozisyonlar ve başvuru akışı için gerçek zamanlı metrikler.
-              </p>
-            </div>
-            <Link
-              className="flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 md:w-auto"
-              href={ROUTES.newJob}
-            >
-              <MaterialIcon>add</MaterialIcon>
-              Yeni İş İlanı
-            </Link>
+      <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
+              Panel Özeti
+            </h2>
+            <p className="mt-1 text-sm leading-5 text-[#45474c]">
+              Açık pozisyonlar ve başvuru akışı için gerçek zamanlı metrikler.
+            </p>
           </div>
+          <Link
+            className="flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 md:w-auto"
+            href={ROUTES.newJob}
+          >
+            <MaterialIcon>add</MaterialIcon>
+            Yeni İş İlanı
+          </Link>
+        </div>
 
-          <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {employerStats.map((stat) => (
-              <StatCard key={stat.label} stat={stat} />
-            ))}
-            <AiProcessingCard />
-          </div>
+        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {employerStats.map((stat) => (
+            <StatCard key={stat.label} stat={stat} />
+          ))}
+          <AiProcessingCard />
+        </div>
 
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <RequisitionsTable />
-            <AiMatchesCard />
-          </div>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          <RequisitionsTable />
+          <AiMatchesCard />
+        </div>
 
-          <FunnelMetrics />
-        </main>
+        <FunnelMetrics />
+      </main>
 
-      <DashboardFooter />
-    </DashboardShell>
+    </EmployerShell>
   );
 }
-

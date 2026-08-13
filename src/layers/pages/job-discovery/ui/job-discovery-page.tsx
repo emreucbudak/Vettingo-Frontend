@@ -10,7 +10,7 @@ import {
   type WorkingModel,
 } from "@/features/job-search";
 import { marketIntelligence } from "@/entities/job";
-import { CandidateShell } from "@/widgets/app-shell";
+import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const selectClassName =

@@ -6,7 +6,7 @@ import { ROUTES } from "@/shared/config/routes";
 import {
   DashboardShell,
   type DashboardNavigationItem,
-} from "./dashboard-shell";
+} from "@/shared/ui/dashboard-shell";
 
 const candidateNavigationItems = [
   { label: "Panel", icon: "space_dashboard", href: ROUTES.candidate },
