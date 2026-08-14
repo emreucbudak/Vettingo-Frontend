@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import { MaterialIcon } from '@/shared/ui/material-icon';
 import { EmployerShell } from '@/widgets/employer/shell';
 
@@ -50,7 +50,7 @@ const frequentlyAskedQuestions = [
 function SupportForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     event.currentTarget.reset();
     setIsSubmitted(true);

@@ -1,13 +1,9 @@
 "use client";
-
 import { useSyncExternalStore } from "react";
 import { useCandidateDashboardData } from "@/features/candidate-dashboard";
-import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { CandidateApplicationHistory } from "@/widgets/candidate/application-history";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-
-
 const subscribeToBrowserState = () => () => undefined;
 const getServerToken = (): string | null => null;
 
@@ -42,7 +38,6 @@ function StatCard({
 export function CandidateApplicationsPage() {
   const token = useSyncExternalStore<string | null>(
     subscribeToBrowserState,
-    getAuthToken,
     getServerToken,
   );
   const sessionUser =
