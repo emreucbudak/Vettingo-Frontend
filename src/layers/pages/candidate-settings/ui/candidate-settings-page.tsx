@@ -1,11 +1,9 @@
 "use client";
 
-import {
+import React, {
   useState,
   useSyncExternalStore,
-  type FormEvent,
 } from "react";
-import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
@@ -124,7 +122,7 @@ function ProfileForm({
     name: Key,
     value: CandidateProfileForm[Key],
   ) => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void;
   profile: CandidateProfileForm;
 }) {
   const updateText = (name: ProfileTextField, value: string) =>
@@ -233,7 +231,7 @@ type PasswordStatus = "idle" | "mismatch" | "same" | "saved";
 function AccountSettingsForm() {
   const [passwordStatus, setPasswordStatus] = useState<PasswordStatus>("idle");
 
-  function handlePasswordSubmit(event: FormEvent<HTMLFormElement>) {
+  function handlePasswordSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -385,7 +383,7 @@ function CandidateSettingsContent({
     setIsSaved(false);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     window.localStorage.setItem(storageKey, JSON.stringify(profile));
     setIsSaved(true);

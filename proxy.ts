@@ -8,9 +8,12 @@ export async function proxy(request:NextRequest) {
     const pathname = request.nextUrl.pathname;
     const token = request.cookies.get("access_token")?.value;
     if(token === undefined) {
-        throw new Error("Token Bulunamadı!");
+        const url = request.nextUrl.clone();
+        url.pathname = "/login";
+        return NextResponse.rewrite(url);
     }
-    if(pathname.startsWith("/employer")){
+    else {
+        if(pathname.startsWith("/employer")){
         const claim =  decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
         if(claim.role !== "employer" ||  expire === true) {
@@ -26,6 +29,7 @@ export async function proxy(request:NextRequest) {
         }
          return NextResponse.next();
 
+    }
     }
 
 }

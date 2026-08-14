@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import {
   searchJobPostings,
   type EmploymentType,
@@ -90,7 +90,7 @@ function SearchHero({
   isLoading: boolean;
   onChange: <Key extends keyof SearchFormState>(key: Key, value: SearchFormState[Key]) => void;
   onReset: () => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void;
 }) {
   const hasFilters = Object.values(form).some(Boolean);
 
@@ -389,7 +389,7 @@ export function JobDiscoveryPage() {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     void runSearch(toSearchFilters(form));
   }

@@ -1,9 +1,6 @@
 "use client";
-
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
 import { useCandidateDashboardData } from "@/features/candidate-dashboard";
-import { getAuthToken, getTokenSessionUser, isTokenExpired } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { CandidateDashboardApplications } from "@/widgets/candidate/dashboard-applications";
@@ -15,8 +12,6 @@ import { CandidateUpcomingInterviews } from "@/widgets/candidate/upcoming-interv
 const subscribeToBrowserState = () => () => undefined;
 const getServerToken = (): string | null => null;
 export function CandidateDashboardPage() {
-  const token = useSyncExternalStore<string | null>(subscribeToBrowserState, getAuthToken, getServerToken);
-  const sessionUser = token && !isTokenExpired(token) ? getTokenSessionUser(token) : null;
   const { applications, interviews, error, isLoading } = useCandidateDashboardData(sessionUser?.id ?? null);
 
   return (

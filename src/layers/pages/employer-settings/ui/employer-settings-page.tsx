@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 
@@ -66,7 +66,7 @@ function SectionHeader({
 export function EmployerSettingsPage() {
   const [savedSection, setSavedSection] = useState<SavedSection>(null);
 
-  function handleSubmit(section: Exclude<SavedSection, null>, event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(section: Exclude<SavedSection, null>, event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setSavedSection(section);
   }
