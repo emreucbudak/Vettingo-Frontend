@@ -1,4 +1,6 @@
+"use server"
 import { cookies } from "next/headers";
+
 export async function setToken(accessToken:string,refreshToken:string){
   const cookieStore = await cookies();
   await cookieStore.set("access_token",accessToken,{
@@ -27,4 +29,3 @@ export async function getRefreshToken(): Promise<string> {
   }
   return refreshToken.value;
 }
-

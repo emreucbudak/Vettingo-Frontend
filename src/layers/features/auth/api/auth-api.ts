@@ -22,7 +22,6 @@ export type RegisterRequest = {
   kind: "register"
 };
 async function post<TResponse>(request : LoginRequest | RegisterRequest): Promise<any> {
-  let response: Response;
 
   try {
     if (request.kind === "login"){

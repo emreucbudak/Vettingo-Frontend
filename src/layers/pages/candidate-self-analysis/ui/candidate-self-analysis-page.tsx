@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
 import {
   defaultCandidateAnalysisProfile,
   type CandidateRatingAttribute,
@@ -11,10 +10,7 @@ import { useCandidateEvaluationAnalysis } from "@/features/candidate-analysis";
 import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-
-const subscribeToBrowserState = () => () => undefined;
-const getServerToken = (): string | null => null;
-
+import { useEffect } from "react";
 function ScoreRing({
   isLoading,
   score,
@@ -231,13 +227,15 @@ function GrowthPlan({
 }
 
 export function CandidateSelfAnalysisPage() {
-  const token = useSyncExternalStore<string | null>(
-    subscribeToBrowserState,
-    getAuthToken,
-    getServerToken,
-  );
+  
+  useEffect(() => {
+    async function getToken() {
+      
+    }
+
+  },[]);
   const sessionUser =
-    token && !isTokenExpired(token) ? getTokenSessionUser(token) : null;
+    token  ? getTokenSessionUser(token) : null;
   const remoteAnalysis = useCandidateEvaluationAnalysis(
     sessionUser?.id ?? null,
   );
