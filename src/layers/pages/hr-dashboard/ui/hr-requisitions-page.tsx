@@ -4,7 +4,7 @@ import {
   HrPageHeader,
   HrPrimaryLink,
   HrStatGrid,
-} from "@/shared/ui/hr-page-elements";
+} from "@/entities/hr-dashboard/ui";
 import { HrRequisitionBoard } from "@/widgets/hr/requisition-board";
 
 export function HrRequisitionsPage() {

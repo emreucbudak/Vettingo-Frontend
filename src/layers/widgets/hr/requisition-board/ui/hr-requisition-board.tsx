@@ -5,7 +5,7 @@ import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   HrSectionHeading,
   HrStatusBadge,
-} from "@/shared/ui/hr-page-elements";
+} from "@/entities/hr-dashboard/ui";
 
 function PriorityBadge({ priority }: { priority: string }) {
   return priority === "Yüksek" ? (

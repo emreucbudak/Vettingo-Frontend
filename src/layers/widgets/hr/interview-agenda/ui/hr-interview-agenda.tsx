@@ -6,7 +6,7 @@ import {
   HrAvatar,
   HrSectionHeading,
   HrStatusBadge,
-} from "@/shared/ui/hr-page-elements";
+} from "@/entities/hr-dashboard/ui";
 
 const weekDays = [
   { day: "Pzt", date: "10", count: 3 },

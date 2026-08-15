@@ -3,7 +3,7 @@ import {
   HrPageHeader,
   HrPrimaryLink,
   HrStatGrid,
-} from "@/shared/ui/hr-page-elements";
+} from "@/entities/hr-dashboard/ui";
 import { HrCandidatePipeline } from "@/widgets/hr/candidate-pipeline";
 
 export function HrCandidatesPage() {

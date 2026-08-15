@@ -6,7 +6,7 @@ import {
   HrAvatar,
   HrSectionHeading,
   HrStatusBadge,
-} from "@/shared/ui/hr-page-elements";
+} from "@/entities/hr-dashboard/ui";
 
 function CandidateScore({ score }: { score: number }) {
   const tone =
