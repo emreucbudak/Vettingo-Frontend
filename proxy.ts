@@ -1,7 +1,7 @@
 import { decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 interface User {
-    role:string
+    Role:string
     exp: number
 }
 export async function proxy(request:NextRequest) {
@@ -16,7 +16,7 @@ export async function proxy(request:NextRequest) {
         if(pathname.startsWith("/employer")){
         const claim =  decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
-        if(claim.role !== "employer" ||  expire === true) {
+        if(claim.Role !== "employer" ||  expire === true) {
              return NextResponse.redirect(new URL("/login", request.url));
         }
          return NextResponse.next();
@@ -24,7 +24,7 @@ export async function proxy(request:NextRequest) {
     if(pathname.startsWith("/candidate")) {
         const claim = await decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
-        if (claim.role!== "candidate" || expire === true) {
+        if (claim.Role!== "candidate" || expire === true) {
              return NextResponse.redirect(new URL("/login", request.url));
         }
          return NextResponse.next();

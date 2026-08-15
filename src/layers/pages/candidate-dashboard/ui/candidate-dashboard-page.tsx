@@ -7,11 +7,17 @@ import { CandidateDashboardApplications } from "@/widgets/candidate/dashboard-ap
 import { CandidateRecommendedJobs } from "@/widgets/candidate/recommended-jobs";
 import { CandidateSkillRadar } from "@/widgets/candidate/skill-radar";
 import { CandidateUpcomingInterviews } from "@/widgets/candidate/upcoming-interviews";
-
-
-const subscribeToBrowserState = () => () => undefined;
-const getServerToken = (): string | null => null;
-export function CandidateDashboardPage() {
+import { whoIsThisUser,User } from "@/shared/auth/auth-token";
+import { useEffect, useState } from "react";
+export   function CandidateDashboardPage() {
+  const[user,setUser] = useState<User | null>(null);
+  useEffect( () => {
+    async function getUser() {
+      const who = await whoIsThisUser();
+      setUser(who);
+    }
+    getUser();
+  },[])
   const { applications, interviews, error, isLoading } = useCandidateDashboardData(sessionUser?.id ?? null);
 
   return (
@@ -20,7 +26,7 @@ export function CandidateDashboardPage() {
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-              Tekrar hoş geldin, {sessionUser?.firstName ?? "Aday"}.
+              Tekrar hoş geldin, {user!.GivenName + user!.FamilyName}
             </h2>
             <p className="mt-2 text-base leading-6 text-[#45474c]">Bugünkü profesyonel durumun ve aktivite özetin burada.</p>
           </div>

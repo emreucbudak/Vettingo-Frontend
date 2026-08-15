@@ -5,6 +5,10 @@ interface Auth{
   email : string,
   password : string,
 }
+interface Tokens{
+  accessToken:string,
+  refreshToken:string,
+}
 interface RegisterRequest {
   name: string;
   surname: string;
@@ -12,16 +16,13 @@ interface RegisterRequest {
   password: string;
   role: "Worker" | "Company";
 }
-export async function getJWTToken(loginCredentials:Auth) : Promise<string>{
+export async function getJWTToken(loginCredentials:Auth){
   
   const response = await fetch(basePath+"/api/auth/login",{
     body: JSON.stringify(loginCredentials),
   });
   const token = await response.json();
   await setToken(token.AccessToken,token.RefreshToken);
-  return token.AccessToken;
-  
-
 }
 export async function apiRequest (path:string,method:string,options?:RequestInit):Promise<Response> {
   const headers = new Headers(options?.headers);
@@ -39,8 +40,13 @@ export async function apiRequest (path:string,method:string,options?:RequestInit
 }
 export async function getNewJwtFromRefresh() {
   const refresh_token = await getRefreshToken();
+  const accessToken = await getToken();
+  const info = {
+    AccessToken: accessToken,
+    RefreshToken:refresh_token
+  }
   const newTokens = await fetch(basePath+"/api/auth/refresh-token",{
-    body: JSON.stringify(refresh_token) 
+    body: JSON.stringify(info) 
   });
   const newTokenJson = await newTokens.json();
   await setToken(newTokenJson.AccessToken,newTokenJson.RefreshToken);

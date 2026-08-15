@@ -1,0 +1,1 @@
+export {useUserInformation, type User} from "./userInformationHook";

@@ -3,7 +3,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { clearAuthToken } from "@/shared/auth";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
@@ -55,7 +54,6 @@ function DashboardSidebarLink({ item, compact = false }: { item: DashboardNaviga
       <button
         className={`${className} w-full`}
         onClick={() => {
-          clearAuthToken();
           router.replace(ROUTES.login);
           router.refresh();
         }}
