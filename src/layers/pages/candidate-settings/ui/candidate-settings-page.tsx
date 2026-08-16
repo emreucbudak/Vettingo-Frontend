@@ -4,6 +4,7 @@ import React, {
 } from "react";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
+import { useUserInformation , user,User } from "@/shared/useUserInformation";
 type CandidateProfileForm = {
   firstName: string;
   lastName: string;
@@ -340,15 +341,11 @@ function AccountSettingsForm() {
   );
 }
 
-function CandidateSettingsContent( {
-
-}) {
+function CandidateSettingsContent({ user }: { user: User }) {
 
   const [isSaved, setIsSaved] = useState(false);
 
   function updateProfile<Key extends keyof CandidateProfileForm>(
-    name: Key,
-    value: CandidateProfileForm[Key],
   ) {
 
     setIsSaved(false);
@@ -361,20 +358,16 @@ function CandidateSettingsContent( {
   }
 
   const completedFields = [
-    profile.firstName,
-    profile.lastName,
-    profile.email,
-    profile.phone,
-    profile.location,
-    profile.targetRole,
-    profile.bio,
+    user.GivenName,
+    user.FamilyName,
+    user.Email,
   ].filter((value) => value.trim().length > 0).length;
   const completion = Math.round((completedFields / 7) * 100);
   const fullName =
-    [profile.firstName, profile.lastName].filter(Boolean).join(" ") ||
+    [user.GivenName, user.FamilyName].filter(Boolean).join(" ") ||
     "Aday Kullanıcı";
   const initials =
-    [profile.firstName, profile.lastName]
+    [user.GivenName, user.FamilyName]
       .filter(Boolean)
       .map((value) => value[0])
       .join("")
@@ -407,7 +400,7 @@ function CandidateSettingsContent( {
               </div>
               <h2 className="mt-4 text-lg font-semibold text-[#0b1c30]">{fullName}</h2>
               <p className="mt-1 text-sm text-[#45474c]">
-                {profile.email || "E-posta bilgisi bekleniyor"}
+                {user.Email}
               </p>
               <div className="mt-6 border-t border-[#c5c6cd] pt-5">
                 <div className="mb-2 flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
@@ -432,9 +425,10 @@ function CandidateSettingsContent( {
 }
 
 export function CandidateSettingsPage() {
-
+  useUserInformation();
+  const use = user;
 
   return (
-    <CandidateSettingsContent/>
+    <CandidateSettingsContent user={use!} />
   );
 }
