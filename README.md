@@ -1,162 +1,141 @@
-# Vettingo Frontend
+<div align="center">
 
-Vettingo; adayların iş ilanlarını keşfedebildiği, başvurularını takip edebildiği ve değerlendirme süreçlerine katılabildiği, şirketlerin ise ilan ve aday süreçlerini yönetebildiği modern bir işe alım platformunun frontend uygulamasıdır.
+# Vettingo
 
-Bu proje; aday, işveren ve insan kaynakları ekipleri için farklı kullanıcı deneyimlerini tek bir uygulama altında toplar.
+### A modular recruitment, candidate vetting and assessment platform
 
-## İçindekiler
+Vettingo brings identity management, job applications, technical exams, structured interviews, evaluations, analytics and real-time notifications together in a microservice-based backend.
 
-- [Özellikler](#özellikler)
-- [Kullanıcı Rolleri](#kullanıcı-rolleri)
-- [Kullanılan Teknolojiler](#kullanılan-teknolojiler)
-- [Proje Yapısı](#proje-yapısı)
-- [Kurulum ve Çalıştırma](#kurulum-ve-çalıştırma)
-- [Komutlar](#komutlar)
-- [Önemli Sayfalar](#önemli-sayfalar)
+![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=for-the-badge&logo=dotnet)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-Web_API-512BD4?style=for-the-badge&logo=dotnet)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-EF_Core-4169E1?style=for-the-badge&logo=postgresql)
+![Redis](https://img.shields.io/badge/Redis-Caching_%26_Rate_Limiting-DC382D?style=for-the-badge&logo=redis)
+![Architecture](https://img.shields.io/badge/Architecture-Microservices-2EA44F?style=for-the-badge)
 
-## Özellikler
-
-- Kullanıcı girişi ve kayıt ekranları
-- Rol bazlı aday ve işveren sayfaları
-- İş ilanlarını görüntüleme ve filtreleme
-- Aday başvurularını takip etme
-- Aday değerlendirme ve öz analiz ekranları
-- Öz geçmiş yükleme akışı
-- Değerlendirme oturumları
-- İşveren ilan ve başvuru yönetimi
-- Yetenek havuzu ve aday detay ekranları
-- İK talep, aday, mülakat ve rapor ekranları
-- Açık ve koyu tema desteği
-- Farklı ekran boyutlarına uyumlu arayüz
-
-## Kullanıcı Rolleri
-
-### Aday
-
-Aday kullanıcılar iş ilanlarını inceleyebilir, başvuru geçmişlerini takip edebilir, yaklaşan mülakatlarını görebilir ve değerlendirme sonuçlarını inceleyebilir.
-
-### İşveren
-
-İşveren kullanıcılar ilanlarını, başvuruları ve yetenek havuzundaki adayları yönetebilir. İşveren panelinde yardım merkezi ve hesap ayarları da bulunur.
-
-### İnsan Kaynakları
-
-İK ekranları; iş taleplerinin, adayların, mülakatların ve raporların merkezi bir panel üzerinden takip edilmesini sağlar.
-
-## Kullanılan Teknolojiler
-
-| Teknoloji | Kullanım amacı |
-| --- | --- |
-| [Next.js 16](https://nextjs.org/) | Uygulama çatısı ve sayfa yönlendirme |
-| [React 19](https://react.dev/) | Kullanıcı arayüzü geliştirme |
-| [TypeScript](https://www.typescriptlang.org/) | Tip güvenli JavaScript geliştirme |
-| [Tailwind CSS 4](https://tailwindcss.com/) | Arayüz stilleri |
-| [JOSE](https://github.com/panva/jose) | JWT işlemleri |
-| [ESLint](https://eslint.org/) | Kod kalitesi ve statik analiz |
-
-## Proje Yapısı
-
-Proje, Next.js App Router ile katmanlı bir frontend mimarisini birlikte kullanır.
-
-```text
-vettingo/
-├── app/                    # Next.js rotaları ve sayfa giriş noktaları
-├── public/                 # Statik dosyalar
-├── src/layers/
-│   ├── entities/           # İş alanına ait veri modelleri
-│   ├── features/           # Kullanıcı aksiyonları ve özellikler
-│   ├── pages/              # Sayfa seviyesindeki arayüz bileşenleri
-│   ├── shared/             # Ortak yapılandırma, yardımcılar ve UI bileşenleri
-│   └── widgets/            # Birden fazla bileşenden oluşan arayüz blokları
-├── proxy.ts                # Korumalı rotalar için rol ve oturum kontrolü
-├── next.config.ts          # Next.js yapılandırması
-├── package.json            # Bağımlılıklar ve proje komutları
-└── tsconfig.json           # TypeScript yapılandırması
-```
-
-`@/` yolu, `src/layers/` klasörünü işaret eder. Örneğin:
-
-```ts
-import { CandidateShell } from "@/widgets/candidate/shell";
-```
-
-## Kurulum ve Çalıştırma
-
-### Gereksinimler
-
-Projeyi çalıştırmadan önce bilgisayarınızda aşağıdaki araçların kurulu olması gerekir:
-
-- [Node.js](https://nodejs.org/)
-- Node.js ile birlikte gelen `npm`
-- [Git](https://git-scm.com/) — projeyi klonlamak için
-
-### 1. Projeyi klonlayın
-
-```bash
-git clone https://github.com/emreucbudak/Vettingo-Frontend.git
-cd Vettingo-Frontend/vettingo
-```
-
-Proje zaten bilgisayarınızdaysa doğrudan proje klasörüne geçebilirsiniz.
-
-### 2. Bağımlılıkları yükleyin
-
-```bash
-npm install
-```
-
-### 3. Geliştirme sunucusunu başlatın
-
-```bash
-npm run dev
-```
-
-Uygulama başladıktan sonra tarayıcınızdan aşağıdaki adresi açın:
-
-```text
-http://localhost:3000
-```
-
-Geliştirme sunucusunu durdurmak için terminalde `Ctrl + C` tuşlarına basabilirsiniz.
-
-## Komutlar
-
-| Komut | Açıklama |
-| --- | --- |
-| `npm run dev` | Geliştirme sunucusunu başlatır |
-| `npm run build` | Uygulamanın production derlemesini oluşturur |
-| `npm run start` | Oluşturulan production derlemesini çalıştırır |
-| `npm run lint` | ESLint kontrollerini çalıştırır |
-
-Production modunda yerel olarak çalıştırmak için:
-
-```bash
-npm run build
-npm run start
-```
-
-## Önemli Sayfalar
-
-| Rota | Açıklama |
-| --- | --- |
-| `/` | Tanıtım ve ana sayfa |
-| `/login` | Kullanıcı girişi |
-| `/register` | Yeni kullanıcı kaydı |
-| `/jobs` | İş ilanlarını keşfetme |
-| `/candidate` | Aday paneli |
-| `/candidate/applications` | Adayın başvuruları |
-| `/candidate/settings` | Aday hesap ayarları |
-| `/employer` | İşveren paneli |
-| `/employer/jobs` | İşveren ilan yönetimi |
-| `/employer/applications` | Başvuru yönetimi |
-| `/employer/talents` | Yetenek havuzu |
-| `/hr` | İnsan kaynakları paneli |
-| `/hr/requisitions` | İş talepleri |
-| `/hr/candidates` | Aday yönetimi |
-| `/hr/interviews` | Mülakat takibi |
-| `/assessment` | Değerlendirme başlangıç ekranı |
-| `/resume-upload` | Öz geçmiş yükleme |
+</div>
 
 ---
 
-Bu README, projenin mevcut frontend yapısını ve temel çalışma adımlarını açıklamaktadır.
+## About the Project
+
+Vettingo is a backend platform designed to manage the complete recruitment and candidate evaluation lifecycle.
+
+The platform supports four primary user roles:
+
+- **Admin**
+- **Human Resources (HR)**
+- **Company**
+- **Candidate**
+
+Each business capability is isolated in its own service and exposed through an API Gateway. The services follow a layered, domain-oriented structure with CQRS, validation, caching and role-based authorization.
+
+## Key Features
+
+- JWT-based authentication with access and refresh tokens
+- Role-based access control
+- Company and user management
+- Job posting creation and advanced search
+- Candidate application tracking
+- Technical exam management
+- Multiple-choice, true/false, classic and code-completion questions
+- Structured interview exams, questions and answers
+- Candidate evaluation management
+- Candidate recommendation and CV analysis records
+- Job posting performance analytics
+- Real-time notifications with SignalR
+- Redis-backed query caching
+- Gateway-level rate limiting
+- Centralized exception handling
+- Structured request logging
+- Service-focused unit test projects
+
+## Architecture
+
+```mermaid
+flowchart TB
+    Client["Web / Mobile Client"] --> Gateway["YARP API Gateway"]
+
+    Gateway --> Auth["Auth Service"]
+    Gateway --> Job["Job Service"]
+    Gateway --> Application["Application Service"]
+    Gateway --> Exam["Exam Service"]
+    Gateway --> Interview["Interview Service"]
+    Gateway --> Evaluation["Evaluation Service"]
+    Gateway --> Analytics["Analytics Service"]
+    Gateway --> Notification["Notification Service"]
+
+    Auth --> PostgreSQL["PostgreSQL Databases"]
+    Job --> PostgreSQL
+    Application --> PostgreSQL
+    Exam --> PostgreSQL
+    Interview --> PostgreSQL
+    Evaluation --> PostgreSQL
+    Analytics --> PostgreSQL
+    Notification --> PostgreSQL
+
+    Gateway --> Redis["Redis"]
+    Job --> Redis
+    Exam --> Redis
+    Interview --> Redis
+    Evaluation --> Redis
+    Analytics --> Redis
+    Notification --> Redis
+
+    Notification -- "SignalR" --> Client
+```
+
+Most services are separated into the following layers:
+
+```text
+API
+ └── HTTP endpoints, authentication and middleware
+
+Application
+ └── CQRS requests, handlers, validation and business rules
+
+Domain
+ └── Entities, enums and domain behavior
+
+Infrastructure
+ └── External and technical service implementations
+
+Persistence
+ └── Entity Framework Core contexts and repositories
+```
+
+## Services
+
+| Service | Responsibility | Main API routes |
+|---|---|---|
+| **Gateway** | Request routing, CORS and Redis-backed rate limiting | `/auth`, `/job`, `/application`, `/exam`, `/interview`, `/evaluation`, `/analytics`, `/notification` |
+| **Auth Service** | Registration, login, token renewal, token revocation, roles and companies | `/api/auth`, `/api/company` |
+| **Job Service** | Job posting lifecycle and filtered job searches | `/api/job-postings` |
+| **Application Service** | Candidate applications and application status updates | `/api/job-applications` |
+| **Exam Service** | Exams and supported technical question types | `/api/exams` |
+| **Interview Service** | Interview exams, questions and candidate answers | `/api/interview-exams`, `/api/interview-questions`, `/api/interview-answers` |
+| **Evaluation Service** | Candidate evaluation lifecycle | `/api/evaluations` |
+| **Analytics Service** | Recommendations, CV analysis and job performance analytics | `/api/analytics` |
+| **Notification Service** | Stored notifications, unread state and real-time delivery | `/api/notifications`, `/notification-hub` |
+
+## Roles and Authorization
+
+| Role | Purpose |
+|---|---|
+| **Admin** | Platform-level administration and company management |
+| **Human Resources** | Dedicated HR identity for recruitment and candidate management teams |
+| **Company** | Employer-side job, assessment, interview and analytics operations |
+| **Candidate** | Job applications, assessments, interviews, evaluations and personal analytics |
+
+> The exact seeded name of the HR role is `Human Resources`.
+
+JWTs include the user's role in the `Role` claim. API endpoints use role-based authorization policies to protect business operations.
+
+## Technology Stack
+
+| Area | Technologies |
+|---|---|
+| Runtime | .NET 10 |
+| API | ASP.NET Core Web API |
+| Architecture | Microservices, layered architecture, CQRS |
+| Request mediation | FlashMediator |
+| Database
