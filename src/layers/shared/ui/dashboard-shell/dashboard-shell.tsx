@@ -54,6 +54,7 @@ function DashboardSidebarLink({ item, compact = false }: { item: DashboardNaviga
       <button
         className={`${className} w-full`}
         onClick={() => {
+          
           router.replace(ROUTES.login);
           router.refresh();
         }}

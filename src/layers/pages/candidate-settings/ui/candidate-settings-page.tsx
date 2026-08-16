@@ -7,7 +7,6 @@ import React, {
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
-const PROFILE_STORAGE_KEY = "vettingo-candidate-profile";
 const subscribeToBrowserState = () => () => undefined;
 const getServerToken = (): string | null => null;
 
@@ -348,44 +347,24 @@ function AccountSettingsForm() {
 }
 
 function CandidateSettingsContent({
-  sessionEmail,
-  sessionFullName,
-  sessionId,
-}: {
-  sessionEmail?: string;
-  sessionFullName?: string;
-  sessionId?: string;
-}) {
-  const storageKey = `${PROFILE_STORAGE_KEY}:${sessionId ?? "anonymous"}`;
-  const [profile, setProfile] = useState<CandidateProfileForm>(() => {
-    const sessionProfile = createSessionProfile(sessionFullName, sessionEmail);
-    if (typeof window === "undefined") return sessionProfile;
 
-    try {
-      const savedProfile = window.localStorage.getItem(storageKey);
-      return savedProfile
-        ? {
-            ...sessionProfile,
-            ...(JSON.parse(savedProfile) as Partial<CandidateProfileForm>),
-          }
-        : sessionProfile;
-    } catch {
-      return sessionProfile;
-    }
-  });
+}: {
+
+}) {
+
   const [isSaved, setIsSaved] = useState(false);
 
   function updateProfile<Key extends keyof CandidateProfileForm>(
     name: Key,
     value: CandidateProfileForm[Key],
   ) {
-    setProfile((current) => ({ ...current, [name]: value }));
+
     setIsSaved(false);
   }
 
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    window.localStorage.setItem(storageKey, JSON.stringify(profile));
+    
     setIsSaved(true);
   }
 
@@ -461,20 +440,9 @@ function CandidateSettingsContent({
 }
 
 export function CandidateSettingsPage() {
-  const token = useSyncExternalStore<string | null>(
-    subscribeToBrowserState,
-    getAuthToken,
-    getServerToken,
-  );
-  const sessionUser =
-    token && !isTokenExpired(token) ? getTokenSessionUser(token) : null;
+
 
   return (
-    <CandidateSettingsContent
-      key={token ?? "anonymous"}
-      sessionEmail={sessionUser?.email}
-      sessionFullName={sessionUser?.fullName}
-      sessionId={sessionUser?.id}
-    />
+    <CandidateSettingsContent/>
   );
 }

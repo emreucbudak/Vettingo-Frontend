@@ -1,4 +1,4 @@
-import { authFetch } from "@/shared/api";
+
 
 const candidateApiPaths = {
   applications: "/api/gateway/application/job-applications",

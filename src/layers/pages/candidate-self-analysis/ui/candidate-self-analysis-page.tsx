@@ -10,7 +10,7 @@ import { useCandidateEvaluationAnalysis } from "@/features/candidate-analysis";
 import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-import { useEffect } from "react";
+import { user, useUserInformation } from "@/shared/useUserInformation";
 function ScoreRing({
   isLoading,
   score,
@@ -227,15 +227,8 @@ function GrowthPlan({
 }
 
 export function CandidateSelfAnalysisPage() {
+  useUserInformation();
   
-  useEffect(() => {
-    async function getToken() {
-      
-    }
-
-  },[]);
-  const sessionUser =
-    token  ? getTokenSessionUser(token) : null;
   const remoteAnalysis = useCandidateEvaluationAnalysis(
     sessionUser?.id ?? null,
   );
@@ -253,8 +246,8 @@ export function CandidateSelfAnalysisPage() {
   const developmentAreas = hasRemoteAnalysis
     ? remoteAnalysis.risks
     : profile.risks;
-  const displayName = sessionUser?.fullName || profile.name;
-  const displayEmail = sessionUser?.email || profile.email;
+  const displayName = user!.GivenName + user!.FamilyName
+  const displayEmail = user!.Email;
   const roleScore = hasRemoteAnalysis
     ? Math.round((score + profile.roleSuitability) / 2)
     : profile.roleSuitability;

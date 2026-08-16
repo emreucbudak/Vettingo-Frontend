@@ -7,17 +7,10 @@ import { CandidateDashboardApplications } from "@/widgets/candidate/dashboard-ap
 import { CandidateRecommendedJobs } from "@/widgets/candidate/recommended-jobs";
 import { CandidateSkillRadar } from "@/widgets/candidate/skill-radar";
 import { CandidateUpcomingInterviews } from "@/widgets/candidate/upcoming-interviews";
-import { whoIsThisUser,User } from "@/shared/auth/auth-token";
-import { useEffect, useState } from "react";
+import { useUserInformation } from "@/shared/useUserInformation";
 export   function CandidateDashboardPage() {
-  const[user,setUser] = useState<User | null>(null);
-  useEffect( () => {
-    async function getUser() {
-      const who = await whoIsThisUser();
-      setUser(who);
-    }
-    getUser();
-  },[])
+  const us =  useUserInformation();
+  c
   const { applications, interviews, error, isLoading } = useCandidateDashboardData(sessionUser?.id ?? null);
 
   return (
