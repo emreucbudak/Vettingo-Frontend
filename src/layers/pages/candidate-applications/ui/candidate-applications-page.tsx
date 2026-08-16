@@ -1,11 +1,9 @@
 "use client";
-import { useSyncExternalStore } from "react";
 import { useCandidateDashboardData } from "@/features/candidate-dashboard";
 import { CandidateApplicationHistory } from "@/widgets/candidate/application-history";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-const subscribeToBrowserState = () => () => undefined;
-const getServerToken = (): string | null => null;
+import { user, useUserInformation } from "@/shared/useUserInformation";
 
 function StatCard({
   icon,
@@ -36,14 +34,9 @@ function StatCard({
 }
 
 export function CandidateApplicationsPage() {
-  const token = useSyncExternalStore<string | null>(
-    subscribeToBrowserState,
-    getServerToken,
-  );
-  const sessionUser =
-    token && !isTokenExpired(token) ? getTokenSessionUser(token) : null;
+  useUserInformation();
   const { applications, error, isLoading } = useCandidateDashboardData(
-    sessionUser?.id ?? null,
+    user!.Sub
   );
   const inProgress = applications.filter(
     (application) => application.progress < 100,

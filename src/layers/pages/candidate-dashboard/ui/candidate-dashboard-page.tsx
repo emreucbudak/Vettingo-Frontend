@@ -7,12 +7,10 @@ import { CandidateDashboardApplications } from "@/widgets/candidate/dashboard-ap
 import { CandidateRecommendedJobs } from "@/widgets/candidate/recommended-jobs";
 import { CandidateSkillRadar } from "@/widgets/candidate/skill-radar";
 import { CandidateUpcomingInterviews } from "@/widgets/candidate/upcoming-interviews";
-import { useUserInformation } from "@/shared/useUserInformation";
+import { user, useUserInformation } from "@/shared/useUserInformation";
 export   function CandidateDashboardPage() {
-  const us =  useUserInformation();
-  c
-  const { applications, interviews, error, isLoading } = useCandidateDashboardData(sessionUser?.id ?? null);
-
+  useUserInformation();
+  const { applications, interviews, error, isLoading } = useCandidateDashboardData(sessionUser?.id);
   return (
     <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 overflow-x-hidden p-4 md:p-8">

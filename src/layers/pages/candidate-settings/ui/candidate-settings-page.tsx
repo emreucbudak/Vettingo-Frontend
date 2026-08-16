@@ -1,15 +1,9 @@
 "use client";
-
 import React, {
   useState,
-  useSyncExternalStore,
 } from "react";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-
-const subscribeToBrowserState = () => () => undefined;
-const getServerToken = (): string | null => null;
-
 type CandidateProfileForm = {
   firstName: string;
   lastName: string;
@@ -346,9 +340,7 @@ function AccountSettingsForm() {
   );
 }
 
-function CandidateSettingsContent({
-
-}: {
+function CandidateSettingsContent( {
 
 }) {
 

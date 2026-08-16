@@ -161,7 +161,7 @@ function toInterviewView(interview: InterviewDto): UpcomingInterview {
   };
 }
 
-export function useCandidateDashboardData(candidateId: string | null) {
+export function useCandidateDashboardData(candidateId: string ) {
   const [data, setData] = useState<CandidateDashboardData>(initialData);
   const [isLoading, setIsLoading] = useState(Boolean(candidateId));
   const [error, setError] = useState<string | null>(null);

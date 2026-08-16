@@ -230,7 +230,7 @@ export function CandidateSelfAnalysisPage() {
   useUserInformation();
   
   const remoteAnalysis = useCandidateEvaluationAnalysis(
-    sessionUser?.id ?? null,
+    user!.Sub
   );
   const profile = defaultCandidateAnalysisProfile;
   const hasRemoteAnalysis = remoteAnalysis.evaluationCount > 0;
