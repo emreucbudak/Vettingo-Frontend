@@ -5,11 +5,15 @@ export async function setToken(accessToken:string,refreshToken:string){
   const cookieStore = await cookies();
   await cookieStore.set("access_token",accessToken,{
     maxAge:60*15,
-    sameSite:"lax"  
+    sameSite:"lax",
+    httpOnly:true,
+    secure: true,  
   });
   await cookieStore.set("refresh_token",refreshToken,{
     maxAge:60*60*24,
-    sameSite:"lax"
+    sameSite:"lax",
+    httpOnly:true,
+    secure:true,
   })
   
 }

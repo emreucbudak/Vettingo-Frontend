@@ -1,4 +1,4 @@
-import { authFetch } from "@/shared/api";
+
 
 const evaluationsPath = "/api/gateway/evaluation/evaluations";
 
