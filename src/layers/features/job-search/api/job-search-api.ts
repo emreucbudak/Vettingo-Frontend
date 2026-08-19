@@ -1,4 +1,4 @@
-import { authFetch } from "@/shared/api";
+import { apiRequest } from "@/shared/api";
 
 const jobSearchPath = "/api/gateway/job/job-postings/search";
 
@@ -44,16 +44,15 @@ export async function searchJobPostings(
     }
   });
 
-  let response: Response;
   try {
-    response = await authFetch(`${jobSearchPath}?${query}`, { signal });
+    return (await apiRequest(
+      `${jobSearchPath}?${query}`,
+      "GET",
+      { signal },
+    )) as unknown as JobPostingSearchDto[];
   } catch {
-    throw new Error("Jobs servisine ulaşılamadı. Lütfen daha sonra tekrar deneyin.");
+    throw new Error(
+      "Jobs servisine ulaşılamadı. Lütfen daha sonra tekrar deneyin.",
+    );
   }
-
-  if (!response.ok) {
-    throw new Error("İş ilanları aranamadı. Filtreleri kontrol edip tekrar deneyin.");
-  }
-
-  return (await response.json()) as JobPostingSearchDto[];
 }

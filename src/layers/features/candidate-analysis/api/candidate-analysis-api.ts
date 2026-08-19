@@ -1,4 +1,4 @@
-
+import { apiRequest } from "@/shared/api";
 
 const evaluationsPath = "/api/gateway/evaluation/evaluations";
 
@@ -17,20 +17,17 @@ export async function getCandidateEvaluations(
   signal?: AbortSignal,
 ): Promise<EvaluationDto[]> {
   const query = new URLSearchParams({ userId: candidateId });
-  let response: Response;
 
   try {
-    response = await authFetch(`${evaluationsPath}?${query}`, { signal });
+    return (await apiRequest(
+      `${evaluationsPath}?${query}`,
+      "GET",
+      { signal },
+    )) as unknown as EvaluationDto[];
   } catch (requestError) {
     if (requestError instanceof DOMException && requestError.name === "AbortError") {
       throw requestError;
     }
     throw new Error("Evaluation servisine ulaşılamadı. Lütfen daha sonra tekrar deneyin.");
   }
-
-  if (!response.ok) {
-    throw new Error("Aday değerlendirmeleri alınamadı. Lütfen daha sonra tekrar deneyin.");
-  }
-
-  return (await response.json()) as EvaluationDto[];
 }
