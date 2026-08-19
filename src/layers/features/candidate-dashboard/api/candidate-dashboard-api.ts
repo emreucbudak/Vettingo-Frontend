@@ -1,4 +1,4 @@
-
+import { apiRequest } from "@/shared/api";
 
 const candidateApiPaths = {
   applications: "/api/gateway/application/job-applications",
@@ -33,19 +33,11 @@ export type InterviewDto = {
 };
 
 async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
-  let response: Response;
-
   try {
-    response = await authFetch(path, { signal });
+    return (await apiRequest(path, "GET", { signal })) as unknown as T;
   } catch {
     throw new Error("Vettingo servislerine ulaşılamadı. Lütfen daha sonra tekrar deneyin.");
   }
-
-  if (!response.ok) {
-    throw new Error("Panel verileri alınamadı. Lütfen daha sonra tekrar deneyin.");
-  }
-
-  return (await response.json()) as T;
 }
 
 export function getCandidateApplications(candidateId: string, signal?: AbortSignal) {
