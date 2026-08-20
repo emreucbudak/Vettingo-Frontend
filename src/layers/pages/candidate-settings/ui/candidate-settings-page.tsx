@@ -383,22 +383,22 @@ export function CandidateSettingsPage() {
   const [profile, setProfile] = useState<CandidateProfile>(emptyProfile);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const email = user?.Email;
 
   useEffect(() => {
-    if (!user?.Email) {
+    if (!email) {
       return;
     }
 
-    const email = user.Email;
     const abortController = new AbortController();
 
-    async function loadProfile() {
+    async function loadProfile(profileEmail: string) {
       try {
         setIsLoading(true);
         setError(null);
 
         const response = await apiRequest<CandidateProfile>(
-          `/api/gateway/auth/user?email=${encodeURIComponent(email)}`,
+          `/api/gateway/auth/user?email=${encodeURIComponent(profileEmail)}`,
           "GET",
           {
             cache: "no-store",
@@ -409,13 +409,9 @@ export function CandidateSettingsPage() {
         if (!abortController.signal.aborted) {
           setProfile(response);
         }
-      } catch (loadError) {
+      } catch {
         if (!abortController.signal.aborted) {
-          setError(
-            loadError instanceof Error
-              ? loadError.message
-              : "Kullanıcı profil bilgileri alınamadı.",
-          );
+          setError("Kullanıcı profil bilgileriniz alınamadı.");
         }
       } finally {
         if (!abortController.signal.aborted) {
@@ -424,10 +420,10 @@ export function CandidateSettingsPage() {
       }
     }
 
-    void loadProfile();
+    loadProfile(email);
 
     return () => abortController.abort();
-  }, [user]);
+  }, [email]);
 
   return (
     <CandidateSettingsContent
