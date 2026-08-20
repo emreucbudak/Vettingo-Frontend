@@ -10,7 +10,7 @@ import { useCandidateEvaluationAnalysis } from "@/features/candidate-analysis";
 import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-import { user, useUserInformation } from "@/shared/useUserInformation";
+import { useUserInformation } from "@/shared/useUserInformation";
 function ScoreRing({
   isLoading,
   score,
@@ -227,10 +227,9 @@ function GrowthPlan({
 }
 
 export function CandidateSelfAnalysisPage() {
-  useUserInformation();
-  
+  const user = useUserInformation();
   const remoteAnalysis = useCandidateEvaluationAnalysis(
-    user!.Sub
+    user?.Sub ?? null,
   );
   const profile = defaultCandidateAnalysisProfile;
   const hasRemoteAnalysis = remoteAnalysis.evaluationCount > 0;
@@ -246,8 +245,11 @@ export function CandidateSelfAnalysisPage() {
   const developmentAreas = hasRemoteAnalysis
     ? remoteAnalysis.risks
     : profile.risks;
-  const displayName = user!.GivenName + user!.FamilyName
-  const displayEmail = user!.Email;
+  const displayName =
+    [user?.GivenName, user?.FamilyName]
+      .filter(Boolean)
+      .join(" ") || "Aday Kullanıcı";
+  const displayEmail = user?.Email ?? "";
   const roleScore = hasRemoteAnalysis
     ? Math.round((score + profile.roleSuitability) / 2)
     : profile.roleSuitability;

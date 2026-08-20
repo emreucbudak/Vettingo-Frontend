@@ -1,1 +1,1 @@
-export {useUserInformation,user, type User} from "./userInformationHook";
+export { useUserInformation, type User } from "./userInformationHook";

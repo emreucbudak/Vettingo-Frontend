@@ -1,45 +1,31 @@
 "use client";
-import React, {
-  useState,
-} from "react";
-import { CandidateShell } from "@/widgets/candidate/shell";
+import React, { useEffect, useState } from "react";
+import { apiRequest } from "@/shared/api";
+import { useUserInformation } from "@/shared/useUserInformation";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-import { useUserInformation , user,User } from "@/shared/useUserInformation";
-type CandidateProfileForm = {
-  firstName: string;
-  lastName: string;
+import { CandidateShell } from "@/widgets/candidate/shell";
+type CandidateProfile = {
+  name: string;
+  surname: string;
   email: string;
-  phone: string;
-  location: string;
+  phoneNumber: string | null;
   targetRole: string;
-  bio: string;
+  biography: string | null;
 };
 
-const emptyProfile: CandidateProfileForm = {
-  firstName: "",
-  lastName: "",
+const emptyProfile: CandidateProfile = {
+  name: "",
+  surname: "",
   email: "",
-  phone: "",
-  location: "",
+  phoneNumber: "",
   targetRole: "",
-  bio: "",
+  biography: "",
 };
 
 const inputClass =
   "w-full rounded border border-[#c5c6cd] bg-white px-4 py-3 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
 const labelClass =
   "mb-2 block text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]";
-
-function createSessionProfile(fullName?: string, email?: string) {
-  const nameParts = fullName?.trim().split(/\s+/).filter(Boolean) ?? [];
-
-  return {
-    ...emptyProfile,
-    firstName: nameParts[0] ?? "",
-    lastName: nameParts.slice(1).join(" "),
-    email: email ?? "",
-  };
-}
 
 function SectionHeader({
   description,
@@ -64,15 +50,14 @@ function SectionHeader({
 }
 
 type ProfileTextField = Exclude<
-  keyof CandidateProfileForm,
-  "bio"
+  keyof CandidateProfile,
+  "biography"
 >;
 
 function ProfileInput({
   autoComplete,
   label,
   name,
-  onChange,
   placeholder,
   type = "text",
   value,
@@ -80,7 +65,6 @@ function ProfileInput({
   autoComplete?: string;
   label: string;
   name: ProfileTextField;
-  onChange: (name: ProfileTextField, value: string) => void;
   placeholder?: string;
   type?: "email" | "tel" | "text";
   value: string;
@@ -95,9 +79,9 @@ function ProfileInput({
         className={inputClass}
         id={`candidate-${name}`}
         name={name}
-        onChange={(event) => onChange(name, event.target.value)}
         placeholder={placeholder}
-        required={name === "firstName" || name === "lastName" || name === "email"}
+        readOnly
+        required={name === "name" || name === "surname" || name === "email"}
         type={type}
         value={value}
       />
@@ -105,28 +89,9 @@ function ProfileInput({
   );
 }
 
-function ProfileForm({
-  isSaved,
-  onChange,
-  onSubmit,
-  profile,
-}: {
-  isSaved: boolean;
-  onChange: <Key extends keyof CandidateProfileForm>(
-    name: Key,
-    value: CandidateProfileForm[Key],
-  ) => void;
-  onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void;
-  profile: CandidateProfileForm;
-}) {
-  const updateText = (name: ProfileTextField, value: string) =>
-    onChange(name, value);
-
+function ProfileForm({ profile }: { profile: CandidateProfile }) {
   return (
-    <form
-      className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
-      onSubmit={onSubmit}
-    >
+    <section className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6">
       <SectionHeader
         description="İşverenlerin ve Vettingo önerilerinin kullandığı iletişim ve kariyer bilgilerini düzenle."
         icon="person_edit"
@@ -137,86 +102,61 @@ function ProfileForm({
         <ProfileInput
           autoComplete="given-name"
           label="Ad"
-          name="firstName"
-          onChange={updateText}
-          value={profile.firstName}
+          name="name"
+          value={profile.name}
         />
         <ProfileInput
           autoComplete="family-name"
           label="Soyad"
-          name="lastName"
-          onChange={updateText}
-          value={profile.lastName}
+          name="surname"
+          value={profile.surname}
         />
         <ProfileInput
           autoComplete="email"
           label="E-posta"
           name="email"
-          onChange={updateText}
           type="email"
           value={profile.email}
         />
         <ProfileInput
           autoComplete="tel"
           label="Telefon"
-          name="phone"
-          onChange={updateText}
+          name="phoneNumber"
           placeholder="+90 5xx xxx xx xx"
           type="tel"
-          value={profile.phone}
-        />
-        <ProfileInput
-          autoComplete="address-level2"
-          label="Konum"
-          name="location"
-          onChange={updateText}
-          placeholder="İstanbul, Türkiye"
-          value={profile.location}
+          value={profile.phoneNumber ?? ""}
         />
         <ProfileInput
           autoComplete="organization-title"
           label="Hedef Pozisyon"
           name="targetRole"
-          onChange={updateText}
           placeholder="Örn. Kıdemli Ürün Tasarımcısı"
           value={profile.targetRole}
         />
         <div className="md:col-span-2">
-          <label className={labelClass} htmlFor="candidate-bio">
+          <label className={labelClass} htmlFor="candidate-biography">
             Hakkımda
           </label>
           <textarea
             className={`${inputClass} min-h-32 resize-y leading-6`}
-            id="candidate-bio"
+            id="candidate-biography"
             maxLength={500}
-            name="bio"
-            onChange={(event) => onChange("bio", event.target.value)}
+            name="biography"
             placeholder="Deneyimini, güçlü yönlerini ve kariyer hedeflerini kısaca anlat."
-            value={profile.bio}
+            readOnly
+            value={profile.biography ?? ""}
           />
           <p className="mt-2 text-right text-[11px] text-[#75777d]">
-            {profile.bio.length}/500
+            {(profile.biography ?? "").length}/500
           </p>
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 border-t border-[#c5c6cd] pt-5 sm:flex-row sm:items-center">
-        <button
-          className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
-          type="submit"
-        >
-          Değişiklikleri Kaydet
-          <MaterialIcon className="text-[18px]">save</MaterialIcon>
-        </button>
-        <p
-          aria-live="polite"
-          className={`flex items-center gap-2 text-sm font-medium text-[#006c49] ${isSaved ? "" : "sr-only"}`}
-        >
-          <MaterialIcon className="text-[18px]">check_circle</MaterialIcon>
-          Bilgilerin kaydedildi.
-        </p>
+      <div className="mt-6 flex items-start gap-2 border-t border-[#c5c6cd] pt-5 text-sm text-[#45474c]">
+        <MaterialIcon className="mt-0.5 text-[18px]">info</MaterialIcon>
+        Profil bilgileri hesabındaki güncel kayıtlardan görüntüleniyor.
       </div>
-    </form>
+    </section>
   );
 }
 
@@ -341,33 +281,31 @@ function AccountSettingsForm() {
   );
 }
 
-function CandidateSettingsContent({ user }: { user: User }) {
+type CandidateSettingsContentProps = {
+  error: string | null;
+  isLoading: boolean;
+  profile: CandidateProfile;
+};
 
-  const [isSaved, setIsSaved] = useState(false);
-
-  function updateProfile<Key extends keyof CandidateProfileForm>(
-  ) {
-
-    setIsSaved(false);
-  }
-
-  function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    
-    setIsSaved(true);
-  }
-
+function CandidateSettingsContent({
+  error,
+  isLoading,
+  profile,
+}: CandidateSettingsContentProps) {
   const completedFields = [
-    user.GivenName,
-    user.FamilyName,
-    user.Email,
+    profile.name,
+    profile.surname,
+    profile.email,
+    profile.phoneNumber ?? "",
+    profile.targetRole,
+    profile.biography ?? "",
   ].filter((value) => value.trim().length > 0).length;
-  const completion = Math.round((completedFields / 7) * 100);
+  const completion = Math.round((completedFields / 6) * 100);
   const fullName =
-    [user.GivenName, user.FamilyName].filter(Boolean).join(" ") ||
+    [profile.name, profile.surname].filter(Boolean).join(" ") ||
     "Aday Kullanıcı";
   const initials =
-    [user.GivenName, user.FamilyName]
+    [profile.name, profile.surname]
       .filter(Boolean)
       .map((value) => value[0])
       .join("")
@@ -375,7 +313,10 @@ function CandidateSettingsContent({ user }: { user: User }) {
 
   return (
     <CandidateShell showTopBarLabel={false}>
-      <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
+      <main
+        aria-busy={isLoading}
+        className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8"
+      >
         <header className="mb-8 border-b border-[#c5c6cd] pb-7">
           <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
             Hesap Yönetimi
@@ -385,23 +326,36 @@ function CandidateSettingsContent({ user }: { user: User }) {
           </h1>
         </header>
 
+        {isLoading ? (
+          <div
+            className="mb-6 rounded border border-[#9db7dd] bg-[#eff4ff] px-4 py-3 text-sm text-[#0b1c30]"
+            role="status"
+          >
+            Profil bilgileri yükleniyor...
+          </div>
+        ) : null}
+
+        {error ? (
+          <div
+            className="mb-6 rounded border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]"
+            role="alert"
+          >
+            {error}
+          </div>
+        ) : null}
+
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
-          <ProfileForm
-            isSaved={isSaved}
-            onChange={updateProfile}
-            onSubmit={handleSubmit}
-            profile={profile}
-          />
+          <ProfileForm profile={profile} />
 
           <aside className="space-y-6">
             <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
               <div className="flex h-14 w-14 items-center justify-center rounded bg-[#6cf8bb] text-lg font-semibold text-[#00714d]">
                 {initials}
               </div>
-              <h2 className="mt-4 text-lg font-semibold text-[#0b1c30]">{fullName}</h2>
-              <p className="mt-1 text-sm text-[#45474c]">
-                {user.Email}
-              </p>
+              <h2 className="mt-4 text-lg font-semibold text-[#0b1c30]">
+                {fullName}
+              </h2>
+              <p className="mt-1 text-sm text-[#45474c]">{profile.email}</p>
               <div className="mt-6 border-t border-[#c5c6cd] pt-5">
                 <div className="mb-2 flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
                   <span>Profil Tamamlanma</span>
@@ -425,10 +379,61 @@ function CandidateSettingsContent({ user }: { user: User }) {
 }
 
 export function CandidateSettingsPage() {
-  useUserInformation();
-  const use = user;
+  const user = useUserInformation();
+  const [profile, setProfile] = useState<CandidateProfile>(emptyProfile);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user?.Email) {
+      return;
+    }
+
+    const email = user.Email;
+    const abortController = new AbortController();
+
+    async function loadProfile() {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await apiRequest<CandidateProfile>(
+          `/api/gateway/auth/user?email=${encodeURIComponent(email)}`,
+          "GET",
+          {
+            cache: "no-store",
+            signal: abortController.signal,
+          },
+        );
+
+        if (!abortController.signal.aborted) {
+          setProfile(response);
+        }
+      } catch (loadError) {
+        if (!abortController.signal.aborted) {
+          setError(
+            loadError instanceof Error
+              ? loadError.message
+              : "Kullanıcı profil bilgileri alınamadı.",
+          );
+        }
+      } finally {
+        if (!abortController.signal.aborted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    void loadProfile();
+
+    return () => abortController.abort();
+  }, [user]);
 
   return (
-    <CandidateSettingsContent user={use!} />
+    <CandidateSettingsContent
+      error={error}
+      isLoading={isLoading}
+      profile={profile}
+    />
   );
 }

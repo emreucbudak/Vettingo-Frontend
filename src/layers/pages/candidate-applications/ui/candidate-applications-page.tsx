@@ -3,7 +3,7 @@ import { useCandidateDashboardData } from "@/features/candidate-dashboard";
 import { CandidateApplicationHistory } from "@/widgets/candidate/application-history";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-import { user, useUserInformation } from "@/shared/useUserInformation";
+import { useUserInformation } from "@/shared/useUserInformation";
 
 function StatCard({
   icon,
@@ -34,9 +34,9 @@ function StatCard({
 }
 
 export function CandidateApplicationsPage() {
-  useUserInformation();
+  const user = useUserInformation();
   const { applications, error, isLoading } = useCandidateDashboardData(
-    user!.Sub
+    user?.Sub ?? "",
   );
   const inProgress = applications.filter(
     (application) => application.progress < 100,
