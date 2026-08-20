@@ -7,17 +7,23 @@ import { CandidateDashboardApplications } from "@/widgets/candidate/dashboard-ap
 import { CandidateRecommendedJobs } from "@/widgets/candidate/recommended-jobs";
 import { CandidateSkillRadar } from "@/widgets/candidate/skill-radar";
 import { CandidateUpcomingInterviews } from "@/widgets/candidate/upcoming-interviews";
-import { user, useUserInformation } from "@/shared/useUserInformation";
-export   function CandidateDashboardPage() {
-  useUserInformation();
-  const { applications, interviews, error, isLoading } = useCandidateDashboardData(sessionUser?.id);
+import { useUserInformation } from "@/shared/useUserInformation";
+
+export function CandidateDashboardPage() {
+  const user = useUserInformation();
+  const displayName =
+    [user?.GivenName, user?.FamilyName]
+      .filter(Boolean)
+      .join(" ") || "Aday";
+  const { applications, interviews, error, isLoading } =
+    useCandidateDashboardData(user?.Sub ?? "");
   return (
     <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 overflow-x-hidden p-4 md:p-8">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-              Tekrar hoş geldin, {user!.GivenName + user!.FamilyName}
+              Tekrar hoş geldin, {displayName}
             </h2>
             <p className="mt-2 text-base leading-6 text-[#45474c]">Bugünkü profesyonel durumun ve aktivite özetin burada.</p>
           </div>

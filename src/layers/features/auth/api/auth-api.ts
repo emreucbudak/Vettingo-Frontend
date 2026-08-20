@@ -7,7 +7,8 @@ export type LoginRequest = {
   kind: "login";
 };
 interface Role {
-  role: string
+  Role?: string;
+  role?: string;
 }
 export type LoginResponse = {
   accessToken: string;
@@ -21,13 +22,15 @@ export type RegisterRequest = {
   role: "Worker" | "Company";
   kind: "register"
 };
-async function post<TResponse>(request : LoginRequest | RegisterRequest): Promise<any> {
+async function post(
+  request: LoginRequest | RegisterRequest,
+): Promise<string | undefined> {
 
   try {
     if (request.kind === "login"){
      const token = await getJWTToken(request);
      const role = decodeJwt(token) as Role;
-     switch (role.role) {
+     switch (role.Role ?? role.role) {
       case "Candidate":
         return "/candidate"
     
@@ -54,9 +57,9 @@ async function post<TResponse>(request : LoginRequest | RegisterRequest): Promis
 }
 
 export async function login(request: LoginRequest) {
-  return await  post<LoginResponse>(request);
+  return await post(request);
 }
 
 export async function register(request: RegisterRequest) {
-  return await  post<void>(request);
+  await post(request);
 }
