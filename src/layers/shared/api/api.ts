@@ -1,13 +1,7 @@
 import { getRefreshToken } from "../auth/auth-token";
 import { getToken, setToken } from "../auth";
 
-const getBasePath = () =>
-  typeof window === "undefined"
-    ? (process.env.VETTINGO_FRONTEND_URL ?? "http://localhost:3000").replace(
-        /\/+$/,
-        "",
-      )
-    : "";
+const basePath = "http://localhost:3000";
 
 const authPath = "/api/gateway/auth";
 
@@ -29,25 +23,21 @@ interface RegisterRequest {
   role: "Worker" | "Company";
 }
 
-async function readTokens(response: Response): Promise<Tokens> {
-  if (!response.ok) {
-    throw new Error("Kimlik doğrulama isteği başarısız oldu.");
-  }
-
-  return (await response.json()) as Tokens;
-}
-
 export async function getJWTToken(
   loginCredentials: Auth,
 ): Promise<string> {
-  const response = await fetch(`${getBasePath()}${authPath}/login`, {
+  const response = await fetch(`${basePath}${authPath}/login`, {
     body: JSON.stringify(loginCredentials),
     headers: {
       "Content-Type": "application/json",
     },
     method: "POST",
   });
-  const token = await readTokens(response);
+  if (!response.ok) {
+    throw new Error("Kimlik doğrulama isteği başarısız oldu.");
+  }
+
+  const token = (await response.json()) as Tokens;
 
   await setToken(token.accessToken, token.refreshToken);
   return token.accessToken;
@@ -64,7 +54,7 @@ export async function apiRequest<T = unknown>(
   headers.set("Authorization", `Bearer ${accessToken}`);
   headers.set("Content-Type", "application/json");
 
-  const response = await fetch(getBasePath() + path, {
+  const response = await fetch(basePath + path, {
     ...options,
     headers,
     method,
@@ -85,7 +75,7 @@ export async function getNewJwtFromRefresh() {
   const refreshToken = await getRefreshToken();
   const accessToken = await getToken();
   const response = await fetch(
-    `${getBasePath()}${authPath}/refresh-token`,
+    `${basePath}${authPath}/refresh-token`,
     {
       body: JSON.stringify({ accessToken, refreshToken }),
       headers: {
@@ -94,13 +84,17 @@ export async function getNewJwtFromRefresh() {
       method: "POST",
     },
   );
-  const newTokens = await readTokens(response);
+  if (!response.ok) {
+    throw new Error("Kimlik doğrulama isteği başarısız oldu.");
+  }
+
+  const newTokens = (await response.json()) as Tokens;
 
   await setToken(newTokens.accessToken, newTokens.refreshToken);
 }
 
 export async function register(request: RegisterRequest) {
-  const response = await fetch(`${getBasePath()}${authPath}/register`, {
+  const response = await fetch(`${basePath}${authPath}/register`, {
     body: JSON.stringify(request),
     headers: {
       "Content-Type": "application/json",
