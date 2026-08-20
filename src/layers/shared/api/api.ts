@@ -43,7 +43,7 @@ export async function getJWTToken(
   return token.accessToken;
 }
 
-export async function apiRequest<T = unknown>(
+export async function apiRequest<T>(
   path: string,
   method: string,
   options?: RequestInit,
