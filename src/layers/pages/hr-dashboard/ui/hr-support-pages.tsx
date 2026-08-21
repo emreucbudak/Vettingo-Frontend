@@ -51,7 +51,6 @@ export function HrSettingsPage() {
           </HrPrimaryLink>
         }
         description="HR çalışma alanının varsayılan görünümünü, süreç tercihlerini ve ekip erişim özetini düzenle."
-        eyebrow="Çalışma Alanı"
         title="HR Ayarları"
       />
 
@@ -199,7 +198,7 @@ const helpTopics = [
   {
     icon: "monitoring",
     title: "Raporlama",
-    description: "Huni ve departman performansı.",
+    description: "İşe alım verileri ve performans içgörüleri.",
     href: ROUTES.hrReports,
   },
 ] as const;
@@ -209,7 +208,6 @@ export function HrHelpCenterPage() {
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
       <HrPageHeader
         description="HR çalışma alanındaki sayfaları keşfet, sık sorulan sorulara göz at ve ihtiyaç duyduğun bölüme doğrudan geç."
-        eyebrow="Vettingo Destek"
         title="HR Yardım Merkezi"
       />
 

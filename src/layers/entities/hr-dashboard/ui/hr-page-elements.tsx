@@ -10,15 +10,17 @@ export function HrPageHeader({
 }: {
   action?: ReactNode;
   description: string;
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
 }) {
   return (
     <header className="mb-8 flex flex-col gap-5 border-b border-[#c5c6cd] pb-7 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#006c49]">
-          {eyebrow}
-        </p>
+        {eyebrow ? (
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#006c49]">
+            {eyebrow}
+          </p>
+        ) : null}
         <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30] md:text-4xl">
           {title}
         </h1>
