@@ -1,65 +1,58 @@
-'use server'
-import { getJWTToken } from "@/shared/api";
+"use server";
+import { getJWTToken, registerUser } from "@/shared/api";
 import { decodeJwt } from "jose";
+import { redirect } from "next/navigation";
 export type LoginRequest = {
   email: string;
   password: string;
-  kind: "login";
 };
+
 interface Role {
   Role?: string;
   role?: string;
 }
-export type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
+
 export type RegisterRequest = {
   name: string;
   surname: string;
   email: string;
   password: string;
   role: "Worker" | "Company";
-  kind: "register"
 };
-async function post(
-  request: LoginRequest | RegisterRequest,
-): Promise<string | undefined> {
 
+export async function login(request: LoginRequest): Promise<string | undefined> {
   try {
-    if (request.kind === "login"){
-     const token = await getJWTToken(request);
-     const role = decodeJwt(token) as Role;
-     switch (role.Role ?? role.role) {
-      case "Candidate":
-        return "/candidate"
-    
-      case "Human Resources":
+    const token = await getJWTToken(request);
+    const claims = decodeJwt(token) as Role;
+    const role = (claims.Role ?? claims.role ?? "").trim().toLowerCase();
+
+    switch (role) {
+      case "candidate":
+        return "/candidate";
+
+      case "human resources":
         return "/hr";
-    
-      case "Company":
-        return "/employer";      
+
+      case "company":
+        return "/employer";
+
       default:
         return undefined;
-    
-     }
-    }
-    if(request.kind === "register"){
-      await register(request);
-
     }
   } catch {
     throw new Error(
       "API gateway'e ulaşılamadı lütfen auth service'in aktif olduğunu doğrulayınız.",
     );
   }
-
-}
-
-export async function login(request: LoginRequest) {
-  return await post(request);
 }
 
 export async function register(request: RegisterRequest) {
-  await post(request);
+  try {
+    await registerUser(request);
+    redirect("/login")
+  } catch {
+    throw new Error(
+      "Kayıt yapılamadı lütfen tekrar deneyin.",
+    );
+  }
 }

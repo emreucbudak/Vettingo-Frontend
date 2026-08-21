@@ -199,7 +199,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
     try {
       if (isLogin) {
-        const response = await login({email,password,kind:"login"});
+        const response = await login({ email, password });
         if(response === undefined) {
            throw new Error("Oturum açma başarısız lütfen tekrar deneyiniz!")
         }
@@ -221,7 +221,6 @@ export function AuthForm({ mode }: AuthFormProps) {
         email,
         password,
         role: formData.get("accountType") === "employer" ? "Company" : "Worker",
-        kind: "register"
       });
 
       router.replace(ROUTES.login);
