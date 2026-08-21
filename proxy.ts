@@ -10,7 +10,7 @@ export async function proxy(request:NextRequest) {
     if(token === undefined) {
         const url = request.nextUrl.clone();
         url.pathname = "/login";
-        return NextResponse.rewrite(url);
+        return NextResponse.redirect(url);
     }
     else {
         if(pathname.startsWith("/employer")){

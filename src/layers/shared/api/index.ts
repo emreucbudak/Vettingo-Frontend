@@ -1,1 +1,1 @@
-﻿export { getJWTToken , apiRequest } from "./api";
+﻿export { apiRequest, getJWTToken, register as registerUser } from "./api";

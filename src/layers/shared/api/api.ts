@@ -1,9 +1,9 @@
 import { getRefreshToken } from "../auth/auth-token";
 import { getToken, setToken } from "../auth";
 
-const basePath = "http://localhost:3000";
+const gatewayUrl = "http://localhost:5135";
 
-const authPath = "/api/gateway/auth";
+const authPath = "/auth";
 
 interface Auth {
   email: string;
@@ -26,7 +26,7 @@ interface RegisterRequest {
 export async function getJWTToken(
   loginCredentials: Auth,
 ): Promise<string> {
-  const response = await fetch(`${basePath}${authPath}/login`, {
+  const response = await fetch(`${gatewayUrl}${authPath}/login`, {
     body: JSON.stringify(loginCredentials),
     headers: {
       "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export async function apiRequest<T>(
   headers.set("Authorization", `Bearer ${accessToken}`);
   headers.set("Content-Type", "application/json");
 
-  const response = await fetch(basePath + path, {
+  const response = await fetch(path, {
     ...options,
     headers,
     method,
@@ -75,7 +75,7 @@ export async function getNewJwtFromRefresh() {
   const refreshToken = await getRefreshToken();
   const accessToken = await getToken();
   const response = await fetch(
-    `${basePath}${authPath}/refresh-token`,
+    `${gatewayUrl}${authPath}/refresh-token`,
     {
       body: JSON.stringify({ accessToken, refreshToken }),
       headers: {
@@ -94,7 +94,7 @@ export async function getNewJwtFromRefresh() {
 }
 
 export async function register(request: RegisterRequest) {
-  const response = await fetch(`${basePath}${authPath}/register`, {
+  const response = await fetch(`${gatewayUrl}${authPath}/register`, {
     body: JSON.stringify(request),
     headers: {
       "Content-Type": "application/json",
