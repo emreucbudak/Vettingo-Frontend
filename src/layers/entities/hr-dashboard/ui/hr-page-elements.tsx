@@ -9,7 +9,7 @@ export function HrPageHeader({
   title,
 }: {
   action?: ReactNode;
-  description: string;
+  description?: string;
   eyebrow?: string;
   title: string;
 }) {
@@ -24,7 +24,11 @@ export function HrPageHeader({
         <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30] md:text-4xl">
           {title}
         </h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-[#45474c]">{description}</p>
+        {description ? (
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-[#45474c]">
+            {description}
+          </p>
+        ) : null}
       </div>
       {action}
     </header>
