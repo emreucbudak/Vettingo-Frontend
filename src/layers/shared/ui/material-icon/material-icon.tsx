@@ -66,6 +66,16 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="m12 5 7 7-7 7" />
     </>
   ),
+  assignment: (
+    <>
+      <rect height="4" rx="1" width="8" x="8" y="2" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <path d="M12 11h4" />
+      <path d="M12 16h4" />
+      <path d="M8 11h.01" />
+      <path d="M8 16h.01" />
+    </>
+  ),
   expand_more: <path d="m6 9 6 6 6-6" />,
   assignment_ind: (
     <>
@@ -110,6 +120,19 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
       <path d="M3 12c5 3 13 3 18 0" />
       <path d="M12 11v4" />
+    </>
+  ),
+  calendar_month: (
+    <>
+      <rect height="17" rx="2" width="18" x="3" y="4" />
+      <path d="M8 2v4" />
+      <path d="M16 2v4" />
+      <path d="M3 9h18" />
+      <path d="M8 13h.01" />
+      <path d="M12 13h.01" />
+      <path d="M16 13h.01" />
+      <path d="M8 17h.01" />
+      <path d="M12 17h.01" />
     </>
   ),
   check: <path d="m5 12 4 4L19 6" />,
@@ -203,6 +226,14 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M5 20h14" />
     </>
   ),
+  groups: (
+    <>
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20a6 6 0 0 1 12 0" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M15 15.5a5 5 0 0 1 6 4.5" />
+    </>
+  ),
   help: (
     <>
       <circle cx="12" cy="12" r="9" />
@@ -254,6 +285,13 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M4 6h16" />
       <path d="M4 12h16" />
       <path d="M4 18h16" />
+    </>
+  ),
+  monitoring: (
+    <>
+      <path d="M4 4v16h16" />
+      <path d="m7 16 4-5 3 3 5-7" />
+      <path d="M16 7h3v3" />
     </>
   ),
   notifications: (
