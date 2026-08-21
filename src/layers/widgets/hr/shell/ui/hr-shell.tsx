@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   hrNavigationItems,
-  hrProfile,
   hrUtilityItems,
 } from "@/entities/hr-dashboard";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
@@ -22,16 +21,13 @@ function isRouteActive(pathname: string, href: string) {
 function HrMobileNavigation({ pathname }: { pathname: string }) {
   return (
     <div className="border-b border-[#c5c6cd] bg-[#eff4ff] md:hidden">
-      <div className="flex items-center justify-between px-4 py-3">
+      <div className="flex items-center px-4 py-3">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#006c49]">
             İnsan Kaynakları
           </p>
           <p className="mt-0.5 text-lg font-semibold text-[#0b1c30]">Vettingo</p>
         </div>
-        <span className="rounded-full border border-[#34d399] bg-[#dcfce7] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-          HR Workspace
-        </span>
       </div>
       <nav
         aria-label="Mobil insan kaynakları navigasyonu"
@@ -70,25 +66,6 @@ function HrFooter() {
         </span>
         <span>© 2026 Vettingo. Tüm hakları saklıdır.</span>
       </div>
-      <nav aria-label="HR alt navigasyonu">
-        <ul className="flex flex-wrap gap-x-5 gap-y-2">
-          <li>
-            <Link className="hover:text-[#091426] hover:underline" href="/hr/reports">
-              Operasyon Raporları
-            </Link>
-          </li>
-          <li>
-            <Link className="hover:text-[#091426] hover:underline" href="/hr/help-center">
-              Yardım Merkezi
-            </Link>
-          </li>
-          <li>
-            <Link className="hover:text-[#091426] hover:underline" href="/hr/settings">
-              Ayarlar
-            </Link>
-          </li>
-        </ul>
-      </nav>
     </footer>
   );
 }
@@ -113,14 +90,9 @@ export function HrShell({ children }: { children: ReactNode }) {
 
   return (
     <DashboardShell
-      beforeTopBarActions={
-        <span className="hidden rounded-full border border-[#34d399] bg-[#dcfce7] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49] sm:inline-flex">
-          HR Workspace
-        </span>
-      }
       navigationItems={navigationItems}
-      sidebarSubtitle={hrProfile.subtitle}
-      sidebarTitle={hrProfile.title}
+      sidebarSubtitle=""
+      sidebarTitle="Vettingo"
       utilityItems={utilityItems}
     >
       <HrMobileNavigation pathname={pathname} />

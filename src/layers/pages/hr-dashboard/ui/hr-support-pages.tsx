@@ -48,7 +48,7 @@ export function HrSettingsPage() {
       <HrPageHeader
         action={
           <HrPrimaryLink href={ROUTES.hr} icon="check">
-            Ayarları Tamamla
+            Kaydet
           </HrPrimaryLink>
         }
         description="HR çalışma alanının varsayılan görünümünü, süreç tercihlerini ve ekip erişim özetini düzenle."
@@ -170,14 +170,6 @@ export function HrSettingsPage() {
                 <MaterialIcon className="symbol-filled text-[18px]">verified</MaterialIcon>
                 6 ekip üyesi aktif
               </p>
-            </div>
-          </section>
-
-          <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5">
-            <h2 className="text-lg font-semibold text-[#0b1c30]">Hızlı Geçişler</h2>
-            <div className="mt-4 flex flex-col gap-3">
-              <HrSecondaryLink href={ROUTES.hrRequisitions}>Talepleri Aç</HrSecondaryLink>
-              <HrSecondaryLink href={ROUTES.hrHelpCenter}>Yardım Merkezi</HrSecondaryLink>
             </div>
           </section>
         </aside>
