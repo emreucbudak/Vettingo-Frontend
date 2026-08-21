@@ -21,7 +21,9 @@ export function HrPageHeader({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30] md:text-4xl">
+        <h1
+          className={`${eyebrow ? "mt-2" : ""} text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30] md:text-4xl`}
+        >
           {title}
         </h1>
         {description ? (
@@ -75,7 +77,7 @@ export function HrStatGrid({
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded ${statToneClasses[tone]}`}
               >
-                <MaterialIcon className="text-[21px]">{item.icon}</MaterialIcon>
+                <MaterialIcon className={item.icon === "handshake" ? "text-[23px]" : "text-[21px]"}>{item.icon}</MaterialIcon>
               </span>
             </div>
             <p className="mt-3 text-[11px] font-medium leading-4 text-[#006c49]">

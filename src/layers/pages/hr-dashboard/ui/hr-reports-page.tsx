@@ -193,7 +193,6 @@ export function HrReportsPage() {
           </HrPrimaryLink>
         }
         description="İşe alım hızını, dönüşüm oranlarını, aday kaynaklarını ve departman kapasitesini tek rapor görünümünde değerlendir."
-        eyebrow="İşe Alım Analitiği"
         title="Raporlar"
       />
 

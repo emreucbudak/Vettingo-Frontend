@@ -17,7 +17,6 @@ export function HrInterviewsPage() {
           </HrPrimaryLink>
         }
         description="Günlük görüşme akışını, panel katılımcılarını, değerlendirme hazırlığını ve bekleyen geri bildirimleri birlikte takip et."
-        eyebrow="Görüşme Operasyonu"
         title="Mülakatlar"
       />
 

@@ -182,7 +182,6 @@ export function HrDashboardPage() {
       <HrPageHeader
         action={<HrPrimaryLink href={ROUTES.hrRequisitions}>Yeni Talep</HrPrimaryLink>}
         description="Açık kadroları, aday akışını, mülakat planını ve bekleyen ekip aksiyonlarını tek çalışma alanından yönet."
-        eyebrow="İnsan Kaynakları Operasyonu"
         title="İşe Alım Kontrol Merkezi"
       />
 

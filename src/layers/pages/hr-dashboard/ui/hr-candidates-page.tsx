@@ -16,7 +16,6 @@ export function HrCandidatesPage() {
           </HrPrimaryLink>
         }
         description="Farklı pozisyonlardaki adayları, süreç sahiplerini, yetkinliklerini ve değerlendirme skorlarını tek havuzda karşılaştır."
-        eyebrow="Aday Yönetimi"
         title="Aday Havuzu"
       />
 
