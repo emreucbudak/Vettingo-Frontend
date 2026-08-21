@@ -6,7 +6,6 @@ import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   HrPageHeader,
   HrPrimaryLink,
-  HrSecondaryLink,
   HrSectionHeading,
 } from "@/entities/hr-dashboard/ui";
 
@@ -209,11 +208,6 @@ export function HrHelpCenterPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
       <HrPageHeader
-        action={
-          <HrPrimaryLink href={ROUTES.hr} icon="space_dashboard">
-            Panele Dön
-          </HrPrimaryLink>
-        }
         description="HR çalışma alanındaki sayfaları keşfet, sık sorulan sorulara göz at ve ihtiyaç duyduğun bölüme doğrudan geç."
         eyebrow="Vettingo Destek"
         title="HR Yardım Merkezi"
@@ -270,16 +264,6 @@ export function HrHelpCenterPage() {
             </details>
           ))}
         </div>
-      </section>
-
-      <section className="mt-8 flex flex-col gap-4 rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:flex-row md:items-center md:justify-between md:p-6">
-        <div>
-          <h2 className="text-lg font-semibold text-[#0b1c30]">Çalışma alanını özelleştir</h2>
-          <p className="mt-1 text-sm leading-5 text-[#45474c]">
-            Varsayılan görünüm ve HR süreç tercihlerini ayarlardan düzenle.
-          </p>
-        </div>
-        <HrSecondaryLink href={ROUTES.hrSettings}>Ayarlara Git</HrSecondaryLink>
       </section>
     </main>
   );
