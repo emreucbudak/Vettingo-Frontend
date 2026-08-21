@@ -50,8 +50,7 @@ export function HrSettingsPage() {
             Kaydet
           </HrPrimaryLink>
         }
-        description="HR çalışma alanının varsayılan görünümünü, süreç tercihlerini ve ekip erişim özetini düzenle."
-        title="HR Ayarları"
+        title="Ayarlar"
       />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
@@ -170,6 +169,67 @@ export function HrSettingsPage() {
               </p>
             </div>
           </section>
+
+          <SettingsSection
+            description="Hesabın için güçlü ve benzersiz bir şifre kullan."
+            icon="lock"
+            title="Şifre Değiştir"
+          >
+            <div className="space-y-5">
+              <div>
+                <label className={labelClass} htmlFor="hr-current-password">
+                  Mevcut Şifre
+                </label>
+                <input
+                  autoComplete="current-password"
+                  className={inputClass}
+                  id="hr-current-password"
+                  minLength={6}
+                  name="currentPassword"
+                  placeholder="••••••••"
+                  type="password"
+                />
+              </div>
+              <div>
+                <label className={labelClass} htmlFor="hr-new-password">
+                  Yeni Şifre
+                </label>
+                <input
+                  autoComplete="new-password"
+                  className={inputClass}
+                  id="hr-new-password"
+                  minLength={6}
+                  name="newPassword"
+                  placeholder="En az 6 karakter"
+                  type="password"
+                />
+              </div>
+              <div>
+                <label className={labelClass} htmlFor="hr-confirm-password">
+                  Yeni Şifre Tekrar
+                </label>
+                <input
+                  autoComplete="new-password"
+                  className={inputClass}
+                  id="hr-confirm-password"
+                  minLength={6}
+                  name="confirmPassword"
+                  placeholder="Yeni şifreni tekrar gir"
+                  type="password"
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 border-t border-[#c5c6cd] pt-5">
+              <button
+                className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
+                type="button"
+              >
+                Şifreyi Güncelle
+                <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
+              </button>
+            </div>
+          </SettingsSection>
         </aside>
       </div>
     </main>
@@ -206,16 +266,8 @@ const helpTopics = [
 export function HrHelpCenterPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <HrPageHeader
-        description="HR çalışma alanındaki sayfaları keşfet, sık sorulan sorulara göz at ve ihtiyaç duyduğun bölüme doğrudan geç."
-        title="HR Yardım Merkezi"
-      />
-
       <section className="mb-10">
-        <HrSectionHeading
-          description="İlgili çalışma alanına doğrudan geçerek örnek akışları incele."
-          title="Hangi konuda yardıma ihtiyacın var?"
-        />
+        <HrSectionHeading title="Hangi konuda yardıma ihtiyacın var?" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {helpTopics.map((topic) => (
             <Link
