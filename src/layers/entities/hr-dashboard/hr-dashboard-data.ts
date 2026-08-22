@@ -54,13 +54,13 @@ export type HrUtilityKey = "help" | "settings";
 
 export const hrDashboardStats = [
   {
-    label: "Açık Talep",
+    label: "Açık İlan",
     value: "18",
     icon: "assignment",
     tone: "blue",
   },
   {
-    label: "Süreçteki Aday",
+    label: "Görüşülen Aday",
     value: "74",
     icon: "groups",
     tone: "green",
