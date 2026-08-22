@@ -1,24 +1,9 @@
-import { ROUTES } from "@/shared/config/routes";
-import {
-  HrPageHeader,
-  HrPrimaryLink,
-  HrStatGrid,
-} from "@/entities/hr-dashboard/ui";
+import { HrStatGrid } from "@/entities/hr-dashboard/ui";
 import { HrCandidatePipeline } from "@/widgets/hr/candidate-pipeline";
 
 export function HrCandidatesPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <HrPageHeader
-        action={
-          <HrPrimaryLink href={ROUTES.hrInterviews} icon="calendar_month">
-            Mülakat Takvimi
-          </HrPrimaryLink>
-        }
-        description="Farklı pozisyonlardaki adayları, süreç sahiplerini, yetkinliklerini ve değerlendirme skorlarını tek havuzda karşılaştır."
-        title="Aday Havuzu"
-      />
-
       <HrStatGrid
         items={[
           {
