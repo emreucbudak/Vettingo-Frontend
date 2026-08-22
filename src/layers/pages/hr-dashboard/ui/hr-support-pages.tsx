@@ -238,10 +238,10 @@ export function HrSettingsPage() {
 
 const helpTopics = [
   {
-    icon: "assignment",
-    title: "Talep Yönetimi",
-    description: "Kadro ihtiyaçları ve onay akışları.",
-    href: ROUTES.hrRequisitions,
+    icon: "binoculars",
+    title: "Scout",
+    description: "Aday keşfi, filtreleme ve kısa liste.",
+    href: ROUTES.hrScout,
   },
   {
     icon: "groups",

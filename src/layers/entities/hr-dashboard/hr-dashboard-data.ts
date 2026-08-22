@@ -8,10 +8,10 @@ export const hrProfile = {
 export const hrNavigationItems = [
   { key: "dashboard", label: "Panel", icon: "space_dashboard", href: ROUTES.hr },
   {
-    key: "requisitions",
-    label: "İşe Alım Talepleri",
-    icon: "assignment_add",
-    href: ROUTES.hrRequisitions,
+    key: "scout",
+    label: "Scout",
+    icon: "binoculars",
+    href: ROUTES.hrScout,
   },
   {
     key: "candidates",

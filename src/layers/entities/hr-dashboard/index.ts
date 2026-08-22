@@ -15,3 +15,7 @@ export {
   type HrRequisition,
   type HrUtilityKey,
 } from "./hr-dashboard-data";
+export {
+  hrScoutCandidates,
+  type HrScoutCandidate,
+} from "./hr-scout-data";

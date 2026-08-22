@@ -16,7 +16,11 @@ export type DashboardNavigationItem = {
 function DashboardSidebarIcon({ icon }: { icon: string }) {
   return (
     <span className="flex h-8 w-8 shrink-0 items-center justify-center">
-      <MaterialIcon className="text-[22px] leading-none">{icon}</MaterialIcon>
+      <MaterialIcon
+        className={`${icon === "binoculars" ? "text-[24px]" : "text-[22px]"} leading-none`}
+      >
+        {icon}
+      </MaterialIcon>
     </span>
   );
 }
