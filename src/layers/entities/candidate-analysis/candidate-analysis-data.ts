@@ -7,7 +7,7 @@
 } as const;
 
 export const analysisNavigationItems = [
-  { label: 'Panel', icon: 'space_dashboard', href: '/employer' },
+  { label: 'Ana Sayfa', icon: 'home', href: '/employer' },
   { label: 'İlanlarım', icon: 'business_center', href: '/employer/jobs' },
   { label: 'Başvurular', icon: 'assignment_ind', href: '/employer/applications' },
   { label: 'Yetenekler', icon: 'auto_awesome', active: true, href: '/employer/talents' },

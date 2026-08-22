@@ -278,6 +278,15 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M12 17h.01" />
     </>
   ),
+  home: (
+    <path
+      clipRule="evenodd"
+      d="M3.2 10.3 10.7 3.2a2 2 0 0 1 2.6 0l7.5 7.1a1.8 1.8 0 0 1 .7 1.4V20a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2v-8.3a1.8 1.8 0 0 1 .7-1.4ZM10 22v-6.3a2 2 0 0 1 4 0V22Z"
+      fill="currentColor"
+      fillRule="evenodd"
+      stroke="none"
+    />
+  ),
   lightbulb: (
     <>
       <path d="M9 18h6" />

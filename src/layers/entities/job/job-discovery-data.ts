@@ -5,7 +5,7 @@
 } as const;
 
 export const jobDiscoveryNavItems = [
-  { label: "Panel", active: false },
+  { label: "Ana Sayfa", icon: "home", active: false },
   { label: "Başvurular", active: false },
   { label: "Yapay Zeka Analizi", active: false },
   { label: "İşler", active: true },
