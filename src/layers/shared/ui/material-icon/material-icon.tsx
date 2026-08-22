@@ -113,6 +113,18 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M14 14h3" />
     </>
   ),
+  binoculars: (
+    <>
+      {/* Tabler Icons binoculars, MIT License. */}
+      <path d="M4 16a3 3 0 1 0 6 0 3 3 0 1 0-6 0" />
+      <path d="M14 16a3 3 0 1 0 6 0 3 3 0 1 0-6 0" />
+      <path d="m16.346 9.17-.729-1.261c-.16-.248-1.056-.203-1.117.091l-.177 1.38" />
+      <path d="m19.761 14.813-2.84-5.133c-.189-.31-.592-.68-1.421-.68-.828 0-1.5.448-1.5 1v6" />
+      <path d="m7.654 9.17.729-1.261c.16-.249 1.056-.203 1.117.091l.177 1.38" />
+      <path d="m4.239 14.813 2.84-5.133c.189-.31.592-.68 1.421-.68.828 0 1.5.448 1.5 1v6" />
+      <path d="M10 12h4v2h-4z" />
+    </>
+  ),
   bolt: <path d="M13 2 4 14h7l-1 8 10-13h-7z" />,
   business: (
     <>
@@ -163,6 +175,7 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="m8 12 3 3 5-6" />
     </>
   ),
+  chevron_left: <path d="m15 18-6-6 6-6" />,
   chevron_right: <path d="m9 18 6-6-6-6" />,
   close: (
     <>
@@ -523,6 +536,10 @@ const iconPaths: Record<string, ReactNode> = {
 
 export function MaterialIcon({ children, className = "" }: MaterialIconProps) {
   const iconName = children.trim();
+  const viewBox =
+    iconName === "handshake"
+      ? "0 -960 960 960"
+      : "0 0 24 24";
 
   return (
     <svg
@@ -534,7 +551,7 @@ export function MaterialIcon({ children, className = "" }: MaterialIconProps) {
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"
-      viewBox={iconName === "handshake" ? "0 -960 960 960" : "0 0 24 24"}
+      viewBox={viewBox}
     >
       {iconPaths[iconName]}
     </svg>
