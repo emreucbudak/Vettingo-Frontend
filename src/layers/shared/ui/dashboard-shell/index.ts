@@ -1,5 +1,5 @@
 export {
   DashboardProfileIcon,
   DashboardShell,
-  type DashboardNavigationItem,
 } from "./dashboard-shell";
+export type { DashboardNavigationItem } from "@/shared/ui/dashboard-sidebar";

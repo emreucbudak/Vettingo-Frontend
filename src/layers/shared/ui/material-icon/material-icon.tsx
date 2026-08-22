@@ -76,6 +76,17 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M8 16h.01" />
     </>
   ),
+  assignment_add: (
+    <>
+      <rect height="4" rx="1" width="8" x="8" y="2" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v5" />
+      <path d="M20 19v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <path d="M8 11h5" />
+      <path d="M8 16h3" />
+      <path d="M17 13v6" />
+      <path d="M14 16h6" />
+    </>
+  ),
   expand_more: <path d="m6 9 6 6 6-6" />,
   assignment_ind: (
     <>
