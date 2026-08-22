@@ -5,8 +5,7 @@ export function HrScoutPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
       <HrPageHeader
-        description="Açık roller için doğru yetenekleri rol, yetkinlik, deneyim ve çalışma tercihlerine göre keşfet; güçlü eşleşmeleri kısa listene ekle."
-        title="Scout"
+        title="Scout Merkezi"
       />
 
       <HrScoutDirectory />

@@ -1,25 +1,10 @@
 import { interviews } from "@/entities/hr-dashboard";
-import { ROUTES } from "@/shared/config/routes";
-import {
-  HrPageHeader,
-  HrPrimaryLink,
-  HrStatGrid,
-} from "@/entities/hr-dashboard/ui";
+import { HrStatGrid } from "@/entities/hr-dashboard/ui";
 import { HrInterviewAgenda } from "@/widgets/hr/interview-agenda";
 
 export function HrInterviewsPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <HrPageHeader
-        action={
-          <HrPrimaryLink href={ROUTES.hrReports} icon="monitoring">
-            Görüşme Raporu
-          </HrPrimaryLink>
-        }
-        description="Günlük görüşme akışını, panel katılımcılarını, değerlendirme hazırlığını ve bekleyen geri bildirimleri birlikte takip et."
-        title="Mülakatlar"
-      />
-
       <HrStatGrid
         items={[
           {
