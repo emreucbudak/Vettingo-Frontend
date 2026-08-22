@@ -21,7 +21,6 @@ function PriorityCards() {
   return (
     <section className="mb-8">
       <HrSectionHeading
-        description="Bugün ilerletilmesi gereken onay ve değerlendirmeler."
         title="Öncelikli İşler"
       />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -64,7 +63,6 @@ function RequisitionOverview() {
       <HrSectionHeading
         actionHref={ROUTES.hrRequisitions}
         actionLabel="Tüm Talepler"
-        description="En son hareket gören açık işe alım talepleri."
         title="Aktif Talepler"
       />
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
@@ -146,8 +144,7 @@ function FunnelPreview() {
       <HrSectionHeading
         actionHref={ROUTES.hrReports}
         actionLabel="Detaylı Rapor"
-        description="Son 90 gündeki aday dönüşümünün kısa görünümü."
-        title="İşe Alım Hunisi"
+        title="İşe Alım İstatistikleri"
       />
       <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
         {funnelStages.map((stage, index) => (
