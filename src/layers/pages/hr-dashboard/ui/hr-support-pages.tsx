@@ -4,7 +4,6 @@ import { hrFaqs } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
-  HrPageHeader,
   HrPrimaryLink,
   HrSectionHeading,
 } from "@/entities/hr-dashboard/ui";
@@ -44,14 +43,11 @@ function SettingsSection({
 export function HrSettingsPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <HrPageHeader
-        action={
-          <HrPrimaryLink href={ROUTES.hr} icon="check">
-            Kaydet
-          </HrPrimaryLink>
-        }
-        title="Ayarlar"
-      />
+      <div className="mb-8 flex justify-end border-b border-[#c5c6cd] pb-7">
+        <HrPrimaryLink href={ROUTES.hr} icon="check">
+          Kaydet
+        </HrPrimaryLink>
+      </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <div className="space-y-6">

@@ -56,29 +56,25 @@ export const hrDashboardStats = [
   {
     label: "Açık Talep",
     value: "18",
-    helper: "4 yönetici onayı bekliyor",
     icon: "assignment",
     tone: "blue",
   },
   {
     label: "Süreçteki Aday",
     value: "74",
-    helper: "12 aday bu hafta eklendi",
-    icon: "group",
+    icon: "groups",
     tone: "green",
   },
   {
     label: "Bu Haftaki Mülakat",
     value: "16",
-    helper: "5 panel değerlendirmesi açık",
-    icon: "event",
+    icon: "calendar_month",
     tone: "purple",
   },
   {
-    label: "Ort. Kapanış Süresi",
+    label: "Ort. İşe Alım Süresi",
     value: "28 gün",
-    helper: "Geçen aya göre 3 gün daha hızlı",
-    icon: "schedule",
+    icon: "work_history",
     tone: "amber",
   },
 ] as const;

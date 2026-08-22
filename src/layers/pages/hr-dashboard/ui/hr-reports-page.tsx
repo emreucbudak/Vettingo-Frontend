@@ -2,8 +2,6 @@ import { departmentMetrics, funnelStages, monthlyHiring } from "@/entities/hr-da
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
-  HrPageHeader,
-  HrPrimaryLink,
   HrSectionHeading,
   HrStatGrid,
 } from "@/entities/hr-dashboard/ui";
@@ -186,16 +184,6 @@ function DepartmentTable() {
 export function HrReportsPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <HrPageHeader
-        action={
-          <HrPrimaryLink href={ROUTES.hrRequisitions} icon="assignment">
-            Talepleri İncele
-          </HrPrimaryLink>
-        }
-        description="İşe alım hızını, dönüşüm oranlarını, aday kaynaklarını ve departman kapasitesini tek rapor görünümünde değerlendir."
-        title="Raporlar"
-      />
-
       <HrStatGrid
         items={[
           {

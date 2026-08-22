@@ -50,7 +50,7 @@ export function HrStatGrid({
   items: readonly {
     label: string;
     value: string;
-    helper: string;
+    helper?: string;
     icon: string;
     tone?: keyof typeof statToneClasses;
   }[];
@@ -80,9 +80,11 @@ export function HrStatGrid({
                 <MaterialIcon className={item.icon === "handshake" ? "text-[23px]" : "text-[21px]"}>{item.icon}</MaterialIcon>
               </span>
             </div>
-            <p className="mt-3 text-[11px] font-medium leading-4 text-[#006c49]">
-              {item.helper}
-            </p>
+            {item.helper ? (
+              <p className="mt-3 text-[11px] font-medium leading-4 text-[#006c49]">
+                {item.helper}
+              </p>
+            ) : null}
           </article>
         );
       })}
