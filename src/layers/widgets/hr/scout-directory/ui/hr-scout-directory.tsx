@@ -146,10 +146,7 @@ export function HrScoutDirectory() {
   return (
     <>
       <section className="mb-8 rounded border border-[#c5c6cd] bg-[#eff4ff] p-4 md:p-6">
-        <div className="mb-5 flex items-start gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-            <MaterialIcon className="text-[22px]">binoculars</MaterialIcon>
-          </span>
+        <div className="mb-5">
           <div>
             <h2 className="text-lg font-semibold text-[#0b1c30]">
               Yetenek Araması

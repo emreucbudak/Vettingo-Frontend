@@ -73,8 +73,7 @@ export function HrCandidatePipeline() {
         <HrSectionHeading
           actionHref={ROUTES.hrRequisitions}
           actionLabel="Talepleri Gör"
-          description="Değerlendirme odağını kaybetmeden adaylar arasında hızlı geçiş yap."
-          title="Öne Çıkan Adaylar"
+          title="Görüşülen Adaylar"
         />
         <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
           <div className="hidden grid-cols-12 gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#45474c] xl:grid">
