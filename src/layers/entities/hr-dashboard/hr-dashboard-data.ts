@@ -6,7 +6,7 @@ export const hrProfile = {
 } as const;
 
 export const hrNavigationItems = [
-  { key: "dashboard", label: "Panel", icon: "space_dashboard", href: ROUTES.hr },
+  { key: "dashboard", label: "Ana Sayfa", icon: "home", href: ROUTES.hr },
   {
     key: "scout",
     label: "Scout",

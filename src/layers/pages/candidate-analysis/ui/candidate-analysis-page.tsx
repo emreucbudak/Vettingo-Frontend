@@ -16,7 +16,7 @@ import { MaterialIcon } from "@/shared/ui/material-icon";
 type DetailKind = "application" | "talent";
 
 const employerNavigation = [
-  { key: "dashboard", label: "Panel", icon: "space_dashboard", href: ROUTES.employer },
+  { key: "dashboard", label: "Ana Sayfa", icon: "home", href: ROUTES.employer },
   { key: "jobs", label: "İlanlarım", icon: "business_center", href: ROUTES.employerJobs },
   {
     key: "applications",

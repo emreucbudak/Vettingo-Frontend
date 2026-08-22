@@ -9,7 +9,7 @@ import {
 } from "@/shared/ui/dashboard-shell";
 
 const candidateNavigationItems = [
-  { label: "Panel", icon: "space_dashboard", href: ROUTES.candidate },
+  { label: "Ana Sayfa", icon: "home", href: ROUTES.candidate },
   {
     label: "Başvurular",
     icon: "assignment_ind",
