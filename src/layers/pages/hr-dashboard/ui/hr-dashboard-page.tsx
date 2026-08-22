@@ -152,19 +152,11 @@ function FunnelPreview() {
             className="relative overflow-hidden rounded border border-[#c5c6cd] bg-[#eff4ff] p-4"
             key={stage.label}
           >
-            <span
-              aria-hidden="true"
-              className={`absolute inset-y-0 left-0 ${index === funnelStages.length - 1 ? "bg-[#6cf8bb]" : "bg-[#dce9ff]"}`}
-              style={{ width: stage.width }}
-            />
             <div className="relative">
               <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
-                {stage.label}
+                {index === 3 ? "Teknik Görüşme" : stage.label}
               </p>
               <p className="mt-3 text-2xl font-semibold text-[#0b1c30]">{stage.value}</p>
-              <p className="mt-1 text-[11px] font-medium text-[#006c49]">
-                {stage.conversion} dönüşüm
-              </p>
             </div>
           </article>
         ))}
