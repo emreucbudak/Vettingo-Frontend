@@ -10,7 +10,6 @@ function HiringTrendChart() {
   return (
     <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6 xl:col-span-2">
       <HrSectionHeading
-        description="Son altı ayda tamamlanan işe alım süreçlerinin eğilimi."
         title="Aylık İşe Alım Hacmi"
       />
       <div className="mt-8 flex h-56 items-end gap-3 border-b border-l border-[#c5c6cd] px-3 pt-4 sm:gap-6 sm:px-6">
@@ -86,7 +85,6 @@ function FunnelReport() {
   return (
     <section className="mt-8 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6">
       <HrSectionHeading
-        description="Başvurudan teklife kadar aday dönüşüm oranları."
         title="Dönüşüm Hunisi"
       />
       <div className="space-y-3">
@@ -127,7 +125,6 @@ function DepartmentTable() {
       <HrSectionHeading
         actionHref={ROUTES.hrRequisitions}
         actionLabel="Taleplere Git"
-        description="Departman bazında açık rol, aday hacmi ve teklif kabul görünümü."
         title="Departman Performansı"
       />
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
@@ -189,29 +186,25 @@ export function HrReportsPage() {
           {
             label: "Toplam Başvuru",
             value: "428",
-            helper: "Geçen döneme göre +14%",
             icon: "description",
             tone: "blue",
           },
           {
-            label: "Mülakata Dönüşüm",
+            label: "Mülakata Dönen",
             value: "%21",
-            helper: "Hedefin 3 puan üzerinde",
-            icon: "conversion_path",
+            icon: "forum",
             tone: "green",
           },
           {
             label: "Teklif Kabul",
             value: "%72",
-            helper: "Son 90 gün",
             icon: "handshake",
             tone: "purple",
           },
           {
             label: "Ort. İşe Alım Süresi",
             value: "28 gün",
-            helper: "3 gün iyileşme",
-            icon: "speed",
+            icon: "work_history",
             tone: "amber",
           },
         ]}

@@ -158,12 +158,6 @@ export function HrSettingsPage() {
             <p className="mt-2 text-sm leading-6 text-[#45474c]">
               İşe alım talepleri, adaylar ve değerlendirme ekipleri için ortak çalışma alanı.
             </p>
-            <div className="mt-5 border-t border-[#c5c6cd] pt-5">
-              <p className="flex items-center gap-2 text-sm font-medium text-[#006c49]">
-                <MaterialIcon className="symbol-filled text-[18px]">verified</MaterialIcon>
-                6 ekip üyesi aktif
-              </p>
-            </div>
           </section>
 
           <SettingsSection
