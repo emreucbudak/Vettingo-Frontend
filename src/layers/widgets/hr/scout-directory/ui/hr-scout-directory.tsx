@@ -28,6 +28,15 @@ const emptyFilters: ScoutFilters = {
 
 const fieldClassName =
   "w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] px-3 py-2.5 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426]";
+const selectFieldClassName = `${fieldClassName} appearance-none pr-11`;
+
+function SelectChevron() {
+  return (
+    <MaterialIcon className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
+      expand_more
+    </MaterialIcon>
+  );
+}
 
 function normalize(value: string) {
   return value.trim().toLocaleLowerCase("tr-TR");
@@ -54,9 +63,9 @@ function availabilityTone(availability: HrScoutCandidate["availability"]) {
   return "text-[#75777d]";
 }
 
-function matchTone(score: number) {
-  if (score >= 90) return "bg-[#dcfce7] text-[#006c49]";
-  if (score >= 84) return "bg-[#dce9ff] text-[#091426]";
+function ratingTone(rating: number) {
+  if (rating >= 90) return "bg-[#dcfce7] text-[#006c49]";
+  if (rating >= 84) return "bg-[#dce9ff] text-[#091426]";
   return "bg-[#eff4ff] text-[#45474c]";
 }
 
@@ -151,10 +160,6 @@ export function HrScoutDirectory() {
             <h2 className="text-lg font-semibold text-[#0b1c30]">
               Yetenek Araması
             </h2>
-            <p className="mt-1 text-xs leading-5 text-[#45474c]">
-              Aradığın rolü, yetkinliği ve lokasyonu tanımlayarak uygun
-              profilleri daralt.
-            </p>
           </div>
         </div>
 
@@ -199,57 +204,66 @@ export function HrScoutDirectory() {
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
                 Uzmanlık alanı
               </span>
-              <select
-                className={fieldClassName}
-                onChange={(event) =>
-                  updateFilter("category", event.target.value)
-                }
-                value={draftFilters.category}
-              >
-                <option value="all">Tüm alanlar</option>
-                <option value="Mühendislik">Mühendislik</option>
-                <option value="Ürün & Tasarım">Ürün & Tasarım</option>
-                <option value="Veri">Veri</option>
-                <option value="Satış">Satış</option>
-                <option value="İnsan Kaynakları">İnsan Kaynakları</option>
-                <option value="Pazarlama">Pazarlama</option>
-              </select>
+              <span className="relative block">
+                <select
+                  className={selectFieldClassName}
+                  onChange={(event) =>
+                    updateFilter("category", event.target.value)
+                  }
+                  value={draftFilters.category}
+                >
+                  <option value="all">Tüm alanlar</option>
+                  <option value="Mühendislik">Mühendislik</option>
+                  <option value="Ürün & Tasarım">Ürün & Tasarım</option>
+                  <option value="Veri">Veri</option>
+                  <option value="Satış">Satış</option>
+                  <option value="İnsan Kaynakları">İnsan Kaynakları</option>
+                  <option value="Pazarlama">Pazarlama</option>
+                </select>
+                <SelectChevron />
+              </span>
             </label>
 
             <label className="block">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
                 Deneyim
               </span>
-              <select
-                className={fieldClassName}
-                onChange={(event) =>
-                  updateFilter("experience", event.target.value)
-                }
-                value={draftFilters.experience}
-              >
-                <option value="all">Tüm seviyeler</option>
-                <option value="junior">0–3 yıl</option>
-                <option value="mid">4–6 yıl</option>
-                <option value="senior">7+ yıl</option>
-              </select>
+              <span className="relative block">
+                <select
+                  className={selectFieldClassName}
+                  onChange={(event) =>
+                    updateFilter("experience", event.target.value)
+                  }
+                  value={draftFilters.experience}
+                >
+                  <option value="all">Tüm seviyeler</option>
+                  <option value="junior">0–3 yıl</option>
+                  <option value="mid">4–6 yıl</option>
+                  <option value="senior">7+ yıl</option>
+                </select>
+                <SelectChevron />
+              </span>
             </label>
 
             <label className="block sm:col-span-2 xl:col-span-1">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
                 Çalışma modeli
               </span>
-              <select
-                className={fieldClassName}
-                onChange={(event) =>
-                  updateFilter("workModel", event.target.value)
-                }
-                value={draftFilters.workModel}
-              >
-                <option value="all">Tüm modeller</option>
-                <option value="Hibrit">Hibrit</option>
-                <option value="Uzaktan">Uzaktan</option>
-                <option value="Ofis">Ofis</option>
-              </select>
+              <span className="relative block">
+                <select
+                  className={selectFieldClassName}
+                  onChange={(event) =>
+                    updateFilter("workModel", event.target.value)
+                  }
+                  value={draftFilters.workModel}
+                >
+                  <option value="all">Tüm modeller</option>
+                  <option value="Hibrit">Hibrit</option>
+                  <option value="Uzaktan">Uzaktan</option>
+                  <option value="Ofis">Ofis</option>
+                </select>
+                <SelectChevron />
+              </span>
             </label>
 
             <button
@@ -273,10 +287,7 @@ export function HrScoutDirectory() {
       <section>
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#006c49]">
-              Scout Sonuçları
-            </p>
-            <h2 className="mt-1 text-xl font-semibold text-[#0b1c30]">
+            <h2 className="text-xl font-semibold text-[#0b1c30]">
               Keşfedilen Adaylar
             </h2>
           </div>
@@ -294,7 +305,7 @@ export function HrScoutDirectory() {
             <span className="col-span-2">Güncel Rol</span>
             <span className="col-span-2">Yetkinlikler</span>
             <span className="col-span-2">Lokasyon</span>
-            <span className="col-span-1">Eşleşme</span>
+            <span className="col-span-1">Rating</span>
             <span className="col-span-2 text-right">Aksiyon</span>
           </div>
 
@@ -361,9 +372,9 @@ export function HrScoutDirectory() {
 
                     <div className="xl:col-span-1">
                       <span
-                        className={`inline-flex min-w-12 justify-center rounded px-2 py-1 text-sm font-semibold ${matchTone(candidate.matchScore)}`}
+                        className={`inline-flex min-w-12 justify-center rounded px-2 py-1 text-sm font-semibold ${ratingTone(candidate.rating)}`}
                       >
-                        %{candidate.matchScore}
+                        {candidate.rating}
                       </span>
                     </div>
 

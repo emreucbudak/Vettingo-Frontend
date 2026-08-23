@@ -8,18 +8,26 @@ import {
   HrStatusBadge,
 } from "@/entities/hr-dashboard/ui";
 
-function CandidateScore({ score }: { score: number }) {
+function CandidateRating({ rating }: { rating: number }) {
   const tone =
-    score >= 90
+    rating >= 90
       ? "bg-[#dcfce7] text-[#006c49]"
-      : score >= 85
+      : rating >= 85
         ? "bg-[#dce9ff] text-[#091426]"
         : "bg-[#eff4ff] text-[#45474c]";
 
   return (
     <span className={`inline-flex min-w-12 justify-center rounded px-2 py-1 text-sm font-semibold ${tone}`}>
-      {score}
+      {rating}
     </span>
+  );
+}
+
+function SelectChevron() {
+  return (
+    <MaterialIcon className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
+      expand_more
+    </MaterialIcon>
   );
 }
 
@@ -39,26 +47,32 @@ export function HrCandidatePipeline() {
               type="search"
             />
           </label>
-          <select
-            aria-label="Rol filtresi"
-            className="rounded border border-[#c5c6cd] bg-[#f8f9ff] px-3 py-2.5 text-xs text-[#0b1c30] outline-none focus:border-[#091426]"
-            defaultValue="all"
-          >
-            <option value="all">Tüm Roller</option>
-            <option value="engineering">Mühendislik</option>
-            <option value="product">Ürün</option>
-            <option value="sales">Satış</option>
-          </select>
-          <select
-            aria-label="Aşama filtresi"
-            className="rounded border border-[#c5c6cd] bg-[#f8f9ff] px-3 py-2.5 text-xs text-[#0b1c30] outline-none focus:border-[#091426]"
-            defaultValue="all"
-          >
-            <option value="all">Tüm Aşamalar</option>
-            <option value="new">Yeni Başvuru</option>
-            <option value="hr">İK Görüşmesi</option>
-            <option value="technical">Teknik Mülakat</option>
-          </select>
+          <span className="relative block">
+            <select
+              aria-label="Rol filtresi"
+              className="w-full appearance-none rounded border border-[#c5c6cd] bg-[#f8f9ff] py-2.5 pl-3 pr-10 text-xs text-[#0b1c30] outline-none focus:border-[#091426]"
+              defaultValue="all"
+            >
+              <option value="all">Tüm Roller</option>
+              <option value="engineering">Mühendislik</option>
+              <option value="product">Ürün</option>
+              <option value="sales">Satış</option>
+            </select>
+            <SelectChevron />
+          </span>
+          <span className="relative block">
+            <select
+              aria-label="Aşama filtresi"
+              className="w-full appearance-none rounded border border-[#c5c6cd] bg-[#f8f9ff] py-2.5 pl-3 pr-10 text-xs text-[#0b1c30] outline-none focus:border-[#091426]"
+              defaultValue="all"
+            >
+              <option value="all">Tüm Aşamalar</option>
+              <option value="new">Yeni Başvuru</option>
+              <option value="hr">İK Görüşmesi</option>
+              <option value="technical">Teknik Mülakat</option>
+            </select>
+            <SelectChevron />
+          </span>
           <button
             className="inline-flex items-center justify-center gap-2 rounded border border-[#9aa6bc] bg-[#f8f9ff] px-4 py-2.5 text-xs font-semibold text-[#091426] transition-colors hover:bg-[#dce9ff]"
             type="button"
@@ -81,7 +95,7 @@ export function HrCandidatePipeline() {
             <span className="col-span-3">Hedef Rol</span>
             <span className="col-span-2">Aşama</span>
             <span className="col-span-2">Sorumlu</span>
-            <span className="col-span-1">Skor</span>
+            <span className="col-span-1">Rating</span>
             <span className="col-span-1 text-right">Aksiyon</span>
           </div>
           <div className="divide-y divide-[#c5c6cd]">
@@ -123,7 +137,7 @@ export function HrCandidatePipeline() {
                   </p>
                 </div>
                 <div className="xl:col-span-1">
-                  <CandidateScore score={candidate.score} />
+                  <CandidateRating rating={candidate.rating} />
                 </div>
                 <div className="flex justify-end xl:col-span-1">
                   <Link
