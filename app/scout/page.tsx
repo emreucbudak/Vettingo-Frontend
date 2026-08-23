@@ -3,9 +3,9 @@ import { scoutDocumentation } from "@/entities/hr-product-documentation";
 import { HrProductDocumentationPage } from "@/pages/hr-product-documentation";
 
 export const metadata: Metadata = {
-  title: "Scout Dokümantasyonu | Vettingo",
+  title: "Scout Ağı | Vettingo",
   description:
-    "Vettingo Scout ile aday keşfi, filtreleme ve kısa liste süreçlerini nasıl yöneteceğinizi öğrenin.",
+    "Vettingo Scout ağıyla doğru adayları keşfetme, filtreleme ve kısa liste oluşturma süreçleri hakkında bilgi edinin.",
 };
 
 export default function ScoutDocumentationRoute() {

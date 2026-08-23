@@ -3,6 +3,7 @@ export type HrProductDocumentation = {
   title: string;
   description: string;
   icon: string;
+  showHero?: boolean;
   introduction: readonly string[];
   capabilities: readonly {
     title: string;
@@ -30,6 +31,7 @@ export const scoutDocumentation = {
   description:
     "Scout; geniş aday havuzlarını rolün gerçek ihtiyaçlarına göre taramanızı, anlamlı filtrelerle daraltmanızı ve güçlü profilleri ekipçe değerlendirilecek kısa listelere dönüştürmenizi sağlar.",
   icon: "binoculars",
+  showHero: false,
   introduction: [
     "İyi bir işe alım süreci, ilan yayınlandıktan sonra gelen başvuruları beklemekle sınırlı değildir. Kritik ve rekabetin yüksek olduğu rollerde doğru yeteneğe proaktif biçimde ulaşmak gerekir. Scout, aday keşfi sürecini dağınık aramalardan çıkarıp ölçütleri açık, tekrarlanabilir ve ekip tarafından izlenebilir bir çalışma akışına dönüştürür.",
     "Pozisyonun kıdem seviyesi, yetkinlikleri, sektör deneyimi, çalışma modeli ve lokasyon beklentileri tek arama bağlamında bir araya gelir. Böylece ekip yalnızca anahtar kelime eşleşmesine değil, adayın rol için oluşturduğu bütünsel değere odaklanır. Filtrelerin ve değerlendirme sinyallerinin görünür olması, neden belirli profillerin öne çıktığını açıklamayı da kolaylaştırır.",
@@ -130,9 +132,9 @@ export const scoutDocumentation = {
     "Başarılı ve başarısız aramaların ölçütlerini işe alım kapanışında ekipçe değerlendirin.",
   ],
   outcomes: [
-    { value: "Daha hızlı", label: "ilk güçlü aday keşfi" },
-    { value: "Daha net", label: "kısa liste gerekçeleri" },
-    { value: "Daha geniş", label: "nitelikli yetenek erişimi" },
+    { value: "Daha hızlı", label: "aday keşfi" },
+    { value: "Daha net", label: "aday listesi" },
+    { value: "Daha geniş", label: "yetenek listesi" },
   ],
 } as const satisfies HrProductDocumentation;
 
