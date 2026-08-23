@@ -4,6 +4,7 @@ export type HrProductDocumentation = {
   description: string;
   icon: string;
   showHero?: boolean;
+  showClosingSections?: boolean;
   showHelpCenterCta?: boolean;
   ctaDescription?: string;
   introduction: readonly string[];
@@ -34,6 +35,7 @@ export const scoutDocumentation = {
     "Scout; geniş aday havuzlarını rolün gerçek ihtiyaçlarına göre taramanızı, anlamlı filtrelerle daraltmanızı ve güçlü profilleri ekipçe değerlendirilecek kısa listelere dönüştürmenizi sağlar.",
   icon: "binoculars",
   showHero: false,
+  showClosingSections: false,
   showHelpCenterCta: false,
   ctaDescription:
     "Doğru yetenekleri daha hızlı keşfettiğiniz, adayları adil değerlendirdiğiniz ve işe alım kararlarını güvenle verdiğiniz bir süreç oluşturun.",

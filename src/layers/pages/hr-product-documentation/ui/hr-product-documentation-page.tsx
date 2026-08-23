@@ -202,47 +202,51 @@ export function HrProductDocumentationPage({
         </div>
       </article>
 
-      <section className="border-y border-[#c5c6cd] bg-[#eff4ff] px-6 py-14">
-        <div className="mx-auto grid max-w-[1000px] gap-8 text-center sm:grid-cols-3">
-          {content.outcomes.map((outcome) => (
-            <div key={outcome.label}>
-              <p className="text-2xl font-bold text-[#091426]">{outcome.value}</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.06em] text-[#45474c]">
-                {outcome.label}
-              </p>
+      {content.showClosingSections !== false ? (
+        <>
+          <section className="border-y border-[#c5c6cd] bg-[#eff4ff] px-6 py-14">
+            <div className="mx-auto grid max-w-[1000px] gap-8 text-center sm:grid-cols-3">
+              {content.outcomes.map((outcome) => (
+                <div key={outcome.label}>
+                  <p className="text-2xl font-bold text-[#091426]">{outcome.value}</p>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.06em] text-[#45474c]">
+                    {outcome.label}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
 
-      <section className="px-6 py-16 text-center md:py-20">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-[-0.02em] text-[#091426] md:text-4xl">
-            Vettingo ile işe alım akışını güçlendirin
-          </h2>
-          <p className="mt-4 text-base leading-7 text-[#45474c]">
-            {content.ctaDescription ??
-              "Ekibinizin ortak ölçütlerle çalıştığı, aday bağlamının korunduğu ve her adımın görünür olduğu bir süreç oluşturun."}
-          </p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link
-              className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-7 py-4 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
-              href={ROUTES.login}
-            >
-              Vettingo’ya Başla
-              <MaterialIcon className="text-[17px]">arrow_forward</MaterialIcon>
-            </Link>
-            {content.showHelpCenterCta !== false ? (
-              <Link
-                className="inline-flex items-center justify-center rounded border border-[#091426] bg-white px-7 py-4 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
-                href={ROUTES.hrHelpCenter}
-              >
-                Yardım Merkezine Dön
-              </Link>
-            ) : null}
-          </div>
-        </div>
-      </section>
+          <section className="px-6 py-16 text-center md:py-20">
+            <div className="mx-auto max-w-2xl">
+              <h2 className="text-3xl font-bold tracking-[-0.02em] text-[#091426] md:text-4xl">
+                Vettingo ile işe alım akışını güçlendirin
+              </h2>
+              <p className="mt-4 text-base leading-7 text-[#45474c]">
+                {content.ctaDescription ??
+                  "Ekibinizin ortak ölçütlerle çalıştığı, aday bağlamının korunduğu ve her adımın görünür olduğu bir süreç oluşturun."}
+              </p>
+              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                <Link
+                  className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-7 py-4 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
+                  href={ROUTES.login}
+                >
+                  Vettingo’ya Başla
+                  <MaterialIcon className="text-[17px]">arrow_forward</MaterialIcon>
+                </Link>
+                {content.showHelpCenterCta !== false ? (
+                  <Link
+                    className="inline-flex items-center justify-center rounded border border-[#091426] bg-white px-7 py-4 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
+                    href={ROUTES.hrHelpCenter}
+                  >
+                    Yardım Merkezine Dön
+                  </Link>
+                ) : null}
+              </div>
+            </div>
+          </section>
+        </>
+      ) : null}
     </PublicSiteShell>
   );
 }
