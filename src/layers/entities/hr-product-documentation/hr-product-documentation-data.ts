@@ -151,6 +151,8 @@ export const candidateManagementDocumentation = {
   description:
     "Aday Yönetimi; başvurudan teklife kadar her adımı, sorumluyu, değerlendirme kaydını ve iletişim geçmişini görünür kılar. Ekipler kimin nerede beklediğini bilir ve hiçbir aday bağlam eksikliği yüzünden süreçten düşmez.",
   icon: "groups",
+  showHero: false,
+  showClosingSections: false,
   introduction: [
     "İşe alım büyüdükçe aday bilgileri e-posta, tablo, mesajlaşma uygulaması ve kişisel notlar arasında dağılmaya başlar. Bu da geciken dönüşlere, yinelenen görüşmelere ve tutarsız değerlendirmelere yol açar. Aday Yönetimi, her aday için tek ve güncel bir kayıt oluşturarak operasyonun ortak çalışma alanı haline gelir.",
     "Aday kartında hedef pozisyon, süreç aşaması, sorumlu kişi, son aktivite, temel yetkinlikler ve değerlendirme özeti birlikte görülür. Ekip bir sonraki adımı anlamak için farklı kaynakları kontrol etmek zorunda kalmaz. Aşama değişiklikleri ve notlar zaman çizelgesi üzerinde kaldığı için kararın nasıl oluştuğu daha sonra da izlenebilir.",
