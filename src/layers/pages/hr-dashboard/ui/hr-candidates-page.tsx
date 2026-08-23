@@ -9,28 +9,24 @@ export function HrCandidatesPage() {
           {
             label: "Aktif Aday",
             value: "74",
-            helper: "18 açık talebe bağlı",
             icon: "groups",
             tone: "blue",
           },
           {
             label: "Yeni Başvuru",
             value: "21",
-            helper: "Son 7 gün",
             icon: "person_add",
             tone: "green",
           },
           {
             label: "Mülakat Aşaması",
             value: "16",
-            helper: "Bu hafta 9 görüşme",
             icon: "forum",
             tone: "purple",
           },
           {
             label: "Teklif Aşaması",
             value: "4",
-            helper: "Ortalama skor 92",
             icon: "handshake",
             tone: "amber",
           },
