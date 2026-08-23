@@ -16,36 +16,38 @@ export function HrProductDocumentationPage({
       links={landingPage.footerLinks}
       productName={landingPage.productName}
     >
-      <section className="border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-16 md:py-24">
-        <div className="mx-auto max-w-[1180px]">
-          <Link
-            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.06em] text-[#006c49] transition-colors hover:text-[#091426]"
-            href={ROUTES.hrHelpCenter}
-          >
-            <MaterialIcon className="text-[17px]">arrow_back</MaterialIcon>
-            HR Yardım Merkezine Dön
-          </Link>
+      {content.showHero !== false ? (
+        <section className="border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-16 md:py-24">
+          <div className="mx-auto max-w-[1180px]">
+            <Link
+              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.06em] text-[#006c49] transition-colors hover:text-[#091426]"
+              href={ROUTES.hrHelpCenter}
+            >
+              <MaterialIcon className="text-[17px]">arrow_back</MaterialIcon>
+              HR Yardım Merkezine Dön
+            </Link>
 
-          <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-20">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#006c49]">
-                {content.eyebrow}
-              </p>
-              <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-[46px] tracking-[-0.025em] text-[#091426] md:text-6xl md:leading-[68px]">
-                {content.title}
-              </h1>
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-[#45474c]">
-                {content.description}
-              </p>
+            <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-20">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#006c49]">
+                  {content.eyebrow}
+                </p>
+                <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-[46px] tracking-[-0.025em] text-[#091426] md:text-6xl md:leading-[68px]">
+                  {content.title}
+                </h1>
+                <p className="mt-6 max-w-3xl text-lg leading-8 text-[#45474c]">
+                  {content.description}
+                </p>
+              </div>
+              <span className="flex h-28 w-28 items-center justify-center rounded-2xl bg-[#dce9ff] text-[#091426] shadow-[0_18px_45px_rgba(9,20,38,0.1)] lg:ml-auto lg:h-36 lg:w-36">
+                <MaterialIcon className="text-[52px] lg:text-[64px]">
+                  {content.icon}
+                </MaterialIcon>
+              </span>
             </div>
-            <span className="flex h-28 w-28 items-center justify-center rounded-2xl bg-[#dce9ff] text-[#091426] shadow-[0_18px_45px_rgba(9,20,38,0.1)] lg:ml-auto lg:h-36 lg:w-36">
-              <MaterialIcon className="text-[52px] lg:text-[64px]">
-                {content.icon}
-              </MaterialIcon>
-            </span>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <article className="mx-auto grid max-w-[1180px] gap-12 px-6 py-16 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16 lg:py-24">
         <aside className="hidden lg:block">
