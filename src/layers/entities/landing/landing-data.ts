@@ -130,11 +130,5 @@ export const landingPage = {
     { name: "Tolga H.", role: "Bölge Müdürü", imageUrl: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?auto=format&fit=crop&w=160&q=90", comment: "Farklı şehirlerdeki yöneticiler aynı pozisyon için görüşme yaptığında değerlendirmeler birbirinden kopuyordu. Tek akış üzerinden ilerlemek hem merkezi ekibin denetimini hem yerel yöneticilerin katkısını kolaylaştırdı." },
     { name: "Naz A.", role: "Proje Yöneticisi", imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&q=90", comment: "Proje bazlı büyürken kısa sürede doğru uzmanları bulmamız gerekiyor. Ön eleme sonuçlarının açıklanabilir olması, hız uğruna kaliteden ödün vermeden uygun adaylarla görüşmeye başlamamızı sağladı." },
   ],
-  footerLinks: [
-    { label: "Gizlilik Politikası", href: ROUTES.home },
-    { label: "Kullanım Koşulları", href: ROUTES.home },
-    { label: "Destek", href: ROUTES.home },
-    { label: "Kurumsal Çözümler", href: ROUTES.employer },
-  ],
 } as const;
 

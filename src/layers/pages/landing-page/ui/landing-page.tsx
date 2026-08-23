@@ -406,7 +406,6 @@ export function LandingPage() {
   return (
     <PublicSiteShell
       homeHref={ROUTES.landing}
-      links={landingPage.footerLinks}
       productName={landingPage.productName}
     >
       <Hero />
