@@ -379,6 +379,8 @@ export const reportingDocumentation = {
   description:
     "Raporlama; işe alım hunisini, bekleme sürelerini, kaynak kalitesini ve departman performansını ortak tanımlarla görünür kılar. Ekipler yalnızca ne olduğunu değil, nerede iyileştirme yapılacağını da anlayabilir.",
   icon: "monitoring",
+  showHero: false,
+  showClosingSections: false,
   introduction: [
     "İşe alım verisi ancak doğru soruya cevap verdiğinde değerlidir. Toplam başvuru sayısı tek başına sürecin sağlığını göstermez; adayların hangi aşamada beklediği, hangi kaynağın nitelikli aday ürettiği ve tekliflerin neden kabul edilmediği gibi bağlamsal ölçümler gerekir. Raporlama alanı bu sinyalleri tek ve tutarlı bir görünümde bir araya getirir.",
     "Huni dönüşümleri adayların süreçte nasıl ilerlediğini, aşama süreleri operasyonun nerede yavaşladığını, departman karşılaştırmaları ise kapasite ve beklenti farklarını gösterir. Dönem ve kapsam filtreleri sayesinde ekipler şirket genelindeki eğilimi incelerken belirli bir rol ailesine veya işe alım sahibine kadar ayrıntıya inebilir.",
