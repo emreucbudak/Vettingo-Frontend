@@ -426,6 +426,10 @@ shared/
 | `/assessment/session` | Active assessment session |
 | `/talent-benchmarking` | Talent comparison and benchmarking |
 | `/mycandidate` | Candidate self-analysis |
+| `/scout` | Scout product documentation |
+| `/candidate-management` | Candidate management product documentation |
+| `/interviews` | Interview workflow product documentation |
+| `/reporting` | Recruitment reporting product documentation |
 
 ### Candidate routes
 

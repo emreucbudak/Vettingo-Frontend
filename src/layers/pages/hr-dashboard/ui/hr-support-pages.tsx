@@ -229,25 +229,25 @@ const helpTopics = [
     icon: "binoculars",
     title: "Scout",
     description: "Aday keşfi, filtreleme ve kısa liste.",
-    href: ROUTES.hrScout,
+    href: ROUTES.scout,
   },
   {
     icon: "groups",
     title: "Aday Yönetimi",
     description: "Aday havuzu ve süreç aşamaları.",
-    href: ROUTES.hrCandidates,
+    href: ROUTES.candidateManagement,
   },
   {
     icon: "calendar_month",
     title: "Mülakatlar",
     description: "Takvim, panel ve geri bildirim.",
-    href: ROUTES.hrInterviews,
+    href: ROUTES.interviews,
   },
   {
     icon: "monitoring",
     title: "Raporlama",
     description: "İşe alım verileri ve performans içgörüleri.",
-    href: ROUTES.hrReports,
+    href: ROUTES.reporting,
   },
 ] as const;
 
@@ -266,12 +266,12 @@ export function HrHelpCenterPage() {
               <span className="flex h-10 w-10 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
                 <MaterialIcon className="text-[21px]">{topic.icon}</MaterialIcon>
               </span>
-              <h2 className="mt-4 text-sm font-semibold text-[#0b1c30] group-hover:underline">
+              <h2 className="mt-4 text-sm font-semibold text-[#0b1c30]">
                 {topic.title}
               </h2>
               <p className="mt-2 text-xs leading-5 text-[#45474c]">{topic.description}</p>
               <span className="mt-4 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-                Bölümü Aç
+                Dokümantasyonu Oku
                 <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
               </span>
             </Link>

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { landingPage } from "@/entities/landing";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
+import { PublicSiteShell } from "@/shared/ui/public-site-chrome";
 
 type InViewOptions = {
   rootMargin?: string;
@@ -38,17 +39,6 @@ function useInView<T extends HTMLElement>({
   }, [rootMargin, threshold]);
 
   return { ref, isInView };
-}
-function Header() {
-  return (
-    <nav className="fixed top-0 z-50 w-full border-b border-[#c5c6cd] bg-white">
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-6">
-        <a className="text-2xl font-bold tracking-[-0.01em] text-[#091426]" href={ROUTES.landing}>
-          {landingPage.productName}
-        </a>
-      </div>
-    </nav>
-  );
 }
 
 function Hero() {
@@ -412,44 +402,20 @@ function TestimonialsSection() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="mt-auto w-full border-t border-[#c5c6cd] bg-white py-8">
-      <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-4 px-6 md:flex-row">
-        <div className="text-xl font-bold leading-7 text-[#091426]">
-          {landingPage.productName}
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 md:justify-end">
-          {landingPage.footerLinks.map((link) => (
-            <a
-              className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:text-[#091426] hover:underline"
-              href={link.href}
-              key={link.label}
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-
 export function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30]">
-      <Header />
-      <main className="flex-grow pt-16">
-        <Hero />
-        <TrustBar />
-        <HrPlatformSection />
-        <CompactStatsSection />
-        <TalentHighlightsSection />
-        <TestimonialsSection />
-      </main>
-      <Footer />
-    </div>
+    <PublicSiteShell
+      homeHref={ROUTES.landing}
+      links={landingPage.footerLinks}
+      productName={landingPage.productName}
+    >
+      <Hero />
+      <TrustBar />
+      <HrPlatformSection />
+      <CompactStatsSection />
+      <TalentHighlightsSection />
+      <TestimonialsSection />
+    </PublicSiteShell>
   );
 }
 
