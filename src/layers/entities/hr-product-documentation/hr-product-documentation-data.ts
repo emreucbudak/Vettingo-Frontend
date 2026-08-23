@@ -4,6 +4,8 @@ export type HrProductDocumentation = {
   description: string;
   icon: string;
   showHero?: boolean;
+  showHelpCenterCta?: boolean;
+  ctaDescription?: string;
   introduction: readonly string[];
   capabilities: readonly {
     title: string;
@@ -32,6 +34,9 @@ export const scoutDocumentation = {
     "Scout; geniş aday havuzlarını rolün gerçek ihtiyaçlarına göre taramanızı, anlamlı filtrelerle daraltmanızı ve güçlü profilleri ekipçe değerlendirilecek kısa listelere dönüştürmenizi sağlar.",
   icon: "binoculars",
   showHero: false,
+  showHelpCenterCta: false,
+  ctaDescription:
+    "Doğru yetenekleri daha hızlı keşfettiğiniz, adayları adil değerlendirdiğiniz ve işe alım kararlarını güvenle verdiğiniz bir süreç oluşturun.",
   introduction: [
     "İyi bir işe alım süreci, ilan yayınlandıktan sonra gelen başvuruları beklemekle sınırlı değildir. Kritik ve rekabetin yüksek olduğu rollerde doğru yeteneğe proaktif biçimde ulaşmak gerekir. Scout, aday keşfi sürecini dağınık aramalardan çıkarıp ölçütleri açık, tekrarlanabilir ve ekip tarafından izlenebilir bir çalışma akışına dönüştürür.",
     "Pozisyonun kıdem seviyesi, yetkinlikleri, sektör deneyimi, çalışma modeli ve lokasyon beklentileri tek arama bağlamında bir araya gelir. Böylece ekip yalnızca anahtar kelime eşleşmesine değil, adayın rol için oluşturduğu bütünsel değere odaklanır. Filtrelerin ve değerlendirme sinyallerinin görünür olması, neden belirli profillerin öne çıktığını açıklamayı da kolaylaştırır.",

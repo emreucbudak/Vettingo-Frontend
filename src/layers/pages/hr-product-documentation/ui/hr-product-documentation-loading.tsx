@@ -15,7 +15,6 @@ export function HrProductDocumentationLoading() {
   return (
     <PublicSiteShell
       homeHref={ROUTES.landing}
-      links={landingPage.footerLinks}
       productName={landingPage.productName}
     >
       <div

@@ -13,7 +13,6 @@ export function HrProductDocumentationPage({
   return (
     <PublicSiteShell
       homeHref={ROUTES.landing}
-      links={landingPage.footerLinks}
       productName={landingPage.productName}
     >
       {content.showHero !== false ? (
@@ -222,7 +221,8 @@ export function HrProductDocumentationPage({
             Vettingo ile işe alım akışını güçlendirin
           </h2>
           <p className="mt-4 text-base leading-7 text-[#45474c]">
-            Ekibinizin ortak ölçütlerle çalıştığı, aday bağlamının korunduğu ve her adımın görünür olduğu bir süreç oluşturun.
+            {content.ctaDescription ??
+              "Ekibinizin ortak ölçütlerle çalıştığı, aday bağlamının korunduğu ve her adımın görünür olduğu bir süreç oluşturun."}
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
@@ -232,12 +232,14 @@ export function HrProductDocumentationPage({
               Vettingo’ya Başla
               <MaterialIcon className="text-[17px]">arrow_forward</MaterialIcon>
             </Link>
-            <Link
-              className="inline-flex items-center justify-center rounded border border-[#091426] bg-white px-7 py-4 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
-              href={ROUTES.hrHelpCenter}
-            >
-              Yardım Merkezine Dön
-            </Link>
+            {content.showHelpCenterCta !== false ? (
+              <Link
+                className="inline-flex items-center justify-center rounded border border-[#091426] bg-white px-7 py-4 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
+                href={ROUTES.hrHelpCenter}
+              >
+                Yardım Merkezine Dön
+              </Link>
+            ) : null}
           </div>
         </div>
       </section>
