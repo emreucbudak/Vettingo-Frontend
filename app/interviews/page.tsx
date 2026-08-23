@@ -3,7 +3,7 @@ import { interviewsDocumentation } from "@/entities/hr-product-documentation";
 import { HrProductDocumentationPage } from "@/pages/hr-product-documentation";
 
 export const metadata: Metadata = {
-  title: "Mülakatlar | Vettingo",
+  title: "Mülakatlar Hakkında | Vettingo",
   description:
     "Vettingo ile mülakat planlama, panel hazırlığı ve yapılandırılmış geri bildirim akışını nasıl yöneteceğinizi öğrenin.",
 };
