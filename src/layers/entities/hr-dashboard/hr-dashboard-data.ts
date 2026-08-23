@@ -356,4 +356,14 @@ export const hrFaqs = [
     answer:
       "Raporlar sayfası varsayılan olarak son altı aylık işe alım hunisini ve departman performansını örnek verilerle sunar.",
   },
+  {
+    question: "Bir adayı kısa listeye nasıl eklerim?",
+    answer:
+      "Scout sayfasında aday kartındaki kısa liste eylemini kullanarak adayı ilgili pozisyonun değerlendirme listesine ekleyebilirsin.",
+  },
+  {
+    question: "Adayın süreç aşamasını nasıl değiştiririm?",
+    answer:
+      "Aday Yönetimi sayfasında ilgili adayı açıp süreç durumunu güncelleyerek değerlendirme, mülakat veya teklif aşamasına taşıyabilirsin.",
+  },
 ] as const;
