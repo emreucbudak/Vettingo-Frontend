@@ -4,6 +4,7 @@ import { hrFaqs } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
+  HrPageHeader,
   HrPrimaryLink,
   HrSectionHeading,
 } from "@/entities/hr-dashboard/ui";
@@ -20,19 +21,23 @@ function SettingsSection({
   title,
 }: {
   children: ReactNode;
-  description: string;
-  icon: string;
+  description?: string;
+  icon?: string;
   title: string;
 }) {
   return (
     <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6">
       <div className="mb-6 flex items-start gap-3 border-b border-[#c5c6cd] pb-5">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-          <MaterialIcon className="text-[21px]">{icon}</MaterialIcon>
-        </span>
+        {icon ? (
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
+            <MaterialIcon className="text-[21px]">{icon}</MaterialIcon>
+          </span>
+        ) : null}
         <div>
           <h2 className="text-lg font-semibold text-[#0b1c30]">{title}</h2>
-          <p className="mt-1 text-sm leading-5 text-[#45474c]">{description}</p>
+          {description ? (
+            <p className="mt-1 text-sm leading-5 text-[#45474c]">{description}</p>
+          ) : null}
         </div>
       </div>
       {children}
@@ -43,19 +48,18 @@ function SettingsSection({
 export function HrSettingsPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <div className="mb-8 flex justify-end border-b border-[#c5c6cd] pb-7">
-        <HrPrimaryLink href={ROUTES.hr} icon="check">
-          Kaydet
-        </HrPrimaryLink>
-      </div>
+      <HrPageHeader
+        action={
+          <HrPrimaryLink href={ROUTES.hr} icon="check">
+            Kaydet
+          </HrPrimaryLink>
+        }
+        title="Ayarlar"
+      />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <div className="space-y-6">
-          <SettingsSection
-            description="HR panelinde kullanılacak temel kurum ve ekip bilgileri."
-            icon="domain"
-            title="Çalışma Alanı Profili"
-          >
+          <SettingsSection title="Profil">
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div>
                 <label className={labelClass} htmlFor="hr-workspace-name">
@@ -103,11 +107,7 @@ export function HrSettingsPage() {
             </div>
           </SettingsSection>
 
-          <SettingsSection
-            description="Talep ve mülakat görünümünde öne çıkarılacak varsayılan kurallar."
-            icon="tune"
-            title="Süreç Tercihleri"
-          >
+          <SettingsSection title="Tercihler">
             <div className="space-y-4">
               {[
                 {
@@ -161,8 +161,6 @@ export function HrSettingsPage() {
           </section>
 
           <SettingsSection
-            description="Hesabın için güçlü ve benzersiz bir şifre kullan."
-            icon="lock"
             title="Şifre Değiştir"
           >
             <div className="space-y-5">
