@@ -3,7 +3,7 @@ import { candidateManagementDocumentation } from "@/entities/hr-product-document
 import { HrProductDocumentationPage } from "@/pages/hr-product-documentation";
 
 export const metadata: Metadata = {
-  title: "Aday Yönetimi Dokümantasyonu | Vettingo",
+  title: "Aday Yönetimi | Vettingo",
   description:
     "Vettingo ile aday havuzunu, süreç aşamalarını, sahipliği ve aday iletişimini nasıl yöneteceğinizi öğrenin.",
 };

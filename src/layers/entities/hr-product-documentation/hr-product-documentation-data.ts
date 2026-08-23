@@ -265,6 +265,8 @@ export const interviewsDocumentation = {
   description:
     "Mülakatlar bölümü; takvim planlamasını, görüşmeci hazırlığını, yapılandırılmış değerlendirmeyi ve geri bildirim takibini tek akışta birleştirir.",
   icon: "calendar_month",
+  showHero: false,
+  showClosingSections: false,
   introduction: [
     "Mülakat, adayla geçirilen bir görüşmeden çok daha fazlasıdır: rol beklentilerinin kanıta dayalı biçimde değerlendirildiği ve adayın da ekibi tanıdığı çift yönlü bir karar anıdır. Plansız yürütülen görüşmeler aynı soruların tekrarlanmasına, kritik yetkinliklerin hiç ele alınmamasına ve kişisel izlenimlerin ölçütlerin önüne geçmesine neden olur.",
     "Mülakatlar alanı her oturum için amacı, katılımcıları, değerlendirilecek yetkinlikleri, takvim bilgisini ve geri bildirim durumunu görünür tutar. Görüşmeciler aday profilini ve kendi sorumluluklarını önceden görür; görüşme sonrasında puan ve notlarını ortak bir formatta iletir.",
