@@ -282,10 +282,7 @@ export function HrHelpCenterPage() {
       </section>
 
       <section>
-        <HrSectionHeading
-          description="HR arayüzünün tasarım akışlarıyla ilgili hızlı yanıtlar."
-          title="Sık Sorulan Sorular"
-        />
+        <HrSectionHeading title="Sıkça Sorulan Sorular" />
         <div className="space-y-3">
           {hrFaqs.map((faq) => (
             <details
