@@ -55,7 +55,6 @@ export function HrInterviewAgenda() {
           <HrSectionHeading
             actionHref={ROUTES.hrCandidates}
             actionLabel="Aday Havuzu"
-            description="12 Ağustos Çarşamba için planlanan görüşmeler."
             title="Bugünün Ajandası"
           />
           <div className="space-y-4">
