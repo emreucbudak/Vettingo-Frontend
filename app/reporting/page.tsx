@@ -3,7 +3,7 @@ import { reportingDocumentation } from "@/entities/hr-product-documentation";
 import { HrProductDocumentationPage } from "@/pages/hr-product-documentation";
 
 export const metadata: Metadata = {
-  title: "Raporlama Dokümantasyonu | Vettingo",
+  title: "Raporlama | Vettingo",
   description:
     "Vettingo işe alım hunisi, süreç süreleri ve departman performansı raporlarını nasıl kullanacağınızı öğrenin.",
 };
