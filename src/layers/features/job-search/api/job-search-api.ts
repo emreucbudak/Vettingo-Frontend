@@ -52,7 +52,7 @@ export async function searchJobPostings(
     )) as unknown as JobPostingSearchDto[];
   } catch {
     throw new Error(
-      "Jobs servisine ulaşılamadı. Lütfen daha sonra tekrar deneyin.",
+      "İş ilanları yüklenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.",
     );
   }
 }

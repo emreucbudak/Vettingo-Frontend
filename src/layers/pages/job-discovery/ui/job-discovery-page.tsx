@@ -13,7 +13,7 @@ import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const selectClassName =
-  "rounded-full border border-[#c5c6cd] bg-white px-3 py-2 text-[11px] font-medium text-[#0b1c30] outline-none transition-colors hover:bg-[#eff4ff] focus:border-[#091426]";
+  "appearance-none rounded-full border border-[#c5c6cd] bg-white py-2 pl-3 pr-9 text-[11px] font-medium text-[#0b1c30] outline-none transition-colors hover:bg-[#eff4ff] focus:border-[#091426]";
 
 const employmentTypeLabels: Record<EmploymentType, string> = {
   1: "Tam Zamanlı",
@@ -129,54 +129,74 @@ function SearchHero({
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <select
-            aria-label="Maaş aralığı"
-            className={selectClassName}
-            onChange={(event) => onChange("salaryRange", event.target.value as SearchFormState["salaryRange"])}
-            value={form.salaryRange}
-          >
-            <option value="">Maaş Aralığı</option>
-            <option value="0-50000">0 - 50.000</option>
-            <option value="50000-100000">50.000 - 100.000</option>
-            <option value="100000-150000">100.000 - 150.000</option>
-            <option value="150000-">150.000 ve üzeri</option>
-          </select>
-          <select
-            aria-label="İş türü"
-            className={selectClassName}
-            onChange={(event) => onChange("employmentType", event.target.value as SearchFormState["employmentType"])}
-            value={form.employmentType}
-          >
-            <option value="">İş Türü</option>
-            <option value="1">Tam Zamanlı</option>
-            <option value="2">Yarı Zamanlı</option>
-            <option value="3">Staj</option>
-            <option value="4">Sözleşmeli</option>
-          </select>
-          <select
-            aria-label="Çalışma modeli"
-            className={selectClassName}
-            onChange={(event) => onChange("workingModel", event.target.value as SearchFormState["workingModel"])}
-            value={form.workingModel}
-          >
-            <option value="">Çalışma Modeli</option>
-            <option value="2">Uzaktan</option>
-            <option value="1">İşyerinde</option>
-            <option value="3">Hibrit</option>
-          </select>
-          <select
-            aria-label="Deneyim seviyesi"
-            className={selectClassName}
-            onChange={(event) => onChange("experienceLevel", event.target.value as SearchFormState["experienceLevel"])}
-            value={form.experienceLevel}
-          >
-            <option value="">Deneyim Seviyesi</option>
-            <option value="1">Stajyer</option>
-            <option value="2">Junior</option>
-            <option value="3">Mid</option>
-            <option value="4">Senior</option>
-            <option value="5">Lead</option>
-          </select>
+          <span className="relative inline-flex">
+            <select
+              aria-label="Maaş aralığı"
+              className={selectClassName}
+              onChange={(event) => onChange("salaryRange", event.target.value as SearchFormState["salaryRange"])}
+              value={form.salaryRange}
+            >
+              <option value="">Maaş Aralığı</option>
+              <option value="0-50000">0 - 50.000</option>
+              <option value="50000-100000">50.000 - 100.000</option>
+              <option value="100000-150000">100.000 - 150.000</option>
+              <option value="150000-">150.000 ve üzeri</option>
+            </select>
+            <MaterialIcon className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
+              expand_more
+            </MaterialIcon>
+          </span>
+          <span className="relative inline-flex">
+            <select
+              aria-label="İş türü"
+              className={selectClassName}
+              onChange={(event) => onChange("employmentType", event.target.value as SearchFormState["employmentType"])}
+              value={form.employmentType}
+            >
+              <option value="">İş Türü</option>
+              <option value="1">Tam Zamanlı</option>
+              <option value="2">Yarı Zamanlı</option>
+              <option value="3">Staj</option>
+              <option value="4">Sözleşmeli</option>
+            </select>
+            <MaterialIcon className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
+              expand_more
+            </MaterialIcon>
+          </span>
+          <span className="relative inline-flex">
+            <select
+              aria-label="Çalışma modeli"
+              className={selectClassName}
+              onChange={(event) => onChange("workingModel", event.target.value as SearchFormState["workingModel"])}
+              value={form.workingModel}
+            >
+              <option value="">Çalışma Modeli</option>
+              <option value="2">Uzaktan</option>
+              <option value="1">İşyerinde</option>
+              <option value="3">Hibrit</option>
+            </select>
+            <MaterialIcon className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
+              expand_more
+            </MaterialIcon>
+          </span>
+          <span className="relative inline-flex">
+            <select
+              aria-label="Deneyim seviyesi"
+              className={selectClassName}
+              onChange={(event) => onChange("experienceLevel", event.target.value as SearchFormState["experienceLevel"])}
+              value={form.experienceLevel}
+            >
+              <option value="">Deneyim Seviyesi</option>
+              <option value="1">Stajyer</option>
+              <option value="2">Junior</option>
+              <option value="3">Mid</option>
+              <option value="4">Senior</option>
+              <option value="5">Lead</option>
+            </select>
+            <MaterialIcon className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
+              expand_more
+            </MaterialIcon>
+          </span>
           {hasFilters ? (
             <button
               className="rounded-full px-3 py-2 text-[11px] font-semibold text-[#45474c] hover:bg-[#eff4ff]"
