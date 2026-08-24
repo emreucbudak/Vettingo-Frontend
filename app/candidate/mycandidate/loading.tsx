@@ -8,7 +8,7 @@ export default function Loading() {
   return (
     <CandidateShell>
       <main aria-busy="true" aria-label="Yapay zeka analizi yükleniyor" className="mx-auto w-full max-w-[1440px] flex-1 px-4 pb-8 pt-6 md:px-8" role="status">
-        <header className="mb-6 border-b border-[#c5c6cd] pb-6"><Skeleton className="h-3 w-40" /><Skeleton className="mt-3 h-9 w-72" /><Skeleton className="mt-3 h-4 w-full max-w-2xl" /></header>
+        <header className="mb-6 border-b border-[#c5c6cd] pb-6"><Skeleton className="h-9 w-72" /></header>
         <section className="mb-6 rounded border border-[#c5c6cd] bg-white p-6"><div className="flex flex-col gap-5 sm:flex-row sm:items-center"><Skeleton className="h-20 w-20 rounded-full" /><div className="flex-1"><Skeleton className="h-7 w-56" /><Skeleton className="mt-3 h-4 w-72 max-w-full" /><div className="mt-4 flex gap-2"><Skeleton className="h-7 w-24 rounded-full" /><Skeleton className="h-7 w-28 rounded-full" /></div></div><Skeleton className="h-20 w-24" /></div></section>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">{Array.from({ length: 4 }, (_, index) => <Skeleton className="h-56 border border-[#c5c6cd] bg-white" key={index} />)}</div><div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2"><Skeleton className="h-72 border border-[#c5c6cd] bg-white" /><Skeleton className="h-72 border border-[#c5c6cd] bg-white" /></div>
         <span className="sr-only">Yapay zeka analizi yükleniyor...</span>

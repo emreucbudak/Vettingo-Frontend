@@ -93,26 +93,10 @@ function CompetencyBreakdown({
 }) {
   return (
     <section className="rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6">
-      <div className="flex items-start justify-between gap-4 border-b border-[#c5c6cd] pb-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-            Yetkinlik Haritan
-          </p>
-          <h2 className="mt-1 text-xl font-semibold text-[#0b1c30]">
-            Puan dağılımı
-          </h2>
-        </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#eff4ff] text-[#091426]">
-          <span className="relative block h-8 w-8 overflow-hidden" aria-hidden="true">
-            <Image
-              alt=""
-              className="absolute left-[-4px] top-[-4px] h-10 w-10 max-w-none"
-              height={392}
-              src="/icons/candidate-competency-transparent.png"
-              width={411}
-            />
-          </span>
-        </div>
+      <div className="border-b border-[#c5c6cd] pb-4">
+        <h2 className="text-xl font-semibold text-[#0b1c30]">
+          Puan dağılımı
+        </h2>
       </div>
 
       {isLoading ? (
@@ -161,22 +145,16 @@ function GrowthPlan({
 }) {
   const actions = [
     {
-      icon: "checklist_edit",
-      eyebrow: "Öncelikli Alan",
       title: developmentAreas[0] ?? "Yeni bir gelişim alanı belirle",
       description:
         "Bu başlık için ölçülebilir bir öğrenme hedefi oluştur ve ilerlemeni profilinde güncel tut.",
     },
     {
-      icon: "auto_awesome",
-      eyebrow: "Öne Çıkan Gücün",
       title: strengths[0] ?? "Güçlü yönlerini görünür kıl",
       description:
         "Bu yetkinliği destekleyen proje ve sonuçları özgeçmişinde somut örneklerle anlat.",
     },
     {
-      icon: "trending_up",
-      eyebrow: "Sonraki Adım",
       title: "Profil verilerini güncel tut",
       description:
         "Yeni deneyim, sertifika ve değerlendirmeler eklendikçe analiz sonuçların daha isabetli olur.",
@@ -186,10 +164,7 @@ function GrowthPlan({
   return (
     <section className="mt-6">
       <div className="mb-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-          Kişisel Yol Haritan
-        </p>
-        <h2 className="mt-1 text-2xl font-semibold tracking-[-0.01em] text-[#0b1c30]">
+        <h2 className="text-2xl font-semibold tracking-[-0.01em] text-[#0b1c30]">
           Önerilen sonraki adımlar
         </h2>
       </div>
@@ -198,22 +173,14 @@ function GrowthPlan({
         {actions.map((action, index) => (
           <article
             className="rounded-lg border border-[#c5c6cd] bg-white p-5"
-            key={action.eyebrow}
+            key={action.title}
           >
-            <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#eff4ff] text-[#091426]">
-                <MaterialIcon className="text-[22px]">
-                  {action.icon}
-                </MaterialIcon>
-              </div>
+            <div className="flex justify-end">
               <span className="text-[11px] font-bold text-[#75777d]">
                 0{index + 1}
               </span>
             </div>
-            <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.06em] text-[#006c49]">
-              {action.eyebrow}
-            </p>
-            <h3 className="mt-2 text-lg font-semibold leading-6 text-[#0b1c30]">
+            <h3 className="mt-5 text-lg font-semibold leading-6 text-[#0b1c30]">
               {action.title}
             </h3>
             <p className="mt-2 text-sm leading-6 text-[#45474c]">
@@ -266,16 +233,9 @@ export function CandidateSelfAnalysisPage() {
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 pb-4 pt-3 md:px-8 md:pb-8 md:pt-6">
         <header className="mb-6 flex flex-col gap-5 border-b border-[#c5c6cd] pb-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.06em] text-[#006c49]">
-              Kişisel Değerlendirme
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-              Yapay Zeka Analizim
+            <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
+              Yapay Zeka Analizi
             </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#45474c]">
-              Yetkinliklerini, güçlü yönlerini ve gelişim fırsatlarını kendi
-              kariyer hedeflerin için tek ekranda incele.
-            </p>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
@@ -363,21 +323,11 @@ export function CandidateSelfAnalysisPage() {
         </section>
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
-          <section className="rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6">
-            <div className="flex items-center gap-3 border-b border-[#c5c6cd] pb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#dce9ff] text-[#091426]">
-                <MaterialIcon className="text-[23px]">
-                    search
-                </MaterialIcon>
-              </div>
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-[#006c49]">
-                  Sana Özel İçgörü
-                </p>
-                <h2 className="mt-1 text-xl font-semibold text-[#0b1c30]">
-                  Analiz özeti
-                </h2>
-              </div>
+          <section className="flex flex-col rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6">
+            <div className="border-b border-[#c5c6cd] pb-4">
+              <h2 className="text-xl font-semibold text-[#0b1c30]">
+                Analiz özeti
+              </h2>
             </div>
 
             <p className="mt-5 text-sm leading-7 text-[#45474c]">
@@ -386,7 +336,7 @@ export function CandidateSelfAnalysisPage() {
                 : summary}
             </p>
 
-            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="mt-auto grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
               <InsightList
                 icon="check_circle"
                 items={strengths}
@@ -403,10 +353,7 @@ export function CandidateSelfAnalysisPage() {
           </section>
 
           <section className="rounded-lg border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-              Kariyer Odağın
-            </p>
-            <h2 className="mt-2 text-xl font-semibold text-[#0b1c30]">
+            <h2 className="text-xl font-semibold text-[#0b1c30]">
               {profile.targetRole}
             </h2>
             <p className="mt-2 text-sm leading-6 text-[#45474c]">
@@ -436,15 +383,6 @@ export function CandidateSelfAnalysisPage() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-start gap-3 rounded-lg border border-[#c5c6cd] bg-white p-4">
-              <MaterialIcon className="mt-0.5 text-[20px] text-[#091426]">
-                lightbulb
-              </MaterialIcon>
-              <p className="text-xs leading-5 text-[#45474c]">
-                Rol uyumunu artırmak için gelişim alanlarını güncel proje ve
-                eğitimlerle destekle.
-              </p>
-            </div>
           </section>
         </div>
 
@@ -454,22 +392,13 @@ export function CandidateSelfAnalysisPage() {
             isLoading={remoteAnalysis.isLoading}
           />
 
-          <aside className="rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6cf8bb] text-[#00714d]">
-              <MaterialIcon className="text-[22px]">
-                workspace_premium
-              </MaterialIcon>
-            </div>
-            <h2 className="mt-5 text-xl font-semibold text-[#0b1c30]">
+          <aside className="flex flex-col rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6">
+            <h2 className="text-xl font-semibold text-[#0b1c30]">
               Analizin nasıl oluştu?
             </h2>
-            <p className="mt-2 text-sm leading-6 text-[#45474c]">
-              Sonuçlar yalnızca senin profil ve değerlendirme sinyallerinden
-              hazırlanır.
-            </p>
 
-            <dl className="mt-6 divide-y divide-[#c5c6cd] border-y border-[#c5c6cd]">
-              <div className="flex items-center justify-between gap-4 py-4">
+            <dl className="mt-6 flex flex-1 flex-col divide-y divide-[#c5c6cd] border-y border-[#c5c6cd]">
+              <div className="flex min-h-16 flex-1 items-center justify-between gap-4 py-5">
                 <dt className="text-xs font-medium text-[#45474c]">
                   Değerlendirme
                 </dt>
@@ -479,15 +408,15 @@ export function CandidateSelfAnalysisPage() {
                     : attributes.length}
                 </dd>
               </div>
-              <div className="flex items-center justify-between gap-4 py-4">
+              <div className="flex min-h-16 flex-1 items-center justify-between gap-4 py-5">
                 <dt className="text-xs font-medium text-[#45474c]">
-                  Yetkinlik sinyali
+                  Yetkinlik
                 </dt>
                 <dd className="text-sm font-bold text-[#0b1c30]">
                   {attributes.length}
                 </dd>
               </div>
-              <div className="flex items-center justify-between gap-4 py-4">
+              <div className="flex min-h-16 flex-1 items-center justify-between gap-4 py-5">
                 <dt className="text-xs font-medium text-[#45474c]">
                   Veri kapsamı
                 </dt>
@@ -497,10 +426,6 @@ export function CandidateSelfAnalysisPage() {
               </div>
             </dl>
 
-            <p className="mt-5 text-[11px] leading-5 text-[#75777d]">
-              Profilin veya değerlendirmelerin güncellendiğinde raporun yeniden
-              hesaplanabilir.
-            </p>
           </aside>
         </div>
 
