@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "Adayın kişisel yetkinlik ve kariyer değerlendirme raporu.",
 };
 
-export default function MyCandidateRoute() {
+export default function CandidateMyCandidateRoute() {
   return <CandidateSelfAnalysisPage />;
 }

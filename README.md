@@ -425,7 +425,7 @@ shared/
 | `/assessment` | Assessment introduction |
 | `/assessment/session` | Active assessment session |
 | `/talent-benchmarking` | Talent comparison and benchmarking |
-| `/mycandidate` | Candidate self-analysis |
+| `/candidate/mycandidate` | Candidate self-analysis |
 | `/scout` | Scout product documentation |
 | `/candidate-management` | Candidate management product documentation |
 | `/interviews` | Interview workflow product documentation |
