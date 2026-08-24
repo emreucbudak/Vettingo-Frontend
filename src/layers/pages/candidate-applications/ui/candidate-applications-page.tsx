@@ -51,12 +51,6 @@ export function CandidateApplicationsPage() {
   return (
     <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
-        <header className="mb-8 border-b border-[#c5c6cd] pb-7">
-          <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-            Başvurularım
-          </h1>
-        </header>
-
         <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatCard icon="assignment" label="Toplam Başvuru" value={applications.length} />
           <StatCard icon="monitoring" label="Devam Eden" value={inProgress} />
@@ -81,7 +75,7 @@ export function CandidateApplicationsPage() {
               </h2>
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-              {isLoading ? "Yükleniyor" : `${applications.length} kayıt`}
+              {isLoading ? "Yükleniyor" : `${applications.length} başvuru`}
             </span>
           </div>
           <CandidateApplicationHistory applications={applications} isLoading={isLoading} />
