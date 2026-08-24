@@ -20,7 +20,7 @@ const candidateNavigationItems = [
     icon: "auto_awesome",
     href: ROUTES.myCandidate,
   },
-  { label: "İşler", icon: "business_center", href: ROUTES.jobs },
+  { label: "İşler", icon: "business_center", href: ROUTES.candidateJobs },
 ] as const;
 
 const candidateUtilityItems = [
