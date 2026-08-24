@@ -24,14 +24,18 @@ export const employerStats = [
   {
     label: "Toplam Açık Rol",
     value: "24",
-    helper: "+3 bu hafta",
-    icon: "work",
   },
   {
     label: "Toplam Başvuru",
     value: "1,284",
-    helper: "Geçen aya göre +12%",
-    icon: "description",
+  },
+  {
+    label: "Bugünkü YZ Eşleşmesi",
+    value: "18",
+  },
+  {
+    label: "Aktif Talep",
+    value: "2",
   },
 ] as const;
 

@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 import {
@@ -34,54 +32,13 @@ function MobileBrand() {
 
 function StatCard({ stat }: { stat: (typeof employerStats)[number] }) {
   return (
-    <article className="flex flex-col justify-between rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6">
-      <div className="flex items-start justify-between">
-        <h3 className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-          {stat.label}
-        </h3>
-        <MaterialIcon className="text-[#091426]">{stat.icon}</MaterialIcon>
-      </div>
-      <div className="mt-4">
-        <span className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-          {stat.value}
-        </span>
-        <div className="mt-1 flex items-center gap-1 text-[11px] font-medium leading-4 text-[#006c49]">
-          <MaterialIcon className="text-[14px]">trending_up</MaterialIcon>
-          <span>{stat.helper}</span>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function AiProcessingCard() {
-  return (
-    <article className="col-span-1 flex flex-col justify-between rounded border border-l-4 border-[#c5c6cd] border-l-[#091426] bg-gradient-to-br from-[#eff4ff] to-[#f8f9ff] p-6 md:col-span-2">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-            Yapay Zeka Aday İşleme
-          </h3>
-          <p className="mt-1 text-sm leading-5 text-[#45474c]">
-            Kısa listeye alma süresi %40 azaldı
-          </p>
-        </div>
-        <MaterialIcon className="text-[#040057]">psychology</MaterialIcon>
-      </div>
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <span className="text-2xl font-semibold leading-8 tracking-[-0.01em] text-[#0b1c30]">
-            18
-          </span>
-          <span className="ml-2 text-sm leading-5 text-[#45474c]">
-            Bugünün En İyi Eşleşmeleri
-          </span>
-        </div>
-        <button className="flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:underline">
-          Eşleşmeleri İncele
-          <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
-        </button>
-      </div>
+    <article className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6">
+      <h3 className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
+        {stat.label}
+      </h3>
+      <p className="mt-4 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
+        {stat.value}
+      </p>
     </article>
   );
 }
@@ -246,29 +203,11 @@ export function EmployerDashboardPage() {
       <MobileBrand />
 
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-              Panel Özeti
-            </h2>
-            <p className="mt-1 text-sm leading-5 text-[#45474c]">
-              Açık pozisyonlar ve başvuru akışı için gerçek zamanlı metrikler.
-            </p>
-          </div>
-          <Link
-            className="flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 md:w-auto"
-            href={ROUTES.newJob}
-          >
-            <MaterialIcon>add</MaterialIcon>
-            Yeni İş İlanı
-          </Link>
-        </div>
 
         <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {employerStats.map((stat) => (
             <StatCard key={stat.label} stat={stat} />
           ))}
-          <AiProcessingCard />
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
