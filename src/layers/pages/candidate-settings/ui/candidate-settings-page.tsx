@@ -151,11 +151,6 @@ function ProfileForm({ profile }: { profile: CandidateProfile }) {
           </p>
         </div>
       </div>
-
-      <div className="mt-6 flex items-start gap-2 border-t border-[#c5c6cd] pt-5 text-sm text-[#45474c]">
-        <MaterialIcon className="mt-0.5 text-[18px]">info</MaterialIcon>
-        Profil bilgileri hesabındaki güncel kayıtlardan görüntüleniyor.
-      </div>
     </section>
   );
 }
@@ -318,22 +313,10 @@ function CandidateSettingsContent({
         className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8"
       >
         <header className="mb-8 border-b border-[#c5c6cd] pb-7">
-          <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-            Hesap Yönetimi
-          </p>
-          <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
+          <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
             Ayarlar
           </h1>
         </header>
-
-        {isLoading ? (
-          <div
-            className="mb-6 rounded border border-[#9db7dd] bg-[#eff4ff] px-4 py-3 text-sm text-[#0b1c30]"
-            role="status"
-          >
-            Profil bilgileri yükleniyor...
-          </div>
-        ) : null}
 
         {error ? (
           <div
