@@ -3,7 +3,7 @@ import { employerJobManagementDocumentation } from "@/entities/employer-product-
 import { HrProductDocumentationPage } from "@/pages/hr-product-documentation";
 
 export const metadata: Metadata = {
-  title: "İlan Yönetimi Dokümantasyonu | Vettingo",
+  title: "İlan Yönetimi | Vettingo",
   description:
     "İş ilanlarını hazırlama, yayınlama, durumlarını yönetme ve performanslarını izleme süreçlerini öğrenin.",
 };

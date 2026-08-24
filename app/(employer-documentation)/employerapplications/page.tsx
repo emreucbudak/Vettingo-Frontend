@@ -3,7 +3,7 @@ import { employerApplicationsDocumentation } from "@/entities/employer-product-d
 import { HrProductDocumentationPage } from "@/pages/hr-product-documentation";
 
 export const metadata: Metadata = {
-  title: "Başvurular Dokümantasyonu | Vettingo",
+  title: "Başvurular | Vettingo",
   description:
     "Başvuruları ortak ölçütlerle inceleme, aşamaları yönetme ve aday iletişimini takip etme süreçlerini öğrenin.",
 };
