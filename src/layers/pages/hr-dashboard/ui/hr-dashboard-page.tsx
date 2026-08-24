@@ -170,7 +170,6 @@ export function HrDashboardPage() {
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
       <HrPageHeader
         action={<HrPrimaryLink href={ROUTES.hrRequisitions}>Yeni Talep</HrPrimaryLink>}
-        description="Açık kadroları, aday akışını, mülakat planını ve bekleyen ekip aksiyonlarını tek çalışma alanından yönet."
         title="İşe Alım Kontrol Merkezi"
       />
 

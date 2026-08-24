@@ -74,7 +74,7 @@ function ProfileForm({ profile }: { profile: CandidateProfile }) {
     <section className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6">
       <div className="mb-6 border-b border-[#c5c6cd] pb-5">
         <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
-          Kişisel Bilgiler
+          Profil
         </h2>
       </div>
 
