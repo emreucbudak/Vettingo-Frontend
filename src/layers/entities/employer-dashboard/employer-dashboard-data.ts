@@ -11,7 +11,7 @@ export const employerNavigationItems = [
   { label: 'Ana Sayfa', icon: 'home', active: true, href: '/employer' },
   { label: 'İlanlarım', icon: 'business_center', href: '/employer/jobs' },
   { label: 'Başvurular', icon: 'assignment_ind', href: '/employer/applications' },
-  { label: 'Yetenekler', icon: 'auto_awesome', href: '/employer/talents' },
+  { label: 'Scout', icon: 'binoculars', href: '/employer/scout' },
 ] as const;
 
 export const employerUtilityItems = [

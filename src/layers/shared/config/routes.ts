@@ -13,6 +13,7 @@ export const ROUTES = {
   employerHelpCenter: '/employer/help-center',
   employerJobs: "/employer/jobs",
   employerApplications: "/employer/applications",
+  employerScout: "/employer/scout",
   employerTalents: "/employer/talents",
   employerSettings: "/employer/settings",
   hr: "/hr",
