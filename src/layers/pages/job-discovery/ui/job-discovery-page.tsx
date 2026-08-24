@@ -9,7 +9,6 @@ import {
   type JobSearchFilters,
   type WorkingModel,
 } from "@/features/job-search";
-import { marketIntelligence } from "@/entities/job";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
@@ -96,13 +95,6 @@ function SearchHero({
 
   return (
     <section className="mb-8">
-      <h1 className="mb-4 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426]">
-        Sonraki Rolünü Keşfet
-      </h1>
-      <p className="mb-6 max-w-2xl text-base leading-6 text-[#45474c]">
-        İş adı, lokasyon ve filtrelerini birlikte kullanarak sana uygun yayınlanmış ilanları bul.
-      </p>
-
       <form onSubmit={onSubmit}>
         <div className="flex flex-col items-center gap-2 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-4 md:flex-row md:gap-4 md:p-6">
           <label className="flex w-full flex-1 items-center rounded border border-[#c5c6cd] bg-white px-2 py-2 transition-all focus-within:border-[#091426] focus-within:ring-1 focus-within:ring-[#091426]">
@@ -300,48 +292,6 @@ function JobList({
   );
 }
 
-function MarketIntelligence() {
-  return (
-    <aside className="flex w-full flex-shrink-0 flex-col gap-4 lg:w-96">
-      <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-4">
-        <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-          <MaterialIcon className="text-[#091426]">analytics</MaterialIcon>
-          <h3 className="text-lg font-medium text-[#091426]">Pazar İçgörüsü</h3>
-        </div>
-        <p className="mb-4 text-[11px] font-medium uppercase tracking-wider text-[#45474c]">
-          Profiline göre ({marketIntelligence.profile})
-        </p>
-        <div className="mb-4">
-          <div className="mb-1 flex items-end justify-between">
-            <span className="text-sm text-[#0b1c30]">Talep Trendi</span>
-            <span className="flex items-center text-xs font-semibold text-[#10b981]">
-              <MaterialIcon className="text-[16px]">trending_up</MaterialIcon>
-              {marketIntelligence.demandTrend}
-            </span>
-          </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-[#dce9ff]">
-            <div className={`h-full bg-[#091426] ${marketIntelligence.demandWidth}`} />
-          </div>
-          <p className="mt-1 text-[11px] text-[#45474c]">{marketIntelligence.demandNote}</p>
-        </div>
-        <div className="border-t border-[#c5c6cd] pt-3">
-          <span className="mb-2 block text-[11px] font-medium uppercase tracking-wider text-[#45474c]">
-            Maaş Yüzdelikleri
-          </span>
-          {marketIntelligence.salaryPercentiles.map((item) => (
-            <div className="mb-1 flex items-center justify-between" key={item.label}>
-              <span className={item.active ? "text-sm font-medium text-[#091426]" : "text-sm text-[#45474c]"}>
-                {item.label}
-              </span>
-              <span className="text-xs font-semibold text-[#0b1c30]">{item.value}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-    </aside>
-  );
-}
-
 export function JobDiscoveryPage() {
   const [form, setForm] = useState<SearchFormState>(initialSearchForm);
   const [jobs, setJobs] = useState<JobPostingSearchDto[]>([]);
@@ -409,10 +359,7 @@ export function JobDiscoveryPage() {
           onReset={resetFilters}
           onSubmit={handleSubmit}
         />
-        <div className="flex flex-col gap-8 lg:flex-row">
-          <JobList error={error} isLoading={isLoading} jobs={jobs} />
-          <MarketIntelligence />
-        </div>
+        <JobList error={error} isLoading={isLoading} jobs={jobs} />
       </main>
     </CandidateShell>
   );
