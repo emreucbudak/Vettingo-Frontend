@@ -1,6 +1,8 @@
 "use client";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { apiRequest } from "@/shared/api";
+import { ROUTES } from "@/shared/config/routes";
 import { useUserInformation } from "@/shared/useUserInformation";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { CandidateShell } from "@/widgets/candidate/shell";
@@ -26,28 +28,6 @@ const inputClass =
   "w-full rounded border border-[#c5c6cd] bg-white px-4 py-3 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
 const labelClass =
   "mb-2 block text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]";
-
-function SectionHeader({
-  description,
-  icon,
-  title,
-}: {
-  description: string;
-  icon: string;
-  title: string;
-}) {
-  return (
-    <div className="mb-6 flex items-start gap-4 border-b border-[#c5c6cd] pb-5">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-        <MaterialIcon className="text-[22px]">{icon}</MaterialIcon>
-      </div>
-      <div>
-        <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">{title}</h2>
-        <p className="mt-1 text-sm leading-5 text-[#45474c]">{description}</p>
-      </div>
-    </div>
-  );
-}
 
 type ProfileTextField = Exclude<
   keyof CandidateProfile,
@@ -92,11 +72,11 @@ function ProfileInput({
 function ProfileForm({ profile }: { profile: CandidateProfile }) {
   return (
     <section className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6">
-      <SectionHeader
-        description="İşverenlerin ve Vettingo önerilerinin kullandığı iletişim ve kariyer bilgilerini düzenle."
-        icon="person_edit"
-        title="Kişisel Bilgiler"
-      />
+      <div className="mb-6 border-b border-[#c5c6cd] pb-5">
+        <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
+          Kişisel Bilgiler
+        </h2>
+      </div>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <ProfileInput
@@ -198,11 +178,11 @@ function AccountSettingsForm() {
       onChange={() => setPasswordStatus("idle")}
       onSubmit={handlePasswordSubmit}
     >
-      <SectionHeader
-        description="Hesabın için güçlü ve benzersiz bir şifre kullan."
-        icon="lock"
-        title="Hesap Ayarları"
-      />
+      <div className="mb-6 border-b border-[#c5c6cd] pb-5">
+        <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
+          Şifre Değiştir
+        </h2>
+      </div>
 
       <div className="space-y-5">
         <div>
@@ -312,10 +292,17 @@ function CandidateSettingsContent({
         aria-busy={isLoading}
         className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8"
       >
-        <header className="mb-8 border-b border-[#c5c6cd] pb-7">
+        <header className="mb-8 flex flex-col gap-5 border-b border-[#c5c6cd] pb-7 lg:flex-row lg:items-end lg:justify-between">
           <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
             Ayarlar
           </h1>
+          <Link
+            className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-all hover:-translate-y-0.5 hover:shadow-lg sm:w-auto"
+            href={ROUTES.candidate}
+          >
+            <MaterialIcon className="text-[18px]">check</MaterialIcon>
+            Kaydet
+          </Link>
         </header>
 
         {error ? (
