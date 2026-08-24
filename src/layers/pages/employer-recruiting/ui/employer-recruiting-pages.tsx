@@ -37,7 +37,7 @@ function PageHeader({
 function StatStrip({
   items,
 }: {
-  items: readonly { label: string; value: string; helper: string; icon: string }[];
+  items: readonly { label: string; value: string; helper?: string; icon: string }[];
 }) {
   return (
     <section className="mb-7 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -53,7 +53,9 @@ function StatStrip({
             <MaterialIcon className="text-[20px] text-[#45474c]">{item.icon}</MaterialIcon>
           </div>
           <p className="mt-3 text-2xl font-semibold text-[#0b1c30]">{item.value}</p>
-          <p className="mt-1 text-[11px] font-medium text-[#006c49]">{item.helper}</p>
+          {item.helper ? (
+            <p className="mt-1 text-[11px] font-medium text-[#006c49]">{item.helper}</p>
+          ) : null}
         </article>
       ))}
     </section>
@@ -102,17 +104,12 @@ export function EmployerApplicationsPage() {
   return (
     <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-        <PageHeader
-          description="Gelen başvuruları aşamalarına, role uygunluklarına ve Vettingo Rating puanlarına göre incele."
-          eyebrow="Aday Yönetimi"
-          title="Başvurular"
-        />
         <StatStrip
           items={[
-            { label: "Yeni Başvuru", value: "38", helper: "+12 bu hafta", icon: "person_add" },
-            { label: "İnceleniyor", value: "24", helper: "Ekip değerlendirmesinde", icon: "manage_search" },
-            { label: "Görüşme", value: "11", helper: "Bu hafta 6 görüşme", icon: "forum" },
-            { label: "Ortalama Rating", value: "89", helper: "100 üzerinden", icon: "speed" },
+            { label: "Yeni Başvuru", value: "38", icon: "person_add" },
+            { label: "İnceleniyor", value: "24", icon: "search" },
+            { label: "Görüşme", value: "11", icon: "forum" },
+            { label: "Ortalama Rating", value: "89", icon: "monitoring" },
           ]}
         />
 
