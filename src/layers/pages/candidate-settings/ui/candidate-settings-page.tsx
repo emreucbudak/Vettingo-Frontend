@@ -312,7 +312,7 @@ function CandidateSettingsContent({
       .toLocaleUpperCase("tr-TR") || "AK";
 
   return (
-    <CandidateShell showTopBarLabel={false}>
+    <CandidateShell>
       <main
         aria-busy={isLoading}
         className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8"
