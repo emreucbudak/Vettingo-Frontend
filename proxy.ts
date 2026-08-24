@@ -16,7 +16,7 @@ export async function proxy(request:NextRequest) {
         if(pathname.startsWith("/employer")){
         const claim =  decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
-        if(claim.Role !== "employer" ||  expire === true) {
+        if(claim.Role !== "company" ||  expire === true) {
              return NextResponse.redirect(new URL("/login", request.url));
         }
          return NextResponse.next();
@@ -30,9 +30,17 @@ export async function proxy(request:NextRequest) {
          return NextResponse.next();
 
     }
+    if(pathname.startsWith("/hr")){
+        const claim = await decodeJwt(token) as User;
+        const expire = Date.now() >= claim.exp *1000
+        if(claim.Role!=="hr" || expire === true){
+            return NextResponse.redirect(new URL("/login",request.url));
+        }
+        return NextResponse.next();
+    }
     }
 
 }
 export const config = {
-    matcher: ['/employer/:path*','/candidate/:path*']
+    matcher: ['/employer/:path*','/candidate/:path*','/hr/:path*']
 }
