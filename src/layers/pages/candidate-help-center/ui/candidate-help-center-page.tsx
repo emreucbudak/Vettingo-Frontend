@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 
@@ -6,21 +8,25 @@ const helpTopics = [
     icon: "assignment_ind",
     title: "Başvurular",
     description: "Başvuru durumları ve işe alım süreci.",
+    href: ROUTES.candidateApplicationsDocumentation,
   },
   {
     icon: "badge",
     title: "Profil ve Özgeçmiş",
     description: "Profil bilgileri, deneyimler ve yetkinlikler.",
+    href: ROUTES.candidateProfileDocumentation,
   },
   {
     icon: "work",
     title: "İş Önerileri",
     description: "İlan önerileri ve yapay zeka eşleşmeleri.",
+    href: ROUTES.candidateJobRecommendationsDocumentation,
   },
   {
     icon: "calendar_month",
     title: "Değerlendirme ve Mülakat",
     description: "Mülakat ve değerlendirmeler.",
+    href: ROUTES.candidateAssessmentInterviewDocumentation,
   },
 ] as const;
 
@@ -65,8 +71,9 @@ function HelpTopics() {
       </h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {helpTopics.map((topic) => (
-          <article
-            className="group rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 transition-all hover:-translate-y-0.5 hover:border-[#091426] hover:shadow-[0_10px_24px_rgba(9,20,38,0.06)]"
+          <Link
+            className="group flex h-full flex-col rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 transition-all hover:-translate-y-0.5 hover:border-[#091426] hover:shadow-[0_10px_24px_rgba(9,20,38,0.06)]"
+            href={topic.href}
             key={topic.title}
           >
             <span className="flex h-10 w-10 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
@@ -78,11 +85,11 @@ function HelpTopics() {
             <p className="mt-2 text-xs leading-5 text-[#45474c]">
               {topic.description}
             </p>
-            <span className="mt-4 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49]">
+            <span className="mt-auto inline-flex items-center gap-1 pt-4 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49]">
               Dokümantasyonu Oku
               <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
             </span>
-          </article>
+          </Link>
         ))}
       </div>
     </section>
