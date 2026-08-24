@@ -285,12 +285,7 @@ export function HrScoutDirectory() {
       </section>
 
       <section>
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-[#0b1c30]">
-              Keşfedilen Adaylar
-            </h2>
-          </div>
+        <div className="mb-5 flex justify-end">
           <p
             aria-live="polite"
             className="text-xs font-medium text-[#45474c]"
@@ -306,7 +301,7 @@ export function HrScoutDirectory() {
             <span className="col-span-2">Yetkinlikler</span>
             <span className="col-span-2">Lokasyon</span>
             <span className="col-span-1">Rating</span>
-            <span className="col-span-2 text-right">Aksiyon</span>
+            <span className="col-span-2 pr-8 text-right">Aksiyon</span>
           </div>
 
           {visibleCandidates.length > 0 ? (
