@@ -14,17 +14,19 @@ function PageHeader({
   description,
 }: {
   action?: React.ReactNode;
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   description: string;
 }) {
   return (
     <header className="mb-8 flex flex-col gap-5 border-b border-[#c5c6cd] pb-7 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-          {eyebrow}
-        </p>
-        <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
+        {eyebrow ? (
+          <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
+            {eyebrow}
+          </p>
+        ) : null}
+        <h1 className={`${eyebrow ? "mt-2 " : ""}text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]`}>
           {title}
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-[#45474c]">{description}</p>
@@ -37,7 +39,7 @@ function PageHeader({
 function StatStrip({
   items,
 }: {
-  items: readonly { label: string; value: string; helper?: string; icon: string }[];
+  items: readonly { label: string; value: string; helper?: string; icon?: string }[];
 }) {
   return (
     <section className="mb-7 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -50,7 +52,9 @@ function StatStrip({
             <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
               {item.label}
             </p>
-            <MaterialIcon className="text-[20px] text-[#45474c]">{item.icon}</MaterialIcon>
+            {item.icon ? (
+              <MaterialIcon className="text-[20px] text-[#45474c]">{item.icon}</MaterialIcon>
+            ) : null}
           </div>
           <p className="mt-3 text-2xl font-semibold text-[#0b1c30]">{item.value}</p>
           {item.helper ? (
@@ -81,16 +85,15 @@ export function EmployerJobsPage() {
             </Link>
           }
           description="Yayındaki, taslaktaki ve duraklatılmış tüm ilanlarını tek ekrandan takip et."
-          eyebrow="İşveren Paneli"
           title="İlanlarım"
         />
 
         <StatStrip
           items={[
-            { label: "Toplam İlan", value: String(employerJobs.length), helper: "Tüm durumlar", icon: "list_alt" },
-            { label: "Aktif İlan", value: String(activeJobs.length), helper: "Şu anda yayında", icon: "campaign" },
-            { label: "Toplam Başvuru", value: String(totalApplicants), helper: "Tüm açık roller", icon: "group" },
-            { label: "Kısa Liste", value: String(totalShortlisted), helper: "İncelenmeye hazır", icon: "verified" },
+            { label: "Toplam İlan", value: String(employerJobs.length), icon: "list_alt" },
+            { label: "Aktif İlan", value: String(activeJobs.length), icon: "campaign" },
+            { label: "Toplam Başvuru", value: String(totalApplicants), icon: "group" },
+            { label: "Kısa Liste", value: String(totalShortlisted) },
           ]}
         />
 
