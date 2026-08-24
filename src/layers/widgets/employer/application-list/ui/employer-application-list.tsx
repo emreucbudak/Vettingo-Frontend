@@ -23,14 +23,10 @@ function CandidateAvatar({
   );
 }
 
-function Score({ label, value }: { label: string; value: number }) {
+function Score({ value }: { value: number }) {
   return (
     <div className="min-w-16">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d]">{label}</p>
-      <p className="mt-1 text-lg font-semibold text-[#0b1c30]">
-        {value}
-        <span className="text-[11px] font-medium text-[#75777d]">/100</span>
-      </p>
+      <p className="text-lg font-semibold text-[#0b1c30]">{value}</p>
     </div>
   );
 }
@@ -43,8 +39,7 @@ export function EmployerApplicationList() {
         <span className="col-span-3">Başvurduğu Rol</span>
         <span className="col-span-2">Aşama</span>
         <span className="col-span-2">Aktivite</span>
-        <span className="col-span-1">Uygunluk</span>
-        <span className="col-span-1">Rating</span>
+        <span className="col-span-2 -translate-x-1">Rating</span>
       </div>
       <div className="divide-y divide-[#c5c6cd]">
         {applicationCandidates.map((candidate) => (
@@ -78,16 +73,11 @@ export function EmployerApplicationList() {
               </span>
             </div>
             <p className="text-sm text-[#45474c] lg:col-span-2">{candidate.lastActivity}</p>
-            <div className="grid grid-cols-2 gap-4 lg:contents">
-              <div className="lg:col-span-1">
-                <Score label="Role" value={candidate.roleSuitability} />
-              </div>
-              <div className="flex items-center justify-between lg:col-span-1">
-                <Score label="Rating" value={candidate.rating} />
-                <MaterialIcon className="text-[#45474c] transition-transform group-hover:translate-x-1">
-                  arrow_forward
-                </MaterialIcon>
-              </div>
+            <div className="flex items-center justify-between lg:col-span-2">
+              <Score value={candidate.rating} />
+              <MaterialIcon className="text-[#45474c] transition-transform group-hover:translate-x-1">
+                arrow_forward
+              </MaterialIcon>
             </div>
           </Link>
         ))}
