@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { ROUTES } from '@/shared/config/routes';
 import { MaterialIcon } from '@/shared/ui/material-icon';
 import { EmployerShell } from '@/widgets/employer/shell';
 
@@ -6,21 +8,25 @@ const helpTopics = [
     icon: 'work',
     title: 'İlan Yönetimi',
     description: 'İş ilanları ve ilan durumları.',
+    href: ROUTES.employerJobManagementDocumentation,
   },
   {
     icon: 'assignment_ind',
     title: 'Başvurular',
     description: 'Başvurular ve değerlendirme süreçleri.',
+    href: ROUTES.employerApplicationsDocumentation,
   },
   {
-    icon: 'search',
-    title: 'Yetenekler ve Eşleşmeler',
-    description: 'Yetenek keşfi ve eşleşme skorları.',
+    icon: 'binoculars',
+    title: 'Scout',
+    description: 'Aday keşfi ve gelişmiş filtreleme.',
+    href: ROUTES.employerScoutDocumentation,
   },
   {
     icon: 'groups',
     title: 'Hesap ve Ekip Yönetimi',
     description: 'Ekip erişimleri ve hesap ayarları.',
+    href: ROUTES.employerAccountTeamDocumentation,
   },
 ] as const;
 
@@ -75,8 +81,9 @@ function HelpTopics() {
       </h1>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
         {helpTopics.map((topic) => (
-          <article
+          <Link
             className='group flex h-full flex-col rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 transition-all hover:-translate-y-0.5 hover:border-[#091426] hover:shadow-[0_10px_24px_rgba(9,20,38,0.06)]'
+            href={topic.href}
             key={topic.title}
           >
             <span className='flex h-10 w-10 items-center justify-center rounded bg-[#dce9ff] text-[#091426]'>
@@ -92,7 +99,7 @@ function HelpTopics() {
               Dokümantasyonu Oku
               <MaterialIcon className='text-[16px]'>arrow_forward</MaterialIcon>
             </span>
-          </article>
+          </Link>
         ))}
       </div>
     </section>
