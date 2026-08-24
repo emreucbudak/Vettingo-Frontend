@@ -26,7 +26,7 @@ function StatCard({
           </p>
         </div>
         <div className="flex h-11 w-11 items-center justify-center rounded bg-[#eff4ff] text-[#091426]">
-          <MaterialIcon>{icon}</MaterialIcon>
+          <MaterialIcon className="text-[26px]">{icon}</MaterialIcon>
         </div>
       </div>
     </article>
@@ -52,23 +52,16 @@ export function CandidateApplicationsPage() {
     <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
         <header className="mb-8 border-b border-[#c5c6cd] pb-7">
-          <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-            Kariyer Sürecin
-          </p>
-          <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
+          <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
             Başvurularım
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#45474c]">
-            Yaptığın tüm iş başvurularını, güncel durumlarını ve ilerleme
-            aşamalarını tek yerden takip et.
-          </p>
         </header>
 
         <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard icon="assignment_ind" label="Toplam Başvuru" value={applications.length} />
-          <StatCard icon="hourglass_top" label="Devam Eden" value={inProgress} />
-          <StatCard icon="forum" label="Mülakat" value={interviews} />
-          <StatCard icon="task_alt" label="Sonuçlanan" value={completed} />
+          <StatCard icon="assignment" label="Toplam Başvuru" value={applications.length} />
+          <StatCard icon="monitoring" label="Devam Eden" value={inProgress} />
+          <StatCard icon="groups" label="Mülakat" value={interviews} />
+          <StatCard icon="check_circle" label="Sonuçlanan" value={completed} />
         </section>
 
         {error ? (
@@ -86,9 +79,6 @@ export function CandidateApplicationsPage() {
               <h2 className="text-lg font-semibold text-[#0b1c30]">
                 Başvuru Geçmişi
               </h2>
-              <p className="mt-1 text-xs text-[#45474c]">
-                En güncel başvurudan başlayarak listelenir.
-              </p>
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
               {isLoading ? "Yükleniyor" : `${applications.length} kayıt`}
