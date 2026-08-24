@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
+import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 
@@ -14,10 +16,10 @@ type SavedSection = "company" | "account" | "security" | null;
 
 function SaveButton({
   active,
-  label = "Değişiklikleri Kaydet",
+  label,
 }: {
   active: boolean;
-  label?: string;
+  label: string;
 }) {
   return (
     <div className="flex flex-col gap-3 border-t border-[#c5c6cd] pt-5 sm:flex-row sm:items-center">
@@ -41,24 +43,10 @@ function SaveButton({
   );
 }
 
-function SectionHeader({
-  description,
-  icon,
-  title,
-}: {
-  description: string;
-  icon: string;
-  title: string;
-}) {
+function SectionHeader({ title }: { title: string }) {
   return (
-    <div className="mb-6 flex items-start gap-4 border-b border-[#c5c6cd] pb-5">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-        <MaterialIcon className="text-[22px]">{icon}</MaterialIcon>
-      </div>
-      <div>
-        <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">{title}</h2>
-        <p className="mt-1 text-sm leading-5 text-[#45474c]">{description}</p>
-      </div>
+    <div className="mb-6 border-b border-[#c5c6cd] pb-5">
+      <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">{title}</h2>
     </div>
   );
 }
@@ -74,17 +62,17 @@ export function EmployerSettingsPage() {
   return (
     <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-        <header className="mb-8 border-b border-[#c5c6cd] pb-7">
-          <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-            Yönetim
-          </p>
-          <h1 className="mt-2 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-            Hesap Ayarları
+        <header className="mb-8 flex flex-col gap-5 border-b border-[#c5c6cd] pb-7 lg:flex-row lg:items-end lg:justify-between">
+          <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
+            Ayarlar
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#45474c]">
-            Şirket profilini, hesap iletişim bilgilerini ve güvenlik tercihlerini tek
-            yerden güncelle.
-          </p>
+          <Link
+            className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-all hover:-translate-y-0.5 hover:shadow-lg sm:w-auto"
+            href={ROUTES.employer}
+          >
+            <MaterialIcon className="text-[18px]">check</MaterialIcon>
+            Kaydet
+          </Link>
         </header>
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
@@ -93,11 +81,7 @@ export function EmployerSettingsPage() {
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
               onSubmit={(event) => handleSubmit("company", event)}
             >
-              <SectionHeader
-                description="İlanlarda ve aday iletişimlerinde görünen kurumsal bilgileri düzenle."
-                icon="domain"
-                title="Şirket Bilgileri"
-              />
+              <SectionHeader title="Şirket Bilgileri" />
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
@@ -173,20 +157,14 @@ export function EmployerSettingsPage() {
                 </div>
               </div>
 
-              <div className="mt-6">
-                <SaveButton active={savedSection === "company"} />
-              </div>
+
             </form>
 
             <form
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
               onSubmit={(event) => handleSubmit("account", event)}
             >
-              <SectionHeader
-                description="Hesap sahibi ve bildirimler için kullanılacak iletişim bilgilerini güncelle."
-                icon="settings"
-                title="Hesap ve İletişim"
-              />
+              <SectionHeader title="Hesap ve İletişim" />
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
@@ -246,9 +224,7 @@ export function EmployerSettingsPage() {
                 </div>
               </div>
 
-              <div className="mt-6">
-                <SaveButton active={savedSection === "account"} />
-              </div>
+
             </form>
           </div>
 
@@ -271,11 +247,7 @@ export function EmployerSettingsPage() {
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
               onSubmit={(event) => handleSubmit("security", event)}
             >
-              <SectionHeader
-                description="Hesabın için güçlü ve benzersiz bir şifre kullan."
-                icon="shield_lock"
-                title="Güvenlik"
-              />
+              <SectionHeader title="Şifreni Değiştir" />
 
               <div className="space-y-5">
                 <div>
@@ -288,7 +260,7 @@ export function EmployerSettingsPage() {
                     id="current-password"
                     minLength={6}
                     name="currentPassword"
-                    placeholder=""
+                    placeholder="Mevcut şifren"
                     required
                     type="password"
                   />
