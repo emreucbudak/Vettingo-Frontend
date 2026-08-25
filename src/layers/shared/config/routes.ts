@@ -23,6 +23,7 @@ export const ROUTES = {
   employerApplications: "/employer/applications",
   employerScout: "/employer/scout",
   employerTalents: "/employer/talents",
+  employerHrAssignment: "/employer/hr-assignment",
   employerSettings: "/employer/settings",
   hr: "/hr",
   hrScout: "/hr/scout",
