@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { AuthSocialButtons } from "../../ui/auth-social-buttons";
@@ -14,23 +15,31 @@ const inputClass =
 const leadingIconClass =
   "absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#45474c]";
 
+type LoginFormValues = {
+  email: string;
+  password: string;
+  remember: boolean;
+};
+
 export function LoginForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
+  const {
+    register: registerField,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+      remember: false,
+    },
+  });
 
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setFormError(null);
-    setIsSubmitting(true);
-
-    const formData = new FormData(event.currentTarget);
-    const email = String(formData.get("email") ?? "").trim();
-    const password = String(formData.get("password") ?? "");
-
+  async function onSubmit({ email, password }: LoginFormValues) {
     try {
-      const destination = await login({ email, password });
+      const destination = await login({ email: email.trim(), password });
 
       if (!destination) {
         throw new Error("Oturum açma başarısız, lütfen tekrar deneyiniz.");
@@ -38,13 +47,13 @@ export function LoginForm() {
 
       router.replace(destination);
     } catch (error) {
-      setFormError(
-        error instanceof Error
-          ? error.message
-          : "Oturum açılamadı, lütfen tekrar deneyiniz.",
-      );
-    } finally {
-      setIsSubmitting(false);
+      setError("root", {
+        type: "server",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Oturum açılamadı, lütfen tekrar deneyiniz.",
+      });
     }
   }
 
@@ -53,21 +62,38 @@ export function LoginForm() {
       <form
         aria-busy={isSubmitting}
         className="flex flex-col gap-4"
-        onSubmit={handleSubmit}
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
       >
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
           E-posta Adresi
           <span className="relative">
             <MaterialIcon className={leadingIconClass}>mail</MaterialIcon>
             <input
-              name="email"
-              required
+              aria-describedby={errors.email ? "login-email-error" : undefined}
+              aria-invalid={Boolean(errors.email)}
               autoComplete="email"
               placeholder="ornek@sirket.com"
               className={`${inputClass} pl-10 pr-3`}
               type="email"
+              {...registerField("email", {
+                required: "E-posta adresinizi girin.",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Geçerli bir e-posta adresi girin.",
+                },
+              })}
             />
           </span>
+          {errors.email && (
+            <span
+              className="text-xs text-red-700"
+              id="login-email-error"
+              role="alert"
+            >
+              {errors.email.message}
+            </span>
+          )}
         </label>
 
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
@@ -83,13 +109,21 @@ export function LoginForm() {
           <span className="relative">
             <MaterialIcon className={leadingIconClass}>lock</MaterialIcon>
             <input
-              name="password"
-              minLength={6}
-              required
+              aria-describedby={
+                errors.password ? "login-password-error" : undefined
+              }
+              aria-invalid={Boolean(errors.password)}
               autoComplete="current-password"
               placeholder="••••••••"
               className={`${inputClass} pl-10 pr-10`}
               type={showPassword ? "text" : "password"}
+              {...registerField("password", {
+                required: "Şifrenizi girin.",
+                minLength: {
+                  value: 6,
+                  message: "Şifre en az 6 karakter olmalıdır.",
+                },
+              })}
             />
             <button
               aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
@@ -102,24 +136,33 @@ export function LoginForm() {
               </MaterialIcon>
             </button>
           </span>
+          {errors.password && (
+            <span
+              className="text-xs text-red-700"
+              id="login-password-error"
+              role="alert"
+            >
+              {errors.password.message}
+            </span>
+          )}
         </label>
 
         <label className="mt-1 flex cursor-pointer items-center gap-2 text-sm text-[#45474c]">
           <input
-            name="remember"
             className="h-4 w-4 rounded border-[#c5c6cd] text-[#091426] focus:ring-[#091426]"
             type="checkbox"
+            {...registerField("remember")}
           />
           Beni Hatırla
         </label>
 
-        {formError && (
+        {errors.root?.message && (
           <p
             aria-live="polite"
             className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
             role="alert"
           >
-            {formError}
+            {errors.root.message}
           </p>
         )}
 

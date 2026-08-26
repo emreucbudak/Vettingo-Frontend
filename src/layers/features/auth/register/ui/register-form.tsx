@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { AuthSocialButtons } from "../../ui/auth-social-buttons";
@@ -15,6 +16,14 @@ const inputClass =
 
 const leadingIconClass =
   "absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#45474c]";
+
+type RegisterFormValues = {
+  fullName: string;
+  email: string;
+  password: string;
+  accountType: "candidate" | "employer";
+  terms: boolean;
+};
 
 function SelectChevron() {
   return (
@@ -39,41 +48,49 @@ export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [activeLegalDocument, setActiveLegalDocument] =
     useState<LegalDocument | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
+  const {
+    register: registerField,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormValues>({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      accountType: "candidate",
+      terms: false,
+    },
+  });
 
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setFormError(null);
-    setIsSubmitting(true);
-
-    const formData = new FormData(event.currentTarget);
-    const fullName = String(formData.get("name") ?? "").trim();
-    const [name, ...surnameParts] = fullName.split(/\s+/);
+  async function onSubmit({
+    fullName,
+    email,
+    password,
+    accountType,
+  }: RegisterFormValues) {
+    const normalizedFullName = fullName.trim();
+    const [name, ...surnameParts] = normalizedFullName.split(/\s+/);
     const surname = surnameParts.join(" ");
 
     try {
-      if (!name || !surname) {
-        throw new Error("Lütfen adınızı ve soyadınızı girin.");
-      }
-
       await register({
         name,
         surname,
-        email: String(formData.get("email") ?? "").trim(),
-        password: String(formData.get("password") ?? ""),
-        role: formData.get("accountType") === "employer" ? "Company" : "Worker",
+        email: email.trim(),
+        password,
+        role: accountType === "employer" ? "Company" : "Worker",
       });
 
       router.replace(ROUTES.login);
     } catch (error) {
-      setFormError(
-        error instanceof Error
-          ? error.message
-          : "Kayıt tamamlanamadı, lütfen tekrar deneyiniz.",
-      );
-    } finally {
-      setIsSubmitting(false);
+      setError("root", {
+        type: "server",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Kayıt tamamlanamadı, lütfen tekrar deneyiniz.",
+      });
     }
   }
 
@@ -82,21 +99,39 @@ export function RegisterForm() {
       <form
         aria-busy={isSubmitting}
         className="flex flex-col gap-4"
-        onSubmit={handleSubmit}
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
       >
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
           Ad Soyad
           <span className="relative">
             <MaterialIcon className={leadingIconClass}>badge</MaterialIcon>
             <input
-              name="name"
-              required
+              aria-describedby={
+                errors.fullName ? "register-full-name-error" : undefined
+              }
+              aria-invalid={Boolean(errors.fullName)}
               autoComplete="name"
               placeholder="Adınız ve soyadınız"
               className={`${inputClass} pl-10 pr-3`}
               type="text"
+              {...registerField("fullName", {
+                required: "Adınızı ve soyadınızı girin.",
+                validate: (value) =>
+                  value.trim().split(/\s+/).length >= 2 ||
+                  "Ad ve soyad bilgilerini birlikte girin.",
+              })}
             />
           </span>
+          {errors.fullName && (
+            <span
+              className="text-xs text-red-700"
+              id="register-full-name-error"
+              role="alert"
+            >
+              {errors.fullName.message}
+            </span>
+          )}
         </label>
 
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
@@ -104,14 +139,32 @@ export function RegisterForm() {
           <span className="relative">
             <MaterialIcon className={leadingIconClass}>mail</MaterialIcon>
             <input
-              name="email"
-              required
+              aria-describedby={
+                errors.email ? "register-email-error" : undefined
+              }
+              aria-invalid={Boolean(errors.email)}
               autoComplete="email"
               placeholder="ornek@sirket.com"
               className={`${inputClass} pl-10 pr-3`}
               type="email"
+              {...registerField("email", {
+                required: "E-posta adresinizi girin.",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Geçerli bir e-posta adresi girin.",
+                },
+              })}
             />
           </span>
+          {errors.email && (
+            <span
+              className="text-xs text-red-700"
+              id="register-email-error"
+              role="alert"
+            >
+              {errors.email.message}
+            </span>
+          )}
         </label>
 
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
@@ -119,13 +172,21 @@ export function RegisterForm() {
           <span className="relative">
             <MaterialIcon className={leadingIconClass}>lock</MaterialIcon>
             <input
-              name="password"
-              minLength={6}
-              required
+              aria-describedby={
+                errors.password ? "register-password-error" : undefined
+              }
+              aria-invalid={Boolean(errors.password)}
               autoComplete="new-password"
               placeholder="••••••••"
               className={`${inputClass} pl-10 pr-10`}
               type={showPassword ? "text" : "password"}
+              {...registerField("password", {
+                required: "Şifrenizi girin.",
+                minLength: {
+                  value: 6,
+                  message: "Şifre en az 6 karakter olmalıdır.",
+                },
+              })}
             />
             <button
               aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
@@ -138,15 +199,23 @@ export function RegisterForm() {
               </MaterialIcon>
             </button>
           </span>
+          {errors.password && (
+            <span
+              className="text-xs text-red-700"
+              id="register-password-error"
+              role="alert"
+            >
+              {errors.password.message}
+            </span>
+          )}
         </label>
 
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
           Hesap Türü
           <span className="relative">
             <select
-              name="accountType"
               className="w-full appearance-none rounded border border-[#c5c6cd] bg-[#f8f9ff] px-3 py-2 pr-10 text-sm text-[#0b1c30] outline-none transition-colors focus:border-[#091426] focus:ring-1 focus:ring-[#091426]"
-              defaultValue="candidate"
+              {...registerField("accountType")}
             >
               <option value="candidate">İş Arayan</option>
               <option value="employer">İşveren</option>
@@ -158,10 +227,15 @@ export function RegisterForm() {
         <div className="mt-1 flex items-start gap-2 text-sm leading-5 text-[#45474c]">
           <input
             id="terms"
-            required
-            name="terms"
+            aria-describedby={
+              errors.terms ? "register-terms-error" : undefined
+            }
+            aria-invalid={Boolean(errors.terms)}
             className="mt-0.5 h-4 w-4 rounded border-[#c5c6cd] text-[#091426] focus:ring-[#091426]"
             type="checkbox"
+            {...registerField("terms", {
+              required: "Devam etmek için koşulları kabul edin.",
+            })}
           />
           <p>
             <button
@@ -183,13 +257,23 @@ export function RegisterForm() {
           </p>
         </div>
 
-        {formError && (
+        {errors.terms && (
+          <p
+            className="text-xs text-red-700"
+            id="register-terms-error"
+            role="alert"
+          >
+            {errors.terms.message}
+          </p>
+        )}
+
+        {errors.root?.message && (
           <p
             aria-live="polite"
             className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
             role="alert"
           >
-            {formError}
+            {errors.root.message}
           </p>
         )}
 
