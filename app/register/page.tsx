@@ -1,10 +1,10 @@
 ﻿import type { Metadata } from "next";
-import { AuthPage } from "@/pages/auth";
+import { RegisterPage as RegisterPageContent } from "@/pages/auth";
 
 export const metadata: Metadata = {
   title: "Kayıt Ol | Vettingo",
 };
 
 export default function RegisterPage() {
-  return <AuthPage mode="register" />;
+  return <RegisterPageContent />;
 }

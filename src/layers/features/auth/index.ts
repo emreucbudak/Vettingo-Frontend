@@ -1,7 +1,4 @@
-export { login, register } from "./api/auth-api";
-export type {
-  LoginRequest,
-  RegisterRequest,
-} from "./api/auth-api";
-export { AuthForm } from "./ui/auth-form";
-export type { AuthMode } from "./model/types";
+export { LoginForm } from "./login";
+export { RegisterForm } from "./register";
+export { AuthTabs } from "./ui/auth-tabs";
+export type { AuthTabMode } from "./ui/auth-tabs";
