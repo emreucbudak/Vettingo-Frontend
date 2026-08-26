@@ -3,12 +3,17 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { AuthSocialButtons } from "../../ui/auth-social-buttons";
 import { register } from "../api/register";
 import type { LegalDocument } from "../model/legal-content";
+import {
+  registerSchema,
+  type RegisterFormValues,
+} from "../model/register-schema";
 import { LegalModal } from "./legal-modal";
 
 const inputClass =
@@ -16,14 +21,6 @@ const inputClass =
 
 const leadingIconClass =
   "absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#45474c]";
-
-type RegisterFormValues = {
-  fullName: string;
-  email: string;
-  password: string;
-  accountType: "candidate" | "employer";
-  terms: boolean;
-};
 
 function SelectChevron() {
   return (
@@ -54,6 +51,7 @@ export function RegisterForm() {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       fullName: "",
       email: "",
@@ -115,12 +113,7 @@ export function RegisterForm() {
               placeholder="Adınız ve soyadınız"
               className={`${inputClass} pl-10 pr-3`}
               type="text"
-              {...registerField("fullName", {
-                required: "Adınızı ve soyadınızı girin.",
-                validate: (value) =>
-                  value.trim().split(/\s+/).length >= 2 ||
-                  "Ad ve soyad bilgilerini birlikte girin.",
-              })}
+              {...registerField("fullName")}
             />
           </span>
           {errors.fullName && (
@@ -147,13 +140,7 @@ export function RegisterForm() {
               placeholder="ornek@sirket.com"
               className={`${inputClass} pl-10 pr-3`}
               type="email"
-              {...registerField("email", {
-                required: "E-posta adresinizi girin.",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Geçerli bir e-posta adresi girin.",
-                },
-              })}
+              {...registerField("email")}
             />
           </span>
           {errors.email && (
@@ -180,13 +167,7 @@ export function RegisterForm() {
               placeholder="••••••••"
               className={`${inputClass} pl-10 pr-10`}
               type={showPassword ? "text" : "password"}
-              {...registerField("password", {
-                required: "Şifrenizi girin.",
-                minLength: {
-                  value: 6,
-                  message: "Şifre en az 6 karakter olmalıdır.",
-                },
-              })}
+              {...registerField("password")}
             />
             <button
               aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
@@ -233,9 +214,7 @@ export function RegisterForm() {
             aria-invalid={Boolean(errors.terms)}
             className="mt-0.5 h-4 w-4 rounded border-[#c5c6cd] text-[#091426] focus:ring-[#091426]"
             type="checkbox"
-            {...registerField("terms", {
-              required: "Devam etmek için koşulları kabul edin.",
-            })}
+            {...registerField("terms")}
           />
           <p>
             <button

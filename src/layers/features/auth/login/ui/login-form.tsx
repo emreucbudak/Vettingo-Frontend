@@ -3,23 +3,22 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { AuthSocialButtons } from "../../ui/auth-social-buttons";
 import { login } from "../api/login";
+import {
+  loginSchema,
+  type LoginFormValues,
+} from "../model/login-schema";
 
 const inputClass =
   "w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] py-2 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
 
 const leadingIconClass =
   "absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#45474c]";
-
-type LoginFormValues = {
-  email: string;
-  password: string;
-  remember: boolean;
-};
 
 export function LoginForm() {
   const router = useRouter();
@@ -30,6 +29,7 @@ export function LoginForm() {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -39,7 +39,7 @@ export function LoginForm() {
 
   async function onSubmit({ email, password }: LoginFormValues) {
     try {
-      const destination = await login({ email: email.trim(), password });
+      const destination = await login({ email, password });
 
       if (!destination) {
         throw new Error("Oturum açma başarısız, lütfen tekrar deneyiniz.");
@@ -76,13 +76,7 @@ export function LoginForm() {
               placeholder="ornek@sirket.com"
               className={`${inputClass} pl-10 pr-3`}
               type="email"
-              {...registerField("email", {
-                required: "E-posta adresinizi girin.",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Geçerli bir e-posta adresi girin.",
-                },
-              })}
+              {...registerField("email")}
             />
           </span>
           {errors.email && (
@@ -117,13 +111,7 @@ export function LoginForm() {
               placeholder="••••••••"
               className={`${inputClass} pl-10 pr-10`}
               type={showPassword ? "text" : "password"}
-              {...registerField("password", {
-                required: "Şifrenizi girin.",
-                minLength: {
-                  value: 6,
-                  message: "Şifre en az 6 karakter olmalıdır.",
-                },
-              })}
+              {...registerField("password")}
             />
             <button
               aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
