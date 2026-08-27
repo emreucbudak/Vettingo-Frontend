@@ -2,9 +2,15 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
+import {
+  employerPasswordSchema,
+  type EmployerPasswordFormValues,
+} from "../model/employer-password-schema";
 
 const inputClass =
   "w-full rounded border border-[#c5c6cd] bg-white px-4 py-3 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
@@ -16,15 +22,18 @@ type SavedSection = "company" | "account" | "security" | null;
 
 function SaveButton({
   active,
+  disabled = false,
   label,
 }: {
   active: boolean;
+  disabled?: boolean;
   label: string;
 }) {
   return (
     <div className="flex flex-col gap-3 border-t border-[#c5c6cd] pt-5 sm:flex-row sm:items-center">
       <button
-        className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
+        className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
+        disabled={disabled}
         type="submit"
       >
         {label}
@@ -53,10 +62,31 @@ function SectionHeader({ title }: { title: string }) {
 
 export function EmployerSettingsPage() {
   const [savedSection, setSavedSection] = useState<SavedSection>(null);
+  const {
+    register: registerPassword,
+    handleSubmit: handlePasswordSubmit,
+    reset: resetPasswordForm,
+    formState: { errors: passwordErrors, isSubmitting: isPasswordSubmitting },
+  } = useForm<EmployerPasswordFormValues>({
+    resolver: zodResolver(employerPasswordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
 
-  function handleSubmit(section: Exclude<SavedSection, null>, event: React.SubmitEvent<HTMLFormElement>) {
+  function handleSectionSubmit(
+    section: Exclude<SavedSection, null>,
+    event: React.SubmitEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
     setSavedSection(section);
+  }
+
+  function onPasswordSubmit() {
+    resetPasswordForm();
+    setSavedSection("security");
   }
 
   return (
@@ -79,7 +109,7 @@ export function EmployerSettingsPage() {
           <div className="space-y-6">
             <form
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
-              onSubmit={(event) => handleSubmit("company", event)}
+              onSubmit={(event) => handleSectionSubmit("company", event)}
             >
               <SectionHeader title="Şirket Bilgileri" />
 
@@ -162,7 +192,7 @@ export function EmployerSettingsPage() {
 
             <form
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
-              onSubmit={(event) => handleSubmit("account", event)}
+              onSubmit={(event) => handleSectionSubmit("account", event)}
             >
               <SectionHeader title="Hesap ve İletişim" />
 
@@ -244,8 +274,11 @@ export function EmployerSettingsPage() {
             </section>
 
             <form
+              aria-busy={isPasswordSubmitting}
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
-              onSubmit={(event) => handleSubmit("security", event)}
+              noValidate
+              onChange={() => setSavedSection(null)}
+              onSubmit={handlePasswordSubmit(onPasswordSubmit)}
             >
               <SectionHeader title="Şifreni Değiştir" />
 
@@ -255,36 +288,101 @@ export function EmployerSettingsPage() {
                     Mevcut Şifre
                   </label>
                   <input
+                    aria-describedby={
+                      passwordErrors.currentPassword
+                        ? "current-password-error"
+                        : undefined
+                    }
+                    aria-invalid={Boolean(passwordErrors.currentPassword)}
                     autoComplete="current-password"
-                    className={inputClass}
+                    className={`${inputClass} ${
+                      passwordErrors.currentPassword
+                        ? "border-[#ba1a1a]"
+                        : ""
+                    }`}
                     id="current-password"
-                    minLength={6}
-                    name="currentPassword"
                     placeholder="Mevcut şifren"
-                    required
                     type="password"
+                    {...registerPassword("currentPassword")}
                   />
+                  {passwordErrors.currentPassword && (
+                    <p
+                      className="mt-2 text-xs text-[#8c1d18]"
+                      id="current-password-error"
+                      role="alert"
+                    >
+                      {passwordErrors.currentPassword.message}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="new-password">
                     Yeni Şifre
                   </label>
                   <input
+                    aria-describedby={
+                      passwordErrors.newPassword
+                        ? "new-password-error"
+                        : undefined
+                    }
+                    aria-invalid={Boolean(passwordErrors.newPassword)}
                     autoComplete="new-password"
-                    className={inputClass}
+                    className={`${inputClass} ${
+                      passwordErrors.newPassword ? "border-[#ba1a1a]" : ""
+                    }`}
                     id="new-password"
-                    minLength={6}
-                    name="newPassword"
                     placeholder="En az 6 karakter"
-                    required
                     type="password"
+                    {...registerPassword("newPassword")}
                   />
+                  {passwordErrors.newPassword && (
+                    <p
+                      className="mt-2 text-xs text-[#8c1d18]"
+                      id="new-password-error"
+                      role="alert"
+                    >
+                      {passwordErrors.newPassword.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="confirm-password">
+                    Yeni Şifre Tekrar
+                  </label>
+                  <input
+                    aria-describedby={
+                      passwordErrors.confirmPassword
+                        ? "confirm-password-error"
+                        : undefined
+                    }
+                    aria-invalid={Boolean(passwordErrors.confirmPassword)}
+                    autoComplete="new-password"
+                    className={`${inputClass} ${
+                      passwordErrors.confirmPassword
+                        ? "border-[#ba1a1a]"
+                        : ""
+                    }`}
+                    id="confirm-password"
+                    placeholder="Yeni şifreni tekrar gir"
+                    type="password"
+                    {...registerPassword("confirmPassword")}
+                  />
+                  {passwordErrors.confirmPassword && (
+                    <p
+                      className="mt-2 text-xs text-[#8c1d18]"
+                      id="confirm-password-error"
+                      role="alert"
+                    >
+                      {passwordErrors.confirmPassword.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="mt-6">
                 <SaveButton
                   active={savedSection === "security"}
+                  disabled={isPasswordSubmitting}
                   label="Şifreyi Güncelle"
                 />
               </div>
