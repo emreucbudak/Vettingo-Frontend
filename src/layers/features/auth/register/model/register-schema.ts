@@ -1,13 +1,14 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-  fullName: z
+  name: z
     .string()
     .trim()
-    .min(1, "Adınızı ve soyadınızı girin.")
-    .refine((value) => value.split(/\s+/).length >= 2, {
-      message: "Ad ve soyad bilgilerini birlikte girin.",
-    }),
+    .min(1, "Adınızı girin."),
+  surname: z
+    .string()
+    .trim()
+    .min(1, "Soyadınızı girin."),
   email: z
     .string()
     .trim()

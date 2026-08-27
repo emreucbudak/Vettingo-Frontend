@@ -53,7 +53,8 @@ export function RegisterForm() {
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      fullName: "",
+      name: "",
+      surname: "",
       email: "",
       password: "",
       accountType: "candidate",
@@ -62,19 +63,16 @@ export function RegisterForm() {
   });
 
   async function onSubmit({
-    fullName,
+    name,
+    surname,
     email,
     password,
     accountType,
   }: RegisterFormValues) {
-    const normalizedFullName = fullName.trim();
-    const [name, ...surnameParts] = normalizedFullName.split(/\s+/);
-    const surname = surnameParts.join(" ");
-
     try {
       await register({
-        name,
-        surname,
+        name: name.trim(),
+        surname: surname.trim(),
         email: email.trim(),
         password,
         role: accountType === "employer" ? "Company" : "Worker",
@@ -101,28 +99,55 @@ export function RegisterForm() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
-          Ad Soyad
+          Ad
           <span className="relative">
             <MaterialIcon className={leadingIconClass}>badge</MaterialIcon>
             <input
               aria-describedby={
-                errors.fullName ? "register-full-name-error" : undefined
+                errors.name ? "register-name-error" : undefined
               }
-              aria-invalid={Boolean(errors.fullName)}
-              autoComplete="name"
-              placeholder="Adınız ve soyadınız"
+              aria-invalid={Boolean(errors.name)}
+              autoComplete="given-name"
+              placeholder="Adınız"
               className={`${inputClass} pl-10 pr-3`}
               type="text"
-              {...registerField("fullName")}
+              {...registerField("name")}
             />
           </span>
-          {errors.fullName && (
+          {errors.name && (
             <span
               className="text-xs text-red-700"
-              id="register-full-name-error"
+              id="register-name-error"
               role="alert"
             >
-              {errors.fullName.message}
+              {errors.name.message}
+            </span>
+          )}
+        </label>
+
+        <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
+          Soyad
+          <span className="relative">
+            <MaterialIcon className={leadingIconClass}>badge</MaterialIcon>
+            <input
+              aria-describedby={
+                errors.surname ? "register-surname-error" : undefined
+              }
+              aria-invalid={Boolean(errors.surname)}
+              autoComplete="family-name"
+              placeholder="Soyadınız"
+              className={`${inputClass} pl-10 pr-3`}
+              type="text"
+              {...registerField("surname")}
+            />
+          </span>
+          {errors.surname && (
+            <span
+              className="text-xs text-red-700"
+              id="register-surname-error"
+              role="alert"
+            >
+              {errors.surname.message}
             </span>
           )}
         </label>
