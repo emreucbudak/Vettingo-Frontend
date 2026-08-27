@@ -8,6 +8,7 @@ import {
   HrPrimaryLink,
   HrSectionHeading,
 } from "@/entities/hr-dashboard/ui";
+import { HrPasswordForm } from "./hr-password-form";
 
 const inputClass =
   "w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] px-4 py-3 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426]";
@@ -160,63 +161,8 @@ export function HrSettingsPage() {
             </p>
           </section>
 
-          <SettingsSection
-            title="Şifre Değiştir"
-          >
-            <div className="space-y-5">
-              <div>
-                <label className={labelClass} htmlFor="hr-current-password">
-                  Mevcut Şifre
-                </label>
-                <input
-                  autoComplete="current-password"
-                  className={inputClass}
-                  id="hr-current-password"
-                  minLength={6}
-                  name="currentPassword"
-                  placeholder="••••••••"
-                  type="password"
-                />
-              </div>
-              <div>
-                <label className={labelClass} htmlFor="hr-new-password">
-                  Yeni Şifre
-                </label>
-                <input
-                  autoComplete="new-password"
-                  className={inputClass}
-                  id="hr-new-password"
-                  minLength={6}
-                  name="newPassword"
-                  placeholder="En az 6 karakter"
-                  type="password"
-                />
-              </div>
-              <div>
-                <label className={labelClass} htmlFor="hr-confirm-password">
-                  Yeni Şifre Tekrar
-                </label>
-                <input
-                  autoComplete="new-password"
-                  className={inputClass}
-                  id="hr-confirm-password"
-                  minLength={6}
-                  name="confirmPassword"
-                  placeholder="Yeni şifreni tekrar gir"
-                  type="password"
-                />
-              </div>
-            </div>
-
-            <div className="mt-6 border-t border-[#c5c6cd] pt-5">
-              <button
-                className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
-                type="button"
-              >
-                Şifreyi Güncelle
-                <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
-              </button>
-            </div>
+          <SettingsSection title="Şifre Değiştir">
+            <HrPasswordForm />
           </SettingsSection>
         </aside>
       </div>

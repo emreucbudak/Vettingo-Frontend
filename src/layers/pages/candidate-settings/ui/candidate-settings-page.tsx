@@ -1,11 +1,24 @@
 "use client";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  type FieldError,
+  type UseFormRegisterReturn,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import { apiRequest } from "@/shared/api";
-import { ROUTES } from "@/shared/config/routes";
 import { useUserInformation } from "@/shared/useUserInformation";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { CandidateShell } from "@/widgets/candidate/shell";
+import {
+  passwordSchema,
+  type PasswordFormValues,
+} from "../model/password-schema";
+import {
+  profileSchema,
+  type ProfileFormValues,
+} from "../model/profile-schema";
 type CandidateProfile = {
   name: string;
   surname: string;
@@ -36,147 +49,206 @@ type ProfileTextField = Exclude<
 
 function ProfileInput({
   autoComplete,
+  error,
   label,
   name,
   placeholder,
+  registration,
   type = "text",
-  value,
 }: {
   autoComplete?: string;
+  error?: FieldError;
   label: string;
   name: ProfileTextField;
   placeholder?: string;
+  registration: UseFormRegisterReturn<ProfileTextField>;
   type?: "email" | "tel" | "text";
-  value: string;
 }) {
+  const errorId = `candidate-${name}-error`;
+
   return (
     <div>
       <label className={labelClass} htmlFor={`candidate-${name}`}>
         {label}
       </label>
       <input
+        aria-describedby={error ? errorId : undefined}
+        aria-invalid={Boolean(error)}
         autoComplete={autoComplete}
-        className={inputClass}
+        className={`${inputClass} ${error ? "border-[#ba1a1a]" : ""}`}
         id={`candidate-${name}`}
-        name={name}
         placeholder={placeholder}
-        readOnly
-        required={name === "name" || name === "surname" || name === "email"}
         type={type}
-        value={value}
+        {...registration}
       />
+      {error && (
+        <p className="mt-2 text-xs text-[#8c1d18]" id={errorId} role="alert">
+          {error.message}
+        </p>
+      )}
     </div>
   );
 }
 
-function ProfileForm({ profile }: { profile: CandidateProfile }) {
+type ProfileFormProps = {
+  onSave: (profile: CandidateProfile) => void;
+  profile: CandidateProfile;
+};
+
+function getProfileFormValues(profile: CandidateProfile): ProfileFormValues {
+  return {
+    ...profile,
+    biography: profile.biography ?? "",
+    phoneNumber: profile.phoneNumber ?? "",
+  };
+}
+
+function ProfileForm({ onSave, profile }: ProfileFormProps) {
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: getProfileFormValues(profile),
+  });
+  const biography = useWatch({
+    control,
+    name: "biography",
+  });
+
+  useEffect(() => {
+    reset(getProfileFormValues(profile));
+  }, [profile, reset]);
+
+  function onSubmit(values: ProfileFormValues) {
+    onSave({
+      ...values,
+      biography: values.biography || null,
+      phoneNumber: values.phoneNumber || null,
+    });
+  }
+
   return (
-    <section className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6">
+    <form
+      aria-busy={isSubmitting}
+      className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
+      id="candidate-profile-form"
+      noValidate
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="mb-6 border-b border-[#c5c6cd] pb-5">
         <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
           Profil
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-8 md:grid-cols-2">
         <ProfileInput
           autoComplete="given-name"
+          error={errors.name}
           label="Ad"
           name="name"
-          value={profile.name}
+          registration={register("name")}
         />
         <ProfileInput
           autoComplete="family-name"
+          error={errors.surname}
           label="Soyad"
           name="surname"
-          value={profile.surname}
+          registration={register("surname")}
         />
         <ProfileInput
           autoComplete="email"
+          error={errors.email}
           label="E-posta"
           name="email"
+          registration={register("email")}
           type="email"
-          value={profile.email}
         />
         <ProfileInput
           autoComplete="tel"
+          error={errors.phoneNumber}
           label="Telefon"
           name="phoneNumber"
           placeholder="+90 5xx xxx xx xx"
+          registration={register("phoneNumber")}
           type="tel"
-          value={profile.phoneNumber ?? ""}
         />
         <ProfileInput
           autoComplete="organization-title"
+          error={errors.targetRole}
           label="Hedef Pozisyon"
           name="targetRole"
           placeholder="Örn. Kıdemli Ürün Tasarımcısı"
-          value={profile.targetRole}
+          registration={register("targetRole")}
         />
         <div className="md:col-span-2">
           <label className={labelClass} htmlFor="candidate-biography">
             Hakkımda
           </label>
           <textarea
-            className={`${inputClass} min-h-32 resize-y leading-6`}
+            aria-describedby={
+              errors.biography ? "candidate-biography-error" : undefined
+            }
+            aria-invalid={Boolean(errors.biography)}
+            className={`${inputClass} min-h-32 resize-y leading-6 ${
+              errors.biography ? "border-[#ba1a1a]" : ""
+            }`}
             id="candidate-biography"
             maxLength={500}
-            name="biography"
             placeholder="Deneyimini, güçlü yönlerini ve kariyer hedeflerini kısaca anlat."
-            readOnly
-            value={profile.biography ?? ""}
+            {...register("biography")}
           />
+          {errors.biography && (
+            <p
+              className="mt-2 text-xs text-[#8c1d18]"
+              id="candidate-biography-error"
+              role="alert"
+            >
+              {errors.biography.message}
+            </p>
+          )}
           <p className="mt-2 text-right text-[11px] text-[#75777d]">
-            {(profile.biography ?? "").length}/500
+            {biography.length}/500
           </p>
         </div>
       </div>
-    </section>
+
+    </form>
   );
 }
 
-type PasswordStatus = "idle" | "mismatch" | "same" | "saved";
-
 function AccountSettingsForm() {
-  const [passwordStatus, setPasswordStatus] = useState<PasswordStatus>("idle");
+  const [isSaved, setIsSaved] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<PasswordFormValues>({
+    resolver: zodResolver(passwordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
 
-  function handlePasswordSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const currentPassword = String(formData.get("currentPassword") ?? "");
-    const newPassword = String(formData.get("newPassword") ?? "");
-    const confirmPassword = String(formData.get("confirmPassword") ?? "");
-
-    if (newPassword !== confirmPassword) {
-      setPasswordStatus("mismatch");
-      return;
-    }
-
-    if (currentPassword === newPassword) {
-      setPasswordStatus("same");
-      return;
-    }
-
-    form.reset();
-    setPasswordStatus("saved");
+  function onSubmit() {
+    reset();
+    setIsSaved(true);
   }
-
-  const statusMessage =
-    passwordStatus === "mismatch"
-      ? "Yeni şifreler birbiriyle eşleşmiyor."
-      : passwordStatus === "same"
-        ? "Yeni şifren mevcut şifrenden farklı olmalı."
-        : "Şifre bilgilerin güncellendi.";
-  const hasStatus = passwordStatus !== "idle";
-  const isError = passwordStatus === "mismatch" || passwordStatus === "same";
 
   return (
     <form
+      aria-busy={isSubmitting}
       className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
-      onChange={() => setPasswordStatus("idle")}
-      onSubmit={handlePasswordSubmit}
+      noValidate
+      onChange={() => setIsSaved(false)}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="mb-6 border-b border-[#c5c6cd] pb-5">
         <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
@@ -190,51 +262,95 @@ function AccountSettingsForm() {
             Mevcut Şifre
           </label>
           <input
+            aria-describedby={
+              errors.currentPassword
+                ? "candidate-current-password-error"
+                : undefined
+            }
+            aria-invalid={Boolean(errors.currentPassword)}
             autoComplete="current-password"
-            className={inputClass}
+            className={`${inputClass} ${
+              errors.currentPassword ? "border-[#ba1a1a]" : ""
+            }`}
             id="candidate-current-password"
-            minLength={6}
-            name="currentPassword"
             placeholder="••••••••"
-            required
             type="password"
+            {...register("currentPassword")}
           />
+          {errors.currentPassword && (
+            <p
+              className="mt-2 text-xs text-[#8c1d18]"
+              id="candidate-current-password-error"
+              role="alert"
+            >
+              {errors.currentPassword.message}
+            </p>
+          )}
         </div>
         <div>
           <label className={labelClass} htmlFor="candidate-new-password">
             Yeni Şifre
           </label>
           <input
+            aria-describedby={
+              errors.newPassword ? "candidate-new-password-error" : undefined
+            }
+            aria-invalid={Boolean(errors.newPassword)}
             autoComplete="new-password"
-            className={inputClass}
+            className={`${inputClass} ${
+              errors.newPassword ? "border-[#ba1a1a]" : ""
+            }`}
             id="candidate-new-password"
-            minLength={6}
-            name="newPassword"
             placeholder="En az 6 karakter"
-            required
             type="password"
+            {...register("newPassword")}
           />
+          {errors.newPassword && (
+            <p
+              className="mt-2 text-xs text-[#8c1d18]"
+              id="candidate-new-password-error"
+              role="alert"
+            >
+              {errors.newPassword.message}
+            </p>
+          )}
         </div>
         <div>
           <label className={labelClass} htmlFor="candidate-confirm-password">
             Yeni Şifre Tekrar
           </label>
           <input
+            aria-describedby={
+              errors.confirmPassword
+                ? "candidate-confirm-password-error"
+                : undefined
+            }
+            aria-invalid={Boolean(errors.confirmPassword)}
             autoComplete="new-password"
-            className={inputClass}
+            className={`${inputClass} ${
+              errors.confirmPassword ? "border-[#ba1a1a]" : ""
+            }`}
             id="candidate-confirm-password"
-            minLength={6}
-            name="confirmPassword"
             placeholder="Yeni şifreni tekrar gir"
-            required
             type="password"
+            {...register("confirmPassword")}
           />
+          {errors.confirmPassword && (
+            <p
+              className="mt-2 text-xs text-[#8c1d18]"
+              id="candidate-confirm-password-error"
+              role="alert"
+            >
+              {errors.confirmPassword.message}
+            </p>
+          )}
         </div>
       </div>
 
       <div className="mt-6 border-t border-[#c5c6cd] pt-5">
         <button
           className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
+          disabled={isSubmitting}
           type="submit"
         >
           Şifreyi Güncelle
@@ -242,14 +358,12 @@ function AccountSettingsForm() {
         </button>
         <p
           aria-live="polite"
-          className={`mt-3 flex items-start gap-2 text-sm font-medium ${
-            isError ? "text-[#8c1d18]" : "text-[#006c49]"
-          } ${hasStatus ? "" : "sr-only"}`}
+          className={`mt-3 flex items-start gap-2 text-sm font-medium text-[#006c49] ${
+            isSaved ? "" : "sr-only"
+          }`}
         >
-          <MaterialIcon className="mt-0.5 text-[18px]">
-            {isError ? "warning" : "check_circle"}
-          </MaterialIcon>
-          {statusMessage}
+          <MaterialIcon className="mt-0.5 text-[18px]">check_circle</MaterialIcon>
+          Şifre bilgilerin güncellendi.
         </p>
       </div>
     </form>
@@ -259,12 +373,14 @@ function AccountSettingsForm() {
 type CandidateSettingsContentProps = {
   error: string | null;
   isLoading: boolean;
+  onProfileChange: (profile: CandidateProfile) => void;
   profile: CandidateProfile;
 };
 
 function CandidateSettingsContent({
   error,
   isLoading,
+  onProfileChange,
   profile,
 }: CandidateSettingsContentProps) {
   const completedFields = [
@@ -296,13 +412,15 @@ function CandidateSettingsContent({
           <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
             Ayarlar
           </h1>
-          <Link
-            className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-all hover:-translate-y-0.5 hover:shadow-lg sm:w-auto"
-            href={ROUTES.candidate}
+          <button
+            className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+            disabled={isLoading}
+            form="candidate-profile-form"
+            type="submit"
           >
             <MaterialIcon className="text-[18px]">check</MaterialIcon>
             Kaydet
-          </Link>
+          </button>
         </header>
 
         {error ? (
@@ -315,7 +433,7 @@ function CandidateSettingsContent({
         ) : null}
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
-          <ProfileForm profile={profile} />
+          <ProfileForm onSave={onProfileChange} profile={profile} />
 
           <aside className="space-y-6">
             <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
@@ -399,6 +517,7 @@ export function CandidateSettingsPage() {
     <CandidateSettingsContent
       error={error}
       isLoading={isLoading}
+      onProfileChange={setProfile}
       profile={profile}
     />
   );
