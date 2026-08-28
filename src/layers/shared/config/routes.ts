@@ -3,6 +3,7 @@ export const ROUTES = {
   landing: "/",
   login: "/login",
   register: "/register",
+  subscription: "/subscription",
   candidate: "/candidate",
   candidateMyCandidate: "/candidate/mycandidate",
   candidateJobs: "/candidate/jobs",
