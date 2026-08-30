@@ -5,6 +5,8 @@ export const ROUTES = {
   register: "/register",
   subscription: "/subscription",
   candidateSubscription: "/subscription/candidate",
+  employerPayment: "/payment/employer",
+  candidatePayment: "/payment/candidate",
   candidate: "/candidate",
   candidateMyCandidate: "/candidate/mycandidate",
   candidateJobs: "/candidate/jobs",

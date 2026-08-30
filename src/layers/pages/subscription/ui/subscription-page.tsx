@@ -1,13 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   subscriptionPlans,
   type BillingPeriod,
   type SubscriptionPlan,
   type SubscriptionPlanId,
 } from "@/entities/subscription";
+import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
+
+type SubscriptionAccountType = "candidate" | "employer";
 
 const billingOptions: ReadonlyArray<{
   label: string;
@@ -119,14 +123,32 @@ function PlanCard({
 }
 
 export function SubscriptionPage({
+  accountType = "employer",
   plans = subscriptionPlans,
 }: {
+  accountType?: SubscriptionAccountType;
   plans?: readonly SubscriptionPlan[];
 }) {
+  const router = useRouter();
   const [billingPeriod, setBillingPeriod] =
     useState<BillingPeriod>("annual");
   const [selectedPlan, setSelectedPlan] =
     useState<SubscriptionPlanId | null>(null);
+
+  function handlePlanSelect(planId: SubscriptionPlanId) {
+    setSelectedPlan(planId);
+
+    const paymentRoute =
+      accountType === "candidate"
+        ? ROUTES.candidatePayment
+        : ROUTES.employerPayment;
+    const searchParams = new URLSearchParams({
+      plan: planId,
+      billing: billingPeriod,
+    });
+
+    router.push(`${paymentRoute}?${searchParams.toString()}`);
+  }
 
   return (
     <main className="min-h-screen bg-[#f8f9ff] px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
@@ -169,7 +191,7 @@ export function SubscriptionPage({
               billingPeriod={billingPeriod}
               isSelected={selectedPlan === plan.id}
               key={plan.id}
-              onSelect={setSelectedPlan}
+              onSelect={handlePlanSelect}
               plan={plan}
             />
           ))}

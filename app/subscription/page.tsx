@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function SubscriptionPage() {
-  return <SubscriptionPageContent />;
+  return <SubscriptionPageContent accountType="employer" />;
 }
