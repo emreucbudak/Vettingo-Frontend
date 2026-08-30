@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { AuthSocialButtons } from "../../ui/auth-social-buttons";
 import { register } from "../api/register";
 import type { LegalDocument } from "../model/legal-content";
 import {
+  passwordRequirements,
   registerSchema,
   type RegisterFormValues,
 } from "../model/register-schema";
@@ -43,9 +44,11 @@ function SelectChevron() {
 export function RegisterForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [activeLegalDocument, setActiveLegalDocument] =
     useState<LegalDocument | null>(null);
   const {
+    control,
     register: registerField,
     handleSubmit,
     setError,
@@ -61,6 +64,9 @@ export function RegisterForm() {
       terms: false,
     },
   });
+  const password = useWatch({ control, name: "password" });
+  const passwordFieldRegistration = registerField("password");
+  const showPasswordRequirements = isPasswordFocused || password.length > 0;
 
   async function onSubmit({
     name,
@@ -184,15 +190,25 @@ export function RegisterForm() {
           <span className="relative">
             <MaterialIcon className={leadingIconClass}>lock</MaterialIcon>
             <input
-              aria-describedby={
-                errors.password ? "register-password-error" : undefined
-              }
+              aria-describedby={[
+                showPasswordRequirements
+                  ? "register-password-requirements"
+                  : null,
+                errors.password ? "register-password-error" : null,
+              ]
+                .filter(Boolean)
+                .join(" ") || undefined}
               aria-invalid={Boolean(errors.password)}
               autoComplete="new-password"
               placeholder="••••••••"
               className={`${inputClass} pl-10 pr-10`}
               type={showPassword ? "text" : "password"}
-              {...registerField("password")}
+              {...passwordFieldRegistration}
+              onBlur={(event) => {
+                void passwordFieldRegistration.onBlur(event);
+                setIsPasswordFocused(false);
+              }}
+              onFocus={() => setIsPasswordFocused(true)}
             />
             <button
               aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
@@ -205,6 +221,47 @@ export function RegisterForm() {
               </MaterialIcon>
             </button>
           </span>
+          {showPasswordRequirements && (
+            <span
+              aria-live="polite"
+              className="mt-1 block rounded border border-[#c5c6cd] bg-[#f8f9ff] px-3 py-2.5"
+              id="register-password-requirements"
+            >
+              <span className="mb-1.5 block text-[11px] font-semibold text-[#45474c]">
+                Şifreniz şunları içermelidir:
+              </span>
+              <span className="flex flex-col gap-1.5" role="list">
+                {passwordRequirements.map((requirement) => {
+                  const isMet = requirement.isMet(password);
+
+                  return (
+                    <span
+                      className={`flex items-center gap-2 text-xs font-medium transition-colors ${
+                        isMet ? "text-[#006c49]" : "text-[#75777d]"
+                      }`}
+                      key={requirement.id}
+                      role="listitem"
+                    >
+                      {isMet ? (
+                        <MaterialIcon className="text-[16px]">
+                          check_circle
+                        </MaterialIcon>
+                      ) : (
+                        <span
+                          aria-hidden="true"
+                          className="h-4 w-4 shrink-0 rounded-full border border-current"
+                        />
+                      )}
+                      <span className="sr-only">
+                        {isMet ? "Tamamlandı: " : "Eksik: "}
+                      </span>
+                      {requirement.label}
+                    </span>
+                  );
+                })}
+              </span>
+            </span>
+          )}
           {errors.password && (
             <span
               className="text-xs text-red-700"
