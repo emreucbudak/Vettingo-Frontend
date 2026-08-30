@@ -15,12 +15,27 @@ interface Tokens {
   refreshToken: string;
 }
 
-interface RegisterRequest {
+interface CandidateTempRegisterRequest {
   name: string;
   surname: string;
   email: string;
   password: string;
-  role: "Worker" | "Company";
+}
+
+interface CandidateTempRegisterResponse {
+  token: string;
+}
+
+interface EmployerTempRegisterRequest {
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+  companyName: string;
+}
+
+interface EmployerTempRegisterResponse {
+  token: string;
 }
 
 export async function getJWTToken(
@@ -93,16 +108,44 @@ export async function getNewJwtFromRefresh() {
   await setToken(newTokens.accessToken, newTokens.refreshToken);
 }
 
-export async function register(request: RegisterRequest) {
-  const response = await fetch(`${gatewayUrl}${authPath}/register`, {
-    body: JSON.stringify(request),
-    headers: {
-      "Content-Type": "application/json",
+export async function candidateTempRegister(
+  request: CandidateTempRegisterRequest,
+): Promise<CandidateTempRegisterResponse> {
+  const response = await fetch(
+    `${gatewayUrl}${authPath}/candidate/temp-register`,
+    {
+      body: JSON.stringify(request),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
     },
-    method: "POST",
-  });
+  );
 
   if (!response.ok) {
-    throw new Error("Kayıt sırasında bir hatayla karşılaşıldı!");
+    throw new Error("Geçici aday kaydı sırasında bir hatayla karşılaşıldı!");
   }
+
+  return (await response.json()) as CandidateTempRegisterResponse;
+}
+
+export async function employerTempRegister(
+  request: EmployerTempRegisterRequest,
+): Promise<EmployerTempRegisterResponse> {
+  const response = await fetch(
+    `${gatewayUrl}${authPath}/employer/temp-register`,
+    {
+      body: JSON.stringify(request),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Geçici işveren kaydı sırasında bir hatayla karşılaşıldı!");
+  }
+
+  return (await response.json()) as EmployerTempRegisterResponse;
 }

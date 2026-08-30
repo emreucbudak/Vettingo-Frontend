@@ -118,7 +118,11 @@ function PlanCard({
   );
 }
 
-export function SubscriptionPage() {
+export function SubscriptionPage({
+  plans = subscriptionPlans,
+}: {
+  plans?: readonly SubscriptionPlan[];
+}) {
   const [billingPeriod, setBillingPeriod] =
     useState<BillingPeriod>("annual");
   const [selectedPlan, setSelectedPlan] =
@@ -160,7 +164,7 @@ export function SubscriptionPage() {
         </header>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {subscriptionPlans.map((plan) => (
+          {plans.map((plan) => (
             <PlanCard
               billingPeriod={billingPeriod}
               isSelected={selectedPlan === plan.id}

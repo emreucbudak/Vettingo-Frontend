@@ -51,25 +51,40 @@ const passwordSchema = z
     }
   });
 
-export const registerSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Adınızı girin."),
-  surname: z
-    .string()
-    .trim()
-    .min(1, "Soyadınızı girin."),
-  email: z
-    .string()
-    .trim()
-    .min(1, "E-posta adresinizi girin.")
-    .pipe(z.email("Geçerli bir e-posta adresi girin.")),
-  password: passwordSchema,
-  accountType: z.enum(["candidate", "employer"]),
-  terms: z.boolean().refine((accepted) => accepted, {
-    message: "Devam etmek için koşulları kabul edin.",
-  }),
-});
+export const registerSchema = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(1, "Adınızı girin."),
+    surname: z
+      .string()
+      .trim()
+      .min(1, "Soyadınızı girin."),
+    email: z
+      .string()
+      .trim()
+      .min(1, "E-posta adresinizi girin.")
+      .pipe(z.email("Geçerli bir e-posta adresi girin.")),
+    password: passwordSchema,
+    accountType: z.enum(["candidate", "employer"]),
+    companyName: z
+      .string()
+      .trim()
+      .max(2000, "Şirket adı en fazla 2000 karakter olabilir.")
+      .optional(),
+    terms: z.boolean().refine((accepted) => accepted, {
+      message: "Devam etmek için koşulları kabul edin.",
+    }),
+  })
+  .superRefine(({ accountType, companyName }, context) => {
+    if (accountType === "employer" && !companyName) {
+      context.addIssue({
+        code: "custom",
+        message: "Şirket adını girin.",
+        path: ["companyName"],
+      });
+    }
+  });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
