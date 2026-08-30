@@ -1,37 +1,11 @@
 import Link from "next/link";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import type { PaymentPageData } from "../model/payment-page-data";
+import { FreePlanPanel } from "./free-plan-panel";
 import { StripePaymentElement } from "./stripe-payment-element";
 
 function formatPrice(price: number) {
   return `$${price.toFixed(2)}`;
-}
-
-function FreePlanPanel({ accountType }: Pick<PaymentPageData, "accountType">) {
-  return (
-    <div className="flex min-h-[320px] flex-col items-center justify-center rounded-2xl border border-[#bce7ce] bg-[#f0fbf5] px-6 text-center">
-      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#006c49] text-white">
-        <MaterialIcon className="text-3xl">check</MaterialIcon>
-      </span>
-      <h3 className="mt-5 text-xl font-bold text-[#091426]">
-        Kart bilgisi gerekmiyor
-      </h3>
-      <p className="mt-2 max-w-sm text-sm leading-6 text-[#5d626b]">
-        Ücretsiz planınızı hemen etkinleştirerek{" "}
-        {accountType === "candidate"
-          ? "kariyer araçlarını"
-          : "işe alım araçlarını"}{" "}
-        kullanmaya başlayabilirsiniz.
-      </p>
-      <button
-        className="mt-6 flex w-full max-w-sm items-center justify-center gap-2 rounded-xl bg-[#006c49] px-5 py-3.5 text-sm font-bold text-white transition hover:bg-[#00563b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006c49] focus-visible:ring-offset-2"
-        type="button"
-      >
-        Ücretsiz Planla Devam Et
-        <MaterialIcon className="text-lg">arrow_forward</MaterialIcon>
-      </button>
-    </div>
-  );
 }
 
 export function PaymentPage({
@@ -186,7 +160,11 @@ export function PaymentPage({
 
               <div className="mt-7 border-t border-[#ebecef] pt-7">
                 {amountInCents === 0 ? (
-                  <FreePlanPanel accountType={accountType} />
+                  <FreePlanPanel
+                    accountType={accountType}
+                    billingPeriod={billingPeriod}
+                    planCode={plan.id}
+                  />
                 ) : (
                   <StripePaymentElement
                     accountType={accountType}

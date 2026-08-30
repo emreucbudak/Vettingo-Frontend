@@ -14,6 +14,10 @@ import type {
   SubscriptionPlanId,
 } from "@/entities/subscription";
 import { MaterialIcon } from "@/shared/ui/material-icon";
+import {
+  completeRegistration,
+  getRegistrationToken,
+} from "../api/complete-registration";
 import type { SubscriptionAccountType } from "../model/payment-page-data";
 
 type StripePaymentElementProps = {
@@ -31,11 +35,6 @@ type ConfirmSubscriptionResponse = {
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 
-const registrationTokenKeys: Record<SubscriptionAccountType, string> = {
-  candidate: "vettingo:candidate-registration-token",
-  employer: "vettingo:employer-registration-token",
-};
-
 function PaymentForm({
   accountType,
   billingPeriod,
@@ -46,6 +45,7 @@ function PaymentForm({
   const [isElementReady, setIsElementReady] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isPaymentConfirmed, setIsPaymentConfirmed] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -55,9 +55,7 @@ function PaymentForm({
       return;
     }
 
-    const registrationToken = sessionStorage.getItem(
-      registrationTokenKeys[accountType],
-    );
+    const registrationToken = getRegistrationToken(accountType);
 
     if (!registrationToken) {
       setErrorMessage(
@@ -69,67 +67,77 @@ function PaymentForm({
     setIsSubmitting(true);
     setErrorMessage(null);
 
-    const { error: submitError } = await elements.submit();
-
-    if (submitError) {
-      setErrorMessage(
-        submitError.message ?? "Ödeme bilgilerinizi kontrol edip tekrar deneyin.",
-      );
-      setIsSubmitting(false);
-      return;
-    }
-
-    const { error: tokenError, confirmationToken } =
-      await stripe.createConfirmationToken({
-        elements,
-        params: {
-          return_url: window.location.href,
-        },
-      });
-
-    if (tokenError || !confirmationToken) {
-      setErrorMessage(
-        tokenError?.message ?? "Ödeme bilgileri güvenli biçimde hazırlanamadı.",
-      );
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
-      const response = await fetch("/api/payments/confirm-subscription", {
-        body: JSON.stringify({
-          accountType,
-          billingPeriod,
-          confirmationTokenId: confirmationToken.id,
-          planId,
-          registrationToken,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      });
-      const result = (await response
-        .json()
-        .catch(() => ({}))) as ConfirmSubscriptionResponse;
+      if (!isPaymentConfirmed) {
+        const { error: submitError } = await elements.submit();
 
-      if (!response.ok) {
-        throw new Error(
-          result.message ?? "Ödeme şu anda tamamlanamadı. Lütfen tekrar deneyin.",
-        );
-      }
-
-      if (result.clientSecret) {
-        const { error: nextActionError } = await stripe.handleNextAction({
-          clientSecret: result.clientSecret,
-        });
-
-        if (nextActionError) {
+        if (submitError) {
           throw new Error(
-            nextActionError.message ?? "Banka doğrulaması tamamlanamadı.",
+            submitError.message ??
+              "Ödeme bilgilerinizi kontrol edip tekrar deneyin.",
           );
         }
+
+        const { error: tokenError, confirmationToken } =
+          await stripe.createConfirmationToken({
+            elements,
+            params: {
+              return_url: window.location.href,
+            },
+          });
+
+        if (tokenError || !confirmationToken) {
+          throw new Error(
+            tokenError?.message ??
+              "Ödeme bilgileri güvenli biçimde hazırlanamadı.",
+          );
+        }
+
+        const response = await fetch("/api/payments/confirm-subscription", {
+          body: JSON.stringify({
+            accountType,
+            billingPeriod,
+            confirmationTokenId: confirmationToken.id,
+            planId,
+            registrationToken,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+        });
+        const result = (await response
+          .json()
+          .catch(() => ({}))) as ConfirmSubscriptionResponse;
+
+        if (!response.ok) {
+          throw new Error(
+            result.message ??
+              "Ödeme şu anda tamamlanamadı. Lütfen tekrar deneyin.",
+          );
+        }
+
+        if (result.clientSecret) {
+          const { error: nextActionError } = await stripe.handleNextAction({
+            clientSecret: result.clientSecret,
+          });
+
+          if (nextActionError) {
+            throw new Error(
+              nextActionError.message ?? "Banka doğrulaması tamamlanamadı.",
+            );
+          }
+        }
+
+        setIsPaymentConfirmed(true);
       }
+
+      await completeRegistration({
+        accountType,
+        billingPeriod,
+        planCode: planId,
+        registrationToken,
+      });
 
       setIsComplete(true);
     } catch (error) {
@@ -165,15 +173,23 @@ function PaymentForm({
 
   return (
     <form aria-busy={isSubmitting} onSubmit={handleSubmit}>
-      <PaymentElement
-        onReady={() => setIsElementReady(true)}
-        options={{
-          layout: {
-            type: "tabs",
-            defaultCollapsed: false,
-          },
-        }}
-      />
+      {isPaymentConfirmed ? (
+        <div className="rounded-xl border border-[#bce7ce] bg-[#f0fbf5] px-4 py-4 text-sm leading-6 text-[#276749]">
+          Ödemeniz alındı. Hesabınızın etkinleştirilmesi için aşağıdaki düğmeyle
+          işlemi güvenle tekrar deneyebilirsiniz; kartınızdan yeniden çekim
+          yapılmaz.
+        </div>
+      ) : (
+        <PaymentElement
+          onReady={() => setIsElementReady(true)}
+          options={{
+            layout: {
+              type: "tabs",
+              defaultCollapsed: false,
+            },
+          }}
+        />
+      )}
 
       {errorMessage && (
         <p
@@ -187,7 +203,12 @@ function PaymentForm({
 
       <button
         className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#6f42e8] px-5 py-3.5 text-sm font-bold text-white shadow-[0_12px_24px_rgba(111,66,232,0.24)] transition hover:bg-[#5f35d1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6f42e8] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-        disabled={!stripe || !elements || !isElementReady || isSubmitting}
+        disabled={
+          !stripe ||
+          !elements ||
+          (!isPaymentConfirmed && !isElementReady) ||
+          isSubmitting
+        }
         type="submit"
       >
         {isSubmitting ? (
@@ -195,12 +216,16 @@ function PaymentForm({
             <MaterialIcon className="animate-spin text-lg">
               progress_activity
             </MaterialIcon>
-            Ödeme İşleniyor
+            {isPaymentConfirmed
+              ? "Hesap Etkinleştiriliyor"
+              : "Ödeme İşleniyor"}
           </>
         ) : (
           <>
             <MaterialIcon className="text-lg">lock</MaterialIcon>
-            Güvenli Ödemeyi Tamamla
+            {isPaymentConfirmed
+              ? "Hesabı Etkinleştir"
+              : "Güvenli Ödemeyi Tamamla"}
           </>
         )}
       </button>
