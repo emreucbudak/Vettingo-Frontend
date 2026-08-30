@@ -1,1 +1,6 @@
-﻿export { apiRequest, getJWTToken, register as registerUser } from "./api";
+export {
+  apiRequest,
+  candidateTempRegister,
+  employerTempRegister,
+  getJWTToken,
+} from "./api";

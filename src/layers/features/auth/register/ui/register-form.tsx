@@ -23,6 +23,11 @@ const inputClass =
 const leadingIconClass =
   "absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#45474c]";
 
+const employerRegistrationTokenStorageKey =
+  "vettingo:employer-registration-token";
+const candidateRegistrationTokenStorageKey =
+  "vettingo:candidate-registration-token";
+
 function SelectChevron() {
   return (
     <svg
@@ -61,10 +66,12 @@ export function RegisterForm() {
       email: "",
       password: "",
       accountType: "candidate",
+      companyName: "",
       terms: false,
     },
   });
   const password = useWatch({ control, name: "password" });
+  const accountType = useWatch({ control, name: "accountType" });
   const passwordFieldRegistration = registerField("password");
   const showPasswordRequirements = isPasswordFocused || password.length > 0;
 
@@ -74,17 +81,41 @@ export function RegisterForm() {
     email,
     password,
     accountType,
+    companyName,
   }: RegisterFormValues) {
     try {
-      await register({
-        name: name.trim(),
-        surname: surname.trim(),
-        email: email.trim(),
-        password,
-        role: accountType === "employer" ? "Company" : "Worker",
-      });
+      const registrationResult =
+        accountType === "employer"
+          ? await register({
+              name: name.trim(),
+              surname: surname.trim(),
+              email: email.trim(),
+              password,
+              accountType,
+              companyName: companyName?.trim() ?? "",
+            })
+          : await register({
+              name: name.trim(),
+              surname: surname.trim(),
+              email: email.trim(),
+              password,
+              accountType,
+            });
 
-      router.replace(ROUTES.login);
+      if (registrationResult.accountType === "employer") {
+        sessionStorage.setItem(
+          employerRegistrationTokenStorageKey,
+          registrationResult.token,
+        );
+        router.replace(ROUTES.subscription);
+        return;
+      }
+
+      sessionStorage.setItem(
+        candidateRegistrationTokenStorageKey,
+        registrationResult.token,
+      );
+      router.replace(ROUTES.candidateSubscription);
     } catch (error) {
       setError("root", {
         type: "server",
@@ -286,6 +317,39 @@ export function RegisterForm() {
             <SelectChevron />
           </span>
         </label>
+
+        {accountType === "employer" && (
+          <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
+            Şirket Adı
+            <span className="relative">
+              <MaterialIcon className={leadingIconClass}>
+                business
+              </MaterialIcon>
+              <input
+                aria-describedby={
+                  errors.companyName
+                    ? "register-company-name-error"
+                    : undefined
+                }
+                aria-invalid={Boolean(errors.companyName)}
+                autoComplete="organization"
+                className={`${inputClass} pl-10 pr-3`}
+                placeholder="Şirketinizin adı"
+                type="text"
+                {...registerField("companyName")}
+              />
+            </span>
+            {errors.companyName && (
+              <span
+                className="text-xs text-red-700"
+                id="register-company-name-error"
+                role="alert"
+              >
+                {errors.companyName.message}
+              </span>
+            )}
+          </label>
+        )}
 
         <div className="mt-1 flex items-start gap-2 text-sm leading-5 text-[#45474c]">
           <input
