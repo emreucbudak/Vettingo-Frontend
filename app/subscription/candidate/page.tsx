@@ -8,5 +8,10 @@ export const metadata: Metadata = {
 };
 
 export default function CandidateSubscriptionPage() {
-  return <SubscriptionPageContent plans={candidateSubscriptionPlans} />;
+  return (
+    <SubscriptionPageContent
+      accountType="candidate"
+      plans={candidateSubscriptionPlans}
+    />
+  );
 }
