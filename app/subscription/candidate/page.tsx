@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { candidateSubscriptionPlans } from "@/entities/subscription";
 import { SubscriptionPage as SubscriptionPageContent } from "@/pages/subscription";
 
 export const metadata: Metadata = {
@@ -8,10 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function CandidateSubscriptionPage() {
-  return (
-    <SubscriptionPageContent
-      accountType="candidate"
-      plans={candidateSubscriptionPlans}
-    />
-  );
+  return <SubscriptionPageContent accountType="candidate" />;
 }

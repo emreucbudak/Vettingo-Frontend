@@ -3,7 +3,7 @@ const defaultGatewayUrl = "http://localhost:5135";
 type CompleteRegistrationRequest = {
   accountType?: unknown;
   billingPeriod?: unknown;
-  planCode?: unknown;
+  planId?: unknown;
   registrationToken?: unknown;
 };
 
@@ -28,8 +28,8 @@ export async function POST(request: Request) {
   }
 
   if (
-    !isNonEmptyString(payload.planCode) ||
-    payload.planCode.trim().toLowerCase() !== "basic" ||
+    !Number.isInteger(payload.planId) ||
+    Number(payload.planId) <= 0 ||
     !isNonEmptyString(payload.billingPeriod) ||
     !["monthly", "annual"].includes(
       payload.billingPeriod.trim().toLowerCase(),
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         message:
-          "Doğrudan hesap aktivasyonu yalnızca ücretsiz Basic plan için kullanılabilir.",
+          "Ücretsiz plan aktivasyon bilgileri geçersiz.",
       },
       { status: 400 },
     );
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
   const registerBody = {
     accountType: payload.accountType,
     billingPeriod: payload.billingPeriod,
-    planId: payload.planCode,
+    planId: payload.planId,
     registrationToken: payload.registrationToken,
   };
 

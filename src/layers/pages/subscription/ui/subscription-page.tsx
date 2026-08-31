@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  subscriptionPlans,
+  fetchSubscriptionPlans,
+  saveSelectedSubscriptionPlan,
   type BillingPeriod,
+  type SubscriptionAccountType,
   type SubscriptionPlan,
-  type SubscriptionPlanId,
 } from "@/entities/subscription";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-
-type SubscriptionAccountType = "candidate" | "employer";
 
 const billingOptions: ReadonlyArray<{
   label: string;
@@ -22,7 +21,7 @@ const billingOptions: ReadonlyArray<{
 ];
 
 function formatPrice(price: number) {
-  return price === 0 ? "0" : price.toFixed(2);
+  return price.toString();
 }
 
 function PlanCard({
@@ -33,33 +32,23 @@ function PlanCard({
 }: {
   billingPeriod: BillingPeriod;
   isSelected: boolean;
-  onSelect: (planId: SubscriptionPlanId) => void;
+  onSelect: (plan: SubscriptionPlan) => void;
   plan: SubscriptionPlan;
 }) {
-  const price =
-    billingPeriod === "annual" ? plan.annualPrice : plan.monthlyPrice;
-  const hasAnnualDiscount =
-    billingPeriod === "annual" && plan.annualPrice < plan.monthlyPrice;
+  const price = plan.price;
 
   return (
     <article
       className={`relative flex min-h-[420px] flex-col rounded-[28px] border-2 bg-white p-6 transition duration-200 sm:p-7 ${
         isSelected
           ? "border-[#6f42e8] shadow-[0_20px_55px_rgba(111,66,232,0.17)]"
-          : plan.isPopular
-            ? "border-[#e7dcff] shadow-[0_18px_45px_rgba(9,20,38,0.08)]"
-            : "border-[#e3e5e9] shadow-[0_14px_36px_rgba(9,20,38,0.06)]"
+          : "border-[#e3e5e9] shadow-[0_14px_36px_rgba(9,20,38,0.06)]"
       }`}
     >
       <div className="flex min-h-7 items-start justify-between gap-3">
         <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#091426]">
           {plan.name}
         </h2>
-        {plan.isPopular && (
-          <span className="shrink-0 rounded-md border border-[#f3d88e] bg-[#fff8e7] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.04em] text-[#b57910]">
-            En Popüler
-          </span>
-        )}
       </div>
 
       <p className="mt-1.5 min-h-10 text-sm leading-5 text-[#72767e]">
@@ -73,11 +62,6 @@ function PlanCard({
             {formatPrice(price)}
           </span>
         </div>
-        {hasAnnualDiscount && (
-          <span className="rounded-md border border-[#bce7ce] bg-[#e8f8ef] px-2 py-1 text-xs font-bold text-[#39a86b]">
-            %50 indirim
-          </span>
-        )}
       </div>
 
       <p className="mt-2 text-xs leading-5 text-[#5d626b]">
@@ -96,7 +80,7 @@ function PlanCard({
           >
             <span
               className={`mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full ${
-                plan.isPopular ? "bg-[#6f42e8]" : "bg-[#34373d]"
+                isSelected ? "bg-[#6f42e8]" : "bg-[#34373d]"
               } text-white`}
             >
               <MaterialIcon className="text-[12px]">check</MaterialIcon>
@@ -109,11 +93,11 @@ function PlanCard({
       <button
         aria-pressed={isSelected}
         className={`mt-auto flex w-full items-center justify-center rounded-xl border px-5 py-3 text-sm font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6f42e8] focus-visible:ring-offset-2 ${
-          isSelected || plan.isPopular
+          isSelected
             ? "border-[#6f42e8] bg-[#6f42e8] text-white shadow-[0_8px_20px_rgba(111,66,232,0.22)] hover:bg-[#5f35d1]"
             : "border-[#d7d9de] bg-white text-[#091426] hover:border-[#6f42e8] hover:text-[#6f42e8]"
         }`}
-        onClick={() => onSelect(plan.id)}
+        onClick={() => onSelect(plan)}
         type="button"
       >
         {isSelected ? "Seçildi" : `${plan.name} Planını Seç`}
@@ -124,30 +108,58 @@ function PlanCard({
 
 export function SubscriptionPage({
   accountType = "employer",
-  plans = subscriptionPlans,
 }: {
   accountType?: SubscriptionAccountType;
-  plans?: readonly SubscriptionPlan[];
 }) {
   const router = useRouter();
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [billingPeriod, setBillingPeriod] =
     useState<BillingPeriod>("annual");
-  const [selectedPlan, setSelectedPlan] =
-    useState<SubscriptionPlanId | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<number | null>(null);
 
-  function handlePlanSelect(planId: SubscriptionPlanId) {
-    setSelectedPlan(planId);
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetchSubscriptionPlans(accountType, controller.signal)
+      .then((loadedPlans) => {
+        setPlans(loadedPlans);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Abonelik planları yüklenemedi.",
+        );
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, [accountType]);
+
+  function handlePlanSelect(plan: SubscriptionPlan) {
+    setSelectedPlan(plan.id);
+    saveSelectedSubscriptionPlan({
+      accountType,
+      billingPeriod,
+      plan,
+    });
 
     const paymentRoute =
       accountType === "candidate"
         ? ROUTES.candidatePayment
         : ROUTES.employerPayment;
-    const searchParams = new URLSearchParams({
-      plan: planId,
-      billing: billingPeriod,
-    });
 
-    router.push(`${paymentRoute}?${searchParams.toString()}`);
+    router.push(paymentRoute);
   }
 
   return (
@@ -185,17 +197,34 @@ export function SubscriptionPage({
           </div>
         </header>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <PlanCard
-              billingPeriod={billingPeriod}
-              isSelected={selectedPlan === plan.id}
-              key={plan.id}
-              onSelect={handlePlanSelect}
-              plan={plan}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <p className="mt-12 text-center text-sm font-medium text-[#5d626b]">
+            Planlar backend’den yükleniyor...
+          </p>
+        ) : errorMessage ? (
+          <p
+            className="mx-auto mt-12 max-w-xl rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-center text-sm text-red-700"
+            role="alert"
+          >
+            {errorMessage}
+          </p>
+        ) : plans.length === 0 ? (
+          <p className="mt-12 text-center text-sm font-medium text-[#5d626b]">
+            Bu hesap türü için henüz plan bulunmuyor.
+          </p>
+        ) : (
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {plans.map((plan) => (
+              <PlanCard
+                billingPeriod={billingPeriod}
+                isSelected={selectedPlan === plan.id}
+                key={plan.id}
+                onSelect={handlePlanSelect}
+                plan={plan}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

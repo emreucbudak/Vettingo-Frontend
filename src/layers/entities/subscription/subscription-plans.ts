@@ -1,99 +1,131 @@
 export type BillingPeriod = "monthly" | "annual";
-
-export type SubscriptionPlanId = "basic" | "pro" | "ultra";
+export type SubscriptionAccountType = "candidate" | "employer";
 
 export type SubscriptionPlan = {
-  id: SubscriptionPlanId;
+  id: number;
   name: string;
   description: string;
-  monthlyPrice: number;
-  annualPrice: number;
+  price: number;
   features: readonly string[];
-  isPopular?: boolean;
 };
 
-export const subscriptionPlans: readonly SubscriptionPlan[] = [
-  {
-    id: "basic",
-    name: "Basic",
-    description: "Temel işe alım araçlarıyla hemen başlayın.",
-    monthlyPrice: 0,
-    annualPrice: 0,
-    features: [
-      "Temel ilan ve aday özellikleri",
-      "Standart analiz ve raporlama",
-      "10 kullanıcıya kadar erişim",
-      "Kullanıcı başına 5 GB depolama",
-    ],
-  },
-  {
-    id: "pro",
-    name: "Pro",
-    description: "Büyüyen ekipler ve işletmeler için.",
-    monthlyPrice: 29.99,
-    annualPrice: 14.99,
-    features: [
-      "150+ entegrasyon desteği",
-      "Gelişmiş raporlama ve içgörüler",
-      "50 kullanıcıya kadar erişim",
-      "Kullanıcı başına 100 GB depolama",
-    ],
-    isPopular: true,
-  },
-  {
-    id: "ultra",
-    name: "Ultra",
-    description: "Geniş ölçekli işe alım operasyonları için.",
-    monthlyPrice: 45.99,
-    annualPrice: 22.99,
-    features: [
-      "Özel iş akışları ve otomasyon",
-      "Denetim kayıtları ve güvenlik takibi",
-      "Sınırsız kullanıcı erişimi",
-      "Sınırsız bireysel depolama",
-    ],
-  },
-] as const;
+export type SelectedSubscriptionPlan = {
+  accountType: SubscriptionAccountType;
+  billingPeriod: BillingPeriod;
+  plan: SubscriptionPlan;
+};
 
-export const candidateSubscriptionPlans: readonly SubscriptionPlan[] = [
-  {
-    id: "basic",
-    name: "Basic",
-    description: "İş arama sürecinizi temel Vettingo araçlarıyla yönetin.",
-    monthlyPrice: 0,
-    annualPrice: 0,
-    features: [
-      "Profesyonel aday profili",
-      "Aylık 5 iş başvurusu",
-      "Temel iş önerileri",
-      "1 GB belge depolama",
-    ],
-  },
-  {
-    id: "pro",
-    name: "Pro",
-    description: "Daha fazla fırsata ulaşmak isteyen adaylar için.",
-    monthlyPrice: 9.99,
-    annualPrice: 4.99,
-    features: [
-      "Sınırsız iş başvurusu",
-      "Yapay zekâ destekli profil içgörüleri",
-      "Gelişmiş iş eşleştirme",
-      "25 GB belge depolama",
-    ],
-    isPopular: true,
-  },
-  {
-    id: "ultra",
-    name: "Ultra",
-    description: "Kariyer gelişimini uçtan uca hızlandırmak isteyenler için.",
-    monthlyPrice: 19.99,
-    annualPrice: 9.99,
-    features: [
-      "Gelişmiş yetkinlik analizleri",
-      "Öncelikli aday görünürlüğü",
-      "Mülakat hazırlık araçları",
-      "Sınırsız belge depolama",
-    ],
-  },
-] as const;
+type SubscriptionPlanApiResponse = {
+  id: number;
+  planName: string;
+  price: number;
+  planType: number;
+  properties: ReadonlyArray<{
+    name: string;
+    count: number;
+  }>;
+};
+
+const selectedPlanStorageKey = "vettingo:selected-subscription-plan";
+
+function isSubscriptionPlan(value: unknown): value is SubscriptionPlan {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const plan = value as Partial<SubscriptionPlan>;
+
+  return (
+    Number.isInteger(plan.id) &&
+    Number(plan.id) > 0 &&
+    typeof plan.name === "string" &&
+    plan.name.trim().length > 0 &&
+    Number.isInteger(plan.price) &&
+    Number(plan.price) >= 0 &&
+    Array.isArray(plan.features) &&
+    plan.features.every((feature) => typeof feature === "string")
+  );
+}
+
+export async function fetchSubscriptionPlans(
+  accountType: SubscriptionAccountType,
+  signal?: AbortSignal,
+): Promise<SubscriptionPlan[]> {
+  const response = await fetch(`/api/plans?accountType=${accountType}`, {
+    cache: "no-store",
+    signal,
+  });
+
+  if (!response.ok) {
+    throw new Error("Abonelik planları backend üzerinden alınamadı.");
+  }
+
+  const plans = (await response.json()) as SubscriptionPlanApiResponse[];
+
+  if (!Array.isArray(plans)) {
+    throw new Error("Backend geçersiz plan verisi döndürdü.");
+  }
+
+  const expectedPlanType = accountType === "candidate" ? 1 : 0;
+
+  return plans
+    .filter(
+      (plan) =>
+        Number.isInteger(plan.id) &&
+        plan.id > 0 &&
+        Number.isInteger(plan.price) &&
+        plan.price >= 0 &&
+        plan.planType === expectedPlanType,
+    )
+    .map((plan) => ({
+      id: plan.id,
+      name: plan.planName,
+      description: `${plan.planName} planının sunduğu özellikler.`,
+      price: plan.price,
+      features: plan.properties.map((property) =>
+        property.count > 0
+          ? `${property.name}: ${property.count}`
+          : property.name,
+      ),
+    }));
+}
+
+export function saveSelectedSubscriptionPlan(
+  selection: SelectedSubscriptionPlan,
+) {
+  window.sessionStorage.setItem(
+    selectedPlanStorageKey,
+    JSON.stringify(selection),
+  );
+}
+
+export function getSelectedSubscriptionPlan(
+  accountType: SubscriptionAccountType,
+): SelectedSubscriptionPlan | null {
+  const storedSelection = window.sessionStorage.getItem(selectedPlanStorageKey);
+
+  if (!storedSelection) {
+    return null;
+  }
+
+  try {
+    const selection = JSON.parse(storedSelection) as Partial<SelectedSubscriptionPlan>;
+
+    if (
+      selection.accountType !== accountType ||
+      (selection.billingPeriod !== "monthly" &&
+        selection.billingPeriod !== "annual") ||
+      !isSubscriptionPlan(selection.plan)
+    ) {
+      return null;
+    }
+
+    return selection as SelectedSubscriptionPlan;
+  } catch {
+    return null;
+  }
+}
+
+export function clearSelectedSubscriptionPlan() {
+  window.sessionStorage.removeItem(selectedPlanStorageKey);
+}
