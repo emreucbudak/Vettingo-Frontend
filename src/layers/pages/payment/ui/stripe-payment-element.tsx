@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   Elements,
   PaymentElement,
@@ -15,7 +15,7 @@ import type {
 } from "@/entities/subscription";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
-  completeRegistration,
+  clearRegistrationToken,
   getRegistrationToken,
 } from "../api/complete-registration";
 import type { SubscriptionAccountType } from "../model/payment-page-data";
@@ -29,11 +29,60 @@ type StripePaymentElementProps = {
 
 type ConfirmSubscriptionResponse = {
   clientSecret?: string;
+  completed?: boolean;
+  detail?: string;
   message?: string;
+  paymentIntentId?: string;
+  status?: string;
+  title?: string;
 };
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
+
+function getPendingPaymentIntentKey(
+  accountType: SubscriptionAccountType,
+  registrationToken: string,
+) {
+  return `vettingo:${accountType}:payment-intent:${registrationToken}`;
+}
+
+async function confirmSubscription(
+  request: {
+    accountType: SubscriptionAccountType;
+    billingPeriod: BillingPeriod;
+    confirmationTokenId?: string;
+    paymentIntentId?: string;
+    planId: SubscriptionPlanId;
+    registrationToken: string;
+  },
+) {
+  const response = await fetch("/api/payments/confirm-subscription", {
+    body: JSON.stringify(request),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+  const result = (await response
+    .json()
+    .catch(() => ({}))) as ConfirmSubscriptionResponse;
+
+  if (!response.ok) {
+    throw new Error(
+      result.message ??
+        result.detail ??
+        result.title ??
+        "Ödeme şu anda tamamlanamadı. Lütfen tekrar deneyin.",
+    );
+  }
+
+  if (!result.paymentIntentId) {
+    throw new Error("Ödeme servisinden geçerli bir işlem kimliği alınamadı.");
+  }
+
+  return result;
+}
 
 function PaymentForm({
   accountType,
@@ -45,8 +94,32 @@ function PaymentForm({
   const [isElementReady, setIsElementReady] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isPaymentConfirmed, setIsPaymentConfirmed] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [pendingPaymentIntentId, setPendingPaymentIntentId] = useState<
+    string | null
+  >(null);
+  const isPaymentConfirmed = pendingPaymentIntentId !== null;
+
+  useEffect(() => {
+    const registrationToken = getRegistrationToken(accountType);
+
+    if (!registrationToken) {
+      return;
+    }
+
+    const storedPaymentIntentId = sessionStorage.getItem(
+      getPendingPaymentIntentKey(accountType, registrationToken),
+    );
+
+    if (storedPaymentIntentId) {
+      const timeoutId = window.setTimeout(
+        () => setPendingPaymentIntentId(storedPaymentIntentId),
+        0,
+      );
+
+      return () => window.clearTimeout(timeoutId);
+    }
+  }, [accountType]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -68,7 +141,10 @@ function PaymentForm({
     setErrorMessage(null);
 
     try {
-      if (!isPaymentConfirmed) {
+      let result: ConfirmSubscriptionResponse;
+      let paymentIntentId = pendingPaymentIntentId;
+
+      if (!paymentIntentId) {
         const { error: submitError } = await elements.submit();
 
         if (submitError) {
@@ -93,52 +169,65 @@ function PaymentForm({
           );
         }
 
-        const response = await fetch("/api/payments/confirm-subscription", {
-          body: JSON.stringify({
-            accountType,
-            billingPeriod,
-            confirmationTokenId: confirmationToken.id,
-            planId,
-            registrationToken,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
+        result = await confirmSubscription({
+          accountType,
+          billingPeriod,
+          confirmationTokenId: confirmationToken.id,
+          planId,
+          registrationToken,
         });
-        const result = (await response
-          .json()
-          .catch(() => ({}))) as ConfirmSubscriptionResponse;
+        paymentIntentId = result.paymentIntentId!;
+        sessionStorage.setItem(
+          getPendingPaymentIntentKey(accountType, registrationToken),
+          paymentIntentId,
+        );
+        setPendingPaymentIntentId(paymentIntentId);
+      } else {
+        result = await confirmSubscription({
+          accountType,
+          billingPeriod,
+          paymentIntentId,
+          planId,
+          registrationToken,
+        });
+      }
 
-        if (!response.ok) {
+      if (result.status === "requires_action") {
+        if (!result.clientSecret) {
+          throw new Error("Banka doğrulaması için gerekli ödeme bilgisi alınamadı.");
+        }
+
+        const { error: nextActionError } = await stripe.handleNextAction({
+          clientSecret: result.clientSecret,
+        });
+
+        if (nextActionError) {
           throw new Error(
-            result.message ??
-              "Ödeme şu anda tamamlanamadı. Lütfen tekrar deneyin.",
+            nextActionError.message ?? "Banka doğrulaması tamamlanamadı.",
           );
         }
 
-        if (result.clientSecret) {
-          const { error: nextActionError } = await stripe.handleNextAction({
-            clientSecret: result.clientSecret,
-          });
-
-          if (nextActionError) {
-            throw new Error(
-              nextActionError.message ?? "Banka doğrulaması tamamlanamadı.",
-            );
-          }
-        }
-
-        setIsPaymentConfirmed(true);
+        result = await confirmSubscription({
+          accountType,
+          billingPeriod,
+          paymentIntentId,
+          planId,
+          registrationToken,
+        });
       }
 
-      await completeRegistration({
-        accountType,
-        billingPeriod,
-        planCode: planId,
-        registrationToken,
-      });
+      if (!result.completed) {
+        throw new Error(
+          result.message ??
+            "Ödeme alındı ancak hesap aktivasyonu henüz tamamlanmadı.",
+        );
+      }
 
+      sessionStorage.removeItem(
+        getPendingPaymentIntentKey(accountType, registrationToken),
+      );
+      clearRegistrationToken(accountType);
+      setPendingPaymentIntentId(null);
       setIsComplete(true);
     } catch (error) {
       setErrorMessage(
@@ -295,7 +384,7 @@ export function StripePaymentElement({
       currency: "usd",
       loader: "auto",
       locale: "tr",
-      mode: "subscription",
+      mode: "payment",
       setupFutureUsage: "off_session",
     }),
     [amountInCents],

@@ -28,6 +28,10 @@ export function getRegistrationToken(accountType: SubscriptionAccountType) {
   return sessionStorage.getItem(registrationTokenKeys[accountType]);
 }
 
+export function clearRegistrationToken(accountType: SubscriptionAccountType) {
+  sessionStorage.removeItem(registrationTokenKeys[accountType]);
+}
+
 export async function completeRegistration({
   accountType,
   billingPeriod,
@@ -66,5 +70,5 @@ export async function completeRegistration({
     );
   }
 
-  sessionStorage.removeItem(registrationTokenKeys[accountType]);
+  clearRegistrationToken(accountType);
 }

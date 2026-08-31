@@ -28,27 +28,30 @@ export async function POST(request: Request) {
   }
 
   if (
-    isEmployer &&
-    (!isNonEmptyString(payload.planCode) ||
-      !isNonEmptyString(payload.billingPeriod))
+    !isNonEmptyString(payload.planCode) ||
+    payload.planCode.trim().toLowerCase() !== "basic" ||
+    !isNonEmptyString(payload.billingPeriod) ||
+    !["monthly", "annual"].includes(
+      payload.billingPeriod.trim().toLowerCase(),
+    )
   ) {
     return Response.json(
-      { message: "İşveren abonelik bilgileri eksik." },
+      {
+        message:
+          "Doğrudan hesap aktivasyonu yalnızca ücretsiz Basic plan için kullanılabilir.",
+      },
       { status: 400 },
     );
   }
 
   const gatewayUrl = process.env.VETTINGO_GATEWAY_URL ?? defaultGatewayUrl;
-  const registerPath = isCandidate
-    ? "/auth/candidate/register"
-    : "/auth/employer/register";
-  const registerBody = isCandidate
-    ? { token: payload.registrationToken }
-    : {
-        token: payload.registrationToken,
-        planCode: payload.planCode,
-        billingPeriod: payload.billingPeriod,
-      };
+  const registerPath = "/payments/subscriptions/activate-free";
+  const registerBody = {
+    accountType: payload.accountType,
+    billingPeriod: payload.billingPeriod,
+    planId: payload.planCode,
+    registrationToken: payload.registrationToken,
+  };
 
   try {
     const response = await fetch(`${gatewayUrl}${registerPath}`, {
