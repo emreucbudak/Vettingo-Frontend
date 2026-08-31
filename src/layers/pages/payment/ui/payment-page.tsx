@@ -1,16 +1,76 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-import type { PaymentPageData } from "../model/payment-page-data";
+import {
+  getPaymentPageData,
+  type PaymentPageData,
+  type SubscriptionAccountType,
+} from "../model/payment-page-data";
 import { FreePlanPanel } from "./free-plan-panel";
 import { StripePaymentElement } from "./stripe-payment-element";
 
 function formatPrice(price: number) {
-  return `$${price.toFixed(2)}`;
+  return `$${price}`;
 }
 
 export function PaymentPage({
   accountType,
-  amountInCents,
+}: {
+  accountType: SubscriptionAccountType;
+}) {
+  const [paymentData, setPaymentData] = useState<
+    PaymentPageData | null | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(
+      () => setPaymentData(getPaymentPageData(accountType)),
+      0,
+    );
+
+    return () => window.clearTimeout(timeoutId);
+  }, [accountType]);
+
+  if (paymentData === undefined) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#f8f9ff] px-4 text-sm font-medium text-[#5d626b]">
+        Seçilen plan yükleniyor...
+      </main>
+    );
+  }
+
+  if (paymentData === null) {
+    const backHref =
+      accountType === "candidate" ? "/subscription/candidate" : "/subscription";
+
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#f8f9ff] px-4">
+        <div className="max-w-md rounded-2xl border border-[#e0e2e7] bg-white p-8 text-center shadow-[0_20px_55px_rgba(9,20,38,0.08)]">
+          <h1 className="text-xl font-bold text-[#091426]">Plan seçimi bulunamadı</h1>
+          <p className="mt-3 text-sm leading-6 text-[#5d626b]">
+            Ödeme sayfasına devam etmek için backend’den yüklenen planlardan
+            birini seçmelisiniz.
+          </p>
+          <Link
+            className="mt-6 inline-flex rounded-xl bg-[#6f42e8] px-5 py-3 text-sm font-bold text-white"
+            href={backHref}
+          >
+            Planlara dön
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  return <PaymentPageContent {...paymentData} />;
+}
+
+function PaymentPageContent({
+  accountType,
+  amount,
+  amountInMinorUnits,
   backHref,
   billingPeriod,
   plan,
@@ -19,12 +79,8 @@ export function PaymentPage({
   const isAnnual = billingPeriod === "annual";
   const accountLabel = accountType === "candidate" ? "Çalışan" : "İşveren";
   const billingLabel = isAnnual ? "Yıllık" : "Aylık";
-  const monthlyEquivalent = isAnnual ? plan.annualPrice : plan.monthlyPrice;
-  const listPrice = isAnnual ? plan.monthlyPrice * 12 : totalPrice;
-  const annualSavings = Math.max(
-    0,
-    (plan.monthlyPrice - plan.annualPrice) * 12,
-  );
+  const monthlyEquivalent = plan.price;
+  const listPrice = totalPrice;
 
   return (
     <main className="min-h-screen bg-[#f8f9ff] px-4 py-6 text-[#091426] sm:px-6 sm:py-9 lg:px-8">
@@ -119,12 +175,6 @@ export function PaymentPage({
                     </span>
                     <span>{formatPrice(listPrice)}</span>
                   </div>
-                  {isAnnual && annualSavings > 0 && (
-                    <div className="mt-3 flex items-center justify-between text-sm font-semibold text-[#006c49]">
-                      <span>Yıllık plan avantajı</span>
-                      <span>-{formatPrice(annualSavings)}</span>
-                    </div>
-                  )}
                   <div className="mt-5 flex items-end justify-between border-t border-[#ebecef] pt-5">
                     <div>
                       <span className="block text-sm font-bold">Bugün ödenecek</span>
@@ -159,16 +209,17 @@ export function PaymentPage({
               </div>
 
               <div className="mt-7 border-t border-[#ebecef] pt-7">
-                {amountInCents === 0 ? (
+                {amount === 0 ? (
                   <FreePlanPanel
                     accountType={accountType}
                     billingPeriod={billingPeriod}
-                    planCode={plan.id}
+                    planId={plan.id}
                   />
                 ) : (
                   <StripePaymentElement
                     accountType={accountType}
-                    amountInCents={amountInCents}
+                    amount={amount}
+                    amountInMinorUnits={amountInMinorUnits}
                     billingPeriod={billingPeriod}
                     planId={plan.id}
                   />

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import type {
-  BillingPeriod,
-  SubscriptionPlanId,
+import {
+  clearSelectedSubscriptionPlan,
+  type BillingPeriod,
 } from "@/entities/subscription";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import type { SubscriptionAccountType } from "../model/payment-page-data";
@@ -15,13 +15,13 @@ import {
 type FreePlanPanelProps = {
   accountType: SubscriptionAccountType;
   billingPeriod: BillingPeriod;
-  planCode: SubscriptionPlanId;
+  planId: number;
 };
 
 export function FreePlanPanel({
   accountType,
   billingPeriod,
-  planCode,
+  planId,
 }: FreePlanPanelProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -47,9 +47,10 @@ export function FreePlanPanel({
       await completeRegistration({
         accountType,
         billingPeriod,
-        planCode,
+        planId,
         registrationToken,
       });
+      clearSelectedSubscriptionPlan();
       setIsComplete(true);
     } catch (error) {
       setErrorMessage(

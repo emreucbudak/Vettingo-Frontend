@@ -2,14 +2,13 @@ import "client-only";
 
 import type {
   BillingPeriod,
-  SubscriptionPlanId,
 } from "@/entities/subscription";
 import type { SubscriptionAccountType } from "../model/payment-page-data";
 
 type CompleteRegistrationRequest = {
   accountType: SubscriptionAccountType;
   billingPeriod: BillingPeriod;
-  planCode: SubscriptionPlanId;
+  planId: number;
   registrationToken: string;
 };
 
@@ -35,14 +34,14 @@ export function clearRegistrationToken(accountType: SubscriptionAccountType) {
 export async function completeRegistration({
   accountType,
   billingPeriod,
-  planCode,
+  planId,
   registrationToken,
 }: CompleteRegistrationRequest) {
   const response = await fetch("/api/auth/complete-registration", {
     body: JSON.stringify({
       accountType,
       billingPeriod,
-      planCode,
+      planId,
       registrationToken,
     }),
     headers: {

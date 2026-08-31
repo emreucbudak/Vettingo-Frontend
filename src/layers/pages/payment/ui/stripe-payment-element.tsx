@@ -11,8 +11,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import type { StripeElementsOptions } from "@stripe/stripe-js";
 import type {
   BillingPeriod,
-  SubscriptionPlanId,
 } from "@/entities/subscription";
+import { clearSelectedSubscriptionPlan } from "@/entities/subscription";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   clearRegistrationToken,
@@ -22,9 +22,10 @@ import type { SubscriptionAccountType } from "../model/payment-page-data";
 
 type StripePaymentElementProps = {
   accountType: SubscriptionAccountType;
-  amountInCents: number;
+  amount: number;
+  amountInMinorUnits: number;
   billingPeriod: BillingPeriod;
-  planId: SubscriptionPlanId;
+  planId: number;
 };
 
 type ConfirmSubscriptionResponse = {
@@ -43,17 +44,20 @@ const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 function getPendingPaymentIntentKey(
   accountType: SubscriptionAccountType,
   registrationToken: string,
+  planId: number,
+  billingPeriod: BillingPeriod,
 ) {
-  return `vettingo:${accountType}:payment-intent:${registrationToken}`;
+  return `vettingo:${accountType}:payment-intent:${registrationToken}:${planId}:${billingPeriod}`;
 }
 
 async function confirmSubscription(
   request: {
     accountType: SubscriptionAccountType;
+    amount: number;
     billingPeriod: BillingPeriod;
     confirmationTokenId?: string;
     paymentIntentId?: string;
-    planId: SubscriptionPlanId;
+    planId: number;
     registrationToken: string;
   },
 ) {
@@ -86,9 +90,10 @@ async function confirmSubscription(
 
 function PaymentForm({
   accountType,
+  amount,
   billingPeriod,
   planId,
-}: Omit<StripePaymentElementProps, "amountInCents">) {
+}: Omit<StripePaymentElementProps, "amountInMinorUnits">) {
   const stripe = useStripe();
   const elements = useElements();
   const [isElementReady, setIsElementReady] = useState(false);
@@ -108,7 +113,12 @@ function PaymentForm({
     }
 
     const storedPaymentIntentId = sessionStorage.getItem(
-      getPendingPaymentIntentKey(accountType, registrationToken),
+      getPendingPaymentIntentKey(
+        accountType,
+        registrationToken,
+        planId,
+        billingPeriod,
+      ),
     );
 
     if (storedPaymentIntentId) {
@@ -119,7 +129,7 @@ function PaymentForm({
 
       return () => window.clearTimeout(timeoutId);
     }
-  }, [accountType]);
+  }, [accountType, billingPeriod, planId]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -171,6 +181,7 @@ function PaymentForm({
 
         result = await confirmSubscription({
           accountType,
+          amount,
           billingPeriod,
           confirmationTokenId: confirmationToken.id,
           planId,
@@ -178,13 +189,19 @@ function PaymentForm({
         });
         paymentIntentId = result.paymentIntentId!;
         sessionStorage.setItem(
-          getPendingPaymentIntentKey(accountType, registrationToken),
+          getPendingPaymentIntentKey(
+            accountType,
+            registrationToken,
+            planId,
+            billingPeriod,
+          ),
           paymentIntentId,
         );
         setPendingPaymentIntentId(paymentIntentId);
       } else {
         result = await confirmSubscription({
           accountType,
+          amount,
           billingPeriod,
           paymentIntentId,
           planId,
@@ -209,6 +226,7 @@ function PaymentForm({
 
         result = await confirmSubscription({
           accountType,
+          amount,
           billingPeriod,
           paymentIntentId,
           planId,
@@ -224,9 +242,15 @@ function PaymentForm({
       }
 
       sessionStorage.removeItem(
-        getPendingPaymentIntentKey(accountType, registrationToken),
+        getPendingPaymentIntentKey(
+          accountType,
+          registrationToken,
+          planId,
+          billingPeriod,
+        ),
       );
       clearRegistrationToken(accountType);
+      clearSelectedSubscriptionPlan();
       setPendingPaymentIntentId(null);
       setIsComplete(true);
     } catch (error) {
@@ -341,13 +365,14 @@ function StripeConfigurationNotice() {
 
 export function StripePaymentElement({
   accountType,
-  amountInCents,
+  amount,
+  amountInMinorUnits,
   billingPeriod,
   planId,
 }: StripePaymentElementProps) {
   const options = useMemo<StripeElementsOptions>(
     () => ({
-      amount: amountInCents,
+      amount: amountInMinorUnits,
       appearance: {
         labels: "above",
         theme: "stripe",
@@ -387,7 +412,7 @@ export function StripePaymentElement({
       mode: "payment",
       setupFutureUsage: "off_session",
     }),
-    [amountInCents],
+    [amountInMinorUnits],
   );
 
   if (!stripePromise) {
@@ -398,6 +423,7 @@ export function StripePaymentElement({
     <Elements options={options} stripe={stripePromise}>
       <PaymentForm
         accountType={accountType}
+        amount={amount}
         billingPeriod={billingPeriod}
         planId={planId}
       />
