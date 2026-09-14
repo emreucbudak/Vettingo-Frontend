@@ -172,25 +172,21 @@ export function HrSettingsPage() {
 
 const helpTopics = [
   {
-    icon: "binoculars",
     title: "Scout",
     description: "Aday keşfi, filtreleme ve kısa liste.",
     href: ROUTES.scout,
   },
   {
-    icon: "groups",
     title: "Aday Yönetimi",
     description: "Aday havuzu ve süreç aşamaları.",
     href: ROUTES.candidateManagement,
   },
   {
-    icon: "calendar_month",
     title: "Mülakatlar",
     description: "Takvim, panel ve geri bildirim.",
     href: ROUTES.interviews,
   },
   {
-    icon: "monitoring",
     title: "Raporlama",
     description: "İşe alım verileri ve performans içgörüleri.",
     href: ROUTES.reporting,
@@ -205,14 +201,11 @@ export function HrHelpCenterPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {helpTopics.map((topic) => (
             <Link
-              className="group rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 transition-all hover:-translate-y-0.5 hover:border-[#091426] hover:shadow-[0_10px_24px_rgba(9,20,38,0.06)]"
+              className="group flex h-full min-h-[11.125rem] flex-col justify-center rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 transition-all hover:-translate-y-0.5 hover:border-[#091426] hover:shadow-[0_10px_24px_rgba(9,20,38,0.06)]"
               href={topic.href}
               key={topic.title}
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-                <MaterialIcon className="text-[21px]">{topic.icon}</MaterialIcon>
-              </span>
-              <h2 className="mt-4 text-sm font-semibold text-[#0b1c30]">
+              <h2 className="text-sm font-semibold text-[#0b1c30]">
                 {topic.title}
               </h2>
               <p className="mt-2 text-xs leading-5 text-[#45474c]">{topic.description}</p>

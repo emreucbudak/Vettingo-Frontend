@@ -5,25 +5,21 @@ import { EmployerShell } from '@/widgets/employer/shell';
 
 const helpTopics = [
   {
-    icon: 'work',
     title: 'İlan Yönetimi',
     description: 'İş ilanları ve ilan durumları.',
     href: ROUTES.employerJobManagementDocumentation,
   },
   {
-    icon: 'assignment_ind',
     title: 'Başvurular',
     description: 'Başvurular ve değerlendirme süreçleri.',
     href: ROUTES.employerApplicationsDocumentation,
   },
   {
-    icon: 'binoculars',
     title: 'Scout',
     description: 'Aday keşfi ve gelişmiş filtreleme.',
     href: ROUTES.employerScoutDocumentation,
   },
   {
-    icon: 'groups',
     title: 'Hesap ve Ekip Yönetimi',
     description: 'Ekip erişimleri ve hesap ayarları.',
     href: ROUTES.employerAccountTeamDocumentation,
@@ -82,20 +78,17 @@ function HelpTopics() {
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
         {helpTopics.map((topic) => (
           <Link
-            className='group flex h-full flex-col rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 transition-all hover:-translate-y-0.5 hover:border-[#091426] hover:shadow-[0_10px_24px_rgba(9,20,38,0.06)]'
+            className='group flex h-full min-h-[11.125rem] flex-col justify-center rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 transition-all hover:-translate-y-0.5 hover:border-[#091426] hover:shadow-[0_10px_24px_rgba(9,20,38,0.06)]'
             href={topic.href}
             key={topic.title}
           >
-            <span className='flex h-10 w-10 items-center justify-center rounded bg-[#dce9ff] text-[#091426]'>
-              <MaterialIcon className='text-[21px]'>{topic.icon}</MaterialIcon>
-            </span>
-            <h2 className='mt-4 text-sm font-semibold text-[#0b1c30]'>
+            <h2 className='text-sm font-semibold text-[#0b1c30]'>
               {topic.title}
             </h2>
             <p className='mt-2 whitespace-nowrap text-xs leading-5 text-[#45474c]'>
               {topic.description}
             </p>
-            <span className='mt-auto inline-flex items-center gap-1 pt-4 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49]'>
+            <span className='mt-4 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49]'>
               Dokümantasyonu Oku
               <MaterialIcon className='text-[16px]'>arrow_forward</MaterialIcon>
             </span>
