@@ -109,10 +109,10 @@ export function EmployerApplicationsPage() {
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
         <StatStrip
           items={[
-            { label: "Yeni Başvuru", value: "38", icon: "person_add" },
-            { label: "İnceleniyor", value: "24", icon: "search" },
-            { label: "Görüşme", value: "11", icon: "forum" },
-            { label: "Ortalama Rating", value: "89", icon: "monitoring" },
+            { label: "Toplam Başvuru", value: "38" },
+            { label: "İnceleniyor", value: "24" },
+            { label: "Görüşme", value: "11" },
+            { label: "Ortalama Rating", value: "89" },
           ]}
         />
 
