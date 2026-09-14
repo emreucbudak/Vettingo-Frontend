@@ -1,4 +1,4 @@
-﻿import type { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type MaterialIconProps = {
   children: string;
@@ -85,6 +85,12 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M8 16h3" />
       <path d="M17 13v6" />
       <path d="M14 16h6" />
+    </>
+  ),
+  edit: (
+    <>
+      <path d="M17.5 3.5a2.12 2.12 0 0 1 3 3L7 20l-4 1 1-4Z" />
+      <path d="m15 6 3 3" />
     </>
   ),
   expand_more: <path d="m6 9 6 6 6-6" />,
