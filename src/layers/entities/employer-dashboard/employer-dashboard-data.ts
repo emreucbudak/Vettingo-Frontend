@@ -23,20 +23,20 @@ export const employerUtilityItems = [
 
 export const employerStats = [
   {
-    label: "Toplam Açık Rol",
-    value: "24",
+    label: "Toplam İlan",
+    metric: "totalJobPostings",
   },
   {
     label: "Toplam Başvuru",
     value: "1,284",
   },
   {
-    label: "Bugünkü YZ Eşleşmesi",
+    label: "Bugünkü Başvuru",
     value: "18",
   },
   {
-    label: "Aktif Talep",
-    value: "2",
+    label: "Aktif İlan",
+    metric: "activeJobPostings",
   },
 ] as const;
 
