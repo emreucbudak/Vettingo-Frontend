@@ -1,10 +1,10 @@
 import Image from "next/image";
+import { EmployerStatistics } from "@/features/employer-dashboard";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 import {
   activeRequisitions,
   employerProfile,
-  employerStats,
   funnelStages,
   monthlyBars,
   topAiMatches,
@@ -27,19 +27,6 @@ function MobileBrand() {
         <h1 className="text-xl font-bold text-[#091426]">Vettingo</h1>
       </div>
     </div>
-  );
-}
-
-function StatCard({ stat }: { stat: (typeof employerStats)[number] }) {
-  return (
-    <article className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6">
-      <h3 className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-        {stat.label}
-      </h3>
-      <p className="mt-4 text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-        {stat.value}
-      </p>
-    </article>
   );
 }
 
@@ -204,11 +191,7 @@ export function EmployerDashboardPage() {
 
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
 
-        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {employerStats.map((stat) => (
-            <StatCard key={stat.label} stat={stat} />
-          ))}
-        </div>
+        <EmployerStatistics />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <RequisitionsTable />
