@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EmployerJobStatistics } from "@/features/employer-dashboard";
 import { employerJobs } from "@/entities/employer-recruiting/employer-recruiting-data";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
@@ -67,7 +68,6 @@ function StatStrip({
 }
 
 export function EmployerJobsPage() {
-  const activeJobs = employerJobs.filter((job) => job.status === "Aktif");
   const totalApplicants = employerJobs.reduce((total, job) => total + job.applicants, 0);
   const totalShortlisted = employerJobs.reduce((total, job) => total + job.shortlisted, 0);
 
@@ -88,13 +88,9 @@ export function EmployerJobsPage() {
           title="İlanlarım"
         />
 
-        <StatStrip
-          items={[
-            { label: "Toplam İlan", value: String(employerJobs.length), icon: "list_alt" },
-            { label: "Aktif İlan", value: String(activeJobs.length), icon: "campaign" },
-            { label: "Toplam Başvuru", value: String(totalApplicants), icon: "group" },
-            { label: "Kısa Liste", value: String(totalShortlisted) },
-          ]}
+        <EmployerJobStatistics
+          totalApplicants={totalApplicants}
+          totalShortlisted={totalShortlisted}
         />
 
         <EmployerJobList />
