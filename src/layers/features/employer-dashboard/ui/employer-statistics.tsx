@@ -1,24 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { employerStats } from "@/entities/employer-dashboard";
-import { getEmployerJobStatistics, type EmployerJobStatistics } from "../api/employer-dashboard-api";
+import { useEmployerJobStatistics } from "../model/use-employer-job-statistics";
 
 export function EmployerStatistics() {
-  const [statistics, setStatistics] = useState<EmployerJobStatistics | null>(null);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    getEmployerJobStatistics(controller.signal)
-      .then((result) => {
-        if (!controller.signal.aborted) setStatistics(result);
-      })
-      .catch(() => {
-        if (!controller.signal.aborted) setError(true);
-      });
-    return () => controller.abort();
-  }, []);
+  const { statistics, error } = useEmployerJobStatistics();
 
   return (
     <section className="mb-8" aria-label="İşveren istatistikleri">
