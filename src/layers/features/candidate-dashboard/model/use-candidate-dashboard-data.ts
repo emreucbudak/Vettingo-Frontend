@@ -74,12 +74,6 @@ const applicationStatusConfig = {
     currentStep: "Başvuru süreci tamamlandı",
     statusClassName: "bg-[#ffdad6] text-[#93000a]",
   },
-  Withdrawn: {
-    label: "Geri Çekildi",
-    progress: 100,
-    currentStep: "Başvuru geri çekildi",
-    statusClassName: "bg-[#e2e2e9] text-[#45474c]",
-  },
 } as const;
 
 type ApplicationStatusKey = keyof typeof applicationStatusConfig;
@@ -90,7 +84,6 @@ const numericApplicationStatuses: Record<number, ApplicationStatusKey> = {
   3: "Interview",
   4: "Offer",
   5: "Rejected",
-  6: "Withdrawn",
 };
 
 function getApplicationStatus(status: string | number) {

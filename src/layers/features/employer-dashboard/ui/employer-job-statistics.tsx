@@ -1,19 +1,25 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { getStats, type EmployerStats } from "../api/employer-dashboard-api";
 import { MaterialIcon } from "@/shared/ui/material-icon";
-import { useEmployerJobStatistics } from "../model/use-employer-job-statistics";
 
-export function EmployerJobStatistics({ totalApplicants, totalShortlisted }: {
-  totalApplicants: number;
-  totalShortlisted: number;
-}) {
-  const { statistics, error } = useEmployerJobStatistics();
+export function EmployerJobStatistics() {
+  const [statistics, setStatistics] = useState<EmployerStats | null>(null);
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    getStats(controller.signal)
+      .then(result => { if (!controller.signal.aborted) setStatistics(result); })
+      .catch(() => { if (!controller.signal.aborted) setError(true); });
+    return () => controller.abort();
+  }, []);
   const placeholder = error ? "—" : "Yükleniyor…";
   const items = [
     { label: "Toplam İlan", value: statistics ? statistics.totalJobPostings.toLocaleString("tr-TR") : placeholder, icon: "list_alt" },
     { label: "Aktif İlan", value: statistics ? statistics.activeJobPostings.toLocaleString("tr-TR") : placeholder, icon: "campaign" },
-    { label: "Toplam Başvuru", value: String(totalApplicants), icon: "group" },
-    { label: "Aktif Başvuru", value: String(totalShortlisted) },
+    { label: "Toplam Başvuru", value: statistics ? statistics.totalApplications.toLocaleString("tr-TR") : placeholder, icon: "group" },
+    { label: "Aktif Başvuru", value: statistics ? statistics.activeApplications.toLocaleString("tr-TR") : placeholder },
   ];
 
   return (
@@ -34,7 +40,7 @@ export function EmployerJobStatistics({ totalApplicants, totalShortlisted }: {
         ))}
       </div>
       {error && (
-        <p className="mt-3 text-sm text-red-700" role="alert">İlan sayıları yüklenemedi.</p>
+        <p className="mt-3 text-sm text-red-700" role="alert">İstatistikler çekilemedi, lütfen tekrar deneyiniz.</p>
       )}
     </section>
   );
