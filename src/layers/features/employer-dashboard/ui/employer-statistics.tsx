@@ -10,11 +10,9 @@ export function EmployerStatistics() {
     <section className="mb-8" aria-label="İşveren istatistikleri">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {employerStats.map((stat) => {
-          const value = "metric" in stat
-            ? statistics
-              ? statistics[stat.metric].toLocaleString("tr-TR")
-              : error ? "—" : "Yükleniyor…"
-            : stat.value;
+          const value = statistics
+            ? statistics[stat.metric].toLocaleString("tr-TR")
+            : error ? "—" : "Yükleniyor…";
           return (
             <article className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6" key={stat.label}>
               <h3 className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
@@ -29,7 +27,7 @@ export function EmployerStatistics() {
       </div>
       {error && (
         <p className="mt-3 text-sm text-red-700" role="alert">
-          İlan sayıları yüklenemedi.
+          İstatistikler çekilemedi, lütfen tekrar deneyiniz.
         </p>
       )}
     </section>
