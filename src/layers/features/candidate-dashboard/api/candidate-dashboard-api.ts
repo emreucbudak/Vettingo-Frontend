@@ -1,7 +1,7 @@
 import { apiRequest } from "@/shared/api";
 
 const candidateApiPaths = {
-  applications: "/api/gateway/application/job-applications",
+  applications: "/api/gateway/job-applications",
   interviews: "/api/gateway/interview/interview-exams",
   jobs: "/api/gateway/job/job-postings",
 } as const;
