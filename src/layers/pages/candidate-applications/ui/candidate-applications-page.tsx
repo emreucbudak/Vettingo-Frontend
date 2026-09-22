@@ -1,18 +1,16 @@
 "use client";
-import { useCandidateDashboardData } from "@/features/candidate-dashboard";
+import { useEffect, useState } from "react";
+import { useCandidateDashboardData, getCandidateApplicationStatistics, type CandidateApplicationStatistics } from "@/features/candidate-dashboard";
 import { CandidateApplicationHistory } from "@/widgets/candidate/application-history";
 import { CandidateShell } from "@/widgets/candidate/shell";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { useUserInformation } from "@/shared/useUserInformation";
 
 function StatCard({
-  icon,
   label,
   value,
 }: {
-  icon: string;
   label: string;
-  value: number;
+  value: number | string;
 }) {
   return (
     <article className="rounded border border-[#c5c6cd] bg-white p-4">
@@ -25,9 +23,6 @@ function StatCard({
             {value}
           </p>
         </div>
-        <div className="flex h-11 w-11 items-center justify-center rounded bg-[#eff4ff] text-[#091426]">
-          <MaterialIcon className="text-[26px]">{icon}</MaterialIcon>
-        </div>
       </div>
     </article>
   );
@@ -38,25 +33,31 @@ export function CandidateApplicationsPage() {
   const { applications, error, isLoading } = useCandidateDashboardData(
     user?.Sub ?? "",
   );
-  const inProgress = applications.filter(
-    (application) => application.progress < 100,
-  ).length;
-  const interviews = applications.filter((application) =>
-    application.status.includes("Mülakat"),
-  ).length;
-  const completed = applications.filter(
-    (application) => application.progress === 100,
-  ).length;
+  const candidateId = user?.Sub;
+  const [statsResult, setStatsResult] = useState<{ candidateId: string; data: CandidateApplicationStatistics | null; error: boolean } | null>(null);
+  useEffect(() => {
+    if (!candidateId) return;
+    const controller = new AbortController();
+    getCandidateApplicationStatistics(controller.signal)
+      .then(data => { if (!controller.signal.aborted) setStatsResult({ candidateId, data, error: false }); })
+      .catch(() => { if (!controller.signal.aborted) setStatsResult({ candidateId, data: null, error: true }); });
+    return () => controller.abort();
+  }, [candidateId]);
+  const current = statsResult?.candidateId === candidateId ? statsResult : null;
+  const statistics = current?.data;
+  const placeholder = current?.error ? "—" : "Yükleniyor…";
 
   return (
     <CandidateShell>
       <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
         <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard icon="assignment" label="Toplam Başvuru" value={applications.length} />
-          <StatCard icon="monitoring" label="Devam Eden" value={inProgress} />
-          <StatCard icon="groups" label="Mülakat" value={interviews} />
-          <StatCard icon="check_circle" label="Sonuçlanan" value={completed} />
+          <StatCard label="Toplam Başvuru" value={statistics?.totalApplications ?? placeholder} />
+          <StatCard label="Devam Eden" value={statistics?.inProgress ?? placeholder} />
+          <StatCard label="Mülakat" value={statistics?.interviews ?? placeholder} />
+          <StatCard label="Sonuçlanan" value={statistics?.completed ?? placeholder} />
         </section>
+
+        {current?.error && <p className="mb-6 text-sm text-[#93000a]" role="alert">İstatistikler çekilemedi, lütfen tekrar deneyiniz.</p>}
 
         {error ? (
           <div

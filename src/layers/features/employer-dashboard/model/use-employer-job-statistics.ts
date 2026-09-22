@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getEmployerJobStatistics, type EmployerJobStatistics } from "../api/employer-dashboard-api";
+import { getStats, type EmployerStats } from "../api/employer-dashboard-api";
 
 export function useEmployerJobStatistics() {
-  const [statistics, setStatistics] = useState<EmployerJobStatistics | null>(null);
+  const [statistics, setStatistics] = useState<EmployerStats | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
-    getEmployerJobStatistics(controller.signal)
+    getStats(controller.signal)
       .then((result) => {
         if (!controller.signal.aborted) setStatistics(result);
       })

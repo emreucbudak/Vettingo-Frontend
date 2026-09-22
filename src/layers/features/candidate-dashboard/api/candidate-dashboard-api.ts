@@ -60,3 +60,16 @@ export function getUpcomingInterviews(candidateId: string, signal?: AbortSignal)
 
   return getJson<InterviewDto[]>(`${candidateApiPaths.interviews}?${query}`, signal);
 }
+
+export type CandidateApplicationStatistics = {
+  totalApplications: number;
+  inProgress: number;
+  interviews: number;
+  completed: number;
+};
+
+export function getCandidateApplicationStatistics(signal?: AbortSignal) {
+  return apiRequest<CandidateApplicationStatistics>(
+    "/api/gateway/job-applications/my/statistics", "GET", { signal, cache: "no-store" },
+  );
+}

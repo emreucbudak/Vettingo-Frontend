@@ -28,11 +28,11 @@ export const employerStats = [
   },
   {
     label: "Toplam Başvuru",
-    value: "1,284",
+    metric: "totalApplications",
   },
   {
-    label: "Bugünkü Başvuru",
-    value: "18",
+    label: "Aktif Başvuru",
+    metric: "activeApplications",
   },
   {
     label: "Aktif İlan",

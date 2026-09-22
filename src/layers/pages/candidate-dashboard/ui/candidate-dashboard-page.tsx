@@ -5,7 +5,6 @@ import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { CandidateDashboardApplications } from "@/widgets/candidate/dashboard-applications";
 import { CandidateRecommendedJobs } from "@/widgets/candidate/recommended-jobs";
-import { CandidateSkillRadar } from "@/widgets/candidate/skill-radar";
 import { CandidateUpcomingInterviews } from "@/widgets/candidate/upcoming-interviews";
 import { useUserInformation } from "@/shared/useUserInformation";
 
@@ -48,7 +47,6 @@ export function CandidateDashboardPage() {
           </div>
           <div className="space-y-6 md:col-span-4">
             <CandidateUpcomingInterviews interviews={interviews} isLoading={isLoading} />
-            <CandidateSkillRadar />
           </div>
         </div>
       </main>
