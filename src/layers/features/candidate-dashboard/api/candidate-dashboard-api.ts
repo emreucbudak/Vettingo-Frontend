@@ -3,7 +3,7 @@ import { apiRequest } from "@/shared/api";
 const candidateApiPaths = {
   applications: "/api/gateway/job-applications",
   interviews: "/api/gateway/interview/interview-exams",
-  jobs: "/api/gateway/job/job-postings",
+  jobs: "/api/gateway/job-postings",
 } as const;
 
 export type JobApplicationDto = {
@@ -40,9 +40,10 @@ async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
   }
 }
 
-export function getCandidateApplications(candidateId: string, signal?: AbortSignal) {
-  const query = new URLSearchParams({ candidateId });
-  return getJson<JobApplicationDto[]>(`${candidateApiPaths.applications}?${query}`, signal);
+export function getCandidateApplications(signal?: AbortSignal) {
+  return apiRequest<JobApplicationDto[]>(candidateApiPaths.applications, "GET", {
+    signal, cache: "no-store",
+  });
 }
 
 export function getJobPosting(jobPostingId: string, signal?: AbortSignal) {

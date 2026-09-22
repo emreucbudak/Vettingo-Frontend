@@ -32,6 +32,7 @@ export function CandidateApplicationsPage() {
   const user = useUserInformation();
   const { applications, error, isLoading } = useCandidateDashboardData(
     user?.Sub ?? "",
+    false,
   );
   const candidateId = user?.Sub;
   const [statsResult, setStatsResult] = useState<{ candidateId: string; data: CandidateApplicationStatistics | null; error: boolean } | null>(null);
@@ -76,10 +77,10 @@ export function CandidateApplicationsPage() {
               </h2>
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-              {isLoading ? "Yükleniyor" : `${applications.length} başvuru`}
+              {isLoading ? "Yükleniyor" : error ? "—" : `${applications.length} başvuru`}
             </span>
           </div>
-          <CandidateApplicationHistory applications={applications} isLoading={isLoading} />
+          {!error && <CandidateApplicationHistory applications={applications} isLoading={isLoading} />}
         </section>
       </main>
     </CandidateShell>
