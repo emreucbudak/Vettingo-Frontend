@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { EmployerJobStatistics } from "@/features/employer-dashboard";
-import { employerJobs } from "@/entities/employer-recruiting/employer-recruiting-data";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerApplicationList } from "@/widgets/employer/application-list";
@@ -68,8 +67,6 @@ function StatStrip({
 }
 
 export function EmployerJobsPage() {
-  const totalApplicants = employerJobs.reduce((total, job) => total + job.applicants, 0);
-  const totalShortlisted = employerJobs.reduce((total, job) => total + job.shortlisted, 0);
 
   return (
     <EmployerShell>
@@ -88,10 +85,7 @@ export function EmployerJobsPage() {
           title="İlanlarım"
         />
 
-        <EmployerJobStatistics
-          totalApplicants={totalApplicants}
-          totalShortlisted={totalShortlisted}
-        />
+        <EmployerJobStatistics />
 
         <EmployerJobList />
       </main>
