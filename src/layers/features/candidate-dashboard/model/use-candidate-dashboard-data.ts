@@ -154,8 +154,9 @@ function toInterviewView(interview: InterviewDto): UpcomingInterview {
   };
 }
 
-export function useCandidateDashboardData(candidateId: string ) {
+export function useCandidateDashboardData(candidateId: string, includeInterviews = true) {
   const [data, setData] = useState<CandidateDashboardData>(initialData);
+  const [loadedCandidateId, setLoadedCandidateId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(Boolean(candidateId));
   const [error, setError] = useState<string | null>(null);
 
@@ -171,8 +172,10 @@ export function useCandidateDashboardData(candidateId: string ) {
       setIsLoading(true);
       try {
         const [applications, interviews] = await Promise.all([
-          getCandidateApplications(activeCandidateId, abortController.signal),
-          getUpcomingInterviews(activeCandidateId, abortController.signal),
+          getCandidateApplications(abortController.signal),
+          includeInterviews
+            ? getUpcomingInterviews(activeCandidateId, abortController.signal)
+            : Promise.resolve([]),
         ]);
 
         const jobPostings = await Promise.all(
@@ -207,11 +210,14 @@ export function useCandidateDashboardData(candidateId: string ) {
           .map(toInterviewView);
 
         if (!abortController.signal.aborted) {
+          setLoadedCandidateId(activeCandidateId);
           setData({ applications: applicationViews, interviews: interviewViews });
           setError(null);
         }
       } catch (loadError) {
         if (!abortController.signal.aborted) {
+          setLoadedCandidateId(activeCandidateId);
+          setData(initialData);
           setError(
             loadError instanceof Error
               ? loadError.message
@@ -227,7 +233,12 @@ export function useCandidateDashboardData(candidateId: string ) {
 
     void loadDashboard();
     return () => abortController.abort();
-  }, [candidateId]);
+  }, [candidateId, includeInterviews]);
 
-  return { ...data, error, isLoading };
+  const isCurrentCandidate = loadedCandidateId === candidateId;
+  return {
+    ...(isCurrentCandidate ? data : initialData),
+    error: isCurrentCandidate ? error : null,
+    isLoading: !isCurrentCandidate || isLoading,
+  };
 }
