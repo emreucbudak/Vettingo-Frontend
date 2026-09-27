@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { Oswald } from "next/font/google";
+import { useId } from "react";
 import Link from "next/link";
 import {
   defaultCandidateAnalysisProfile,
@@ -11,37 +13,75 @@ import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { useUserInformation } from "@/shared/useUserInformation";
-function ScoreRing({
-  isLoading,
-  score,
-}: {
-  isLoading: boolean;
-  score: number;
-}) {
-  return (
-    <div
-      aria-label={"Genel profil puanı " + score + "/100"}
-      className="flex h-36 w-36 shrink-0 items-center justify-center rounded-full p-3"
-      role="img"
-      style={{
-        background:
-          "conic-gradient(#006c49 " +
-          score * 3.6 +
-          "deg, #d3e4fe 0deg)",
-      }}
-    >
-      <div className="flex h-full w-full flex-col items-center justify-center rounded-full bg-[#f8f9ff]">
-        <span className="text-4xl font-semibold leading-none tracking-[-0.03em] text-[#0b1c30]">
-          {isLoading ? "—" : score}
-        </span>
-        <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
-          Genel Puan
-        </span>
-      </div>
-    </div>
-  );
+const cardFont = Oswald({
+  subsets: ["latin", "latin-ext"],
+  weight: "500",
+  display: "swap",
+});
+
+function skillCode(label: string) {
+  const codes: Record<string, string> = {
+    "Takım Çalışması": "TKM", "Alan Hakimiyeti": "ALN", "Liderlik": "LDR",
+    "İletişim": "İLT", "Problem Çözme": "PRB", "Uyum Yeteneği": "UYM",
+  };
+  return codes[label] ?? label.slice(0, 3).toLocaleUpperCase("tr-TR");
 }
 
+function CandidatePlayerCard({ name, photoUrl, score, attributes, isLoading }: {
+  name: string;
+  photoUrl: string;
+  score: number;
+  attributes: readonly CandidateRatingAttribute[];
+  isLoading: boolean;
+}) {
+  const gradientId = useId();
+  const outline = "M190 10 C174 34 155 39 143 18 C97 20 53 82 8 91 L8 487 Q8 509 32 516 C89 533 146 548 190 578 C234 548 291 533 348 516 Q372 509 372 487 L372 91 C327 82 283 20 237 18 C225 39 206 34 190 10 Z";
+
+  return (
+    <article aria-label={name + " yetenek kartı"} className="relative isolate mx-auto aspect-[380/590] w-full max-w-[380px] text-[#44350e] drop-shadow-[0_18px_24px_rgba(106,77,12,0.18)] [container-type:inline-size]">
+      <svg aria-hidden="true" viewBox="0 0 380 590" className="absolute inset-0 h-full w-full" fill="none">
+        <defs>
+          <linearGradient id={gradientId} x1="0" y1="0" x2="380" y2="590" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#fff5bd" />
+            <stop offset="0.28" stopColor="#f5df85" />
+            <stop offset="0.49" stopColor="#d0a94b" />
+            <stop offset="0.5" stopColor="#fff0a3" />
+            <stop offset="0.72" stopColor="#f1d775" />
+            <stop offset="1" stopColor="#c49b3e" />
+          </linearGradient>
+        </defs>
+        <path d={outline} fill={`url(#${gradientId})`} stroke="#8c702e" strokeWidth="5" />
+        <path d={outline} transform="translate(190 294) scale(.975) translate(-190 -294)" stroke="#fff0a3" strokeWidth="2" />
+      </svg>
+
+      <div className="absolute left-[10%] top-[15%] z-20 text-center">
+        <p className={cardFont.className + " text-[17cqw] font-medium leading-none tracking-tight"}>{isLoading ? "—" : score}</p>
+        <p className="mt-2 text-[2.3cqw] font-bold uppercase tracking-[0.12em]">Genel puan</p>
+      </div>
+
+      <div className="absolute right-[10%] top-[15%] h-[41%] w-[54%] overflow-hidden mix-blend-multiply" style={{
+        maskImage: "linear-gradient(to bottom, black 0%, black 72%, transparent 100%), linear-gradient(to right, transparent 0%, black 14%, black 88%, transparent 100%)",
+        maskComposite: "intersect",
+      }}>
+        <Image alt={name + " profil fotoğrafı"} src={photoUrl} fill sizes="(max-width: 420px) 50vw, 206px" className="object-cover object-[center_60%]" />
+      </div>
+
+      <div className="absolute inset-x-[12%] top-[58%] text-center">
+        <h2 className="break-words text-[7cqw] font-extrabold uppercase leading-tight tracking-tight">{name}</h2>
+      </div>
+
+      <dl className={cardFont.className + " absolute left-[17%] right-[11%] top-[67%] bottom-[14%] grid content-center grid-flow-col grid-cols-2 grid-rows-[repeat(3,auto)] gap-x-[8cqw] gap-y-[1.5cqw]"}>
+        {attributes.slice(0, 6).map(attribute => (
+          <div key={attribute.label} title={attribute.label} className="flex items-baseline gap-[2cqw]">
+            <dd className="min-w-[8cqw] text-[8.5cqw] font-medium leading-none tabular-nums">{isLoading ? "—" : attribute.value}</dd>
+            <dt className="text-[6.5cqw] font-medium leading-none tracking-tight"><abbr title={attribute.label} className="no-underline">{skillCode(attribute.label)}</abbr></dt>
+          </div>
+        ))}
+      </dl>
+      <p className="absolute inset-x-0 top-[90%] text-center text-[2.3cqw] font-bold tracking-[0.35em]">VETTINGO</p>
+    </article>
+  );
+}
 function InsightList({
   icon,
   items,
@@ -92,21 +132,23 @@ function CompetencyBreakdown({
   isLoading: boolean;
 }) {
   return (
-    <section className="rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6">
+    <section className="h-full rounded-xl border border-[#c5c6cd] bg-white p-5 md:p-8">
       <div className="border-b border-[#c5c6cd] pb-4">
         <h2 className="text-xl font-semibold text-[#0b1c30]">
-          Puan dağılımı
+          Yeteneklerin
         </h2>
+        <p className="mt-2 text-sm text-[#75777d]">Kartındaki yeteneklerin 100 üzerinden puan dağılımı.</p>
       </div>
 
       {isLoading ? (
         <div className="mt-5 h-64 animate-pulse rounded bg-[#eff4ff]" />
       ) : (
-        <div className="mt-5 space-y-4">
-          {attributes.slice(0, 6).map((attribute) => (
+        <div className="mt-6 space-y-6">
+          {attributes.map((attribute) => (
             <div key={attribute.label}>
               <div className="mb-1.5 flex items-center justify-between gap-4">
                 <span className="text-xs font-semibold uppercase tracking-[0.04em] text-[#45474c]">
+                  <span className="mr-2 inline-block min-w-10 text-[#997621]">{skillCode(attribute.label)}</span>
                   {attribute.label}
                 </span>
                 <div className="flex items-center gap-3">
@@ -117,15 +159,15 @@ function CompetencyBreakdown({
                         ? "İyi"
                         : "Geliştir"}
                   </span>
-                  <span className="w-7 text-right text-sm font-bold text-[#0b1c30]">
-                    {attribute.value}
+                  <span className="whitespace-nowrap text-right text-lg font-bold tabular-nums text-[#0b1c30]">
+                    {attribute.value}<span className="ml-1 text-xs font-normal text-[#75777d]">/100</span>
                   </span>
                 </div>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-[#dce9ff]">
+              <div role="progressbar" aria-label={attribute.label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={attribute.value} className="h-2.5 overflow-hidden rounded-full bg-[#f1eee5]">
                 <div
-                  className="h-full rounded-full bg-[#006c49]"
-                  style={{ width: attribute.value + "%" }}
+                  className="h-full rounded-full bg-gradient-to-r from-[#b28c35] to-[#e4c76d]"
+                  style={{ width: Math.min(100, Math.max(0, attribute.value)) + "%" }}
                 />
               </div>
             </div>
@@ -216,10 +258,6 @@ export function CandidateSelfAnalysisPage() {
     [user?.GivenName, user?.FamilyName]
       .filter(Boolean)
       .join(" ") || "Aday Kullanıcı";
-  const displayEmail = user?.Email ?? "";
-  const roleScore = hasRemoteAnalysis
-    ? Math.round((score + profile.roleSuitability) / 2)
-    : profile.roleSuitability;
   const summary = hasRemoteAnalysis
     ? "Tamamladığın " +
       remoteAnalysis.evaluationCount +
@@ -266,63 +304,13 @@ export function CandidateSelfAnalysisPage() {
             {remoteAnalysis.error}
           </div>
         ) : null}
-
-        <section className="mb-6 grid grid-cols-1 gap-6 rounded-xl border border-[#c5c6cd] bg-white p-5 md:p-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-            <Image
-              alt={displayName + " profil fotoğrafı"}
-              className="h-24 w-24 rounded-full border-2 border-[#dce9ff] object-cover"
-              height={96}
-              src={profile.photoUrl}
-              width={96}
-            />
-            <div>
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="text-2xl font-semibold tracking-[-0.01em] text-[#0b1c30]">
-                  {displayName}
-                </h2>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#dcfce7] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-                  <MaterialIcon className="text-[15px]">
-                    verified
-                  </MaterialIcon>
-                  Kendi Raporun
-                </span>
-              </div>
-              <p className="mt-1 text-base font-medium text-[#45474c]">
-                {profile.targetRole}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-[#45474c]">
-                <span className="flex items-center gap-1.5">
-                  <MaterialIcon className="text-[17px]">
-                    mail
-                  </MaterialIcon>
-                  {displayEmail}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MaterialIcon className="text-[17px]">
-                    work_history
-                  </MaterialIcon>
-                  {profile.experience}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MaterialIcon className="text-[17px]">
-                    location_on
-                  </MaterialIcon>
-                  {profile.location}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-center border-t border-[#c5c6cd] pt-5 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-            <ScoreRing
-              isLoading={remoteAnalysis.isLoading}
-              score={score}
-            />
-          </div>
+        <section className="mb-8 grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(280px,380px)_minmax(0,1fr)] lg:gap-12">
+          <CandidatePlayerCard name={displayName} photoUrl={profile.photoUrl}
+            score={score} attributes={attributes} isLoading={remoteAnalysis.isLoading} />
+          <CompetencyBreakdown attributes={attributes} isLoading={remoteAnalysis.isLoading} />
         </section>
 
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
+        <div className="grid grid-cols-1 gap-6">
           <section className="flex flex-col rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6">
             <div className="border-b border-[#c5c6cd] pb-4">
               <h2 className="text-xl font-semibold text-[#0b1c30]">
@@ -352,46 +340,10 @@ export function CandidateSelfAnalysisPage() {
             </div>
           </section>
 
-          <section className="rounded-lg border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
-            <h2 className="text-xl font-semibold text-[#0b1c30]">
-              {profile.targetRole}
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-[#45474c]">
-              Profil sinyallerinin hedeflediğin rolle olan güncel uyumu.
-            </p>
 
-            <div className="mt-7 rounded-lg border border-[#c5c6cd] bg-white p-4">
-              <div className="flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d]">
-                    Rol Uyumu
-                  </p>
-                  <p className="mt-1 text-3xl font-semibold text-[#0b1c30]">
-                    {remoteAnalysis.isLoading ? "—" : roleScore}
-                    <span className="text-sm text-[#75777d]">/100</span>
-                  </p>
-                </div>
-                <MaterialIcon className="text-3xl text-[#006c49]">
-                  trending_up
-                </MaterialIcon>
-              </div>
-              <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#dce9ff]">
-                <div
-                  className="h-full rounded-full bg-[#006c49]"
-                  style={{ width: roleScore + "%" }}
-                />
-              </div>
-            </div>
-
-          </section>
         </div>
 
-        <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
-          <CompetencyBreakdown
-            attributes={attributes}
-            isLoading={remoteAnalysis.isLoading}
-          />
-
+        <div className="mt-6">
           <aside className="flex flex-col rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6">
             <h2 className="text-xl font-semibold text-[#0b1c30]">
               Analizin nasıl oluştu?
