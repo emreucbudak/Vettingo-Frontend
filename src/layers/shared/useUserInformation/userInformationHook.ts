@@ -17,9 +17,19 @@ export function useUserInformation() {
 
   useEffect(() => {
     async function getInformation() {
-      const token = await getToken();
-      const currentUser = decodeJwt(token) as User;
-      setUser(currentUser);
+      try {
+        const payload = decodeJwt(await getToken());
+        const currentUser: User = {
+          Sub: payload.sub ?? "",
+          Email: (payload.email as string) ?? "",
+          GivenName: (payload.given_name as string) ?? "",
+          FamilyName: (payload.family_name as string) ?? "",
+          Role: (payload.Role as string) ?? "",
+        };
+        setUser(currentUser);
+      } catch {
+        setUser(undefined);
+      }
     }
 
     void getInformation();

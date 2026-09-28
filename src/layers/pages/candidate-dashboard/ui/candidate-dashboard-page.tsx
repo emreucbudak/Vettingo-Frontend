@@ -13,7 +13,7 @@ export function CandidateDashboardPage() {
   const displayName =
     [user?.GivenName, user?.FamilyName]
       .filter(Boolean)
-      .join(" ") || "Aday";
+      .join(" ");
   const { applications, interviews, error, isLoading } =
     useCandidateDashboardData(user?.Sub ?? "");
   return (
@@ -22,7 +22,7 @@ export function CandidateDashboardPage() {
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-              Tekrar hoş geldin, {displayName}
+              Tekrar hoş geldin{displayName ? `, ${displayName}` : ""}
             </h2>
             <p className="mt-2 text-base leading-6 text-[#45474c]">Bugünkü profesyonel durumun ve aktivite özetin burada.</p>
           </div>

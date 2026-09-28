@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { getEmployerJobStatistics } from "@/features/employer-dashboard";
 import Link from "next/link";
 import {
   funnelStages,
@@ -166,6 +170,27 @@ function FunnelPreview() {
 }
 
 export function HrDashboardPage() {
+  const [openJobCount, setOpenJobCount] = useState<number | null>(null);
+  const [statisticsError, setStatisticsError] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    getEmployerJobStatistics(controller.signal)
+      .then((statistics) => {
+        if (!controller.signal.aborted) setOpenJobCount(statistics.activeJobPostings);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setStatisticsError(true);
+      });
+    return () => controller.abort();
+  }, []);
+
+  const statistics = hrDashboardStats.map((stat) =>
+    stat.label === "Açık İlan"
+      ? { ...stat, value: openJobCount !== null ? openJobCount.toLocaleString("tr-TR") : statisticsError ? "—" : "Yükleniyor…" }
+      : stat,
+  );
+
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
       <HrPageHeader
@@ -173,7 +198,12 @@ export function HrDashboardPage() {
         title="İşe Alım Kontrol Merkezi"
       />
 
-      <HrStatGrid items={hrDashboardStats} />
+      <HrStatGrid items={statistics} showIcons={false} />
+      {statisticsError && (
+        <p className="-mt-5 mb-8 text-sm text-red-700" role="alert">
+          İstatistikler çekilemedi, lütfen tekrar deneyiniz.
+        </p>
+      )}
       <PriorityCards />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">

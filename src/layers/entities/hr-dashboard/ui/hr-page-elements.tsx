@@ -46,7 +46,9 @@ const statToneClasses = {
 
 export function HrStatGrid({
   items,
+  showIcons = true,
 }: {
+  showIcons?: boolean;
   items: readonly {
     label: string;
     value: string;
@@ -74,11 +76,13 @@ export function HrStatGrid({
                   {item.value}
                 </p>
               </div>
+              {showIcons && (
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded ${statToneClasses[tone]}`}
               >
                 <MaterialIcon className={item.icon === "handshake" ? "text-[23px]" : "text-[21px]"}>{item.icon}</MaterialIcon>
               </span>
+              )}
             </div>
             {item.helper ? (
               <p className="mt-3 text-[11px] font-medium leading-4 text-[#006c49]">
