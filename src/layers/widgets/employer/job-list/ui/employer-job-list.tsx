@@ -24,15 +24,8 @@ function StatusBadge({ status }: { status: EmployerJob["status"] }) {
 function JobRow({ job }: { job: EmployerJob }) {
   return (
     <article className="grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] lg:grid-cols-[repeat(14,minmax(0,1fr))] lg:items-center lg:gap-3 lg:px-6">
-      <div className="lg:col-span-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-            <MaterialIcon className="text-[21px]">work</MaterialIcon>
-          </div>
-          <div className="min-w-0">
-            <h2 className="text-base font-semibold leading-6 text-[#0b1c30]">{job.title}</h2>
-          </div>
-        </div>
+      <div className="min-w-0 lg:col-span-4">
+        <h2 className="text-base font-semibold leading-6 text-[#0b1c30]">{job.title}</h2>
       </div>
       <div className="grid grid-cols-2 gap-3 lg:contents">
         <div className="lg:col-span-2">

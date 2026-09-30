@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { changePassword } from "@/features/auth/change-password";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
@@ -62,6 +63,7 @@ function SectionHeader({ title }: { title: string }) {
 
 export function EmployerSettingsPage() {
   const [savedSection, setSavedSection] = useState<SavedSection>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   const {
     register: registerPassword,
     handleSubmit: handlePasswordSubmit,
@@ -84,9 +86,16 @@ export function EmployerSettingsPage() {
     setSavedSection(section);
   }
 
-  function onPasswordSubmit() {
-    resetPasswordForm();
-    setSavedSection("security");
+  async function onPasswordSubmit(values: EmployerPasswordFormValues) {
+    setSavedSection(null);
+    setPasswordError(null);
+    try {
+      await changePassword(values);
+      resetPasswordForm();
+      setSavedSection("security");
+    } catch (error) {
+      setPasswordError(error instanceof Error ? error.message : "Şifre değiştirilemedi. Lütfen tekrar deneyin.");
+    }
   }
 
   return (
@@ -277,7 +286,7 @@ export function EmployerSettingsPage() {
               aria-busy={isPasswordSubmitting}
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
               noValidate
-              onChange={() => setSavedSection(null)}
+              onChange={() => { setSavedSection(null); setPasswordError(null); }}
               onSubmit={handlePasswordSubmit(onPasswordSubmit)}
             >
               <SectionHeader title="Şifreni Değiştir" />
@@ -383,8 +392,9 @@ export function EmployerSettingsPage() {
                 <SaveButton
                   active={savedSection === "security"}
                   disabled={isPasswordSubmitting}
-                  label="Şifreyi Güncelle"
+                  label={isPasswordSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
                 />
+                {passwordError && <p className="mt-3 text-sm text-[#8c1d18]" role="alert">{passwordError}</p>}
               </div>
             </form>
           </aside>

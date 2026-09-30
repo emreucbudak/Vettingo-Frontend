@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { changePassword } from "@/features/auth/change-password";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type FieldError,
@@ -65,6 +66,7 @@ function PasswordField({
 
 export function HrPasswordForm() {
   const [isSaved, setIsSaved] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -79,16 +81,23 @@ export function HrPasswordForm() {
     },
   });
 
-  function onSubmit() {
-    reset();
-    setIsSaved(true);
+  async function onSubmit(values: HrPasswordFormValues) {
+    setIsSaved(false);
+    setSubmitError(null);
+    try {
+      await changePassword(values);
+      reset();
+      setIsSaved(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Şifre değiştirilemedi. Lütfen tekrar deneyin.");
+    }
   }
 
   return (
     <form
       aria-busy={isSubmitting}
       noValidate
-      onChange={() => setIsSaved(false)}
+      onChange={() => { setIsSaved(false); setSubmitError(null); }}
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="space-y-5">
@@ -119,12 +128,13 @@ export function HrPasswordForm() {
       </div>
 
       <div className="mt-6 border-t border-[#c5c6cd] pt-5">
+        {submitError && <p className="mb-3 text-sm text-[#8c1d18]" role="alert">{submitError}</p>}
         <button
           className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
           disabled={isSubmitting}
           type="submit"
         >
-          Şifreyi Güncelle
+          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
           <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
         </button>
         <p

@@ -1,4 +1,5 @@
 "use client";
+import { changePassword } from "@/features/auth/change-password";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -223,6 +224,7 @@ function ProfileForm({ onSave, profile }: ProfileFormProps) {
 
 function AccountSettingsForm() {
   const [isSaved, setIsSaved] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -237,9 +239,16 @@ function AccountSettingsForm() {
     },
   });
 
-  function onSubmit() {
-    reset();
-    setIsSaved(true);
+  async function onSubmit(values: PasswordFormValues) {
+    setIsSaved(false);
+    setSubmitError(null);
+    try {
+      await changePassword(values);
+      reset();
+      setIsSaved(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Şifre değiştirilemedi. Lütfen tekrar deneyin.");
+    }
   }
 
   return (
@@ -247,7 +256,7 @@ function AccountSettingsForm() {
       aria-busy={isSubmitting}
       className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
       noValidate
-      onChange={() => setIsSaved(false)}
+      onChange={() => { setIsSaved(false); setSubmitError(null); }}
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="mb-6 border-b border-[#c5c6cd] pb-5">
@@ -353,7 +362,7 @@ function AccountSettingsForm() {
           disabled={isSubmitting}
           type="submit"
         >
-          Şifreyi Güncelle
+          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
           <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
         </button>
         <p
@@ -365,6 +374,7 @@ function AccountSettingsForm() {
           <MaterialIcon className="mt-0.5 text-[18px]">check_circle</MaterialIcon>
           Şifre bilgilerin güncellendi.
         </p>
+        {submitError && <p className="mt-3 text-sm text-[#8c1d18]" role="alert">{submitError}</p>}
       </div>
     </form>
   );

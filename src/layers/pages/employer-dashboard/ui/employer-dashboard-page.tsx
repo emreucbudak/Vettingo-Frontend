@@ -35,7 +35,7 @@ function RequisitionsTable() {
     <section className="flex flex-col gap-4 lg:col-span-2">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">
-          Aktif İlan Talepleri
+          Aktif İlanlar
         </h3>
         <a className="text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:underline" href="#">
           Tümünü Gör
