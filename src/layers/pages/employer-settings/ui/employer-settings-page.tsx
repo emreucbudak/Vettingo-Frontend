@@ -1,11 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { changePassword } from "@/features/auth/change-password";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 import {
@@ -101,21 +99,75 @@ export function EmployerSettingsPage() {
   return (
     <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-        <header className="mb-8 flex flex-col gap-5 border-b border-[#c5c6cd] pb-7 lg:flex-row lg:items-end lg:justify-between">
-          <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-            Ayarlar
-          </h1>
-          <Link
-            className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-all hover:-translate-y-0.5 hover:shadow-lg sm:w-auto"
-            href={ROUTES.employer}
-          >
-            <MaterialIcon className="text-[18px]">check</MaterialIcon>
-            Kaydet
-          </Link>
-        </header>
-
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
           <div className="space-y-6">
+            <form
+              className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+              onSubmit={(event) => handleSectionSubmit("account", event)}
+            >
+              <SectionHeader title="Profil" />
+
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <div>
+                  <label className={labelClass} htmlFor="account-first-name">
+                    İsim
+                  </label>
+                  <input
+                    autoComplete="given-name"
+                    className={inputClass}
+                    placeholder="İsim"
+                    id="account-first-name"
+                    name="firstName"
+                    required
+                    type="text"
+                  />
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="account-last-name">
+                    Soyisim
+                  </label>
+                  <input
+                    autoComplete="family-name"
+                    className={inputClass}
+                    placeholder="Soyisim"
+                    id="account-last-name"
+                    name="lastName"
+                    required
+                    type="text"
+                  />
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="account-email">
+                    E-posta
+                  </label>
+                  <input
+                    autoComplete="email"
+                    className={inputClass}
+                    defaultValue="ik@vettingo.com"
+                    id="account-email"
+                    name="email"
+                    type="email"
+                  />
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="account-language">
+                    Arayüz Dili
+                  </label>
+                  <select
+                    className={inputClass}
+                    defaultValue="tr"
+                    id="account-language"
+                    name="language"
+                  >
+                    <option value="tr">Türkçe</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+              </div>
+
+
+            </form>
+
             <form
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
               onSubmit={(event) => handleSectionSubmit("company", event)}
@@ -198,90 +250,9 @@ export function EmployerSettingsPage() {
 
 
             </form>
-
-            <form
-              className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
-              onSubmit={(event) => handleSectionSubmit("account", event)}
-            >
-              <SectionHeader title="Hesap ve İletişim" />
-
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                <div>
-                  <label className={labelClass} htmlFor="account-name">
-                    Yetkili Adı
-                  </label>
-                  <input
-                    autoComplete="name"
-                    className={inputClass}
-                    defaultValue="Vettingo İK Ekibi"
-                    id="account-name"
-                    name="contactName"
-                    required
-                    type="text"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass} htmlFor="account-email">
-                    İş E-postası
-                  </label>
-                  <input
-                    autoComplete="email"
-                    className={inputClass}
-                    defaultValue="ik@vettingo.com"
-                    id="account-email"
-                    name="email"
-                    required
-                    type="email"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass} htmlFor="account-phone">
-                    Telefon
-                  </label>
-                  <input
-                    autoComplete="tel"
-                    className={inputClass}
-                    defaultValue="+90 212 555 01 24"
-                    id="account-phone"
-                    name="phone"
-                    type="tel"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass} htmlFor="account-language">
-                    Arayüz Dili
-                  </label>
-                  <select
-                    className={inputClass}
-                    defaultValue="tr"
-                    id="account-language"
-                    name="language"
-                  >
-                    <option value="tr">Türkçe</option>
-                    <option value="en">English</option>
-                  </select>
-                </div>
-              </div>
-
-
-            </form>
           </div>
 
           <aside className="space-y-6">
-            <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
-              <div className="flex h-14 w-14 items-center justify-center rounded bg-[#6cf8bb] text-lg font-semibold text-[#00714d]">
-                VE
-              </div>
-              <h2 className="mt-4 text-lg font-semibold text-[#0b1c30]">Vettingo</h2>
-              <p className="mt-1 text-sm text-[#45474c]">Kurumsal işveren hesabı</p>
-              <div className="mt-5 border-t border-[#c5c6cd] pt-5">
-                <div className="flex items-center gap-2 text-sm font-medium text-[#006c49]">
-                  <MaterialIcon className="symbol-filled text-[18px]">verified</MaterialIcon>
-                  E-posta doğrulandı
-                </div>
-              </div>
-            </section>
-
             <form
               aria-busy={isPasswordSubmitting}
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
