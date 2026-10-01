@@ -4,8 +4,6 @@ import { hrFaqs } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
-  HrPageHeader,
-  HrPrimaryLink,
   HrSectionHeading,
 } from "@/entities/hr-dashboard/ui";
 import { HrPasswordForm } from "./hr-password-form";
@@ -49,38 +47,31 @@ function SettingsSection({
 export function HrSettingsPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <HrPageHeader
-        action={
-          <HrPrimaryLink href={ROUTES.hr} icon="check">
-            Kaydet
-          </HrPrimaryLink>
-        }
-        title="Ayarlar"
-      />
-
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <div className="space-y-6">
           <SettingsSection title="Profil">
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div>
-                <label className={labelClass} htmlFor="hr-workspace-name">
-                  Çalışma Alanı
+                <label className={labelClass} htmlFor="hr-first-name">
+                  İsim
                 </label>
                 <input
                   className={inputClass}
-                  defaultValue="Vettingo İnsan Kaynakları"
-                  id="hr-workspace-name"
+                  autoComplete="given-name"
+                  defaultValue="Deniz"
+                  id="hr-first-name"
                   type="text"
                 />
               </div>
               <div>
-                <label className={labelClass} htmlFor="hr-owner">
-                  HR Operasyon Sahibi
+                <label className={labelClass} htmlFor="hr-last-name">
+                  Soyisim
                 </label>
                 <input
                   className={inputClass}
-                  defaultValue="Deniz Öztürk"
-                  id="hr-owner"
+                  autoComplete="family-name"
+                  defaultValue="Öztürk"
+                  id="hr-last-name"
                   type="text"
                 />
               </div>
@@ -108,59 +99,10 @@ export function HrSettingsPage() {
             </div>
           </SettingsSection>
 
-          <SettingsSection title="Tercihler">
-            <div className="space-y-4">
-              {[
-                {
-                  title: "Yüksek öncelikli talepleri üste taşı",
-                  description: "Kritik kadroları talep listelerinde önce göster.",
-                  checked: true,
-                },
-                {
-                  title: "24 saatlik geri bildirim hatırlatması",
-                  description: "Mülakat notu açık kaldığında ekip görünümünde uyar.",
-                  checked: true,
-                },
-                {
-                  title: "Haftalık işe alım özeti",
-                  description: "Pazartesi sabahı operasyon özetini panelde göster.",
-                  checked: false,
-                },
-              ].map((preference) => (
-                <label
-                  className="flex cursor-pointer items-start justify-between gap-4 rounded border border-[#c5c6cd] bg-[#eff4ff] p-4"
-                  key={preference.title}
-                >
-                  <span>
-                    <span className="block text-sm font-semibold text-[#0b1c30]">
-                      {preference.title}
-                    </span>
-                    <span className="mt-1 block text-xs leading-5 text-[#45474c]">
-                      {preference.description}
-                    </span>
-                  </span>
-                  <input
-                    className="mt-1 h-4 w-4 accent-[#006c49]"
-                    defaultChecked={preference.checked}
-                    type="checkbox"
-                  />
-                </label>
-              ))}
-            </div>
-          </SettingsSection>
+
         </div>
 
         <aside className="space-y-6">
-          <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
-            <span className="flex h-14 w-14 items-center justify-center rounded bg-[#6cf8bb] text-lg font-semibold text-[#00714d]">
-              HR
-            </span>
-            <h2 className="mt-5 text-lg font-semibold text-[#0b1c30]">HR Workspace</h2>
-            <p className="mt-2 text-sm leading-6 text-[#45474c]">
-              İşe alım talepleri, adaylar ve değerlendirme ekipleri için ortak çalışma alanı.
-            </p>
-          </section>
-
           <SettingsSection title="Şifre Değiştir">
             <HrPasswordForm />
           </SettingsSection>
