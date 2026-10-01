@@ -1,5 +1,4 @@
 import { departmentMetrics, funnelStages, monthlyHiring } from "@/entities/hr-dashboard";
-import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   HrSectionHeading,
@@ -123,8 +122,6 @@ function DepartmentTable() {
   return (
     <section className="mt-8">
       <HrSectionHeading
-        actionHref={ROUTES.hrRequisitions}
-        actionLabel="Taleplere Git"
         title="Departman Performansı"
       />
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">

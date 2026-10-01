@@ -79,30 +79,6 @@ export const hrDashboardStats = [
   },
 ] as const;
 
-export const hrPriorities = [
-  {
-    title: "Ürün ekibi için kadro onayı",
-    description: "3 yeni pozisyon bütçe sahibi onayı bekliyor.",
-    icon: "approval",
-    count: "3",
-    href: ROUTES.hrRequisitions,
-  },
-  {
-    title: "Mülakat geri bildirimleri",
-    description: "Bugün tamamlanması gereken 5 değerlendirme var.",
-    icon: "rate_review",
-    count: "5",
-    href: ROUTES.hrInterviews,
-  },
-  {
-    title: "Teklif aşamasındaki adaylar",
-    description: "4 aday için teklif ve yan hak paketi hazırlanıyor.",
-    icon: "handshake",
-    count: "4",
-    href: ROUTES.hrCandidates,
-  },
-] as const;
-
 export const requisitions = [
   {
     id: "REQ-2608",
@@ -165,8 +141,6 @@ export const requisitions = [
     priority: "Normal",
   },
 ] as const;
-
-export type HrRequisition = (typeof requisitions)[number];
 
 export const candidates = [
   {

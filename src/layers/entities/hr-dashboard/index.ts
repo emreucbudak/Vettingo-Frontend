@@ -5,14 +5,12 @@ export {
   hrDashboardStats,
   hrFaqs,
   hrNavigationItems,
-  hrPriorities,
   hrProfile,
   hrUtilityItems,
   interviews,
   monthlyHiring,
   requisitions,
   type HrNavigationKey,
-  type HrRequisition,
   type HrUtilityKey,
 } from "./hr-dashboard-data";
 export {

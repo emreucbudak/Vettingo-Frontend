@@ -108,29 +108,6 @@ export function HrInterviewAgenda() {
         </section>
 
         <aside className="space-y-6">
-          <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5">
-            <div className="flex items-center justify-between">
-              <span className="flex h-10 w-10 items-center justify-center rounded bg-[#6cf8bb] text-[#00714d]">
-                <MaterialIcon className="text-[21px]">fact_check</MaterialIcon>
-              </span>
-              <span className="text-2xl font-semibold text-[#0b1c30]">5/6</span>
-            </div>
-            <h2 className="mt-5 text-lg font-semibold text-[#0b1c30]">Panel Hazırlığı</h2>
-            <p className="mt-2 text-sm leading-6 text-[#45474c]">
-              Soru setleri ve rol beklentileri panel üyeleriyle paylaşıldı.
-            </p>
-            <div className="mt-5 h-2 overflow-hidden rounded-full bg-[#dce9ff]">
-              <div className="h-full w-[83%] rounded-full bg-[#006c49]" />
-            </div>
-            <Link
-              className="mt-5 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:underline"
-              href={ROUTES.hrReports}
-            >
-              Hazırlık özetini gör
-              <MaterialIcon className="text-[17px]">arrow_forward</MaterialIcon>
-            </Link>
-          </section>
-
           <section className="rounded border border-l-4 border-[#c5c6cd] border-l-[#e0a62b] bg-[#fffaf0] p-5">
             <p className="text-[10px] font-semibold uppercase tracking-[0.07em] text-[#795900]">
               Geri Bildirim Hatırlatması

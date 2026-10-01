@@ -6,7 +6,6 @@ import {
   type FieldError,
   type UseFormRegisterReturn,
   useForm,
-  useWatch,
 } from "react-hook-form";
 import { apiRequest } from "@/shared/api";
 import { useUserInformation } from "@/shared/useUserInformation";
@@ -106,7 +105,6 @@ function getProfileFormValues(profile: CandidateProfile): ProfileFormValues {
 
 function ProfileForm({ onSave, profile }: ProfileFormProps) {
   const {
-    control,
     register,
     handleSubmit,
     reset,
@@ -115,11 +113,6 @@ function ProfileForm({ onSave, profile }: ProfileFormProps) {
     resolver: zodResolver(profileSchema),
     defaultValues: getProfileFormValues(profile),
   });
-  const biography = useWatch({
-    control,
-    name: "biography",
-  });
-
   useEffect(() => {
     reset(getProfileFormValues(profile));
   }, [profile, reset]);
@@ -140,10 +133,17 @@ function ProfileForm({ onSave, profile }: ProfileFormProps) {
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="mb-6 border-b border-[#c5c6cd] pb-5">
+      <div className="mb-6 flex items-center justify-between gap-4 border-b border-[#c5c6cd] pb-5">
         <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
           Profil
         </h2>
+        <button
+          className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {isSubmitting ? "Güncelleniyor…" : "Güncelle"}
+        </button>
       </div>
 
       <div className="grid grid-cols-1 gap-x-5 gap-y-8 md:grid-cols-2">
@@ -178,44 +178,6 @@ function ProfileForm({ onSave, profile }: ProfileFormProps) {
           registration={register("phoneNumber")}
           type="tel"
         />
-        <ProfileInput
-          autoComplete="organization-title"
-          error={errors.targetRole}
-          label="Hedef Pozisyon"
-          name="targetRole"
-          placeholder="Örn. Kıdemli Ürün Tasarımcısı"
-          registration={register("targetRole")}
-        />
-        <div className="md:col-span-2">
-          <label className={labelClass} htmlFor="candidate-biography">
-            Hakkımda
-          </label>
-          <textarea
-            aria-describedby={
-              errors.biography ? "candidate-biography-error" : undefined
-            }
-            aria-invalid={Boolean(errors.biography)}
-            className={`${inputClass} min-h-32 resize-y leading-6 ${
-              errors.biography ? "border-[#ba1a1a]" : ""
-            }`}
-            id="candidate-biography"
-            maxLength={500}
-            placeholder="Deneyimini, güçlü yönlerini ve kariyer hedeflerini kısaca anlat."
-            {...register("biography")}
-          />
-          {errors.biography && (
-            <p
-              className="mt-2 text-xs text-[#8c1d18]"
-              id="candidate-biography-error"
-              role="alert"
-            >
-              {errors.biography.message}
-            </p>
-          )}
-          <p className="mt-2 text-right text-[11px] text-[#75777d]">
-            {biography.length}/500
-          </p>
-        </div>
       </div>
 
     </form>
@@ -363,7 +325,6 @@ function AccountSettingsForm() {
           type="submit"
         >
           {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
-          <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
         </button>
         <p
           aria-live="polite"
@@ -393,46 +354,12 @@ function CandidateSettingsContent({
   onProfileChange,
   profile,
 }: CandidateSettingsContentProps) {
-  const completedFields = [
-    profile.name,
-    profile.surname,
-    profile.email,
-    profile.phoneNumber ?? "",
-    profile.targetRole,
-    profile.biography ?? "",
-  ].filter((value) => value.trim().length > 0).length;
-  const completion = Math.round((completedFields / 6) * 100);
-  const fullName =
-    [profile.name, profile.surname].filter(Boolean).join(" ") ||
-    "Aday Kullanıcı";
-  const initials =
-    [profile.name, profile.surname]
-      .filter(Boolean)
-      .map((value) => value[0])
-      .join("")
-      .toLocaleUpperCase("tr-TR") || "AK";
-
   return (
     <CandidateShell>
       <main
         aria-busy={isLoading}
         className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8"
       >
-        <header className="mb-8 flex flex-col gap-5 border-b border-[#c5c6cd] pb-7 lg:flex-row lg:items-end lg:justify-between">
-          <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
-            Ayarlar
-          </h1>
-          <button
-            className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
-            disabled={isLoading}
-            form="candidate-profile-form"
-            type="submit"
-          >
-            <MaterialIcon className="text-[18px]">check</MaterialIcon>
-            Kaydet
-          </button>
-        </header>
-
         {error ? (
           <div
             className="mb-6 rounded border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]"
@@ -442,32 +369,10 @@ function CandidateSettingsContent({
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
+        <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
           <ProfileForm onSave={onProfileChange} profile={profile} />
 
           <aside className="space-y-6">
-            <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
-              <div className="flex h-14 w-14 items-center justify-center rounded bg-[#6cf8bb] text-lg font-semibold text-[#00714d]">
-                {initials}
-              </div>
-              <h2 className="mt-4 text-lg font-semibold text-[#0b1c30]">
-                {fullName}
-              </h2>
-              <p className="mt-1 text-sm text-[#45474c]">{profile.email}</p>
-              <div className="mt-6 border-t border-[#c5c6cd] pt-5">
-                <div className="mb-2 flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-                  <span>Profil Tamamlanma</span>
-                  <span>{completion}%</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-white">
-                  <div
-                    className="h-full rounded-full bg-[#006c49]"
-                    style={{ width: `${completion}%` }}
-                  />
-                </div>
-              </div>
-            </section>
-
             <AccountSettingsForm />
           </aside>
         </div>
