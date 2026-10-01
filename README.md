@@ -57,7 +57,6 @@ The frontend maps the backend `Company` role to the Employer portal and the `Hum
 - Recommended job listings
 - Skill radar and competency insights
 - Candidate self-analysis
-- Resume upload workflow
 - Technical assessment introduction
 - Timed assessment sessions
 - Candidate settings
@@ -79,7 +78,6 @@ The frontend maps the backend `Company` role to the Employer portal and the `Hum
 ### Human Resources experience
 
 - HR dashboard
-- Recruitment requisitions
 - Candidate pipeline
 - Interview agenda
 - Hiring reports
@@ -285,7 +283,6 @@ vettingo/
 │   ├── jobs/
 │   ├── login/
 │   ├── register/
-│   ├── resume-upload/
 │   ├── talent-benchmarking/
 │   ├── globals.css
 │   └── layout.tsx
@@ -421,7 +418,6 @@ shared/
 | `/register` | User registration |
 | `/jobs` | Job discovery and search |
 | `/jobs/new` | Job requisition wizard |
-| `/resume-upload` | Resume upload workflow |
 | `/assessment` | Assessment introduction |
 | `/assessment/session` | Active assessment session |
 | `/talent-benchmarking` | Talent comparison and benchmarking |
@@ -458,7 +454,6 @@ shared/
 | Route | Description |
 |---|---|
 | `/hr` | HR dashboard |
-| `/hr/requisitions` | Recruitment requisitions |
 | `/hr/candidates` | Candidate pipeline |
 | `/hr/interviews` | Interview agenda |
 | `/hr/reports` | Recruitment reports |

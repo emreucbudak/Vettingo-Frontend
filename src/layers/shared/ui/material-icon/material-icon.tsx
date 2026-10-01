@@ -189,6 +189,16 @@ const iconPaths: Record<string, ReactNode> = {
       <path d="M18 6 6 18" />
     </>
   ),
+  contact_page: (
+    <>
+      <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+      <path d="M14 3v6h6" />
+      <circle cx="9" cy="11" r="2" />
+      <path d="M6 17a3 3 0 0 1 6 0" />
+      <path d="M15 13h2" />
+      <path d="M15 17h2" />
+    </>
+  ),
   corporate_fare: (
     <>
       <path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />

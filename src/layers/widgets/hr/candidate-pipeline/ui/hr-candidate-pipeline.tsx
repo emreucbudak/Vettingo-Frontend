@@ -85,8 +85,6 @@ export function HrCandidatePipeline() {
 
       <section>
         <HrSectionHeading
-          actionHref={ROUTES.hrRequisitions}
-          actionLabel="Talepleri Gör"
           title="Görüşülen Adaylar"
         />
         <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">

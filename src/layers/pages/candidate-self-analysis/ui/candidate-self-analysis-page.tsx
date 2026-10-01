@@ -3,13 +3,11 @@
 import Image from "next/image";
 import { Oswald } from "next/font/google";
 import { useId } from "react";
-import Link from "next/link";
 import {
   defaultCandidateAnalysisProfile,
   type CandidateRatingAttribute,
 } from "@/entities/candidate-analysis/candidate-analysis-profile";
 import { useCandidateEvaluationAnalysis } from "@/features/candidate-analysis";
-import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import { useUserInformation } from "@/shared/useUserInformation";
@@ -284,15 +282,7 @@ export function CandidateSelfAnalysisPage() {
               <MaterialIcon className="text-[18px]">download</MaterialIcon>
               Analizi İndir
             </button>
-            <Link
-              className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90"
-              href={ROUTES.resumeUpload}
-            >
-              Profili Güncelle
-              <MaterialIcon className="text-[18px]">
-                arrow_forward
-              </MaterialIcon>
-            </Link>
+
           </div>
         </header>
 
