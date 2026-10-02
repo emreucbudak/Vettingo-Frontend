@@ -69,6 +69,7 @@ function DashboardTopBar({
 }
 
 type DashboardShellProps = {
+  raiseSidebarNavigation?: boolean;
   beforeTopBarActions?: ReactNode;
   children: ReactNode;
   hideTopBarOnMobile?: boolean;
@@ -81,6 +82,7 @@ type DashboardShellProps = {
 };
 
 export function DashboardShell({
+  raiseSidebarNavigation = false,
   beforeTopBarActions,
   children,
   hideTopBarOnMobile = false,
@@ -94,6 +96,7 @@ export function DashboardShell({
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
       <DashboardSidebar
+        raiseNavigation={raiseSidebarNavigation}
         navigationItems={navigationItems}
         subtitle={sidebarSubtitle}
         title={sidebarTitle}

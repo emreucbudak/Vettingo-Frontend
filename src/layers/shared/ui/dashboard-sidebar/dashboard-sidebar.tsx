@@ -73,11 +73,13 @@ function DashboardSidebarLink({
 }
 
 export function DashboardSidebar({
+  raiseNavigation = false,
   navigationItems,
   subtitle,
   title,
   utilityItems,
 }: {
+  raiseNavigation?: boolean;
   navigationItems: readonly DashboardNavigationItem[];
   subtitle: string;
   title: string;
@@ -93,7 +95,7 @@ export function DashboardSidebar({
       </div>
 
       <div className="flex flex-1 items-center overflow-y-auto px-4 py-6">
-        <div className="w-full translate-y-3 space-y-2">
+        <div className={`w-full space-y-2 ${raiseNavigation ? "-translate-y-1" : "translate-y-3"}`}>
           {navigationItems.map((item) => (
             <DashboardSidebarLink item={item} key={item.label} />
           ))}

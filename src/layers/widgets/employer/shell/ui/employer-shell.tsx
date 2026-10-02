@@ -35,6 +35,7 @@ export function EmployerShell({ children }: { children: ReactNode }) {
 
   return (
     <DashboardShell
+      raiseSidebarNavigation
       navigationItems={withActiveRoute(employerNavigationItems, pathname)}
       sidebarSubtitle={employerProfile.edition}
       sidebarTitle={employerProfile.companyLabel}
