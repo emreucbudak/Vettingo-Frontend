@@ -239,7 +239,7 @@ export function EmployerSettingsPage() {
                     Şirket Adresi
                   </label>
                   <textarea
-                    className={`${inputClass} min-h-32 resize-none`}
+                    className={`${inputClass} min-h-24 resize-none`}
                     defaultValue="Maslak, Sarıyer / İstanbul"
                     id="company-address"
                     name="address"
