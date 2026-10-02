@@ -16,6 +16,7 @@ import { EmployerDashboardFooter } from "./employer-dashboard-footer";
 
 function isCurrentRoute(pathname: string, href?: string) {
   if (!href) return false;
+  if (href === ROUTES.employerJobs && pathname === ROUTES.newJob) return true;
   if (href === ROUTES.employer) return pathname === href;
   return pathname === href || pathname.startsWith(`${href}/`);
 }

@@ -1,44 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { ROUTES } from "@/shared/config/routes";
+import { RequirementDropdown } from "./requirement-dropdown";
+import { EmployerShell } from "@/widgets/employer/shell";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   assistantInsights,
   requisitionForm,
-  requisitionProfile,
   requisitionSteps,
 } from "@/entities/job-requisition";
 
 const inputClass =
   "w-full rounded-lg border border-[#c5c6cd] bg-white px-4 py-2 text-sm leading-5 text-[#0b1c30] outline-none transition-all placeholder:text-[#c5c6cd] focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
-
-function Header() {
-  return (
-    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-[#c5c6cd] bg-white px-4 md:px-6">
-      <div className="flex items-center gap-4">
-        <span className="text-2xl font-bold tracking-[-0.01em] text-[#091426]">
-          {requisitionProfile.productName}
-        </span>
-      </div>
-      <div className="flex items-center gap-4">
-        <button className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]" type="button">
-          <MaterialIcon>notifications</MaterialIcon>
-        </button>
-        <div className="h-8 w-8 overflow-hidden rounded-full border border-[#c5c6cd] bg-[#dce9ff]">
-          <Image
-            alt="Kullanıcı profil fotoğrafı"
-            className="h-full w-full object-cover"
-            height={32}
-            src={requisitionProfile.avatarUrl}
-            width={32}
-          />
-        </div>
-      </div>
-    </header>
-  );
-}
 
 function Stepper({ activeStep }: { activeStep: number }) {
   return (
@@ -61,12 +34,6 @@ function Stepper({ activeStep }: { activeStep: number }) {
 function PageIntro() {
   return (
     <div className="mb-2">
-      <div className="mb-1 flex items-center gap-2">
-        <a className="flex items-center gap-1 text-sm leading-5 text-[#45474c] transition-colors hover:text-[#091426]" href={ROUTES.employer}>
-          <MaterialIcon className="text-[16px]">arrow_back</MaterialIcon>
-          İlan Taleplerine Dön
-        </a>
-      </div>
       <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#091426]">
         {requisitionForm.title}
       </h1>
@@ -134,14 +101,8 @@ function RequirementsCard() {
     <section className="rounded-lg border border-[#c5c6cd] bg-white p-6 shadow-sm">
       <h2 className="mb-4 text-lg font-medium leading-6 text-[#091426]">Gereksinimler</h2>
       <div className="flex flex-col gap-4">
-        <div>
-          <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]" htmlFor="job-skills">Aranan Yetkinlikler</label>
-          <textarea className={inputClass} id="job-skills" name="skills" placeholder="Adayda aradığınız yetkinlikleri yazın" rows={4} />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]" htmlFor="job-requirements">Deneyim ve Eğitim Gereksinimleri</label>
-          <textarea className={inputClass} id="job-requirements" name="requirements" placeholder="İstenen deneyim, eğitim ve diğer gereksinimleri yazın" rows={4} />
-        </div>
+        <RequirementDropdown addLabel="Eğitim Ekle" label="Eğitim" name="education" options={["Ön Lisans", "Lisans", "Yüksek Lisans", "Doktora"]} />
+        <RequirementDropdown addLabel="Yetenek Ekle" label="Yetenekler" name="skills" options={[...assistantInsights.skills, "İletişim", "Takım Çalışması", "Problem Çözme", "Proje Yönetimi", "Liderlik"]} />
       </div>
     </section>
   );
@@ -153,8 +114,8 @@ function ReviewCard({ values }: { values: Record<string, string> }) {
     ["workingModel", "Çalışma Türü"],
     ["salary", "Maaş"],
     ["description", "Açıklama"],
-    ["skills", "Aranan Yetkinlikler"],
-    ["requirements", "Deneyim ve Eğitim Gereksinimleri"],
+    ["education", "Eğitim"],
+    ["skills", "Yetenekler"],
   ];
 
   return (
@@ -241,10 +202,9 @@ export function JobRequisitionWizardPage() {
   const [activeStep, setActiveStep] = useState(1);
   const [reviewValues, setReviewValues] = useState<Record<string, string>>({});
   return (
-    <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30] antialiased">
-      <Header />
+    <EmployerShell>
       <div className="flex flex-1 overflow-hidden">
-        <main className="flex flex-1 justify-center overflow-y-auto bg-[#f8f9ff] p-4 md:p-8">
+        <main className="employer-dashboard-theme flex flex-1 justify-center overflow-y-auto bg-[#f8f9ff] p-4 md:p-8">
           <div className="grid w-full max-w-[1440px] grid-cols-1 gap-8 lg:grid-cols-12">
             <section className="flex flex-col gap-6 lg:col-span-8">
               <PageIntro />
@@ -272,7 +232,7 @@ export function JobRequisitionWizardPage() {
           </div>
         </main>
       </div>
-    </div>
+    </EmployerShell>
   );
 }
 
