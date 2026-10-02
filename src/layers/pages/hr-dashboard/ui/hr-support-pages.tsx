@@ -14,11 +14,13 @@ const labelClass =
   "mb-2 block text-[11px] font-semibold uppercase tracking-[0.06em] text-[#45474c]";
 
 function SettingsSection({
+  action,
   children,
   description,
   icon,
   title,
 }: {
+  action?: ReactNode;
   children: ReactNode;
   description?: string;
   icon?: string;
@@ -26,18 +28,19 @@ function SettingsSection({
 }) {
   return (
     <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6">
-      <div className="mb-6 flex items-start gap-3 border-b border-[#c5c6cd] pb-5">
+      <div className="mb-6 flex items-center gap-3 border-b border-[#c5c6cd] pb-5">
         {icon ? (
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
             <MaterialIcon className="text-[21px]">{icon}</MaterialIcon>
           </span>
         ) : null}
-        <div>
+        <div className="min-w-0 flex-1">
           <h2 className="text-lg font-semibold text-[#0b1c30]">{title}</h2>
           {description ? (
             <p className="mt-1 text-sm leading-5 text-[#45474c]">{description}</p>
           ) : null}
         </div>
+        {action}
       </div>
       {children}
     </section>
@@ -49,7 +52,14 @@ export function HrSettingsPage() {
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <div className="space-y-6">
-          <SettingsSection title="Profil">
+          <SettingsSection
+            action={
+              <button className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70" type="button">
+                Güncelle
+              </button>
+            }
+            title="Profil"
+          >
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div>
                 <label className={labelClass} htmlFor="hr-first-name">

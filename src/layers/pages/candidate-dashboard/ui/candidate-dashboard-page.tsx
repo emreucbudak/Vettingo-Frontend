@@ -1,7 +1,5 @@
 "use client";
-import Link from "next/link";
 import { useCandidateDashboardData } from "@/features/candidate-dashboard";
-import { ROUTES } from "@/shared/config/routes";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { CandidateDashboardApplications } from "@/widgets/candidate/dashboard-applications";
 import { CandidateRecommendedJobs } from "@/widgets/candidate/recommended-jobs";
@@ -26,12 +24,6 @@ export function CandidateDashboardPage() {
             </h2>
             <p className="mt-2 text-base leading-6 text-[#45474c]">Bugünkü profesyonel durumun ve aktivite özetin burada.</p>
           </div>
-          <Link
-            className="w-full rounded bg-[#091426] px-6 py-2 text-center text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b] md:w-auto"
-            href={ROUTES.candidateSettings}
-          >
-            Profili Güncelle
-          </Link>
         </div>
 
         {error ? (
