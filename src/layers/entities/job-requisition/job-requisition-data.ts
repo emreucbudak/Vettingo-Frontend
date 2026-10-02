@@ -11,23 +11,18 @@ export const requisitionSteps = [
 ] as const;
 
 export const requisitionForm = {
-  title: "Yeni İş İlanı Talebi",
+  title: "Yeni İş İlanı",
   description:
     "Rolü ve gereksinimleri tanımlayın. Yapay zeka ideal aday profilini netleştirmenize yardımcı olur.",
   jobTitle: "Kıdemli Ürün Yöneticisi",
-  departmentOptions: ["Ürün ve Mühendislik", "Pazarlama", "Satış"],
   locationTypeOptions: ["Hibrit", "Uzaktan", "Ofisten"],
   responsibilities:
     "Kurumsal analitik ürün ailemiz için ürün yol haritasının geliştirilmesine ve uygulanmasına liderlik edin. Yüksek etkili özellikler sunmak için mühendislik, tasarım ve pazarlama ekipleriyle çalışın.",
-  suggestionHint: "Bu unvana göre yapay zeka önerileri hazır.",
 } as const;
 
 export const assistantInsights = {
   title: "Yapay Zeka İlan Asistanı",
-  intro:
-    "\"Kıdemli Ürün Yöneticisi\" ve \"Ürün ve Mühendislik\" bilgilerine göre pazarla uyumlu öneriler aşağıda.",
   skills: ["Çevik Metodoloji", "Veri Analizi", "Paydaş Yönetimi"],
   compensation: "$140,000 - $180,000",
   compensationUnit: "/ yıl",
-  compensationNote: "Bu unvan ve lokasyon türü için tipik aralık.",
 } as const;

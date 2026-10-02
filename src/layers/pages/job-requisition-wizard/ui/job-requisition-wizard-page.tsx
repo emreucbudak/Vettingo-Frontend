@@ -1,4 +1,7 @@
-﻿import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
 import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
@@ -37,13 +40,13 @@ function Header() {
   );
 }
 
-function Stepper() {
+function Stepper({ activeStep }: { activeStep: number }) {
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2">
       {requisitionSteps.map((step, index) => (
         <div className="flex items-center gap-2" key={step.label}>
-          <div className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.05em] ${step.active ? "text-[#091426]" : "text-[#45474c]"}`}>
-            <div className={`flex h-6 w-6 items-center justify-center rounded-full ${step.active ? "bg-[#091426] text-white" : "border border-[#c5c6cd] text-[#45474c]"}`}>
+          <div aria-current={index + 1 === activeStep ? "step" : undefined} className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.05em] ${index + 1 === activeStep ? "text-[#091426]" : "text-[#45474c]"}`}>
+            <div className={`flex h-6 w-6 items-center justify-center rounded-full ${index + 1 === activeStep ? "bg-[#091426] text-white" : "border border-[#c5c6cd] text-[#45474c]"}`}>
               {step.value}
             </div>
             <span>{step.label}</span>
@@ -83,29 +86,10 @@ function CoreDetailsCard() {
           <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
             İş Unvanı
           </label>
-          <div className="relative">
-            <input className={inputClass} defaultValue={requisitionForm.jobTitle} type="text" />
-            <MaterialIcon className="absolute right-2 top-1/2 text-[#006c49] -translate-y-1/2">
-              check_circle
-            </MaterialIcon>
-          </div>
-          <p className="mt-1 flex items-center gap-1 text-[11px] font-medium leading-4 text-[#45474c]">
-            <MaterialIcon className="text-[14px] text-[#0d0093]">auto_awesome</MaterialIcon>
-            {requisitionForm.suggestionHint}
-          </p>
+          <input className={inputClass} defaultValue={requisitionForm.jobTitle} type="text" />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
-              Departman
-            </label>
-            <select className={inputClass} defaultValue={requisitionForm.departmentOptions[0]}>
-              {requisitionForm.departmentOptions.map((option) => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>
-          </div>
+        <div className="grid grid-cols-1 gap-4">
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
               Çalışma Türü
@@ -129,21 +113,41 @@ function ResponsibilitiesCard() {
       <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
         Açıklama
       </label>
-      <textarea className={inputClass} defaultValue={requisitionForm.responsibilities} rows={4} />
+      <textarea className={`${inputClass} h-40 resize-none`} defaultValue={requisitionForm.responsibilities} rows={7} />
     </section>
   );
 }
 
-function ActionRow() {
+function RequirementsCard() {
+  return (
+    <section className="rounded-lg border border-[#c5c6cd] bg-white p-6 shadow-sm">
+      <h2 className="mb-4 text-lg font-medium leading-6 text-[#091426]">Gereksinimler</h2>
+      <div className="flex flex-col gap-4">
+        <div>
+          <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]" htmlFor="job-skills">Aranan Yetkinlikler</label>
+          <textarea className={inputClass} id="job-skills" name="skills" placeholder="Adayda aradığınız yetkinlikleri yazın" rows={4} />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]" htmlFor="job-requirements">Deneyim ve Eğitim Gereksinimleri</label>
+          <textarea className={inputClass} id="job-requirements" name="requirements" placeholder="İstenen deneyim, eğitim ve diğer gereksinimleri yazın" rows={4} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ActionRow({ activeStep, onBack }: { activeStep: number; onBack: () => void }) {
   return (
     <div className="mt-4 flex justify-end gap-2">
-      <button className="rounded-lg border border-[#c5c6cd] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30] transition-colors hover:bg-[#eff4ff]" type="button">
-        Taslak Kaydet
-      </button>
-      <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="button">
+      {activeStep === 2 && (
+        <button className="rounded-lg border border-[#c5c6cd] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30] transition-colors hover:bg-[#eff4ff]" onClick={onBack} type="button">
+          Geri
+        </button>
+      )}
+      {activeStep === 1 && <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="submit">
         Devam Et
         <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
-      </button>
+      </button>}
     </div>
   );
 }
@@ -153,12 +157,10 @@ function AssistantSidebar() {
     <aside className="hidden flex-col gap-4 lg:col-span-4 lg:flex">
       <div className="sticky top-24 rounded-lg border border-[#c5c6cd] bg-white p-4 shadow-sm">
         <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-          <MaterialIcon className="text-[24px] text-[#0d0093]">psychology</MaterialIcon>
           <h3 className="text-xl font-semibold leading-7 text-[#091426]">
             {assistantInsights.title}
           </h3>
         </div>
-        <p className="mb-4 text-sm leading-5 text-[#45474c]">{assistantInsights.intro}</p>
 
         <div className="flex flex-col gap-2">
           <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-2">
@@ -192,9 +194,6 @@ function AssistantSidebar() {
             <div className="mt-1 text-sm leading-5 text-[#0b1c30]">
               {assistantInsights.compensation} <span className="text-[12px] text-[#45474c]">{assistantInsights.compensationUnit}</span>
             </div>
-            <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
-              {assistantInsights.compensationNote}
-            </p>
           </section>
         </div>
       </div>
@@ -203,6 +202,7 @@ function AssistantSidebar() {
 }
 
 export function JobRequisitionWizardPage() {
+  const [activeStep, setActiveStep] = useState(1);
   return (
     <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30] antialiased">
       <Header />
@@ -211,11 +211,19 @@ export function JobRequisitionWizardPage() {
           <div className="grid w-full max-w-[1440px] grid-cols-1 gap-8 lg:grid-cols-12">
             <section className="flex flex-col gap-6 lg:col-span-8">
               <PageIntro />
-              <Stepper />
-              <form className="flex flex-col gap-6">
-                <CoreDetailsCard />
-                <ResponsibilitiesCard />
-                <ActionRow />
+              <Stepper activeStep={activeStep} />
+              <form className="flex flex-col gap-6" onSubmit={(event) => {
+                event.preventDefault();
+                setActiveStep(2);
+              }}>
+                <div className={activeStep === 1 ? "flex flex-col gap-6" : "hidden"}>
+                  <CoreDetailsCard />
+                  <ResponsibilitiesCard />
+                </div>
+                <div className={activeStep === 2 ? "block" : "hidden"}>
+                  <RequirementsCard />
+                </div>
+                <ActionRow activeStep={activeStep} onBack={() => setActiveStep(1)} />
               </form>
             </section>
             <AssistantSidebar />
