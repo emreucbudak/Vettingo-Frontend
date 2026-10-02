@@ -16,7 +16,7 @@ function PageHeader({
   action?: React.ReactNode;
   eyebrow?: string;
   title: string;
-  description: string;
+  description?: string;
 }) {
   return (
     <header className="mb-8 flex flex-col gap-5 border-b border-[#c5c6cd] pb-7 lg:flex-row lg:items-end lg:justify-between">
@@ -29,7 +29,9 @@ function PageHeader({
         <h1 className={`${eyebrow ? "mt-2 " : ""}text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]`}>
           {title}
         </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#45474c]">{description}</p>
+        {description && (
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#45474c]">{description}</p>
+        )}
       </div>
       {action}
     </header>
@@ -81,7 +83,6 @@ export function EmployerJobsPage() {
               Yeni İş İlanı
             </Link>
           }
-          description="Yayındaki, taslaktaki ve duraklatılmış tüm ilanlarını tek ekrandan takip et."
           title="İlanlarım"
         />
 
