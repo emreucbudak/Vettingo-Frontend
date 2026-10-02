@@ -43,10 +43,9 @@ function JobRow({ job }: { job: EmployerJob }) {
         </div>
         <div className="lg:col-span-2">
           <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d] lg:hidden">
-            Tarih
+            Yayın Tarihi
           </p>
           <p className="text-sm text-[#45474c]">{job.publishedAt}</p>
-          <p className="text-[11px] text-[#75777d]">Bitiş: {job.closesAt}</p>
         </div>
         <div className="flex items-center justify-between gap-3 lg:col-span-2 lg:justify-end">
           <StatusBadge status={job.status} />
@@ -82,7 +81,7 @@ export function EmployerJobList() {
         <span className="col-span-4">İlan</span>
         <span className="col-span-2">Lokasyon</span>
         <span className="col-span-2">Aday Akışı</span>
-        <span className="col-span-2">Yayın / Bitiş</span>
+        <span className="col-span-2">Yayın Tarihi</span>
         <span className="col-span-2 pr-12 text-right">Durum</span>
         <span className="col-span-2 text-center">İşlem Yap</span>
       </div>

@@ -96,10 +96,23 @@ export function HrPasswordForm() {
   return (
     <form
       aria-busy={isSubmitting}
+      className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
       noValidate
       onChange={() => { setIsSaved(false); setSubmitError(null); }}
       onSubmit={handleSubmit(onSubmit)}
     >
+      <div className="mb-6 flex items-center justify-between gap-3 border-b border-[#c5c6cd] pb-5">
+        <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
+          Şifre Değiştir
+        </h2>
+        <button
+          className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
+        </button>
+      </div>
       <div className="space-y-5">
         <PasswordField
           autoComplete="current-password"
@@ -127,16 +140,8 @@ export function HrPasswordForm() {
         />
       </div>
 
-      <div className="mt-6 border-t border-[#c5c6cd] pt-5">
-        {submitError && <p className="mb-3 text-sm text-[#8c1d18]" role="alert">{submitError}</p>}
-        <button
-          className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
-          disabled={isSubmitting}
-          type="submit"
-        >
-          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
-          <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
-        </button>
+      <div>
+        {submitError && <p className="mt-3 text-sm text-[#8c1d18]" role="alert">{submitError}</p>}
         <p
           aria-live="polite"
           className={`mt-3 flex items-start gap-2 text-sm font-medium text-[#006c49] ${

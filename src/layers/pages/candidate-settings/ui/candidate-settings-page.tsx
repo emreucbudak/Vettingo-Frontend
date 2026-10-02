@@ -221,10 +221,17 @@ function AccountSettingsForm() {
       onChange={() => { setIsSaved(false); setSubmitError(null); }}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="mb-6 border-b border-[#c5c6cd] pb-5">
+      <div className="mb-6 flex items-center justify-between gap-3 border-b border-[#c5c6cd] pb-5">
         <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
           Şifre Değiştir
         </h2>
+        <button
+          className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
+        </button>
       </div>
 
       <div className="space-y-5">
@@ -318,14 +325,7 @@ function AccountSettingsForm() {
         </div>
       </div>
 
-      <div className="mt-6 border-t border-[#c5c6cd] pt-5">
-        <button
-          className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145]"
-          disabled={isSubmitting}
-          type="submit"
-        >
-          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
-        </button>
+      <div>
         <p
           aria-live="polite"
           className={`mt-3 flex items-start gap-2 text-sm font-medium text-[#006c49] ${
