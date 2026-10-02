@@ -17,44 +17,32 @@ const inputClass =
 const labelClass =
   "mb-2 block text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]";
 
+const saveButtonClass =
+  "inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70";
+
+const companySelectClass = `${inputClass} appearance-none pr-10 bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22%230b1c30%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22m6%209%206%206%206-6%22/%3E%3C/svg%3E')] bg-[position:right_1rem_center] bg-no-repeat`;
+
 type SavedSection = "company" | "account" | "security" | null;
 
-function SaveButton({
-  active,
+function SectionHeader({
+  title,
+  showUpdate = false,
+  updateLabel = "Güncelle",
   disabled = false,
-  label,
 }: {
-  active: boolean;
+  title: string;
+  showUpdate?: boolean;
+  updateLabel?: string;
   disabled?: boolean;
-  label: string;
 }) {
   return (
-    <div className="flex flex-col gap-3 border-t border-[#c5c6cd] pt-5 sm:flex-row sm:items-center">
-      <button
-        className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
-        disabled={disabled}
-        type="submit"
-      >
-        {label}
-        <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
-      </button>
-      <p
-        aria-live="polite"
-        className={`flex items-center gap-2 text-sm font-medium text-[#006c49] ${
-          active ? "" : "sr-only"
-        }`}
-      >
-        <MaterialIcon className="text-[18px]">check_circle</MaterialIcon>
-        Değişiklikler kaydedildi.
-      </p>
-    </div>
-  );
-}
-
-function SectionHeader({ title }: { title: string }) {
-  return (
-    <div className="mb-6 border-b border-[#c5c6cd] pb-5">
+    <div className="mb-6 flex items-center justify-between gap-3 border-b border-[#c5c6cd] pb-5">
       <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">{title}</h2>
+      {showUpdate && (
+        <button className={`${saveButtonClass} shrink-0`} disabled={disabled} type="submit">
+          {updateLabel}
+        </button>
+      )}
     </div>
   );
 }
@@ -105,7 +93,7 @@ export function EmployerSettingsPage() {
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
               onSubmit={(event) => handleSectionSubmit("account", event)}
             >
-              <SectionHeader title="Profil" />
+              <SectionHeader showUpdate title="Profil" />
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
@@ -172,7 +160,7 @@ export function EmployerSettingsPage() {
               className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
               onSubmit={(event) => handleSectionSubmit("company", event)}
             >
-              <SectionHeader title="Şirket Bilgileri" />
+              <SectionHeader showUpdate title="Şirket Bilgileri" />
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
@@ -193,7 +181,7 @@ export function EmployerSettingsPage() {
                     Sektör
                   </label>
                   <select
-                    className={inputClass}
+                    className={companySelectClass}
                     defaultValue="technology"
                     id="company-sector"
                     name="sector"
@@ -223,7 +211,7 @@ export function EmployerSettingsPage() {
                     Şirket Büyüklüğü
                   </label>
                   <select
-                    className={inputClass}
+                    className={companySelectClass}
                     defaultValue="51-200"
                     id="company-size"
                     name="companySize"
@@ -236,11 +224,22 @@ export function EmployerSettingsPage() {
                   </select>
                 </div>
                 <div className="md:col-span-2">
+                  <label className={labelClass} htmlFor="company-about">
+                    Şirket Hakkında
+                  </label>
+                  <textarea
+                    className={`${inputClass} min-h-32 resize-none`}
+                    id="company-about"
+                    name="about"
+                    placeholder="Şirketiniz hakkında bilgi verin"
+                  />
+                </div>
+                <div className="md:col-span-2">
                   <label className={labelClass} htmlFor="company-address">
                     Şirket Adresi
                   </label>
                   <textarea
-                    className={`${inputClass} min-h-24 resize-y`}
+                    className={`${inputClass} min-h-32 resize-none`}
                     defaultValue="Maslak, Sarıyer / İstanbul"
                     id="company-address"
                     name="address"
@@ -260,7 +259,12 @@ export function EmployerSettingsPage() {
               onChange={() => { setSavedSection(null); setPasswordError(null); }}
               onSubmit={handlePasswordSubmit(onPasswordSubmit)}
             >
-              <SectionHeader title="Şifreni Değiştir" />
+              <SectionHeader
+                disabled={isPasswordSubmitting}
+                showUpdate
+                title="Şifreni Değiştir"
+                updateLabel={isPasswordSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
+              />
 
               <div className="space-y-5">
                 <div>
@@ -359,12 +363,14 @@ export function EmployerSettingsPage() {
                 </div>
               </div>
 
-              <div className="mt-6">
-                <SaveButton
-                  active={savedSection === "security"}
-                  disabled={isPasswordSubmitting}
-                  label={isPasswordSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
-                />
+              <div>
+                <p
+                  aria-live="polite"
+                  className={savedSection === "security" ? "mt-3 flex items-center gap-2 text-sm font-medium text-[#006c49]" : "sr-only"}
+                >
+                  <MaterialIcon className="text-[18px]">check_circle</MaterialIcon>
+                  Değişiklikler kaydedildi.
+                </p>
                 {passwordError && <p className="mt-3 text-sm text-[#8c1d18]" role="alert">{passwordError}</p>}
               </div>
             </form>

@@ -103,9 +103,7 @@ export function HrSettingsPage() {
         </div>
 
         <aside className="space-y-6">
-          <SettingsSection title="Şifre Değiştir">
-            <HrPasswordForm />
-          </SettingsSection>
+          <HrPasswordForm />
         </aside>
       </div>
     </main>
