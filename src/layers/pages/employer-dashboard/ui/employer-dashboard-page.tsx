@@ -44,8 +44,7 @@ function RequisitionsTable() {
 
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
         <div className="hidden grid-cols-12 gap-2 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] md:grid">
-          <div className="col-span-5">Rol Unvanı</div>
-          <div className="col-span-2">Departman</div>
+          <div className="col-span-7">Rol Unvanı</div>
           <div className="col-span-2">Adaylar</div>
           <div className="col-span-3 text-right">Durum</div>
         </div>
@@ -56,16 +55,10 @@ function RequisitionsTable() {
               className="grid grid-cols-1 gap-3 px-6 py-3 transition-colors hover:bg-[#eff4ff] md:grid-cols-12 md:items-center md:gap-2"
               key={role.requisition}
             >
-              <div className="md:col-span-5">
+              <div className="md:col-span-7">
                 <div className="text-sm font-medium leading-5 text-[#0b1c30]">
                   {role.title}
                 </div>
-                <div className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
-                  {role.requisition} - {role.location}
-                </div>
-              </div>
-              <div className="text-sm leading-5 text-[#45474c] md:col-span-2">
-                {role.department}
               </div>
               <div className="text-sm leading-5 text-[#0b1c30] md:col-span-2">
                 {role.applicants}
