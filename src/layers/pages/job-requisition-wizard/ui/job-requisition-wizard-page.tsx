@@ -86,7 +86,7 @@ function CoreDetailsCard() {
           <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
             İş Unvanı
           </label>
-          <input className={inputClass} defaultValue={requisitionForm.jobTitle} type="text" />
+          <input className={inputClass} defaultValue={requisitionForm.jobTitle} name="jobTitle" type="text" />
         </div>
 
         <div className="grid grid-cols-1 gap-4">
@@ -94,11 +94,22 @@ function CoreDetailsCard() {
             <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
               Çalışma Türü
             </label>
-            <select className={inputClass} defaultValue={requisitionForm.locationTypeOptions[0]}>
-              {requisitionForm.locationTypeOptions.map((option) => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select className={`${inputClass} appearance-none pr-10`} defaultValue={requisitionForm.locationTypeOptions[0]} name="workingModel">
+                {requisitionForm.locationTypeOptions.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </select>
+              <MaterialIcon className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[18px] text-[#0b1c30]">
+                expand_more
+              </MaterialIcon>
+            </div>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]" htmlFor="job-salary">
+              Maaş
+            </label>
+            <input className={inputClass} id="job-salary" min="0" name="salary" placeholder="Maaş tutarını girin" step="0.01" type="number" />
           </div>
         </div>
       </div>
@@ -113,7 +124,7 @@ function ResponsibilitiesCard() {
       <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">
         Açıklama
       </label>
-      <textarea className={`${inputClass} h-40 resize-none`} defaultValue={requisitionForm.responsibilities} rows={7} />
+      <textarea className={`${inputClass} h-40 resize-none`} defaultValue={requisitionForm.responsibilities} name="description" rows={7} />
     </section>
   );
 }
@@ -136,15 +147,40 @@ function RequirementsCard() {
   );
 }
 
+function ReviewCard({ values }: { values: Record<string, string> }) {
+  const fields = [
+    ["jobTitle", "İş Unvanı"],
+    ["workingModel", "Çalışma Türü"],
+    ["salary", "Maaş"],
+    ["description", "Açıklama"],
+    ["skills", "Aranan Yetkinlikler"],
+    ["requirements", "Deneyim ve Eğitim Gereksinimleri"],
+  ];
+
+  return (
+    <section className="rounded-lg border border-[#c5c6cd] bg-white p-6 shadow-sm">
+      <h2 className="mb-4 text-lg font-medium leading-6 text-[#091426]">İnceleme ve Yayın</h2>
+      <dl className="flex flex-col gap-5">
+        {fields.map(([name, label]) => (
+          <div key={name}>
+            <dt className="mb-1 text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30]">{label}</dt>
+            <dd className="whitespace-pre-wrap break-words text-sm leading-6 text-[#45474c]">{values[name]?.trim() || "Belirtilmedi"}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
 function ActionRow({ activeStep, onBack }: { activeStep: number; onBack: () => void }) {
   return (
     <div className="mt-4 flex justify-end gap-2">
-      {activeStep === 2 && (
+      {activeStep > 1 && (
         <button className="rounded-lg border border-[#c5c6cd] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30] transition-colors hover:bg-[#eff4ff]" onClick={onBack} type="button">
           Geri
         </button>
       )}
-      {activeStep === 1 && <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="submit">
+      {activeStep < 3 && <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="submit">
         Devam Et
         <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
       </button>}
@@ -203,6 +239,7 @@ function AssistantSidebar() {
 
 export function JobRequisitionWizardPage() {
   const [activeStep, setActiveStep] = useState(1);
+  const [reviewValues, setReviewValues] = useState<Record<string, string>>({});
   return (
     <div className="flex min-h-screen flex-col bg-[#f8f9ff] text-[#0b1c30] antialiased">
       <Header />
@@ -214,7 +251,11 @@ export function JobRequisitionWizardPage() {
               <Stepper activeStep={activeStep} />
               <form className="flex flex-col gap-6" onSubmit={(event) => {
                 event.preventDefault();
-                setActiveStep(2);
+                if (activeStep === 2) {
+                  const data = new FormData(event.currentTarget);
+                  setReviewValues(Object.fromEntries(Array.from(data.entries(), ([name, value]) => [name, String(value)])));
+                }
+                setActiveStep((step) => Math.min(step + 1, 3));
               }}>
                 <div className={activeStep === 1 ? "flex flex-col gap-6" : "hidden"}>
                   <CoreDetailsCard />
@@ -223,7 +264,8 @@ export function JobRequisitionWizardPage() {
                 <div className={activeStep === 2 ? "block" : "hidden"}>
                   <RequirementsCard />
                 </div>
-                <ActionRow activeStep={activeStep} onBack={() => setActiveStep(1)} />
+                {activeStep === 3 && <ReviewCard values={reviewValues} />}
+                <ActionRow activeStep={activeStep} onBack={() => setActiveStep((step) => Math.max(step - 1, 1))} />
               </form>
             </section>
             <AssistantSidebar />
