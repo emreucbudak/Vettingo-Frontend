@@ -1,5 +1,7 @@
 "use client";
 
+import { MdOutlineExpandMore, MdOutlineLocationOn, MdOutlineSearch, MdOutlineSearchOff } from "react-icons/md";
+
 import React, {useEffect, useState } from "react";
 import {
   searchJobPostings,
@@ -10,7 +12,6 @@ import {
   type WorkingModel,
 } from "@/features/job-search";
 import { CandidateShell } from "@/widgets/candidate/shell";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const selectClassName =
   "appearance-none rounded-full border border-[#c5c6cd] bg-white py-2 pl-3 pr-9 text-[11px] font-medium text-[#0b1c30] outline-none transition-colors hover:bg-[#eff4ff] focus:border-[#091426]";
@@ -98,7 +99,7 @@ function SearchHero({
       <form onSubmit={onSubmit}>
         <div className="flex flex-col items-center gap-2 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-4 md:flex-row md:gap-4 md:p-6">
           <label className="flex w-full flex-1 items-center rounded border border-[#c5c6cd] bg-white px-2 py-2 transition-all focus-within:border-[#091426] focus-within:ring-1 focus-within:ring-[#091426]">
-            <MaterialIcon className="mr-2 text-[#45474c]">search</MaterialIcon>
+            <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] mr-2 text-[#45474c]" />
             <span className="sr-only">İş adı</span>
             <input
               className="w-full border-none bg-transparent p-0 text-sm text-[#0b1c30] outline-none placeholder:text-[#45474c]"
@@ -109,7 +110,7 @@ function SearchHero({
             />
           </label>
           <label className="flex w-full items-center rounded border border-[#c5c6cd] bg-white px-2 py-2 transition-all focus-within:border-[#091426] focus-within:ring-1 focus-within:ring-[#091426] md:w-1/3">
-            <MaterialIcon className="mr-2 text-[#45474c]">location_on</MaterialIcon>
+            <MdOutlineLocationOn aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] mr-2 text-[#45474c]" />
             <span className="sr-only">Lokasyon</span>
             <input
               className="w-full border-none bg-transparent p-0 text-sm text-[#0b1c30] outline-none placeholder:text-[#45474c]"
@@ -142,9 +143,7 @@ function SearchHero({
               <option value="100000-150000">100.000 - 150.000</option>
               <option value="150000-">150.000 ve üzeri</option>
             </select>
-            <MaterialIcon className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
-              expand_more
-            </MaterialIcon>
+            <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]" />
           </span>
           <span className="relative inline-flex">
             <select
@@ -159,9 +158,7 @@ function SearchHero({
               <option value="3">Staj</option>
               <option value="4">Sözleşmeli</option>
             </select>
-            <MaterialIcon className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
-              expand_more
-            </MaterialIcon>
+            <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]" />
           </span>
           <span className="relative inline-flex">
             <select
@@ -175,9 +172,7 @@ function SearchHero({
               <option value="1">İşyerinde</option>
               <option value="3">Hibrit</option>
             </select>
-            <MaterialIcon className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
-              expand_more
-            </MaterialIcon>
+            <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]" />
           </span>
           <span className="relative inline-flex">
             <select
@@ -193,9 +188,7 @@ function SearchHero({
               <option value="4">Senior</option>
               <option value="5">Lead</option>
             </select>
-            <MaterialIcon className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
-              expand_more
-            </MaterialIcon>
+            <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[18px] text-[#091426]" />
           </span>
           {hasFilters ? (
             <button
@@ -304,7 +297,7 @@ function JobList({
         jobs.map((job) => <JobCard job={job} key={job.id} />)
       ) : (
         <div className="rounded border border-dashed border-[#c5c6cd] bg-[#f8f9ff] px-6 py-12 text-center">
-          <MaterialIcon className="text-4xl text-[#75777d]">search_off</MaterialIcon>
+          <MdOutlineSearchOff aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-4xl text-[#75777d]" />
           <p className="mt-2 text-sm text-[#45474c]">Bu arama ve filtrelerle eşleşen ilan bulunamadı.</p>
         </div>
       )}

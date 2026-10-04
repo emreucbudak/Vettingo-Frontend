@@ -1,7 +1,7 @@
+import { MdOutlineAssignmentInd } from "react-icons/md";
 import Link from "next/link";
 import type { CandidateApplication } from "@/features/candidate-dashboard";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 function ApplicationCard({ application }: { application: CandidateApplication }) {
   return (
@@ -64,7 +64,7 @@ export function CandidateDashboardApplications({
         </div>
       ) : (
         <div className="rounded border border-dashed border-[#c5c6cd] bg-white px-6 py-10 text-center">
-          <MaterialIcon className="text-3xl text-[#75777d]">assignment_ind</MaterialIcon>
+          <MdOutlineAssignmentInd aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-3xl text-[#75777d]" />
           <p className="mt-2 text-sm font-medium text-[#45474c]">Henüz bir başvurun bulunmuyor.</p>
         </div>
       )}

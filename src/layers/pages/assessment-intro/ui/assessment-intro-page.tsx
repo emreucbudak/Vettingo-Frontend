@@ -1,5 +1,7 @@
 "use client";
 
+import { MdOutlineAutoAwesome, MdOutlineDescription, MdOutlineSchedule, MdOutlineVerifiedUser } from "react-icons/md";
+
 import { useRouter } from "next/navigation";
 import { assessmentOverview } from "@/entities/assessment";
 import { grantAssessmentAccess } from "@/features/assessment-access";
@@ -36,18 +38,9 @@ const examRules = [
 ] as const;
 
 function InfoIcon({ name }: { name: "clock" | "document" | "spark" | "shield" }) {
-  const paths = {
-    clock: <><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></>,
-    document: <><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v5h5M9 12h6M9 16h6" /></>,
-    spark: <><path d="m12 3 1.4 4.1L17.5 8.5l-4.1 1.4L12 14l-1.4-4.1-4.1-1.4 4.1-1.4z" /><path d="m18 15 .7 2.3L21 18l-2.3.7L18 21l-.7-2.3L15 18l2.3-.7z" /></>,
-    shield: <><path d="M12 3 5 6v5c0 4.6 2.8 8 7 10 4.2-2 7-5.4 7-10V6z" /><path d="m9 12 2 2 4-4" /></>,
-  };
-
-  return (
-    <svg aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" viewBox="0 0 24 24">
-      {paths[name]}
-    </svg>
-  );
+  const icons = { clock: MdOutlineSchedule, document: MdOutlineDescription, spark: MdOutlineAutoAwesome, shield: MdOutlineVerifiedUser };
+  const Icon = icons[name];
+  return <Icon aria-hidden="true" className="h-5 w-5" />;
 }
 
 export function AssessmentIntroPage() {

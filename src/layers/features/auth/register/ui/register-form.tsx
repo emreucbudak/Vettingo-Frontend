@@ -1,12 +1,24 @@
 "use client";
 
+import {
+  MdAutorenew,
+  MdExpandMore,
+  MdOutlineArrowForward,
+  MdOutlineBadge,
+  MdOutlineBusiness,
+  MdOutlineCheckCircle,
+  MdOutlineLock,
+  MdOutlineMail,
+} from "react-icons/md";
+
+import { AppIcon } from "@/shared/ui/icon";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { AuthSocialButtons } from "../../ui/auth-social-buttons";
 import { register } from "../api/register";
 import type { LegalDocument } from "../model/legal-content";
@@ -29,21 +41,7 @@ const candidateRegistrationTokenStorageKey =
   "vettingo:candidate-registration-token";
 
 function SelectChevron() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#45474c]"
-      fill="none"
-      focusable="false"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
+  return <MdExpandMore aria-hidden="true" focusable="false" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#45474c]" />;
 }
 
 export function RegisterForm() {
@@ -138,7 +136,7 @@ export function RegisterForm() {
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
           Ad
           <span className="relative">
-            <MaterialIcon className={leadingIconClass}>badge</MaterialIcon>
+            <MdOutlineBadge aria-hidden="true" focusable="false" className={`inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] ${leadingIconClass}`} />
             <input
               aria-describedby={
                 errors.name ? "register-name-error" : undefined
@@ -165,7 +163,7 @@ export function RegisterForm() {
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
           Soyad
           <span className="relative">
-            <MaterialIcon className={leadingIconClass}>badge</MaterialIcon>
+            <MdOutlineBadge aria-hidden="true" focusable="false" className={`inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] ${leadingIconClass}`} />
             <input
               aria-describedby={
                 errors.surname ? "register-surname-error" : undefined
@@ -192,7 +190,7 @@ export function RegisterForm() {
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
           E-posta Adresi
           <span className="relative">
-            <MaterialIcon className={leadingIconClass}>mail</MaterialIcon>
+            <MdOutlineMail aria-hidden="true" focusable="false" className={`inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] ${leadingIconClass}`} />
             <input
               aria-describedby={
                 errors.email ? "register-email-error" : undefined
@@ -219,7 +217,7 @@ export function RegisterForm() {
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
           Şifre
           <span className="relative">
-            <MaterialIcon className={leadingIconClass}>lock</MaterialIcon>
+            <MdOutlineLock aria-hidden="true" focusable="false" className={`inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] ${leadingIconClass}`} />
             <input
               aria-describedby={[
                 showPasswordRequirements
@@ -247,9 +245,9 @@ export function RegisterForm() {
               onClick={() => setShowPassword((value) => !value)}
               type="button"
             >
-              <MaterialIcon className="text-[18px]">
+              <AppIcon className="text-[18px]">
                 {showPassword ? "visibility" : "visibility_off"}
-              </MaterialIcon>
+              </AppIcon>
             </button>
           </span>
           {showPasswordRequirements && (
@@ -274,9 +272,7 @@ export function RegisterForm() {
                       role="listitem"
                     >
                       {isMet ? (
-                        <MaterialIcon className="text-[16px]">
-                          check_circle
-                        </MaterialIcon>
+                        <MdOutlineCheckCircle aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
                       ) : (
                         <span
                           aria-hidden="true"
@@ -322,9 +318,7 @@ export function RegisterForm() {
           <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
             Şirket Adı
             <span className="relative">
-              <MaterialIcon className={leadingIconClass}>
-                business
-              </MaterialIcon>
+              <MdOutlineBusiness aria-hidden="true" focusable="false" className={`inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] ${leadingIconClass}`} />
               <input
                 aria-describedby={
                   errors.companyName
@@ -409,11 +403,9 @@ export function RegisterForm() {
         >
           Kayıt Ol
           {isSubmitting && (
-            <MaterialIcon className="animate-spin text-[18px]">
-              progress_activity
-            </MaterialIcon>
+            <MdAutorenew aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] animate-spin text-[18px]" />
           )}
-          <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
+          <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
         </button>
       </form>
 

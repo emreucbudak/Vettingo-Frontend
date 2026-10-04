@@ -1,8 +1,9 @@
+import { MdOutlineArrowBack, MdOutlineArrowForward, MdOutlineCheck } from "react-icons/md";
+import { AppIcon } from "@/shared/ui/icon";
 import Link from "next/link";
 import type { HrProductDocumentation } from "@/entities/hr-product-documentation";
 import { landingPage } from "@/entities/landing";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { PublicSiteShell } from "@/shared/ui/public-site-chrome";
 
 export function HrProductDocumentationPage({
@@ -22,7 +23,7 @@ export function HrProductDocumentationPage({
               className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.06em] text-[#006c49] transition-colors hover:text-[#091426]"
               href={ROUTES.hrHelpCenter}
             >
-              <MaterialIcon className="text-[17px]">arrow_back</MaterialIcon>
+              <MdOutlineArrowBack aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[17px]" />
               HR Yardım Merkezine Dön
             </Link>
 
@@ -39,9 +40,9 @@ export function HrProductDocumentationPage({
                 </p>
               </div>
               <span className="flex h-28 w-28 items-center justify-center rounded-2xl bg-[#dce9ff] text-[#091426] shadow-[0_18px_45px_rgba(9,20,38,0.1)] lg:ml-auto lg:h-36 lg:w-36">
-                <MaterialIcon className="text-[52px] lg:text-[64px]">
+                <AppIcon className="text-[52px] lg:text-[64px]">
                   {content.icon}
-                </MaterialIcon>
+                </AppIcon>
               </span>
             </div>
           </div>
@@ -123,7 +124,7 @@ export function HrProductDocumentationPage({
                   key={capability.title}
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded bg-[#dce9ff] text-[#006c49]">
-                    <MaterialIcon className="text-[19px]">check</MaterialIcon>
+                    <MdOutlineCheck aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[19px]" />
                   </span>
                   <h3 className="mt-4 text-lg font-semibold text-[#091426]">
                     {capability.title}
@@ -173,7 +174,7 @@ export function HrProductDocumentationPage({
               <ul className="mt-7 space-y-3 rounded border border-[#c5c6cd] bg-white p-6">
                 {section.points.map((point) => (
                   <li className="flex items-start gap-3 text-sm leading-6 text-[#45474c]" key={point}>
-                    <MaterialIcon className="mt-1 text-[17px] text-[#006c49]">check</MaterialIcon>
+                    <MdOutlineCheck aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] mt-1 text-[17px] text-[#006c49]" />
                     <span>{point}</span>
                   </li>
                 ))}
@@ -192,7 +193,7 @@ export function HrProductDocumentationPage({
               <ul className="mt-7 space-y-4">
                 {content.bestPractices.map((practice) => (
                   <li className="flex items-start gap-3 text-sm leading-6 text-[#e5eeff]" key={practice}>
-                    <MaterialIcon className="mt-1 text-[17px] text-[#6cf8bb]">check</MaterialIcon>
+                    <MdOutlineCheck aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] mt-1 text-[17px] text-[#6cf8bb]" />
                     <span>{practice}</span>
                   </li>
                 ))}
@@ -232,7 +233,7 @@ export function HrProductDocumentationPage({
                   href={ROUTES.login}
                 >
                   Vettingo’ya Başla
-                  <MaterialIcon className="text-[17px]">arrow_forward</MaterialIcon>
+                  <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[17px]" />
                 </Link>
                 {content.showHelpCenterCta !== false ? (
                   <Link

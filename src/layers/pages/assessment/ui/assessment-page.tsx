@@ -1,5 +1,7 @@
 "use client";
 
+import { MdOutlineFlag, MdOutlineTimer } from "react-icons/md";
+
 import { useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -40,30 +42,8 @@ const questionStatusLabels = {
 } as const;
 
 function AssessmentIcon({ name }: { name: "flag" | "timer" }) {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5 shrink-0"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-    >
-      {name === "timer" ? (
-        <>
-          <circle cx="12" cy="13" r="8" />
-          <path d="M12 9v4l2.5 1.5M9 2h6M12 2v3" />
-        </>
-      ) : (
-        <>
-          <path d="M5 21V4" />
-          <path d="M5 5h10l-1.5 3L15 11H5" />
-        </>
-      )}
-    </svg>
-  );
+  const Icon = name === "timer" ? MdOutlineTimer : MdOutlineFlag;
+  return <Icon aria-hidden="true" className="h-5 w-5 shrink-0" />;
 }
 
 function AssessmentHeader({

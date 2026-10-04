@@ -1,8 +1,9 @@
 "use client";
 
+import { MdOutlineArrowBack, MdOutlineCheck, MdOutlineLock } from "react-icons/md";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   getPaymentPageData,
   type PaymentPageData,
@@ -102,7 +103,7 @@ function PaymentPageContent({
           </Link>
 
           <div className="flex items-center gap-2 text-xs font-semibold text-[#5d626b]">
-            <MaterialIcon className="text-[#006c49]">lock</MaterialIcon>
+            <MdOutlineLock aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#006c49]" />
             256-bit SSL ile korunan ödeme
           </div>
         </header>
@@ -112,7 +113,7 @@ function PaymentPageContent({
             className="inline-flex items-center gap-2 text-sm font-semibold text-[#5d626b] transition hover:text-[#6f42e8]"
             href={backHref}
           >
-            <MaterialIcon className="text-lg">arrow_back</MaterialIcon>
+            <MdOutlineArrowBack aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-lg" />
             Planlara dön
           </Link>
 
@@ -161,7 +162,7 @@ function PaymentPageContent({
                       key={feature}
                     >
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#eee8ff] text-[#6f42e8]">
-                        <MaterialIcon className="text-xs">check</MaterialIcon>
+                        <MdOutlineCheck aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-xs" />
                       </span>
                       {feature}
                     </li>
@@ -228,7 +229,7 @@ function PaymentPageContent({
 
               <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-[#ebecef] pt-5 text-[11px] font-semibold text-[#777b84]">
                 <span className="inline-flex items-center gap-1.5">
-                  <MaterialIcon className="text-sm text-[#006c49]">lock</MaterialIcon>
+                  <MdOutlineLock aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-sm text-[#006c49]" />
                   Güvenli ödeme
                 </span>
                 <span>PCI DSS uyumlu</span>

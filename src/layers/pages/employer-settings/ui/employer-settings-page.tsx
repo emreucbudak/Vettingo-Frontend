@@ -1,10 +1,11 @@
 "use client";
 
+import { MdOutlineCheckCircle, MdOutlineExpandMore } from "react-icons/md";
+
 import { useState } from "react";
 import { changePassword } from "@/features/auth/change-password";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 import {
   employerPasswordSchema,
@@ -20,7 +21,7 @@ const labelClass =
 const saveButtonClass =
   "inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70";
 
-const companySelectClass = `${inputClass} appearance-none pr-10 bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22%230b1c30%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22m6%209%206%206%206-6%22/%3E%3C/svg%3E')] bg-[position:right_1rem_center] bg-no-repeat`;
+const companySelectClass = `${inputClass} appearance-none pr-10`;
 
 type SavedSection = "company" | "account" | "security" | null;
 
@@ -180,7 +181,8 @@ export function EmployerSettingsPage() {
                   <label className={labelClass} htmlFor="company-sector">
                     Sektör
                   </label>
-                  <select
+                  <div className="relative">
+                    <select
                     className={companySelectClass}
                     defaultValue="technology"
                     id="company-sector"
@@ -192,6 +194,8 @@ export function EmployerSettingsPage() {
                     <option value="consulting">Danışmanlık</option>
                     <option value="other">Diğer</option>
                   </select>
+                    <MdOutlineExpandMore aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#0b1c30]" />
+                  </div>
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="company-website">
@@ -210,7 +214,8 @@ export function EmployerSettingsPage() {
                   <label className={labelClass} htmlFor="company-size">
                     Şirket Büyüklüğü
                   </label>
-                  <select
+                  <div className="relative">
+                    <select
                     className={companySelectClass}
                     defaultValue="51-200"
                     id="company-size"
@@ -222,6 +227,8 @@ export function EmployerSettingsPage() {
                     <option value="201-500">201-500 çalışan</option>
                     <option value="501+">501+ çalışan</option>
                   </select>
+                    <MdOutlineExpandMore aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#0b1c30]" />
+                  </div>
                 </div>
                 <div className="md:col-span-2">
                   <label className={labelClass} htmlFor="company-about">
@@ -368,7 +375,7 @@ export function EmployerSettingsPage() {
                   aria-live="polite"
                   className={savedSection === "security" ? "mt-3 flex items-center gap-2 text-sm font-medium text-[#006c49]" : "sr-only"}
                 >
-                  <MaterialIcon className="text-[18px]">check_circle</MaterialIcon>
+                  <MdOutlineCheckCircle aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
                   Değişiklikler kaydedildi.
                 </p>
                 {passwordError && <p className="mt-3 text-sm text-[#8c1d18]" role="alert">{passwordError}</p>}

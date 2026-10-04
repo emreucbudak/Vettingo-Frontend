@@ -1,9 +1,10 @@
 "use client";
 
+import { MdOutlineAdd, MdOutlineAddCircle, MdOutlineArrowForward, MdOutlineExpandMore } from "react-icons/md";
+
 import { useState } from "react";
 import { RequirementDropdown } from "./requirement-dropdown";
 import { EmployerShell } from "@/widgets/employer/shell";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   assistantInsights,
   requisitionForm,
@@ -67,9 +68,7 @@ function CoreDetailsCard() {
                   <option key={option}>{option}</option>
                 ))}
               </select>
-              <MaterialIcon className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[18px] text-[#0b1c30]">
-                expand_more
-              </MaterialIcon>
+              <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[18px] text-[#0b1c30]" />
             </div>
           </div>
           <div>
@@ -143,7 +142,7 @@ function ActionRow({ activeStep, onBack }: { activeStep: number; onBack: () => v
       )}
       {activeStep < 3 && <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="submit">
         Devam Et
-        <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
+        <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
       </button>}
     </div>
   );
@@ -166,7 +165,7 @@ function AssistantSidebar() {
                 Önerilen Yetkinlikler
               </span>
               <button className="flex items-center gap-[2px] text-[12px] text-[#0d0093] transition-colors hover:text-[#091426]" type="button">
-                <MaterialIcon className="text-[14px]">add_circle</MaterialIcon>
+                <MdOutlineAddCircle aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[14px]" />
                 Tümünü Ekle
               </button>
             </div>
@@ -175,7 +174,7 @@ function AssistantSidebar() {
                 <span className="inline-flex items-center gap-1 rounded-full bg-[#6cf8bb] px-2 py-[2px] text-[11px] font-medium leading-4 text-[#00714d]" key={skill}>
                   {skill}
                   <button className="text-[12px] hover:text-[#091426]" type="button">
-                    <MaterialIcon>add</MaterialIcon>
+                    <MdOutlineAdd aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
                   </button>
                 </span>
               ))}

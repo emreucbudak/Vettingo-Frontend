@@ -1,5 +1,7 @@
 "use client";
 
+import { MdOutlineCheckCircle } from "react-icons/md";
+
 import { useState } from "react";
 import { changePassword } from "@/features/auth/change-password";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +10,6 @@ import {
   type UseFormRegisterReturn,
   useForm,
 } from "react-hook-form";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   hrPasswordSchema,
   type HrPasswordFormValues,
@@ -148,7 +149,7 @@ export function HrPasswordForm() {
             isSaved ? "" : "sr-only"
           }`}
         >
-          <MaterialIcon className="mt-0.5 text-[18px]">check_circle</MaterialIcon>
+          <MdOutlineCheckCircle aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] mt-0.5 text-[18px]" />
           Şifre bilgilerin güncellendi.
         </p>
       </div>

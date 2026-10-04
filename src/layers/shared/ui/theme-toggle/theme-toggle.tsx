@@ -1,7 +1,8 @@
 "use client";
 
+import { AppIcon } from "@/shared/ui/icon";
+
 import { useEffect, useSyncExternalStore } from "react";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const STORAGE_KEY = "vettingo-theme";
 const THEME_CHANGE_EVENT = "vettingo-theme-change";
@@ -45,7 +46,7 @@ export function ThemeToggle() {
       onClick={() => saveTheme(isDark ? "light" : "dark")}
       type="button"
     >
-      <MaterialIcon className="text-[24px]">{isDark ? "light_mode" : "dark_mode"}</MaterialIcon>
+      <AppIcon className="text-[24px]">{isDark ? "light_mode" : "dark_mode"}</AppIcon>
     </button>
   );
 }

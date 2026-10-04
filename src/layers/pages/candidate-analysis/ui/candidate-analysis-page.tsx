@@ -1,5 +1,17 @@
 "use client";
 
+import {
+  MdOutlineArrowBack,
+  MdOutlineChevronRight,
+  MdOutlineDownload,
+  MdOutlineRadar,
+  MdOutlineSchool,
+  MdOutlineWork,
+  MdOutlineWorkspacePremium,
+} from "react-icons/md";
+
+import { AppIcon } from "@/shared/ui/icon";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,7 +22,6 @@ import { analysisProfile, analysisUtilityItems } from "@/entities/candidate-anal
 import { ROUTES } from "@/shared/config/routes";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { EmployerDashboardFooter } from "@/widgets/employer/shell";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 
 type DetailKind = "application" | "talent";
@@ -52,9 +63,9 @@ function BreadcrumbActions({
         <Link className="transition-colors hover:text-[#091426]" href={collectionHref}>
           {collectionLabel}
         </Link>
-        <MaterialIcon className="text-[16px]">chevron_right</MaterialIcon>
+        <MdOutlineChevronRight aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
         <span>{candidate.targetRole}</span>
-        <MaterialIcon className="text-[16px]">chevron_right</MaterialIcon>
+        <MdOutlineChevronRight aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
         <span className="font-semibold text-[#0b1c30]">{candidate.name}</span>
       </div>
 
@@ -63,7 +74,7 @@ function BreadcrumbActions({
           className="flex items-center justify-center gap-2 rounded border border-[#75777d] bg-[#f8f9ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
           type="button"
         >
-          <MaterialIcon className="text-[18px]">download</MaterialIcon>
+          <MdOutlineDownload aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
           PDF Dışa Aktar
         </button>
         <button
@@ -114,7 +125,7 @@ function CandidateHeader({
             { icon: "work_history", label: candidate.experience },
           ].map((item) => (
             <div className="flex items-center gap-1" key={item.icon}>
-              <MaterialIcon className="text-[18px]">{item.icon}</MaterialIcon>
+              <AppIcon className="text-[18px]">{item.icon}</AppIcon>
               {item.label}
             </div>
           ))}
@@ -159,7 +170,7 @@ function SummaryList({
       <ul className="space-y-2">
         {items.map((item) => (
           <li className="flex items-start gap-1 text-sm leading-5 text-[#0b1c30]" key={item}>
-            <MaterialIcon className={`mt-[2px] text-[16px] ${iconClassName}`}>{icon}</MaterialIcon>
+            <AppIcon className={`mt-[2px] text-[16px] ${iconClassName}`}>{icon}</AppIcon>
             {item}
           </li>
         ))}
@@ -188,7 +199,7 @@ function ExecutiveSummaryCard({
   return (
     <section className="flex flex-col rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 lg:col-span-2">
       <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-        <MaterialIcon className="text-[#040057]">{isTalent ? "auto_awesome" : "psychology"}</MaterialIcon>
+        <AppIcon className="text-[#040057]">{isTalent ? "auto_awesome" : "psychology"}</AppIcon>
         <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">
           {isTalent ? "Neden Öneriyoruz?" : "Aday Analizi Özeti"}
         </h2>
@@ -314,7 +325,7 @@ function ExperienceCard({ candidate }: { candidate: CandidateAnalysisProfile }) 
   return (
     <section className="rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6">
       <div className="mb-6 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-        <MaterialIcon className="text-[#091426]">work</MaterialIcon>
+        <MdOutlineWork aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" />
         <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Profesyonel Deneyim</h2>
       </div>
       <div className="relative space-y-8 before:absolute before:inset-y-0 before:left-[11px] before:w-[2px] before:bg-[#d3e4fe]">
@@ -368,13 +379,13 @@ function CandidateContextCard({
       {isTalent ? (
         <div>
           <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-            <MaterialIcon className="text-[#006c49]">radar</MaterialIcon>
+            <MdOutlineRadar aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#006c49]" />
             <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Yetenek Sinyalleri</h2>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
             {talentSignals.map((signal) => (
               <div className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-3" key={signal.label}>
-                <MaterialIcon className="text-[19px] text-[#45474c]">{signal.icon}</MaterialIcon>
+                <AppIcon className="text-[19px] text-[#45474c]">{signal.icon}</AppIcon>
                 <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d]">
                   {signal.label}
                 </p>
@@ -387,14 +398,14 @@ function CandidateContextCard({
 
       <div>
         <div className="mb-5 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-          <MaterialIcon className="text-[#091426]">school</MaterialIcon>
+          <MdOutlineSchool aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" />
           <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Eğitim</h2>
         </div>
         <ul className="space-y-4">
           {candidate.educationItems.map((item) => (
             <li className="flex items-start gap-4" key={item.title}>
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-[#c5c6cd] bg-[#eff4ff]">
-                <MaterialIcon className="text-[#45474c]">{item.icon}</MaterialIcon>
+                <AppIcon className="text-[#45474c]">{item.icon}</AppIcon>
               </div>
               <div>
                 <h3 className="text-base font-medium leading-6 text-[#0b1c30]">{item.title}</h3>
@@ -408,7 +419,7 @@ function CandidateContextCard({
 
       <div className="mt-auto">
         <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-          <MaterialIcon className="text-[#091426]">workspace_premium</MaterialIcon>
+          <MdOutlineWorkspacePremium aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" />
           <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Sertifikalar</h2>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -456,7 +467,7 @@ export function CandidateAnalysisPage({
               : ROUTES.employerApplications
           }
         >
-          <MaterialIcon>arrow_back</MaterialIcon>
+          <MdOutlineArrowBack aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
         </Link>
       }
       utilityItems={analysisUtilityItems}

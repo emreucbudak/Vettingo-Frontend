@@ -10,8 +10,17 @@ export function CandidateUpcomingInterviews({
   isLoading: boolean;
 }) {
   return (
-    <section className="rounded border border-[#c5c6cd] bg-white p-4">
-      <h3 className="mb-4 text-lg font-medium leading-6 text-[#0b1c30]">Yaklaşan Mülakatlar</h3>
+    <section>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">Yaklaşan Mülakatlar</h3>
+        <Link
+          className="shrink-0 text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49] hover:underline"
+          href={ROUTES.candidateApplications}
+        >
+          Tümünü Gör
+        </Link>
+      </div>
+      <div className="rounded border border-[#c5c6cd] bg-white p-4">
       {isLoading ? (
         <div className="space-y-4" aria-label="Mülakatlar yükleniyor">
           {[0, 1].map((item) => (
@@ -51,6 +60,7 @@ export function CandidateUpcomingInterviews({
           Yaklaşan mülakat bulunmuyor.
         </p>
       )}
+      </div>
     </section>
   );
 }

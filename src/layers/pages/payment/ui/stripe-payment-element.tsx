@@ -1,5 +1,7 @@
 "use client";
 
+import { MdAutorenew, MdOutlineCheck, MdOutlineLock } from "react-icons/md";
+
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   Elements,
@@ -13,7 +15,6 @@ import type {
   BillingPeriod,
 } from "@/entities/subscription";
 import { clearSelectedSubscriptionPlan } from "@/entities/subscription";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   clearRegistrationToken,
   getRegistrationToken,
@@ -271,7 +272,7 @@ function PaymentForm({
         className="flex min-h-[320px] flex-col items-center justify-center rounded-2xl border border-[#bce7ce] bg-[#f0fbf5] px-6 text-center"
       >
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#006c49] text-white">
-          <MaterialIcon className="text-3xl">check</MaterialIcon>
+          <MdOutlineCheck aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-3xl" />
         </span>
         <h3 className="mt-5 text-xl font-bold text-[#091426]">
           Ödemeniz başarıyla alındı
@@ -326,16 +327,14 @@ function PaymentForm({
       >
         {isSubmitting ? (
           <>
-            <MaterialIcon className="animate-spin text-lg">
-              progress_activity
-            </MaterialIcon>
+            <MdAutorenew aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] animate-spin text-lg" />
             {isPaymentConfirmed
               ? "Hesap Etkinleştiriliyor"
               : "Ödeme İşleniyor"}
           </>
         ) : (
           <>
-            <MaterialIcon className="text-lg">lock</MaterialIcon>
+            <MdOutlineLock aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-lg" />
             {isPaymentConfirmed
               ? "Hesabı Etkinleştir"
               : "Güvenli Ödemeyi Tamamla"}
@@ -350,7 +349,7 @@ function StripeConfigurationNotice() {
   return (
     <div className="flex min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#cfc3f6] bg-[#faf8ff] px-6 text-center">
       <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#eee8ff] text-[#6f42e8]">
-        <MaterialIcon className="text-3xl">lock</MaterialIcon>
+        <MdOutlineLock aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-3xl" />
       </span>
       <h3 className="mt-5 text-lg font-bold text-[#091426]">
         Stripe ödeme alanı yapılandırılmalı

@@ -1,7 +1,7 @@
+import { MdOutlineArrowForward, MdOutlineGroup, MdOutlineLocationOn, MdOutlineRecordVoiceOver } from "react-icons/md";
 import Link from "next/link";
 import { interviews } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   HrAvatar,
   HrSectionHeading,
@@ -81,15 +81,15 @@ export function HrInterviewAgenda() {
                     <p className="mt-1 text-sm text-[#45474c]">{interview.role}</p>
                     <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-[#75777d]">
                       <span className="inline-flex items-center gap-1">
-                        <MaterialIcon className="text-[16px]">record_voice_over</MaterialIcon>
+                        <MdOutlineRecordVoiceOver aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
                         {interview.type}
                       </span>
                       <span className="inline-flex items-center gap-1">
-                        <MaterialIcon className="text-[16px]">location_on</MaterialIcon>
+                        <MdOutlineLocationOn aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
                         {interview.location}
                       </span>
                       <span className="inline-flex items-center gap-1">
-                        <MaterialIcon className="text-[16px]">group</MaterialIcon>
+                        <MdOutlineGroup aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
                         {interview.interviewers.join(", ")}
                       </span>
                     </div>
@@ -100,7 +100,7 @@ export function HrInterviewAgenda() {
                   href={ROUTES.hrCandidates}
                 >
                   Adayı Aç
-                  <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
+                  <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
                 </Link>
               </article>
             ))}

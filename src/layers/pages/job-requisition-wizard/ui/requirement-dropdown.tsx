@@ -1,7 +1,8 @@
 "use client";
 
+import { MdOutlineAdd, MdOutlineClose, MdOutlineExpandMore } from "react-icons/md";
+
 import { useEffect, useRef, useState } from "react";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 type RequirementRow = { id: string; value: string; detail: string };
 const fieldClass = "w-full rounded-lg border border-[#c5c6cd] bg-white px-4 py-2 text-sm text-[#0b1c30] outline-none focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
@@ -54,12 +55,12 @@ export function RequirementDropdown({ label, addLabel, name, options }: {
       <details className="group rounded-lg border border-[#c5c6cd]">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-lg p-4 text-sm font-semibold text-[#0b1c30] focus-visible:outline-[#091426] [&::-webkit-details-marker]:hidden">
           {label}
-          <MaterialIcon className="text-[18px] transition-transform group-open:rotate-180">expand_more</MaterialIcon>
+          <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px] transition-transform group-open:rotate-180" />
         </summary>
         <div className="border-t border-[#c5c6cd] p-4">
           <div className="flex justify-end">
             <button aria-haspopup="dialog" className="inline-flex items-center gap-1.5 rounded py-1 text-sm font-medium text-[#0d0093] hover:text-[#091426]" onClick={() => setIsOpen(true)} type="button">
-              <MaterialIcon className="text-[16px]">add</MaterialIcon>
+              <MdOutlineAdd aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
               {addLabel}
             </button>
           </div>
@@ -76,7 +77,7 @@ export function RequirementDropdown({ label, addLabel, name, options }: {
                           <option value="">Bölüm seçin</option>
                           {departments.map((department) => <option key={department}>{department}</option>)}
                         </select>
-                        <MaterialIcon className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[18px]">expand_more</MaterialIcon>
+                        <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[18px]" />
                       </div>
                     ) : <input className={fieldClass} id={`${name}-${row.id}-value`} onChange={(event) => updateRow(row.id, "value", event.target.value)} placeholder="Yetenek adı" value={row.value} />}
                   </div>
@@ -85,7 +86,7 @@ export function RequirementDropdown({ label, addLabel, name, options }: {
                     <input className={fieldClass} id={`${name}-${row.id}-detail`} min={isEducation ? undefined : "0"} onChange={(event) => updateRow(row.id, "detail", event.target.value)} placeholder={isEducation ? undefined : "Örn. 3"} readOnly={isEducation} step={isEducation ? undefined : "0.5"} type={isEducation ? "text" : "number"} value={row.detail} />
                   </div>
                 </div>
-                <button aria-label={`${label} satırını kaldır`} className="rounded p-2 text-[#45474c] hover:bg-[#eff4ff]" onClick={() => setRows((items) => items.filter((item) => item.id !== row.id))} type="button"><MaterialIcon className="text-[18px]">close</MaterialIcon></button>
+                <button aria-label={`${label} satırını kaldır`} className="rounded p-2 text-[#45474c] hover:bg-[#eff4ff]" onClick={() => setRows((items) => items.filter((item) => item.id !== row.id))} type="button"><MdOutlineClose aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" /></button>
               </div>
             ))}
           </div>
@@ -100,7 +101,7 @@ export function RequirementDropdown({ label, addLabel, name, options }: {
       }} ref={dialogRef}>
         <header className="mb-6 flex items-center justify-between gap-3 border-b border-[#c5c6cd] pb-4">
           <h2 className="text-xl font-semibold" id={`${name}-drawer-title`}>{addLabel}</h2>
-          <button aria-label="Menüyü kapat" className="rounded p-2 hover:bg-[#eff4ff]" onClick={() => setIsOpen(false)} type="button"><MaterialIcon className="text-[20px]">close</MaterialIcon></button>
+          <button aria-label="Menüyü kapat" className="rounded p-2 hover:bg-[#eff4ff]" onClick={() => setIsOpen(false)} type="button"><MdOutlineClose aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[20px]" /></button>
         </header>
         <div className="flex-1 space-y-5 overflow-y-auto">
           {isEducation ? (

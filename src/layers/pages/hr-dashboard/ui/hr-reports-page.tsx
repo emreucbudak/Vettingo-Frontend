@@ -1,5 +1,5 @@
+import { MdOutlineDomain } from "react-icons/md";
 import { departmentMetrics, funnelStages, monthlyHiring } from "@/entities/hr-dashboard";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   HrSectionHeading,
   HrStatGrid,
@@ -140,7 +140,7 @@ function DepartmentTable() {
             >
               <div className="col-span-2 flex items-center gap-3 lg:col-span-3">
                 <span className="flex h-9 w-9 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-                  <MaterialIcon className="text-[19px]">domain</MaterialIcon>
+                  <MdOutlineDomain aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[19px]" />
                 </span>
                 <span className="text-sm font-semibold text-[#0b1c30]">{metric.department}</span>
               </div>

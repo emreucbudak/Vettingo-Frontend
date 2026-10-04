@@ -15,4 +15,12 @@ export const recommendedJobs = [
     match: "94% Eşleşme",
     postedAt: "5 saat önce yayınlandı",
   },
+  {
+    role: "Kıdemli Ürün Yöneticisi",
+    company: "Tech Solutions",
+    location: "İstanbul, Türkiye",
+    icon: "business_center",
+    match: "92% Eşleşme",
+    postedAt: "1 gün önce yayınlandı",
+  },
 ] as const;

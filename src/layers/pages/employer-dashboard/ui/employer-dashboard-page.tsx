@@ -1,6 +1,6 @@
+import { MdOutlineAutoAwesome } from "react-icons/md";
 import Image from "next/image";
 import { EmployerStatistics } from "@/features/employer-dashboard";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 import {
   activeRequisitions,
@@ -82,7 +82,7 @@ function AiMatchesCard() {
     <section className="flex h-full flex-col rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="flex items-center gap-2 text-lg font-medium leading-6 text-[#0b1c30]">
-          <MaterialIcon className="text-[#040057]">auto_awesome</MaterialIcon>
+          <MdOutlineAutoAwesome aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#040057]" />
           En İyi YZ Eşleşmeleri
         </h3>
       </div>

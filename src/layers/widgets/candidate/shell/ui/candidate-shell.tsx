@@ -21,7 +21,7 @@ const candidateNavigationItems = [
     href: ROUTES.candidateMyCandidate,
   },
   { label: "İşler", icon: "business_center", href: ROUTES.candidateJobs },
-  { label: "CV", icon: "contact_page", href: ROUTES.candidate },
+  { label: "CV", icon: "contact_page", href: ROUTES.cv },
 ] as const;
 
 const candidateUtilityItems = [
@@ -46,7 +46,7 @@ function withActiveRoute(
 ) {
   return items.map((item) => ({
     ...item,
-    active: item.label !== "CV" && isCurrentRoute(pathname, item.href),
+    active:   isCurrentRoute(pathname, item.href),
   }));
 }
 

@@ -1,7 +1,7 @@
+import { MdOutlineArrowForward, MdOutlineExpandMore, MdOutlineSearch, MdOutlineTune } from "react-icons/md";
 import Link from "next/link";
 import { candidates } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   HrAvatar,
   HrSectionHeading,
@@ -25,9 +25,7 @@ function CandidateRating({ rating }: { rating: number }) {
 
 function SelectChevron() {
   return (
-    <MaterialIcon className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
-      expand_more
-    </MaterialIcon>
+    <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[18px] text-[#091426]" />
   );
 }
 
@@ -38,9 +36,7 @@ export function HrCandidatePipeline() {
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(240px,1fr)_repeat(3,minmax(150px,auto))]">
           <label className="relative block">
             <span className="sr-only">Aday ara</span>
-            <MaterialIcon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-[#75777d]">
-              search
-            </MaterialIcon>
+            <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-[#75777d]" />
             <input
               className="w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] py-2.5 pl-10 pr-4 text-sm text-[#0b1c30] outline-none placeholder:text-[#75777d] focus:border-[#091426]"
               placeholder="İsim, rol veya yetkinlik ara"
@@ -77,7 +73,7 @@ export function HrCandidatePipeline() {
             className="inline-flex items-center justify-center gap-2 rounded border border-[#9aa6bc] bg-[#f8f9ff] px-4 py-2.5 text-xs font-semibold text-[#091426] transition-colors hover:bg-[#dce9ff]"
             type="button"
           >
-            <MaterialIcon className="text-[18px]">tune</MaterialIcon>
+            <MdOutlineTune aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
             Filtreler
           </button>
         </div>
@@ -144,7 +140,7 @@ export function HrCandidatePipeline() {
                     href={ROUTES.hrInterviews}
                   >
                     Aç
-                    <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
+                    <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
                   </Link>
                 </div>
               </article>

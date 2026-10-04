@@ -1,6 +1,7 @@
+import { MdOutlineArrowForward } from "react-icons/md";
+import { AppIcon } from "@/shared/ui/icon";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 export function HrPageHeader({
   action,
@@ -80,7 +81,7 @@ export function HrStatGrid({
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded ${statToneClasses[tone]}`}
               >
-                <MaterialIcon className={item.icon === "handshake" ? "text-[23px]" : "text-[21px]"}>{item.icon}</MaterialIcon>
+                <AppIcon className={item.icon === "handshake" ? "text-[23px]" : "text-[21px]"}>{item.icon}</AppIcon>
               </span>
               )}
             </div>
@@ -121,7 +122,7 @@ export function HrSectionHeading({
           href={actionHref}
         >
           {actionLabel}
-          <MaterialIcon className="text-[17px]">arrow_forward</MaterialIcon>
+          <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[17px]" />
         </Link>
       ) : null}
     </div>
@@ -186,7 +187,7 @@ export function HrPrimaryLink({
       className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-all hover:-translate-y-0.5 hover:shadow-lg sm:w-auto"
       href={href}
     >
-      <MaterialIcon className="text-[18px]">{icon}</MaterialIcon>
+      <AppIcon className="text-[18px]">{icon}</AppIcon>
       {children}
     </Link>
   );
@@ -207,7 +208,7 @@ export function HrSecondaryLink({
       href={href}
     >
       {children}
-      <MaterialIcon className="text-[17px]">{icon}</MaterialIcon>
+      <AppIcon className="text-[17px]">{icon}</AppIcon>
     </Link>
   );
 }
