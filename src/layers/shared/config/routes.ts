@@ -45,5 +45,6 @@ export const ROUTES = {
   talentBenchmarking: "/talent-benchmarking",
   assessment: "/assessment",
   assessmentSession: "/assessment/session",
+  cv: "/candidate/cv"
 } as const;
 

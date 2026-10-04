@@ -1,8 +1,9 @@
 "use client";
 
+import { AppIcon } from "@/shared/ui/icon";
+
 import { useEffect, useState } from "react";
 import { getStats, type EmployerStats } from "../api/employer-dashboard-api";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 export function EmployerJobStatistics() {
   const [statistics, setStatistics] = useState<EmployerStats | null>(null);
@@ -32,7 +33,7 @@ export function EmployerJobStatistics() {
                 {item.label}
               </p>
               {item.icon && (
-                <MaterialIcon className="text-[20px] text-[#45474c]">{item.icon}</MaterialIcon>
+                <AppIcon className="text-[20px] text-[#45474c]">{item.icon}</AppIcon>
               )}
             </div>
             <p className="mt-3 text-2xl font-semibold text-[#0b1c30]" aria-live="polite">{item.value}</p>

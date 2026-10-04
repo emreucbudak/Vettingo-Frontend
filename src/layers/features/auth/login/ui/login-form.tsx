@@ -1,12 +1,15 @@
 "use client";
 
+import { MdAutorenew, MdOutlineArrowForward, MdOutlineLock, MdOutlineMail } from "react-icons/md";
+
+import { AppIcon } from "@/shared/ui/icon";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { AuthSocialButtons } from "../../ui/auth-social-buttons";
 import { login } from "../api/login";
 import {
@@ -68,7 +71,7 @@ export function LoginForm() {
         <label className="flex flex-col gap-1 text-xs font-medium text-[#0b1c30]">
           E-posta Adresi
           <span className="relative">
-            <MaterialIcon className={leadingIconClass}>mail</MaterialIcon>
+            <MdOutlineMail aria-hidden="true" focusable="false" className={`inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] ${leadingIconClass}`} />
             <input
               aria-describedby={errors.email ? "login-email-error" : undefined}
               aria-invalid={Boolean(errors.email)}
@@ -101,7 +104,7 @@ export function LoginForm() {
             </Link>
           </span>
           <span className="relative">
-            <MaterialIcon className={leadingIconClass}>lock</MaterialIcon>
+            <MdOutlineLock aria-hidden="true" focusable="false" className={`inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] ${leadingIconClass}`} />
             <input
               aria-describedby={
                 errors.password ? "login-password-error" : undefined
@@ -119,9 +122,9 @@ export function LoginForm() {
               onClick={() => setShowPassword((value) => !value)}
               type="button"
             >
-              <MaterialIcon className="text-[18px]">
+              <AppIcon className="text-[18px]">
                 {showPassword ? "visibility" : "visibility_off"}
-              </MaterialIcon>
+              </AppIcon>
             </button>
           </span>
           {errors.password && (
@@ -161,11 +164,9 @@ export function LoginForm() {
         >
           Giriş Yap
           {isSubmitting && (
-            <MaterialIcon className="animate-spin text-[18px]">
-              progress_activity
-            </MaterialIcon>
+            <MdAutorenew aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] animate-spin text-[18px]" />
           )}
-          <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
+          <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
         </button>
       </form>
 

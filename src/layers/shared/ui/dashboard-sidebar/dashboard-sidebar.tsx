@@ -1,9 +1,10 @@
 "use client";
 
+import { AppIcon } from "@/shared/ui/icon";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 export type DashboardNavigationItem = {
   label: string;
@@ -16,11 +17,11 @@ export type DashboardNavigationItem = {
 function DashboardSidebarIcon({ icon }: { icon: string }) {
   return (
     <span className="flex h-8 w-8 shrink-0 items-center justify-center">
-      <MaterialIcon
+      <AppIcon
         className={`${icon === "binoculars" ? "text-[24px]" : "text-[22px]"} leading-none`}
       >
         {icon}
-      </MaterialIcon>
+      </AppIcon>
     </span>
   );
 }

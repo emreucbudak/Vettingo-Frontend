@@ -1,7 +1,7 @@
+import { MdOutlineArrowForward } from "react-icons/md";
 import Link from "next/link";
 import { applicationCandidates } from "@/entities/employer-recruiting/employer-recruiting-data";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 function CandidateAvatar({
   initials,
@@ -75,9 +75,7 @@ export function EmployerApplicationList() {
             <p className="text-sm text-[#45474c] lg:col-span-2">{candidate.lastActivity}</p>
             <div className="flex items-center justify-between lg:col-span-2">
               <Score value={candidate.rating} />
-              <MaterialIcon className="text-[#45474c] transition-transform group-hover:translate-x-1">
-                arrow_forward
-              </MaterialIcon>
+              <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#45474c] transition-transform group-hover:translate-x-1" />
             </div>
           </Link>
         ))}

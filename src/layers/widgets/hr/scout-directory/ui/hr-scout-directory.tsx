@@ -1,12 +1,15 @@
 "use client";
 
+import { MdOutlineChevronLeft, MdOutlineChevronRight, MdOutlineExpandMore, MdOutlineSearch } from "react-icons/md";
+
+import { AppIcon } from "@/shared/ui/icon";
+
 import { useMemo, useState, type FormEvent } from "react";
 import {
   hrScoutCandidates,
   type HrScoutCandidate,
 } from "@/entities/hr-dashboard";
 import { HrAvatar } from "@/entities/hr-dashboard/ui";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const PAGE_SIZE = 5;
 
@@ -32,9 +35,7 @@ const selectFieldClassName = `${fieldClassName} appearance-none pr-11`;
 
 function SelectChevron() {
   return (
-    <MaterialIcon className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[18px] text-[#091426]">
-      expand_more
-    </MaterialIcon>
+    <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[18px] text-[#091426]" />
   );
 }
 
@@ -170,9 +171,7 @@ export function HrScoutDirectory() {
                 Rol, yetkinlik veya aday
               </span>
               <span className="relative block">
-                <MaterialIcon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[19px] text-[#75777d]">
-                  search
-                </MaterialIcon>
+                <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[19px] text-[#75777d]" />
                 <input
                   className={`${fieldClassName} pl-10`}
                   onChange={(event) => updateFilter("query", event.target.value)}
@@ -270,7 +269,7 @@ export function HrScoutDirectory() {
               className="inline-flex h-[42px] items-center justify-center gap-2 rounded bg-[#091426] px-5 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#172d49]"
               type="submit"
             >
-              <MaterialIcon className="text-[18px]">search</MaterialIcon>
+              <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
               Aday Ara
             </button>
             <button
@@ -385,9 +384,9 @@ export function HrScoutDirectory() {
                         onClick={() => toggleShortlist(candidate.id)}
                         type="button"
                       >
-                        <MaterialIcon className="text-[16px]">
+                        <AppIcon className="text-[16px]">
                           {isShortlisted ? "check" : "person_add"}
-                        </MaterialIcon>
+                        </AppIcon>
                         {isShortlisted ? "Kısa Listede" : "Listeye Al"}
                       </button>
                     </div>
@@ -398,7 +397,7 @@ export function HrScoutDirectory() {
           ) : (
             <div className="px-6 py-14 text-center">
               <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#eff4ff] text-[#75777d]">
-                <MaterialIcon className="text-[25px]">search</MaterialIcon>
+                <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[25px]" />
               </span>
               <h3 className="mt-4 text-base font-semibold text-[#0b1c30]">
                 Eşleşen aday bulunamadı
@@ -428,7 +427,7 @@ export function HrScoutDirectory() {
                 onClick={() => setPage((current) => Math.max(1, current - 1))}
                 type="button"
               >
-                <MaterialIcon className="text-[17px]">chevron_left</MaterialIcon>
+                <MdOutlineChevronLeft aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[17px]" />
                 <span className="hidden sm:inline">Önceki</span>
               </button>
 
@@ -461,9 +460,7 @@ export function HrScoutDirectory() {
                 type="button"
               >
                 <span className="hidden sm:inline">Sonraki</span>
-                <MaterialIcon className="text-[17px]">
-                  chevron_right
-                </MaterialIcon>
+                <MdOutlineChevronRight aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[17px]" />
               </button>
             </nav>
           </div>

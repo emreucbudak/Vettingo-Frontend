@@ -1,11 +1,14 @@
 "use client";
 
+import { MdOutlineCheck } from "react-icons/md";
+
+import { AppIcon } from "@/shared/ui/icon";
+
 import { useState } from "react";
 import {
   clearSelectedSubscriptionPlan,
   type BillingPeriod,
 } from "@/entities/subscription";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import type { SubscriptionAccountType } from "../model/payment-page-data";
 import {
   completeRegistration,
@@ -66,7 +69,7 @@ export function FreePlanPanel({
   return (
     <div className="flex min-h-[320px] flex-col items-center justify-center rounded-2xl border border-[#bce7ce] bg-[#f0fbf5] px-6 text-center">
       <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#006c49] text-white">
-        <MaterialIcon className="text-3xl">check</MaterialIcon>
+        <MdOutlineCheck aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-3xl" />
       </span>
       <h3 className="mt-5 text-xl font-bold text-[#091426]">
         {isComplete ? "Hesabınız oluşturuldu" : "Kart bilgisi gerekmiyor"}
@@ -99,9 +102,9 @@ export function FreePlanPanel({
           type="button"
         >
           {isSubmitting ? "Hesap Oluşturuluyor" : "Ücretsiz Planla Devam Et"}
-          <MaterialIcon className={isSubmitting ? "animate-spin text-lg" : "text-lg"}>
+          <AppIcon className={isSubmitting ? "animate-spin text-lg" : "text-lg"}>
             {isSubmitting ? "progress_activity" : "arrow_forward"}
-          </MaterialIcon>
+          </AppIcon>
         </button>
       )}
     </div>

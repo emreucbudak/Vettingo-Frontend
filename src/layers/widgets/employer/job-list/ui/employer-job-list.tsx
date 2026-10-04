@@ -1,8 +1,8 @@
+import { MdOutlineEdit, MdOutlineMoreHoriz } from "react-icons/md";
 import {
   employerJobs,
   type EmployerJob,
 } from "@/entities/employer-recruiting/employer-recruiting-data";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 function StatusBadge({ status }: { status: EmployerJob["status"] }) {
   const className =
@@ -54,7 +54,7 @@ function JobRow({ job }: { job: EmployerJob }) {
             className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426]"
             type="button"
           >
-            <MaterialIcon>more_horiz</MaterialIcon>
+            <MdOutlineMoreHoriz aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
           </button>
         </div>
         <div className="lg:col-span-2 lg:text-center">
@@ -66,7 +66,7 @@ function JobRow({ job }: { job: EmployerJob }) {
             className="inline-flex p-2 text-[#45474c]"
             role="img"
           >
-            <MaterialIcon className="text-[18px] [stroke-width:1.75]">edit</MaterialIcon>
+            <MdOutlineEdit aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
           </span>
         </div>
       </div>

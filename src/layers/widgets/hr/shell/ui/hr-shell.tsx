@@ -1,5 +1,7 @@
 "use client";
 
+import { AppIcon } from "@/shared/ui/icon";
+
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,7 +10,6 @@ import {
   hrUtilityItems,
 } from "@/entities/hr-dashboard";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 function isRouteActive(pathname: string, href: string) {
   if (href === "/hr") {
@@ -47,7 +48,7 @@ function HrMobileNavigation({ pathname }: { pathname: string }) {
               href={item.href}
               key={item.key}
             >
-              <MaterialIcon className="text-[17px]">{item.icon}</MaterialIcon>
+              <AppIcon className="text-[17px]">{item.icon}</AppIcon>
               {item.label}
             </Link>
           );

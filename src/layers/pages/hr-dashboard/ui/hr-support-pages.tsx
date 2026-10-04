@@ -1,8 +1,9 @@
+import { MdOutlineArrowForward, MdOutlineExpandMore } from "react-icons/md";
+import { AppIcon } from "@/shared/ui/icon";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { hrFaqs } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   HrSectionHeading,
 } from "@/entities/hr-dashboard/ui";
@@ -31,7 +32,7 @@ function SettingsSection({
       <div className="mb-6 flex items-center gap-3 border-b border-[#c5c6cd] pb-5">
         {icon ? (
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-            <MaterialIcon className="text-[21px]">{icon}</MaterialIcon>
+            <AppIcon className="text-[21px]">{icon}</AppIcon>
           </span>
         ) : null}
         <div className="min-w-0 flex-1">
@@ -161,7 +162,7 @@ export function HrHelpCenterPage() {
               <p className="mt-2 text-xs leading-5 text-[#45474c]">{topic.description}</p>
               <span className="mt-4 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-[#006c49]">
                 Dokümantasyonu Oku
-                <MaterialIcon className="text-[16px]">arrow_forward</MaterialIcon>
+                <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
               </span>
             </Link>
           ))}
@@ -178,9 +179,7 @@ export function HrHelpCenterPage() {
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold text-[#0b1c30] marker:content-none md:px-6">
                 {faq.question}
-                <MaterialIcon className="shrink-0 text-[20px] text-[#45474c] transition-transform group-open:rotate-180">
-                  expand_more
-                </MaterialIcon>
+                <MdOutlineExpandMore aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] shrink-0 text-[20px] text-[#45474c] transition-transform group-open:rotate-180" />
               </summary>
               <p className="border-t border-[#c5c6cd] px-5 py-4 text-sm leading-6 text-[#45474c] md:px-6">
                 {faq.answer}

@@ -4,6 +4,7 @@ import { CandidateShell } from "@/widgets/candidate/shell";
 import { CandidateDashboardApplications } from "@/widgets/candidate/dashboard-applications";
 import { CandidateRecommendedJobs } from "@/widgets/candidate/recommended-jobs";
 import { CandidateUpcomingInterviews } from "@/widgets/candidate/upcoming-interviews";
+import { CandidateApplicationStatistics } from "@/widgets/candidate/application-statistics";
 import { useUserInformation } from "@/shared/useUserInformation";
 
 export function CandidateDashboardPage() {
@@ -39,6 +40,7 @@ export function CandidateDashboardPage() {
           </div>
           <div className="space-y-6 md:col-span-4">
             <CandidateUpcomingInterviews interviews={interviews} isLoading={isLoading} />
+            <CandidateApplicationStatistics applications={applications} hasError={Boolean(error)} isLoading={isLoading} />
           </div>
         </div>
       </main>

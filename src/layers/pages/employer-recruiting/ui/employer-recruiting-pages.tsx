@@ -1,7 +1,8 @@
+import { MdOutlineAdd, MdOutlineAutoAwesome } from "react-icons/md";
+import { AppIcon } from "@/shared/ui/icon";
 import Link from "next/link";
 import { EmployerJobStatistics } from "@/features/employer-dashboard";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerApplicationList } from "@/widgets/employer/application-list";
 import { EmployerJobList } from "@/widgets/employer/job-list";
 import { EmployerShell } from "@/widgets/employer/shell";
@@ -55,7 +56,7 @@ function StatStrip({
               {item.label}
             </p>
             {item.icon ? (
-              <MaterialIcon className="text-[20px] text-[#45474c]">{item.icon}</MaterialIcon>
+              <AppIcon className="text-[20px] text-[#45474c]">{item.icon}</AppIcon>
             ) : null}
           </div>
           <p className="mt-3 text-2xl font-semibold text-[#0b1c30]">{item.value}</p>
@@ -79,7 +80,7 @@ export function EmployerJobsPage() {
               className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 sm:w-auto"
               href={ROUTES.newJob}
             >
-              <MaterialIcon className="text-[18px]">add</MaterialIcon>
+              <MdOutlineAdd aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
               Yeni İş İlanı
             </Link>
           }
@@ -124,7 +125,7 @@ export function EmployerTalentsPage() {
         />
         <div className="mb-7 rounded border border-l-4 border-[#c5c6cd] border-l-[#006c49] bg-[#eff4ff] p-5">
           <div className="flex items-start gap-3">
-            <MaterialIcon className="mt-0.5 text-[#006c49]">auto_awesome</MaterialIcon>
+            <MdOutlineAutoAwesome aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] mt-0.5 text-[#006c49]" />
             <div>
               <h2 className="text-sm font-semibold text-[#0b1c30]">Öneriler nasıl oluşuyor?</h2>
               <p className="mt-1 max-w-3xl text-sm leading-6 text-[#45474c]">

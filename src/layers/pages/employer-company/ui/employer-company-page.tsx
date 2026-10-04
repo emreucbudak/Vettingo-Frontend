@@ -1,5 +1,6 @@
+import { MdOutlineApartment, MdOutlineLanguage } from "react-icons/md";
+import { AppIcon } from "@/shared/ui/icon";
 import { exampleCompany } from "@/entities/company";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 
 function CompanyDetail({
@@ -14,7 +15,7 @@ function CompanyDetail({
   return (
     <div className="flex items-start gap-4">
       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded bg-[#eff4ff] text-[#45474c]">
-        <MaterialIcon className="text-[22px]">{icon}</MaterialIcon>
+        <AppIcon className="text-[22px]">{icon}</AppIcon>
       </span>
       <div className="min-w-0">
         <dt className="mb-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#75777d]">
@@ -39,7 +40,7 @@ export function EmployerCompanyPage() {
               className="flex h-32 w-32 shrink-0 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#f8f9ff] text-[#091426]"
               role="img"
             >
-              <MaterialIcon className="text-[60px] [stroke-width:1.5]">apartment</MaterialIcon>
+              <MdOutlineApartment aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[60px]" />
             </div>
             <div className="min-w-0">
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.08em] text-[#75777d]">Şirket Profili</p>
@@ -57,7 +58,7 @@ export function EmployerCompanyPage() {
               <CompanyDetail icon="groups" label="Şirket Büyüklüğü" value={company.companySize} />
               <div className="flex items-start gap-4">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded bg-[#eff4ff] text-[#45474c]">
-                  <MaterialIcon className="text-[22px]">language</MaterialIcon>
+                  <MdOutlineLanguage aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[22px]" />
                 </span>
                 <div className="min-w-0">
                   <dt className="mb-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#75777d]">Web Sitesi</dt>

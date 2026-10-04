@@ -1,7 +1,8 @@
 "use client";
 
+import { MdOutlineClose } from "react-icons/md";
+
 import { useEffect } from "react";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   legalContent,
   type LegalDocument,
@@ -44,7 +45,7 @@ export function LegalModal({
           onClick={onClose}
           type="button"
         >
-          <MaterialIcon className="text-[18px]">close</MaterialIcon>
+          <MdOutlineClose aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
         </button>
         <h3 className="pr-10 text-xl font-semibold tracking-[-0.01em] text-[#091426]">
           {content.title}

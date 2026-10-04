@@ -1,11 +1,19 @@
 "use client";
 
+import {
+  MdOutlineArrowForward,
+  MdOutlineAutoAwesome,
+  MdOutlineCheck,
+  MdOutlinePerson,
+  MdOutlineSearch,
+  MdOutlineWork,
+} from "react-icons/md";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { landingPage } from "@/entities/landing";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { PublicSiteShell } from "@/shared/ui/public-site-chrome";
 
 type InViewOptions = {
@@ -59,7 +67,7 @@ function Hero() {
             href={ROUTES.login}
           >
             {landingPage.hero.primaryCta}
-            <MaterialIcon className="text-[18px]">arrow_forward</MaterialIcon>
+            <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
           </Link>
         </div>
       </div>
@@ -148,23 +156,23 @@ function HrPlatformSection() {
             </span>
           </NetworkCard>
           <NetworkCard className="left-[18%] top-[10%] h-16 w-16 rounded-2xl bg-[#ffd94d] text-[#091426] sm:h-20 sm:w-20">
-            <MaterialIcon className="text-[30px] sm:text-[36px]">search</MaterialIcon>
+            <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[30px] sm:text-[36px]" />
           </NetworkCard>
           <NetworkCard className="left-[18%] bottom-[16%] h-16 w-16 rounded-2xl bg-white text-[#091426] sm:h-20 sm:w-20">
-            <MaterialIcon className="text-[30px] sm:text-[36px]">person</MaterialIcon>
+            <MdOutlinePerson aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[30px] sm:text-[36px]" />
           </NetworkCard>
 
           <div className="absolute left-1/2 top-[44%] flex h-28 w-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-3xl bg-gradient-to-br from-[#b08cff] to-[#6f42e8] text-white shadow-[0_24px_65px_rgba(111,66,232,0.34)] sm:h-36 sm:w-36">
             <div className="flex h-16 w-16 items-center justify-center rounded-full border-[5px] border-white/80 sm:h-20 sm:w-20">
-              <MaterialIcon className="text-[38px] sm:text-[48px]">check</MaterialIcon>
+              <MdOutlineCheck aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[38px] sm:text-[48px]" />
             </div>
           </div>
 
           <NetworkCard className="right-[18%] top-[10%] h-16 w-16 rounded-2xl bg-white text-[#091426] sm:h-20 sm:w-20">
-            <MaterialIcon className="text-[30px] sm:text-[36px]">work</MaterialIcon>
+            <MdOutlineWork aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[30px] sm:text-[36px]" />
           </NetworkCard>
           <NetworkCard className="right-[18%] bottom-[16%] h-16 w-16 text-[#091426] sm:h-20 sm:w-20">
-            <MaterialIcon className="text-[30px] sm:text-[36px]">auto_awesome</MaterialIcon>
+            <MdOutlineAutoAwesome aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[30px] sm:text-[36px]" />
           </NetworkCard>
           <NetworkCard className="right-0 top-[33%] h-20 w-20 overflow-hidden sm:h-28 sm:w-28">
             <Image

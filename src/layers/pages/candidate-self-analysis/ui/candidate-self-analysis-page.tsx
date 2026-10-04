@@ -1,5 +1,9 @@
 "use client";
 
+import { MdOutlineDownload } from "react-icons/md";
+
+import { AppIcon } from "@/shared/ui/icon";
+
 import Image from "next/image";
 import { Oswald } from "next/font/google";
 import { useId } from "react";
@@ -9,7 +13,6 @@ import {
 } from "@/entities/candidate-analysis/candidate-analysis-profile";
 import { useCandidateEvaluationAnalysis } from "@/features/candidate-analysis";
 import { CandidateShell } from "@/widgets/candidate/shell";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { useUserInformation } from "@/shared/useUserInformation";
 const cardFont = Oswald({
   subsets: ["latin", "latin-ext"],
@@ -109,11 +112,11 @@ function InsightList({
             className="flex items-start gap-2 text-sm leading-5 text-[#0b1c30]"
             key={item}
           >
-            <MaterialIcon
+            <AppIcon
               className={"mt-0.5 text-[18px] " + iconClassName}
             >
               {icon}
-            </MaterialIcon>
+            </AppIcon>
             <span>{item}</span>
           </li>
         ))}
@@ -279,7 +282,7 @@ export function CandidateSelfAnalysisPage() {
               className="inline-flex items-center justify-center gap-2 rounded border border-[#75777d] bg-[#f8f9ff] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
               type="button"
             >
-              <MaterialIcon className="text-[18px]">download</MaterialIcon>
+              <MdOutlineDownload aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
               Analizi İndir
             </button>
 

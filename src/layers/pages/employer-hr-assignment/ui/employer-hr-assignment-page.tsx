@@ -1,7 +1,8 @@
 "use client";
 
+import { MdOutlineCheckCircle, MdOutlinePersonAdd } from "react-icons/md";
+
 import { useState } from "react";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import { EmployerShell } from "@/widgets/employer/shell";
 
 const inputClass =
@@ -134,7 +135,7 @@ export function EmployerHrAssignmentPage() {
                     className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-all hover:-translate-y-0.5 hover:shadow-lg"
                     type="submit"
                   >
-                    <MaterialIcon className="text-[18px]">person_add</MaterialIcon>
+                    <MdOutlinePersonAdd aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
                     İşe Alımcıyı Ata
                   </button>
                 </div>
@@ -145,7 +146,7 @@ export function EmployerHrAssignmentPage() {
                 className={`mt-5 items-start gap-3 border-t border-[#c5c6cd] pt-5 text-sm text-[#006c49] ${submitted ? "flex" : "hidden"}`}
                 role="status"
               >
-                <MaterialIcon className="mt-0.5 text-[19px]">check_circle</MaterialIcon>
+                <MdOutlineCheckCircle aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] mt-0.5 text-[19px]" />
                 <p>
                   Form önizlemesi tamamlandı. API bağlantısı eklendiğinde işe alımcı kaydı ve davet gönderimi bu adımdan yapılacak.
                 </p>

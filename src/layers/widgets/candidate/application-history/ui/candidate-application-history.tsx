@@ -1,5 +1,5 @@
+import { MdOutlineAssignmentInd, MdOutlineLocationOn } from "react-icons/md";
 import type { CandidateApplication } from "@/features/candidate-dashboard";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 export function CandidateApplicationHistory({
   applications,
@@ -21,7 +21,7 @@ export function CandidateApplicationHistory({
   if (applications.length === 0) {
     return (
       <div className="px-6 py-14 text-center">
-        <MaterialIcon className="text-4xl text-[#75777d]">assignment_ind</MaterialIcon>
+        <MdOutlineAssignmentInd aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-4xl text-[#75777d]" />
         <h2 className="mt-3 text-lg font-semibold text-[#0b1c30]">
           Henüz bir başvurun bulunmuyor
         </h2>
@@ -56,7 +56,7 @@ export function CandidateApplicationHistory({
               <td className="px-5 py-4">
                 <p className="font-semibold text-[#0b1c30]">{application.role}</p>
                 <p className="mt-1 flex items-center gap-1 text-xs text-[#45474c]">
-                  <MaterialIcon className="text-[16px]">location_on</MaterialIcon>
+                  <MdOutlineLocationOn aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
                   {application.location}
                 </p>
               </td>

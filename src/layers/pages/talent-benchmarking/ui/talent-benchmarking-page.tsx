@@ -1,7 +1,8 @@
+import { MdOutlineDownload, MdOutlineShare } from "react-icons/md";
+import { AppIcon } from "@/shared/ui/icon";
 ﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 import {
   benchmarkCandidates,
   benchmarkRows,
@@ -24,11 +25,11 @@ function PageHeader() {
       </div>
       <div className="flex gap-2">
         <button className="flex items-center gap-1 rounded-lg border border-[#c5c6cd] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#f8f9ff]" type="button">
-          <MaterialIcon className="text-[18px]">download</MaterialIcon>
+          <MdOutlineDownload aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
           PDF Dışa Aktar
         </button>
         <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="button">
-          <MaterialIcon className="text-[18px]">share</MaterialIcon>
+          <MdOutlineShare aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
           Görünümü Paylaş
         </button>
       </div>
@@ -90,7 +91,7 @@ function MetricValue({ value }: { value: CandidateMetric }) {
   if (value.kind === "status") {
     return (
       <div className={`text-center text-sm leading-5 ${value.positive ? "text-[#10b981]" : "text-[#75777d]"}`}>
-        <MaterialIcon className={value.positive ? "symbol-filled" : ""}>{value.icon}</MaterialIcon>
+        <AppIcon className={value.positive ? "symbol-filled" : ""}>{value.icon}</AppIcon>
         <div className="mt-1 text-[11px] font-medium leading-[14px] text-[#45474c]">
           {value.label}
         </div>

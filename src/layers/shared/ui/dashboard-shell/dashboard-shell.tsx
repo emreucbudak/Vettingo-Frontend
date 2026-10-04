@@ -1,11 +1,12 @@
 "use client";
 
+import { MdOutlineNotifications, MdOutlineSettings, MdPerson } from "react-icons/md";
+
 import type { ReactNode } from "react";
 import {
   DashboardSidebar,
   type DashboardNavigationItem,
 } from "@/shared/ui/dashboard-sidebar";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 type DashboardProfileIconProps = {
   className?: string;
@@ -18,7 +19,7 @@ export function DashboardProfileIcon({ className = "" }: DashboardProfileIconPro
       className={`${className} flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]`}
       role="img"
     >
-      <MaterialIcon className="text-[22px]">person_silhouette</MaterialIcon>
+      <MdPerson aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[22px]" />
     </div>
   );
 }
@@ -50,7 +51,7 @@ function DashboardTopBar({
             className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
             type="button"
           >
-            <MaterialIcon>notifications</MaterialIcon>
+            <MdOutlineNotifications aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
           </button>
           {showSettings ? (
             <button
@@ -58,7 +59,7 @@ function DashboardTopBar({
               className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
               type="button"
             >
-              <MaterialIcon>settings</MaterialIcon>
+              <MdOutlineSettings aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
             </button>
           ) : null}
         </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { MdOutlineCheck } from "react-icons/md";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -10,7 +12,6 @@ import {
   type SubscriptionPlan,
 } from "@/entities/subscription";
 import { ROUTES } from "@/shared/config/routes";
-import { MaterialIcon } from "@/shared/ui/material-icon";
 
 const billingOptions: ReadonlyArray<{
   label: string;
@@ -83,7 +84,7 @@ function PlanCard({
                 isSelected ? "bg-[#6f42e8]" : "bg-[#34373d]"
               } text-white`}
             >
-              <MaterialIcon className="text-[12px]">check</MaterialIcon>
+              <MdOutlineCheck aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[12px]" />
             </span>
             {feature}
           </li>
