@@ -1,4 +1,4 @@
 export {
-  DashboardSidebar,
+  DashboardSidebarLink,
   type DashboardNavigationItem,
 } from "./dashboard-sidebar";

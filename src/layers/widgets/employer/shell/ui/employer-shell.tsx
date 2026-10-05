@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import {
   employerNavigationItems,
-  employerProfile,
   employerUtilityItems,
 } from "@/entities/employer-dashboard";
 import {
@@ -13,6 +12,7 @@ import {
 } from "@/shared/ui/dashboard-shell";
 import { ROUTES } from "@/shared/config/routes";
 import { EmployerDashboardFooter } from "./employer-dashboard-footer";
+import { EmployerSidebar } from "./employer-sidebar";
 
 function isCurrentRoute(pathname: string, href?: string) {
   if (!href) return false;
@@ -36,11 +36,14 @@ export function EmployerShell({ children }: { children: ReactNode }) {
 
   return (
     <DashboardShell
-      raiseSidebarNavigation
-      navigationItems={withActiveRoute(employerNavigationItems, pathname)}
-      sidebarSubtitle={employerProfile.edition}
-      sidebarTitle={employerProfile.companyLabel}
-      utilityItems={withActiveRoute(employerUtilityItems, pathname)}
+      renderSidebar={({ mobile, onNavigate }) => (
+        <EmployerSidebar
+          mobile={mobile}
+          navigationItems={withActiveRoute(employerNavigationItems, pathname)}
+          utilityItems={withActiveRoute(employerUtilityItems, pathname)}
+          onNavigate={onNavigate}
+        />
+      )}
     >
       {children}
       <EmployerDashboardFooter />

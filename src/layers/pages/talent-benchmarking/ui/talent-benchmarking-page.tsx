@@ -2,13 +2,11 @@ import { MdOutlineDownload, MdOutlineShare } from "react-icons/md";
 import { AppIcon } from "@/shared/ui/icon";
 ﻿import Image from "next/image";
 import { ROUTES } from "@/shared/config/routes";
-import { DashboardShell } from "@/shared/ui/dashboard-shell";
+import { EmployerShell } from "@/widgets/employer/shell";
 import {
   benchmarkCandidates,
   benchmarkRows,
   benchmarkingProfile,
-  sidebarItems,
-  supportItems,
   type CandidateMetric,
 } from "@/entities/talent-benchmark";
 
@@ -152,16 +150,11 @@ function ComparisonGrid() {
 
 export function TalentBenchmarkingPage() {
   return (
-    <DashboardShell
-      navigationItems={sidebarItems}
-      sidebarSubtitle={benchmarkingProfile.planName}
-      sidebarTitle={benchmarkingProfile.organizationName}
-      utilityItems={supportItems}
-    >
+    <EmployerShell>
         <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
           <PageHeader />
           <ComparisonGrid />
       </main>
-    </DashboardShell>
+    </EmployerShell>
   );
 }

@@ -18,10 +18,10 @@ import {
   type CandidateAnalysisProfile,
   type CandidateRatingAttribute,
 } from "@/entities/candidate-analysis/candidate-analysis-profile";
-import { analysisProfile, analysisUtilityItems } from "@/entities/candidate-analysis";
+import { analysisUtilityItems } from "@/entities/candidate-analysis";
 import { ROUTES } from "@/shared/config/routes";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
-import { EmployerDashboardFooter } from "@/widgets/employer/shell";
+import { EmployerDashboardFooter, EmployerSidebar } from "@/widgets/employer/shell";
 
 
 type DetailKind = "application" | "talent";
@@ -454,9 +454,14 @@ export function CandidateAnalysisPage({
 
   return (
     <DashboardShell
-      navigationItems={getNavigationItems(detailKind)}
-      sidebarSubtitle={analysisProfile.edition}
-      sidebarTitle={analysisProfile.companyLabel}
+      renderSidebar={({ mobile, onNavigate }) => (
+        <EmployerSidebar
+          mobile={mobile}
+          navigationItems={getNavigationItems(detailKind)}
+          utilityItems={analysisUtilityItems}
+          onNavigate={onNavigate}
+        />
+      )}
       topBarLeading={
         <Link
           aria-label="Listeye dön"
@@ -470,7 +475,6 @@ export function CandidateAnalysisPage({
           <MdOutlineArrowBack aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
         </Link>
       }
-      utilityItems={analysisUtilityItems}
     >
       <main className="candidate-analysis-theme mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
         <BreadcrumbActions candidate={profile} detailKind={detailKind} />

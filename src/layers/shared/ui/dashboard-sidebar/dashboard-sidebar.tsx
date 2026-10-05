@@ -25,13 +25,14 @@ function DashboardSidebarIcon({ icon }: { icon: string }) {
     </span>
   );
 }
-
-function DashboardSidebarLink({
+export function DashboardSidebarLink({
   compact = false,
   item,
+  onNavigate,
 }: {
   compact?: boolean;
   item: DashboardNavigationItem;
+  onNavigate?: () => void;
 }) {
   const router = useRouter();
   const isLogout = item.action === "logout";
@@ -50,6 +51,7 @@ function DashboardSidebarLink({
       <button
         className={`${className} w-full`}
         onClick={() => {
+          onNavigate?.();
           router.replace(ROUTES.login);
           router.refresh();
         }}
@@ -66,48 +68,10 @@ function DashboardSidebarLink({
       aria-current={item.active ? "page" : undefined}
       className={className}
       href={item.href ?? "#"}
+      onClick={onNavigate}
     >
       <DashboardSidebarIcon icon={item.icon} />
       {item.label}
     </Link>
-  );
-}
-
-export function DashboardSidebar({
-  raiseNavigation = false,
-  navigationItems,
-  subtitle,
-  title,
-  utilityItems,
-}: {
-  raiseNavigation?: boolean;
-  navigationItems: readonly DashboardNavigationItem[];
-  subtitle: string;
-  title: string;
-  utilityItems: readonly DashboardNavigationItem[];
-}) {
-  return (
-    <nav className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-[#c5c6cd] bg-[#eff4ff] text-[#091426] md:flex">
-      <div className="px-6 pb-6 pt-5">
-        <h1 className="text-xl font-semibold leading-7 text-[#0b1c30]">{title}</h1>
-        {subtitle ? (
-          <p className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">{subtitle}</p>
-        ) : null}
-      </div>
-
-      <div className="flex flex-1 items-center overflow-y-auto px-4 py-6">
-        <div className={`w-full space-y-2 ${raiseNavigation ? "-translate-y-1" : "translate-y-3"}`}>
-          {navigationItems.map((item) => (
-            <DashboardSidebarLink item={item} key={item.label} />
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-auto space-y-0 px-4 pb-6 pt-3">
-        {utilityItems.map((item) => (
-          <DashboardSidebarLink compact item={item} key={item.label} />
-        ))}
-      </div>
-    </nav>
   );
 }
