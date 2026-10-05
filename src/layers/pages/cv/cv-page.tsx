@@ -21,22 +21,15 @@ export function ClickableDropdown (){
     const showSkills = () => {
         const showSkills = document.querySelector(".addSkills");
         if(skill === true){
-            showSkills!.classList.add("duration-500");
-            showSkills!.classList.add("transition-transform");
-            showSkills!.classList.add("-translate-y-96");
+
             showSkills!.classList.remove("h-96");
             showSkills!.classList.add("h-0");
-            
-     
-
-
+            showSkills!.classList.add("hidden");
             setskill(false);
         }
         else {
-            showSkills!.classList.remove("-translate-y-96");
-            showSkills!.classList.add("duration-500");
-            showSkills!.classList.add("transition-transform");
             showSkills!.classList.add("h-96");
+            showSkills!.classList.remove("hidden");
             setskill(true);
         }
     }
@@ -45,11 +38,26 @@ export function ClickableDropdown (){
     )
 }
 export function EducationalDropdown(){
-    const showEducation = () => {
+    const [showEducation , setShowEducation] = useState<boolean>(false);
+    const showEducations = () => {
+        const education = document.querySelector(".addEducation")
+        if(showEducation){
+
+            education!.classList.remove("h-96");
+            education!.classList.add("h-0");
+            education!.classList.add("hidden")
+            setShowEducation(false);
+        }
+        else {
+            education!.classList.add("h-96");
+            education!.classList.remove("h-0");
+            education!.classList.remove("hidden")
+            setShowEducation(true);
+        }
 
     }
     return (
-        <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" onClick={showEducation} />
+        <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" onClick={showEducations} />
     )
 }
 
@@ -77,7 +85,7 @@ export function AddSkills(){
         SetSkillList(prev => [...prev,skill]);
     }
     return (
-        <div className=" h-0 bg-white rounded-sm addSkills z-0 relative -translate-y-96 overflow-y-scroll scrollbar-none xl:w-full  ">
+        <div className=" hidden bg-white rounded-sm addSkills z-0 relative  overflow-y-scroll scrollbar-none xl:w-full  ">
             <p className="text-blue-400 flex flex-row text-md justify-end mr-3  " onClick={AddSkills}> <IoAddOutline className="w-5 h-5 object-fit" /> Yetenek Ekle</p>
             <div className="w-76 md:w-md  xl:w-full formArea  flex flex-col  ">
                 {
@@ -93,12 +101,18 @@ export function AddSkills(){
         </div>
     )
 }
-
+function AddEducation(){
+    return (
+        <div className="hidden xl:w-full  addEducation  bg-white  relative rounded-sm">
+            <p className="text-blue-400 flex flex-row text-md justify-end mr-3   "><IoAddOutline className="w-5 h-5 object-fit" /> Eğitim Ekle</p>           
+        </div>
+    )
+}
 export function CreateCvPage(){
     return (
         <CandidateShell>
-            <section className="w-full h-lvh flex flex-row ">
-                <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8  overflow-hidden sm:items-center flex flex-col    ">
+            <section className="w-full h-max flex flex-row ">
+                <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8  overflow-hidden sm:items-center flex flex-col     ">
                 <div className=" justify-center items-center overflow-hidden  md:w-md  flex  flex-col  xl:w-full   ">
                     <div className="bg-slate-200 w-76 md:w-md     xl:w-xl h-12 rounded-xs flex flex-row justify-between z-40 relative rounded-md  ">
                         <p className="p-3 text-xl">Yetenekler</p>
@@ -107,11 +121,12 @@ export function CreateCvPage(){
                     <AddSkills  />
   
                 </div>
-                <div>
+                <div className="gap-y-0">
                     <div className="bg-slate-200 flex flex-row xl:w-xl rounded-md justify-between">
                         <p className="p-3 text-xl">Eğitim</p>
                         <EducationalDropdown/>
                     </div>
+                    <AddEducation/>
                 </div>
 
                 </div>
