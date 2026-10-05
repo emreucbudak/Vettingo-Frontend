@@ -1,12 +1,8 @@
 "use client";
 
-import { MdOutlineNotifications, MdOutlineSettings, MdPerson } from "react-icons/md";
+import { MdClose, MdMenu, MdOutlineNotifications, MdOutlineSettings, MdPerson } from "react-icons/md";
 
-import type { ReactNode } from "react";
-import {
-  DashboardSidebar,
-  type DashboardNavigationItem,
-} from "@/shared/ui/dashboard-sidebar";
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 
 type DashboardProfileIconProps = {
   className?: string;
@@ -26,22 +22,36 @@ export function DashboardProfileIcon({ className = "" }: DashboardProfileIconPro
 
 function DashboardTopBar({
   beforeActions,
-  hideOnMobile,
+  menuId,
+  menuOpen,
+  onOpenMenu,
   leading,
   showSettings,
 }: {
   beforeActions?: ReactNode;
-  hideOnMobile: boolean;
+  menuId: string;
+  menuOpen: boolean;
+  onOpenMenu: () => void;
   leading?: ReactNode;
   showSettings: boolean;
 }) {
   return (
     <header
-      className={`sticky top-0 z-50 h-16 w-full items-center border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-[#091426] md:px-6 ${
-        hideOnMobile ? "hidden md:flex" : "flex"
-      } ${leading ? "justify-between" : "justify-end"}`}
+      className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-[#091426] md:px-6"
     >
-      {leading ? <div className="flex items-center gap-4">{leading}</div> : null}
+      <div className="flex items-center gap-3 md:gap-4">
+        <button
+          aria-label="Menüyü aç"
+          aria-controls={menuId}
+          aria-expanded={menuOpen}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[#091426] hover:bg-[#eff4ff] md:hidden"
+          onClick={onOpenMenu}
+          type="button"
+        >
+          <MdMenu aria-hidden="true" className="text-2xl" />
+        </button>
+        {leading}
+      </div>
 
       <div className="flex items-center gap-3 md:gap-4">
         {beforeActions}
@@ -70,47 +80,97 @@ function DashboardTopBar({
 }
 
 type DashboardShellProps = {
-  raiseSidebarNavigation?: boolean;
   beforeTopBarActions?: ReactNode;
   children: ReactNode;
-  hideTopBarOnMobile?: boolean;
-  navigationItems: readonly DashboardNavigationItem[];
+  renderSidebar: (props: { mobile: boolean; onNavigate?: () => void }) => ReactNode;
   showSettings?: boolean;
-  sidebarSubtitle: string;
-  sidebarTitle: string;
   topBarLeading?: ReactNode;
-  utilityItems: readonly DashboardNavigationItem[];
 };
 
 export function DashboardShell({
-  raiseSidebarNavigation = false,
   beforeTopBarActions,
   children,
-  hideTopBarOnMobile = false,
-  navigationItems,
+  renderSidebar,
   showSettings = false,
-  sidebarSubtitle,
-  sidebarTitle,
   topBarLeading,
-  utilityItems,
 }: DashboardShellProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
+  const menuRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMenu();
+      if (event.key === "Tab") {
+        const controls = menuRef.current?.querySelectorAll<HTMLElement>("button, a[href]");
+        const first = controls?.[0];
+        const last = controls?.[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+    const onResize = () => {
+      if (!closeButtonRef.current?.getClientRects().length) closeMenu();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
+    };
+  }, [menuOpen, closeMenu]);
+
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
-      <DashboardSidebar
-        raiseNavigation={raiseSidebarNavigation}
-        navigationItems={navigationItems}
-        subtitle={sidebarSubtitle}
-        title={sidebarTitle}
-        utilityItems={utilityItems}
-      />
+      {renderSidebar({ mobile: false })}
       <div className="flex min-h-screen min-w-0 flex-col md:ml-60">
         <DashboardTopBar
           beforeActions={beforeTopBarActions}
-          hideOnMobile={hideTopBarOnMobile}
+          menuId={menuId}
+          menuOpen={menuOpen}
+          onOpenMenu={() => setMenuOpen(true)}
           leading={topBarLeading}
           showSettings={showSettings}
         />
         {children}
+      </div>
+      <div
+        ref={menuRef}
+        id={menuId}
+        role="dialog"
+        aria-modal={menuOpen ? true : undefined}
+        aria-label="Mobil menü"
+        aria-hidden={!menuOpen}
+        inert={!menuOpen}
+        className={`fixed left-0 top-0 z-[100] flex flex-col overflow-hidden bg-[#eff4ff] text-[#091426] md:hidden ${menuOpen ? "w-screen h-screen" : "w-0 h-0"}`}
+      >
+        <div className="flex shrink-0 items-center justify-between px-6 py-4">
+          <span className="text-xl font-semibold leading-7 text-[#0b1c30]">Vettingo</span>
+          <button
+            ref={closeButtonRef}
+            aria-label="Menüyü kapat"
+            className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-[#dce9ff]"
+            onClick={closeMenu}
+            type="button"
+          >
+            <MdClose aria-hidden="true" className="text-2xl" />
+          </button>
+        </div>
+        {renderSidebar({ mobile: true, onNavigate: closeMenu })}
       </div>
     </div>
   );

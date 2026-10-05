@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/shared/config/routes";
+import { CandidateSidebar } from "./candidate-sidebar";
 import {
   DashboardShell,
   type DashboardNavigationItem,
@@ -67,10 +68,14 @@ export function CandidateShell({ children }: { children: ReactNode }) {
 
   return (
     <DashboardShell
-      navigationItems={navigationItems}
-      sidebarSubtitle=""
-      sidebarTitle="Vettingo"
-      utilityItems={utilityItems}
+      renderSidebar={({ mobile, onNavigate }) => (
+        <CandidateSidebar
+          mobile={mobile}
+          navigationItems={navigationItems}
+          utilityItems={utilityItems}
+          onNavigate={onNavigate}
+        />
+      )}
     >
       {children}
       <CandidateFooter />
