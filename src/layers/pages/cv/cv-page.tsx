@@ -186,7 +186,7 @@ export function CreateCvPage(){
 
                 </div>
                 <div className=" b-2  w-3/6 h-screen p-4">
-                    <div className="b-2 border-slate-200 h-[650px] bg-white ">
+                    <div className="b-2 border-slate-200 h-[650px] bg-white rounded-md ">
                         asdasdas
                     </div>
                 </div>
