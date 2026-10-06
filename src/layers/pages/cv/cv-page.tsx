@@ -85,9 +85,9 @@ export function AddSkills(){
         SetSkillList(prev => [...prev,skill]);
     }
     return (
-        <div className=" hidden bg-white rounded-sm addSkills z-0 relative  overflow-y-scroll scrollbar-none xl:w-full  ">
+        <div className=" hidden w-full bg-white rounded-sm addSkills z-0 relative  overflow-y-scroll scrollbar-none xl:w-full  ">
             <p className="text-blue-400 flex flex-row text-md justify-end mr-3  " onClick={AddSkills}> <IoAddOutline className="w-5 h-5 object-fit" /> Yetenek Ekle</p>
-            <div className="w-76 md:w-md  xl:w-full formArea  flex flex-col  ">
+            <div className="w-full md:w-md  xl:w-full formArea  flex flex-col  ">
                 {
                     SkillList.map((value,index) => (
                         <div className={value.div} key={index}>
@@ -114,7 +114,7 @@ export function CreateCvPage(){
             <section className="w-full h-max flex flex-row ">
                 <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8  overflow-hidden sm:items-center flex flex-col     ">
                 <div className=" justify-center items-center overflow-hidden  md:w-md  flex  flex-col  xl:w-full   ">
-                    <div className="bg-slate-200 w-76 md:w-md     xl:w-xl h-12 rounded-xs flex flex-row justify-between z-40 relative rounded-md  ">
+                    <div className="bg-slate-200 w-full md:w-md     xl:w-xl h-12 rounded-xs flex flex-row justify-between z-40 relative rounded-md  ">
                         <p className="p-3 text-xl">Yetenekler</p>
                         <ClickableDropdown   />
                     </div>
