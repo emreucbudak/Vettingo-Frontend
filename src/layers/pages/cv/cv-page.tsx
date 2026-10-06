@@ -60,6 +60,11 @@ export function EducationalDropdown(){
         <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" onClick={showEducations} />
     )
 }
+function ExperienceDropdown(){
+    return(
+        <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" />
+    )
+}
 
 export function AddSkills(){
     const[SkillList,SetSkillList] = useState<SkillsList[]>([]);
@@ -155,7 +160,7 @@ function AddEducation(){
 export function CreateCvPage(){
     return (
         <CandidateShell>
-            <section className="w-full h-max flex flex-row ">
+            <section className="w-full h-max flex flex-row gap-x-4">
                 <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8  overflow-hidden sm:items-center flex flex-col     ">
                 <div className=" justify-center items-center overflow-hidden  md:w-lg lg:w-3xl  flex  flex-col  xl:w-full   ">
                     <div className="bg-slate-200 w-full md:w-lg lg:w-3xl    xl:w-xl h-12 rounded-xs flex flex-row justify-between z-40 relative rounded-md  ">
@@ -172,7 +177,18 @@ export function CreateCvPage(){
                     </div>
                     <AddEducation/>
                 </div>
+                <div>
+                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                        <p className="p-3 text-xl">Tecrübe</p>
+                        <ExperienceDropdown/>
+                    </div>
+                </div>
 
+                </div>
+                <div className=" b-2  w-3/6 h-screen p-4">
+                    <div className="b-2 border-slate-200 h-[650px] bg-white ">
+                        asdasdas
+                    </div>
                 </div>
 
             </section>
