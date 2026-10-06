@@ -12,7 +12,7 @@ type Input  = {
 }
 type SkillsList = {
     input1 : Input,
-    input2 : Input,
+    input2? : Input,
     trashIcon : string,
     div : string
 }
@@ -69,18 +69,18 @@ export function AddSkills(){
     }
     const AddSkills = () => {
         const input1 : Input = {
-            ClassName: "w-24 md:w-40  h-8 rounded-md bg-slate-200 xl:w-60 h-8 rounded-md bg-slate-200",
+            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-60 h-8 rounded-md bg-slate-200",
             PlaceHolder: "Yetenek Adı ",
         }
         const input2 : Input = {
-            ClassName: "w-24 md:w-40  h-8 rounded-md bg-slate-200 xl:w-60 h-8 rounded-md bg-slate-200",
+            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-60 h-8 rounded-md bg-slate-200",
             PlaceHolder: "Tecrübe Yılı ",
         }
         const skill : SkillsList = {
             input1: input1,
             input2: input2,
-            trashIcon: "mt-1 text-red-400 ",
-            div: "flex flex-row p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg  "
+            trashIcon: "mt-1 text-red-400",
+            div: "flex flex-row p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full"
         }
         SetSkillList(prev => [...prev,skill]);
     }
@@ -92,7 +92,7 @@ export function AddSkills(){
                     SkillList.map((value,index) => (
                         <div className={value.div} key={index}>
                             <input type="text" className={value.input1.ClassName}  placeholder={value.input1.PlaceHolder}/>
-                            <input type="text" className={value.input2.ClassName}  placeholder={value.input2.PlaceHolder}/>
+                            <input type="text" className={value.input2!.ClassName}  placeholder={value.input2!.PlaceHolder}/>
                             <FaTrash className={value.trashIcon} onClick={e => OnDeleteInput(index)}/>
                         </div>
                     ))
@@ -101,10 +101,45 @@ export function AddSkills(){
         </div>
     )
 }
+
 function AddEducation(){
+    const [educations, setEducations] = useState<SkillsList[]>([]);
+    const onDeleteInput = (ind:number) => {
+        const newEducations = educations.filter((_,index) => index !== ind);
+        setEducations(newEducations);
+    }
+    const addNewEducation = () => {
+        const input1 : Input = {
+            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-60 h-8 rounded-md bg-slate-200",
+            PlaceHolder: "Okul - Bölüm Adı"
+        }
+        const skillList : SkillsList = {
+            div: "flex flex-row p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
+            input1: input1,
+            trashIcon: "mt-1 text-red-400"
+        }
+        setEducations(prev => [...prev,skillList]);
+    }
     return (
-        <div className="hidden xl:w-full  addEducation  bg-white  relative rounded-sm">
-            <p className="text-blue-400 flex flex-row text-md justify-end mr-3   "><IoAddOutline className="w-5 h-5 object-fit" /> Eğitim Ekle</p>           
+        <div className="hidden xl:w-full  addEducation  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
+            <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={addNewEducation}><IoAddOutline className="w-5 h-5 object-fit" /> Eğitim Ekle</p>
+            <div className="flex flex-col w-full  h-full">
+                {
+                    educations.map((value , index) => {
+                        return <div className={value.div} key={index}>
+                            <input type="text" className={value.input1.ClassName} placeholder={value.input1.PlaceHolder} />
+                            <select name="educationLevel" required id="" className="w-40 bg-slate-200 rounded-md">
+                                <option value="Lise">Lise</option>
+                                <option value="Lisans">Lisans</option>
+                                <option value="Ön Lisans">Ön Lisans</option>
+                                <option value="Yüksek Lisans">Yüksek Lisans</option>
+                            </select>
+                            <FaTrash className={value.trashIcon} onClick={e => onDeleteInput(index)}/>
+                        </div>
+                    })
+                }
+            
+            </div>           
         </div>
     )
 }
