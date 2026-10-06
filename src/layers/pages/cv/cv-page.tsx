@@ -12,7 +12,7 @@ type Input  = {
 }
 type SkillsList = {
     input1 : Input,
-    input2? : Input,
+    input2 : Input,
     trashIcon : string,
     div : string
 }
@@ -92,7 +92,7 @@ export function AddSkills(){
                     SkillList.map((value,index) => (
                         <div className={value.div} key={index}>
                             <input type="text" className={value.input1.ClassName}  placeholder={value.input1.PlaceHolder}/>
-                            <input type="text" className={value.input2!.ClassName}  placeholder={value.input2!.PlaceHolder}/>
+                            <input type="text" className={value.input2.ClassName}  placeholder={value.input2.PlaceHolder}/>
                             <FaTrash className={value.trashIcon} onClick={e => OnDeleteInput(index)}/>
                         </div>
                     ))
@@ -110,12 +110,18 @@ function AddEducation(){
     }
     const addNewEducation = () => {
         const input1 : Input = {
-            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-60 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Okul - Bölüm Adı"
+            ClassName: "w-12 md:w-20  h-8 rounded-md bg-slate-200 xl:w-24 h-8 rounded-md bg-slate-200",
+            PlaceHolder: "Okul"
+        }
+        const input22: Input = {
+            ClassName: "w-12 md:w-20  h-8 rounded-md bg-slate-200 xl:w-24 h-8 rounded-md bg-slate-200",
+            PlaceHolder: "Bölüm"
+
         }
         const skillList : SkillsList = {
-            div: "flex flex-row p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
+            div: "flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
             input1: input1,
+            input2: input22,
             trashIcon: "mt-1 text-red-400"
         }
         setEducations(prev => [...prev,skillList]);
@@ -128,12 +134,15 @@ function AddEducation(){
                     educations.map((value , index) => {
                         return <div className={value.div} key={index}>
                             <input type="text" className={value.input1.ClassName} placeholder={value.input1.PlaceHolder} />
-                            <select name="educationLevel" required id="" className="w-40 bg-slate-200 rounded-md">
+                            <input type="text" name="" id="" className={value.input2.ClassName} placeholder={value.input2.PlaceHolder}/>
+                            <select name="educationLevel" required id="" className="w-20 bg-slate-200 rounded-md">
                                 <option value="Lise">Lise</option>
                                 <option value="Lisans">Lisans</option>
                                 <option value="Ön Lisans">Ön Lisans</option>
                                 <option value="Yüksek Lisans">Yüksek Lisans</option>
                             </select>
+                            <input type="date" name="startDate" className="w-16 bg-slate-200 rounded-md"/>
+                            <input type="date" name="finishedDate" className="w-16 bg-slate-200 rounded-md"/>
                             <FaTrash className={value.trashIcon} onClick={e => onDeleteInput(index)}/>
                         </div>
                     })
