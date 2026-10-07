@@ -203,13 +203,73 @@ function AddExperience(){
         </div>
     )
 }
+function ProjectsDropdown(){
+    const [projects,setShowProjects] = useState<boolean>(false);
+    const ShowProjectsDropdown = () => {
+        const showProjects = document.querySelector(".addProjects");
+        if(projects){
+            showProjects!.classList.add("hidden")
+            setShowProjects(false)
+        }
+        else {
+            showProjects!.classList.remove("hidden")
+            setShowProjects(true)
+        }
+        
+    }
+    return(
+        <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" onClick={ShowProjectsDropdown} />
+    )
+}
+function AddProjects(){
+    const [skillList , setSkillList] = useState<SkillsList[]>([]);
+    const addProjects = () => {
+        const input1 : Input = {
+            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-64 h-8 rounded-md bg-slate-200",
+            PlaceHolder: "Proje Adı"
+        }
+        const input2 : Input = {
+            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-64 h-8 rounded-md bg-slate-200",
+            PlaceHolder: "Amacı"
+        }
+        const skillList : SkillsList = {
+            input1: input1,
+            input2: input2,
+            trashIcon: "mt-1 text-red-400",
+            div: "flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
+        }
+        setSkillList(prev => [...prev,skillList])
+    }
+    const DeleteAddProjects = (ind : number) => {
+        const addProjects = skillList.filter((value,index) => index !== ind)
+        setSkillList(addProjects)
+    }
+    return(
+        <div className="hidden h-[350px] xl:w-full  addProjects  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
+            <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={addProjects} ><IoAddOutline className="w-5 h-5 object-fit" />Proje Ekle</p>
+            <div className="flex flex-col w-full  h-full">
+                {
+                    skillList.map((value,index) => {
+                        return <div className={value.div} key={index}>
+                            <input type="text" className={value.input1.ClassName} placeholder={value.input1.PlaceHolder} />
+                            <input type="text" className={value.input2.ClassName} placeholder={value.input2.PlaceHolder} />
+                            <FaTrash className={value.trashIcon} onClick={e => DeleteAddProjects(index)}/>
+
+                        </div>
+                    })
+                }
+
+            </div>
+        </div>
+    )
+}
 export function CreateCvPage(){
     return (
         <CandidateShell>
-            <section className="w-full h-max flex flex-row gap-x-4">
-                <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8  overflow-hidden sm:items-center flex flex-col     ">
-                <div className=" justify-center items-center overflow-hidden  md:w-lg lg:w-3xl  flex  flex-col  xl:w-full   ">
-                    <div className="bg-slate-200 w-full md:w-lg lg:w-3xl    xl:w-xl h-12 rounded-xs flex flex-row justify-between z-40 relative rounded-md  ">
+            <section className="w-full h-max flex flex-row gap-x-4 ">
+                <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center flex flex-col     ">
+                <div className="  ">
+                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
                         <p className="p-3 text-xl">Yetenekler</p>
                         <ClickableDropdown   />
                     </div>
@@ -229,6 +289,14 @@ export function CreateCvPage(){
                         <ExperienceDropdown/>
                     </div>
                     <AddExperience/>
+                </div>
+                <div>
+                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                        <p className="p-3 text-xl">Projeler</p>
+                        <ProjectsDropdown/>
+                    </div>
+                    <AddProjects/>
+                    
                 </div>
 
                 </div>
