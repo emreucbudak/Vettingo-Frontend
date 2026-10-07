@@ -2,10 +2,8 @@
 import { CandidateShell } from "@/widgets/candidate/shell";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
-
 type Input  = {
     ClassName : string,
     PlaceHolder : string,
@@ -21,14 +19,10 @@ export function ClickableDropdown (){
     const showSkills = () => {
         const showSkills = document.querySelector(".addSkills");
         if(skill === true){
-
-            showSkills!.classList.remove("h-96");
-            showSkills!.classList.add("h-0");
             showSkills!.classList.add("hidden");
             setskill(false);
         }
         else {
-            showSkills!.classList.add("h-96");
             showSkills!.classList.remove("hidden");
             setskill(true);
         }
@@ -42,15 +36,10 @@ export function EducationalDropdown(){
     const showEducations = () => {
         const education = document.querySelector(".addEducation")
         if(showEducation){
-
-            education!.classList.remove("h-96");
-            education!.classList.add("h-0");
             education!.classList.add("hidden")
             setShowEducation(false);
         }
         else {
-            education!.classList.add("h-96");
-            education!.classList.remove("h-0");
             education!.classList.remove("hidden")
             setShowEducation(true);
         }
@@ -61,8 +50,20 @@ export function EducationalDropdown(){
     )
 }
 function ExperienceDropdown(){
+    const [showExperience , setShowExperience] = useState<boolean>(false);
+    const openExperience = () => {
+        const exp = document.querySelector(".addExperience");
+        if(showExperience) {
+            exp!.classList.add("hidden");
+            setShowExperience(false);
+        }
+        else {
+            exp!.classList.remove("hidden")
+            setShowExperience(true);
+        }
+    }
     return(
-        <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" />
+        <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" onClick={openExperience}/>
     )
 }
 
@@ -90,7 +91,7 @@ export function AddSkills(){
         SetSkillList(prev => [...prev,skill]);
     }
     return (
-        <div className=" hidden w-full xl:w-full bg-white rounded-sm addSkills z-0 relative  overflow-y-scroll scrollbar-none   ">
+        <div className=" hidden h-[350px] w-full xl:w-full bg-white rounded-sm addSkills z-0 relative  overflow-y-scroll scrollbar-none   ">
             <p className="text-blue-400 flex flex-row text-md justify-end mr-3  " onClick={AddSkills}> <IoAddOutline className="w-5 h-5 object-fit" /> Yetenek Ekle</p>
             <div className="w-full xl:w-full formArea  flex flex-col  ">
                 {
@@ -132,7 +133,7 @@ function AddEducation(){
         setEducations(prev => [...prev,skillList]);
     }
     return (
-        <div className="hidden xl:w-full  addEducation  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
+        <div className="hidden h-[350px] xl:w-full  addEducation  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
             <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={addNewEducation}><IoAddOutline className="w-5 h-5 object-fit" /> Eğitim Ekle</p>
             <div className="flex flex-col w-full  h-full">
                 {
@@ -154,6 +155,51 @@ function AddEducation(){
                 }
             
             </div>           
+        </div>
+    )
+}
+function AddExperience(){
+    const [skillList , setSkillList] = useState<SkillsList[]>([]);
+    const onDeleteInput = (ind : number) => {
+        const newExperienceList = skillList.filter((_,index) => index !== ind)
+        setSkillList(newExperienceList);
+    }
+    const NewExperience = () => {
+        const input1 : Input = {
+            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-32 h-8 rounded-md bg-slate-200",
+            PlaceHolder: "Şirket Adı"
+        }
+        const input2 : Input = {
+            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-32 h-8 rounded-md bg-slate-200",
+            PlaceHolder: "Rol"
+        }
+        const skillList : SkillsList = {
+            div: "flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
+            input1:input1,
+            input2:input2,
+            trashIcon : "mt-1 text-red-400"
+        }
+        setSkillList(e => [...e,skillList]);
+
+
+    }
+    return (
+        <div className="hidden h-[350px] xl:w-full  addExperience  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
+            <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={NewExperience}><IoAddOutline className="w-5 h-5 object-fit" /> Eğitim Ekle</p>
+            <div className="flex flex-col w-full  h-full">
+                {
+                    skillList.map((value,index) => {
+                        return <div className={value.div} key={index}>
+                            <input type="text" className={value.input1.ClassName} placeholder={value.input1.PlaceHolder} />
+                            <input type="text" className={value.input2.ClassName} placeholder={value.input2.PlaceHolder} />
+                            <input type="date" className="bg-slate-200 rounded-md w-28 " placeholder="Başlangıç Tarihi" />
+                            <input type="date" className="bg-slate-200 rounded-md w-28" />
+                            <FaTrash className={value.trashIcon} onClick={e => onDeleteInput(index)}/>
+
+                        </div>
+                    })
+                }
+            </div>
         </div>
     )
 }
@@ -182,6 +228,7 @@ export function CreateCvPage(){
                         <p className="p-3 text-xl">Tecrübe</p>
                         <ExperienceDropdown/>
                     </div>
+                    <AddExperience/>
                 </div>
 
                 </div>
