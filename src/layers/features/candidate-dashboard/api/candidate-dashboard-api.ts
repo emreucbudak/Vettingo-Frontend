@@ -1,10 +1,27 @@
 import { apiRequest } from "@/shared/api";
 
 const candidateApiPaths = {
+  recommendedJobs: "/api/gateway/personalized-job-postings/latest",
   applications: "/api/gateway/job-applications",
   interviews: "/api/gateway/interview/interview-exams",
   jobs: "/api/gateway/job-postings",
 } as const;
+
+export type PersonalizedJobPostingDto = {
+  id: string;
+  userId: string;
+  title: string;
+  cityId: number;
+  cityName: string;
+  publishedDate: string;
+};
+
+export function getLatestPersonalizedJobPostings(userId: string, signal?: AbortSignal) {
+  const query = new URLSearchParams({ userId });
+  return apiRequest<PersonalizedJobPostingDto[]>(
+    `${candidateApiPaths.recommendedJobs}?${query}`, "GET", { signal, cache: "no-store" },
+  );
+}
 
 export type JobApplicationDto = {
   id: string;
