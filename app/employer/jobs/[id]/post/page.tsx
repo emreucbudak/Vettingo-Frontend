@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
-import { EmployerShell } from "@/widgets/employer/shell";
+import { notFound } from "next/navigation";
+import { employerJobs } from "@/entities/employer-recruiting/employer-recruiting-data";
+import { EmployerJobEditPage } from "@/pages/employer-recruiting";
 
 export const metadata: Metadata = {
   title: "İlan Düzenle | Vettingo",
 };
 
-export default function EmployerJobPostPage() {
-  return (
-    <EmployerShell>
-      <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8" />
-    </EmployerShell>
-  );
+export default async function EmployerJobPostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const job = employerJobs.find((item) => item.id === id);
+
+  if (!job) notFound();
+
+  return <EmployerJobEditPage job={job} key={job.id} />;
 }

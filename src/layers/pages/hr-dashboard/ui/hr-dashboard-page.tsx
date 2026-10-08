@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getEmployerJobStatistics } from "@/features/employer-dashboard";
+import { CompanyJobPostingsOverview, getEmployerJobStatistics } from "@/features/employer-dashboard";
 import Link from "next/link";
-import { activeRequisitions } from "@/entities/employer-dashboard";
 import {
   funnelStages,
   hrDashboardStats,
@@ -16,46 +15,6 @@ import {
   HrSectionHeading,
   HrStatGrid,
 } from "@/entities/hr-dashboard/ui";
-
-function RequisitionOverview() {
-  return (
-    <section className="min-w-0 lg:col-span-2">
-      <HrSectionHeading
-        title="Aktif İlanlar"
-      />
-      <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
-        <div className="hidden grid-cols-12 gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#45474c] lg:grid">
-          <span className="col-span-7">Pozisyon</span>
-          <span className="col-span-2">Aday Sayısı</span>
-          <span className="col-span-3 text-right">Durum</span>
-        </div>
-        <div className="divide-y divide-[#c5c6cd]">
-          {activeRequisitions.map((requisition) => (
-            <article
-              className="grid grid-cols-1 gap-3 px-5 py-4 transition-colors hover:bg-[#eff4ff] lg:grid-cols-12 lg:items-center"
-              key={requisition.requisition}
-            >
-              <span className="lg:col-span-7">
-                <span className="block text-sm font-semibold text-[#0b1c30]">
-                  {requisition.title}
-                </span>
-              </span>
-              <span className="text-sm font-semibold text-[#0b1c30] lg:col-span-2">
-                {requisition.applicants} aday
-              </span>
-              <span className="flex items-center gap-2 lg:col-span-3 lg:justify-end">
-                <span className={`h-2 w-2 shrink-0 rounded-full ${requisition.active ? "bg-[#006c49]" : "bg-[#75777d]"}`} />
-                <span className="text-[11px] font-medium leading-4 text-[#45474c]">
-                  {requisition.status}
-                </span>
-              </span>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function TodayInterviews() {
   return (
@@ -154,7 +113,7 @@ export function HrDashboardPage() {
       )}
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <RequisitionOverview />
+        <CompanyJobPostingsOverview showRetry={false} />
         <TodayInterviews />
       </div>
 
