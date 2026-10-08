@@ -22,7 +22,7 @@ export function EmployerHrAssignmentPage() {
   return (
     <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
+        <div className="w-full">
           <form
             className="space-y-6"
             onChange={() => setSubmitted(false)}
@@ -154,30 +154,6 @@ export function EmployerHrAssignmentPage() {
             </section>
           </form>
 
-          <aside className="space-y-6">
-            <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#006c49]">Atama Süreci</p>
-              <h2 className="mt-2 text-lg font-semibold text-[#0b1c30]">Üç adımda ekip erişimi</h2>
-              <ol className="mt-6 space-y-5">
-                {[
-                  ["Kişiyi tanımla", "İletişim ve görev bilgilerini doldur."],
-                  ["Yetkileri sınırla", "İşe alımcının erişeceği alanları seç."],
-                  ["Daveti gönder", "Kullanıcı, e-posta davetiyle hesabını etkinleştirsin."],
-                ].map(([title, description], index) => (
-                  <li className="flex gap-3" key={title}>
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#6cf8bb] text-xs font-semibold text-[#00714d]">
-                      {index + 1}
-                    </span>
-                    <div>
-                      <h3 className="text-sm font-semibold text-[#0b1c30]">{title}</h3>
-                      <p className="mt-1 text-xs leading-5 text-[#45474c]">{description}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </section>
-
-          </aside>
         </div>
       </main>
     </EmployerShell>

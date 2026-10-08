@@ -22,6 +22,8 @@ import { analysisUtilityItems } from "@/entities/candidate-analysis";
 import { ROUTES } from "@/shared/config/routes";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
 import { EmployerDashboardFooter, EmployerSidebar } from "@/widgets/employer/shell";
+import { CandidateShell } from "@/widgets/candidate/shell";
+import type { ReactNode } from "react";
 
 
 type DetailKind = "application" | "talent";
@@ -58,7 +60,8 @@ function BreadcrumbActions({
   const collectionHref = isTalent ? ROUTES.employerTalents : ROUTES.employerApplications;
 
   return (
-    <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <div className={`mb-6 flex flex-col gap-4 lg:flex-row lg:items-center ${isTalent ? "lg:justify-between" : "items-end lg:justify-end"}`}>
+      {isTalent ? (
       <div className="flex flex-wrap items-center gap-2 text-sm leading-5 text-[#45474c]">
         <Link className="transition-colors hover:text-[#091426]" href={collectionHref}>
           {collectionLabel}
@@ -68,8 +71,10 @@ function BreadcrumbActions({
         <MdOutlineChevronRight aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
         <span className="font-semibold text-[#0b1c30]">{candidate.name}</span>
       </div>
+      ) : null}
 
       <div className="flex flex-col gap-3 sm:flex-row">
+        {isTalent ? (
         <button
           className="flex items-center justify-center gap-2 rounded border border-[#75777d] bg-[#f8f9ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
           type="button"
@@ -77,6 +82,7 @@ function BreadcrumbActions({
           <MdOutlineDownload aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
           PDF Dışa Aktar
         </button>
+        ) : null}
         <button
           className="rounded bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90"
           type="button"
@@ -199,7 +205,7 @@ function ExecutiveSummaryCard({
   return (
     <section className="flex flex-col rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 lg:col-span-2">
       <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-        <AppIcon className="text-[#040057]">{isTalent ? "auto_awesome" : "psychology"}</AppIcon>
+        {isTalent ? <AppIcon className="text-[#040057]">auto_awesome</AppIcon> : null}
         <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">
           {isTalent ? "Neden Öneriyoruz?" : "Aday Analizi Özeti"}
         </h2>
@@ -321,11 +327,11 @@ function RatingCard({
   );
 }
 
-function ExperienceCard({ candidate }: { candidate: CandidateAnalysisProfile }) {
+function ExperienceCard({ candidate, detailKind }: { candidate: CandidateAnalysisProfile; detailKind: DetailKind }) {
   return (
     <section className="rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6">
       <div className="mb-6 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-        <MdOutlineWork aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" />
+        {detailKind === "talent" ? <MdOutlineWork aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" /> : null}
         <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Profesyonel Deneyim</h2>
       </div>
       <div className="relative space-y-8 before:absolute before:inset-y-0 before:left-[11px] before:w-[2px] before:bg-[#d3e4fe]">
@@ -398,7 +404,7 @@ function CandidateContextCard({
 
       <div>
         <div className="mb-5 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-          <MdOutlineSchool aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" />
+          {isTalent ? <MdOutlineSchool aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" /> : null}
           <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Eğitim</h2>
         </div>
         <ul className="space-y-4">
@@ -419,7 +425,7 @@ function CandidateContextCard({
 
       <div className="mt-auto">
         <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-          <MdOutlineWorkspacePremium aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" />
+          {isTalent ? <MdOutlineWorkspacePremium aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" /> : null}
           <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Sertifikalar</h2>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -434,6 +440,37 @@ function CandidateContextCard({
         </div>
       </div>
     </section>
+  );
+}
+
+function AnalysisShell({ detailKind, children }: { detailKind: DetailKind; children: ReactNode }) {
+  if (detailKind === "application") {
+    return <CandidateShell>{children}</CandidateShell>;
+  }
+
+  return (
+    <DashboardShell
+      renderSidebar={({ mobile, onNavigate }) => (
+        <EmployerSidebar
+          mobile={mobile}
+          navigationItems={getNavigationItems(detailKind)}
+          utilityItems={analysisUtilityItems}
+          onNavigate={onNavigate}
+        />
+      )}
+      topBarLeading={
+        <Link
+          aria-label="Listeye dön"
+          className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
+          href={ROUTES.employerTalents}
+        >
+          <MdOutlineArrowBack aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
+        </Link>
+      }
+    >
+      {children}
+      <EmployerDashboardFooter />
+    </DashboardShell>
   );
 }
 
@@ -453,29 +490,7 @@ export function CandidateAnalysisPage({
   const isLoading = false;
 
   return (
-    <DashboardShell
-      renderSidebar={({ mobile, onNavigate }) => (
-        <EmployerSidebar
-          mobile={mobile}
-          navigationItems={getNavigationItems(detailKind)}
-          utilityItems={analysisUtilityItems}
-          onNavigate={onNavigate}
-        />
-      )}
-      topBarLeading={
-        <Link
-          aria-label="Listeye dön"
-          className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-          href={
-            detailKind === "talent"
-              ? ROUTES.employerTalents
-              : ROUTES.employerApplications
-          }
-        >
-          <MdOutlineArrowBack aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
-        </Link>
-      }
-    >
+    <AnalysisShell detailKind={detailKind}>
       <main className="candidate-analysis-theme mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
         <BreadcrumbActions candidate={profile} detailKind={detailKind} />
         <CandidateHeader
@@ -505,14 +520,13 @@ export function CandidateAnalysisPage({
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <ExperienceCard candidate={profile} />
+          <ExperienceCard candidate={profile} detailKind={detailKind} />
           <CandidateContextCard
             candidate={profile}
             detailKind={detailKind}
           />
         </div>
       </main>
-      <EmployerDashboardFooter />
-    </DashboardShell>
+    </AnalysisShell>
   );
 }

@@ -1,5 +1,21 @@
 import { apiRequest } from "@/shared/api";
 
+export type CompanyJobPosting = {
+  id: string;
+  title: string;
+  cityId: number;
+  cityName: string;
+  applicants: number;
+  publishedAt: string | null;
+  status: "Draft" | "Active" | "Closed" | "Archived";
+};
+
+export function getCompanyJobPostings(signal?: AbortSignal) {
+  return apiRequest<CompanyJobPosting[]>(
+    "/api/gateway/job-postings/company", "GET", { signal, cache: "no-store" },
+  );
+}
+
 export type EmployerJobStatistics = {
   totalJobPostings: number;
   activeJobPostings: number;

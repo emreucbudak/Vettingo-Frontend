@@ -39,7 +39,10 @@ export function EmployerApplicationList() {
         <span className="col-span-3">Başvurduğu Rol</span>
         <span className="col-span-2">Aşama</span>
         <span className="col-span-2">Aktivite</span>
-        <span className="col-span-2 -translate-x-1">Rating</span>
+        <div className="col-span-2 flex items-center justify-between">
+          <span className="-translate-x-1">Rating</span>
+          <span>Detay</span>
+        </div>
       </div>
       <div className="divide-y divide-[#c5c6cd]">
         {applicationCandidates.map((candidate) => (
@@ -65,7 +68,6 @@ export function EmployerApplicationList() {
             </div>
             <div className="lg:col-span-3">
               <p className="text-sm font-medium text-[#0b1c30]">{candidate.targetRole}</p>
-              <p className="mt-1 text-[11px] text-[#75777d]">{candidate.appliedAt} tarihinde başvurdu</p>
             </div>
             <div className="lg:col-span-2">
               <span className="inline-flex rounded-full bg-[#dce9ff] px-2.5 py-1 text-[11px] font-semibold text-[#091426]">

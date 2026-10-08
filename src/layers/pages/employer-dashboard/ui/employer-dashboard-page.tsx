@@ -1,4 +1,3 @@
-import { MdOutlineAutoAwesome } from "react-icons/md";
 import Image from "next/image";
 import { EmployerStatistics } from "@/features/employer-dashboard";
 import { EmployerShell } from "@/widgets/employer/shell";
@@ -81,8 +80,7 @@ function AiMatchesCard() {
   return (
     <section className="flex h-full flex-col rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="flex items-center gap-2 text-lg font-medium leading-6 text-[#0b1c30]">
-          <MdOutlineAutoAwesome aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#040057]" />
+        <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">
           En İyi YZ Eşleşmeleri
         </h3>
       </div>
@@ -111,9 +109,6 @@ function AiMatchesCard() {
                 <div className="text-sm font-medium leading-5 text-[#0b1c30]">
                   {candidate.name}
                 </div>
-                <span className="rounded-full bg-[#dcfce7] px-2 py-1 text-[11px] font-medium leading-4 text-[#10b981]">
-                  {candidate.match}
-                </span>
               </div>
               <div className="mt-1 text-[11px] font-medium leading-4 text-[#45474c]">
                 {candidate.role} için
@@ -124,7 +119,7 @@ function AiMatchesCard() {
       </div>
 
       <button className="mt-4 w-full rounded border border-[#c5c6cd] py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] transition-colors hover:bg-[#eff4ff]">
-        Tümünü Gör AI Insights
+        Tümünü Gör
       </button>
     </section>
   );
