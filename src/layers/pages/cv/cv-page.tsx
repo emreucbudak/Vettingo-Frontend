@@ -14,6 +14,22 @@ type SkillsList = {
     trashIcon : string,
     div : string
 }
+type Education = {
+    schoolName: string,
+    departmentName: string,
+    startedDate: string,
+    finishedDate: string
+}
+type Skills = {
+    skillName: string,
+    skillExperienceYear: string
+}
+type Experience = {
+    companyName: string,
+    role : string,
+    startedDate: string,
+    finishedDate: string
+}
 export function ClickableDropdown (){
    const [skill , setskill] = useState<boolean>(false);
     const showSkills = () => {
@@ -303,35 +319,59 @@ export function CreateCvPage(){
                 <div className=" b-2  w-3/6 h-screen p-4">
                     <div className="b-2 border-slate-200 h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2">
                         <div className=" flex  w-md justify-center  pt-2 h-16  ">
-                            <h2 className="text-4xl font-sans">Emre Üçbudak</h2>
+                            <h2 className="text-4xl font-roboto-slab">Emre Üçbudak</h2>
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Eğitim</label>
                             <div className="border-t border-black w-xl"></div>
                         </div>
-                        <div>
-                            asdadadsaasdawsdasd
+                        <div className="egitim flex flex-row justify-between p-3 w-full">
+                            <div>
+                                <p>Okul Adı</p>
+                                <p>Bölüm Adı</p>
+                            </div>
+                            <div>
+                                <p>Başlangıç Tarihi</p>
+                                <p>Bitiş Tarihi</p>
+                            </div>
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Yetenekler</label>
                             <div className="border-t border-black w-xl"></div>
                         </div>
-                        <div>
-                            asdasdasdasdasdasdas
+                        <div className="w-full justify-between p-3 flex flex-row">
+                            <div>
+                                <p>Yetenek Adı</p>
+                            </div>
+                            <div>
+                                <p>Tecrübe Yılı</p>
+                            </div>
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Tecrübe</label>
                             <div className="border-t border-black w-xl"></div>                           
                         </div>
-                        <div>
-                            asdsadasdasdasfsaada
+                        <div className="flex flex-row p-3 justify-between w-full">
+                            <div>
+                                <h4>Şirket Adı</h4>
+                                <p>Rol</p>
+                            </div>
+                            <div>
+                                <p>Başlangıç</p>
+                                <p>Bitiş</p>
+                            </div>
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Projeler</label>
                             <div className="border-t border-black w-xl"></div>                           
                         </div>
-                        <div>
-                            apğsdoaskğpdğpaskğdk
+                        <div className="flex flex-row p-3 justify-between w-full">
+                            <div>
+                                <p>Proje Adı</p>
+                            </div>
+                            <div>
+                                <p>Amacı</p>
+                            </div>
                         </div>
                         
                     </div>
