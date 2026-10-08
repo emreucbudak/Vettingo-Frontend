@@ -2,21 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { CompanyJobPostingsOverview, getEmployerJobStatistics } from "@/features/employer-dashboard";
+import { useTodayInterviews } from "@/features/hr-interviews";
 import Link from "next/link";
 import {
   funnelStages,
   hrDashboardStats,
-  interviews,
 } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
 import {
   HrAvatar,
-  HrPageHeader,
   HrSectionHeading,
   HrStatGrid,
 } from "@/entities/hr-dashboard/ui";
 
 function TodayInterviews() {
+  const { interviews, error } = useTodayInterviews();
+
   return (
     <section className="flex flex-col rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 lg:p-6">
       <HrSectionHeading
@@ -24,23 +25,28 @@ function TodayInterviews() {
         actionLabel="Takvim"
         title="Bugünün Mülakatları"
       />
-      <div className="flex flex-1 flex-col justify-center gap-4">
-        {interviews.slice(0, 3).map((interview) => (
+      <div className="flex max-h-80 flex-1 flex-col justify-start gap-4 overflow-y-auto" aria-live="polite">
+        {error ? (
+          <div className="text-sm text-red-700" role="alert">
+            <p>Mülakatlar yüklenemedi.</p>
+          </div>
+        ) : interviews === null ? (
+          <p className="text-sm text-[#75777d]">Mülakatlar yükleniyor…</p>
+        ) : interviews.length === 0 ? (
+          <p className="text-sm text-[#75777d]">Bugün planlanmış mülakat bulunmuyor.</p>
+        ) : interviews.map((interview) => (
           <Link
-            className="flex items-start gap-3 border-b border-[#c5c6cd] pb-4 last:border-0 last:pb-0"
+            className="flex shrink-0 items-center gap-3 border-b border-[#c5c6cd] pb-4 last:border-0 last:pb-0"
             href={ROUTES.hrInterviews}
-            key={`${interview.time}-${interview.candidate}`}
+            key={interview.id}
           >
-            <span className="w-12 shrink-0 text-sm font-semibold text-[#091426]">
-              {interview.time}
-            </span>
-            <HrAvatar initials={interview.initials} size="sm" />
+            <time className="w-12 shrink-0 text-sm font-semibold text-[#091426]" dateTime={interview.startedTime.slice(0, 5)}>
+              {interview.startedTime.slice(0, 5).replace(":", ".")}
+            </time>
+            <HrAvatar initials={`${interview.name.trim().charAt(0)}${interview.surname.trim().charAt(0)}`.toLocaleUpperCase("tr-TR")} size="sm" />
             <span className="min-w-0 flex-1">
               <span className="block truncate text-sm font-semibold text-[#0b1c30]">
-                {interview.candidate}
-              </span>
-              <span className="mt-0.5 block text-[11px] text-[#75777d]">
-                {interview.type} · {interview.duration}
+                {interview.name} {interview.surname}
               </span>
             </span>
           </Link>
@@ -101,10 +107,6 @@ export function HrDashboardPage() {
 
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <HrPageHeader
-        title="İşe Alım Kontrol Merkezi"
-      />
-
       <HrStatGrid items={statistics} showIcons={false} />
       {statisticsError && (
         <p className="-mt-5 mb-8 text-sm text-red-700" role="alert">
