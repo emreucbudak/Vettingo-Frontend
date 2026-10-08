@@ -52,18 +52,6 @@ function matchesExperience(candidate: HrScoutCandidate, filter: string) {
   return true;
 }
 
-function availabilityTone(availability: HrScoutCandidate["availability"]) {
-  if (availability === "Aktif arayışta") {
-    return "text-[#006c49]";
-  }
-
-  if (availability === "Görüşmeye açık") {
-    return "text-[#42358f]";
-  }
-
-  return "text-[#75777d]";
-}
-
 function ratingTone(rating: number) {
   if (rating >= 90) return "bg-[#dcfce7] text-[#006c49]";
   if (rating >= 84) return "bg-[#dce9ff] text-[#091426]";
@@ -319,9 +307,6 @@ export function HrScoutDirectory() {
                         <h3 className="truncate text-sm font-semibold text-[#0b1c30]">
                           {candidate.name}
                         </h3>
-                        <p className="mt-1 truncate text-[11px] text-[#75777d]">
-                          {candidate.source}
-                        </p>
                       </div>
                     </div>
 
@@ -331,9 +316,6 @@ export function HrScoutDirectory() {
                       </p>
                       <p className="mt-1 text-sm font-medium text-[#0b1c30] xl:mt-0">
                         {candidate.role}
-                      </p>
-                      <p className="mt-1 text-[11px] text-[#75777d]">
-                        {candidate.company} · {candidate.experienceYears} yıl
                       </p>
                     </div>
 
@@ -356,11 +338,6 @@ export function HrScoutDirectory() {
                     <div className="xl:col-span-2">
                       <p className="text-sm font-medium text-[#0b1c30]">
                         {candidate.location} · {candidate.workModel}
-                      </p>
-                      <p
-                        className={`mt-1 text-[11px] font-medium ${availabilityTone(candidate.availability)}`}
-                      >
-                        {candidate.availability}
                       </p>
                     </div>
 

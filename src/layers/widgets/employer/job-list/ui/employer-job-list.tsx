@@ -1,4 +1,6 @@
-import { MdOutlineEdit, MdOutlineMoreHoriz } from "react-icons/md";
+import { MdOutlineEdit } from "react-icons/md";
+import Link from "next/link";
+import { ROUTES } from "@/shared/config/routes";
 import {
   employerJobs,
   type EmployerJob,
@@ -30,10 +32,9 @@ function JobRow({ job }: { job: EmployerJob }) {
       <div className="grid grid-cols-2 gap-3 lg:contents">
         <div className="lg:col-span-2">
           <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d] lg:hidden">
-            Çalışma
+            Lokasyon
           </p>
           <p className="text-sm text-[#45474c]">{job.location}</p>
-          <p className="text-[11px] text-[#75777d]">{job.workingModel}</p>
         </div>
         <div className="lg:col-span-2">
           <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d] lg:hidden">
@@ -49,25 +50,18 @@ function JobRow({ job }: { job: EmployerJob }) {
         </div>
         <div className="flex items-center justify-between gap-3 lg:col-span-2 lg:justify-end">
           <StatusBadge status={job.status} />
-          <button
-            aria-label={`${job.title} ilan seçenekleri`}
-            className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426]"
-            type="button"
-          >
-            <MdOutlineMoreHoriz aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
-          </button>
         </div>
         <div className="lg:col-span-2 lg:text-center">
           <p className="text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d] lg:hidden">
             İşlem Yap
           </p>
-          <span
+          <Link
             aria-label={`${job.title} ilanını düzenle`}
-            className="inline-flex p-2 text-[#45474c]"
-            role="img"
+            className="inline-flex rounded p-2 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426]"
+            href={`${ROUTES.employerJobs}/${encodeURIComponent(job.id)}/post`}
           >
             <MdOutlineEdit aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
-          </span>
+          </Link>
         </div>
       </div>
     </article>
@@ -82,7 +76,7 @@ export function EmployerJobList() {
         <span className="col-span-2">Lokasyon</span>
         <span className="col-span-2">Aday Akışı</span>
         <span className="col-span-2">Yayın Tarihi</span>
-        <span className="col-span-2 pr-12 text-right">Durum</span>
+        <span className="col-span-2 text-right">Durum</span>
         <span className="col-span-2 text-center">İşlem Yap</span>
       </div>
       <div className="divide-y divide-[#c5c6cd]">

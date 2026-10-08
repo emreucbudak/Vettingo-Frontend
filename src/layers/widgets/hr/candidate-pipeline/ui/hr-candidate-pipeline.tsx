@@ -85,10 +85,9 @@ export function HrCandidatePipeline() {
         />
         <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
           <div className="hidden grid-cols-12 gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#45474c] xl:grid">
-            <span className="col-span-3">Aday</span>
-            <span className="col-span-3">Hedef Rol</span>
+            <span className="col-span-4">Aday</span>
+            <span className="col-span-4">Hedef Rol</span>
             <span className="col-span-2">Aşama</span>
-            <span className="col-span-2">Sorumlu</span>
             <span className="col-span-1">Rating</span>
             <span className="col-span-1 text-right">Aksiyon</span>
           </div>
@@ -98,7 +97,7 @@ export function HrCandidatePipeline() {
                 className="grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] xl:grid-cols-12 xl:items-center xl:gap-3 xl:px-6"
                 key={candidate.id}
               >
-                <div className="flex items-center gap-3 xl:col-span-3">
+                <div className="flex items-center gap-3 xl:col-span-4">
                   <HrAvatar initials={candidate.initials} />
                   <div>
                     <h2 className="text-sm font-semibold text-[#0b1c30]">{candidate.name}</h2>
@@ -107,28 +106,11 @@ export function HrCandidatePipeline() {
                     </p>
                   </div>
                 </div>
-                <div className="xl:col-span-3">
+                <div className="xl:col-span-4">
                   <p className="text-sm font-medium text-[#0b1c30]">{candidate.role}</p>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {candidate.skills.map((skill) => (
-                      <span
-                        className="rounded bg-[#eff4ff] px-2 py-1 text-[10px] font-medium text-[#45474c]"
-                        key={skill}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
                 </div>
                 <div className="xl:col-span-2">
                   <HrStatusBadge status={candidate.stage} />
-                  <p className="mt-2 text-[10px] text-[#75777d]">{candidate.activity}</p>
-                </div>
-                <div className="xl:col-span-2">
-                  <p className="text-sm font-medium text-[#0b1c30]">{candidate.owner}</p>
-                  <p className="mt-1 text-[10px] uppercase tracking-[0.05em] text-[#75777d]">
-                    Süreç sahibi
-                  </p>
                 </div>
                 <div className="xl:col-span-1">
                   <CandidateRating rating={candidate.rating} />
