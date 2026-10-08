@@ -40,7 +40,7 @@ export function CandidateDashboardPage() {
           </div>
           <div className="space-y-6 md:col-span-4">
             <CandidateUpcomingInterviews interviews={interviews} isLoading={isLoading} />
-            <CandidateApplicationStatistics applications={applications} hasError={Boolean(error)} isLoading={isLoading} />
+            <CandidateApplicationStatistics userId={user?.Sub ?? ""} />
           </div>
         </div>
       </main>
