@@ -60,9 +60,9 @@ export const hrDashboardStats = [
     tone: "blue",
   },
   {
-    label: "Görüşülen Aday",
+    label: "Bu Ayki Mülakat",
     value: "74",
-    icon: "groups",
+    icon: "calendar_month",
     tone: "green",
   },
   {
@@ -72,9 +72,9 @@ export const hrDashboardStats = [
     tone: "purple",
   },
   {
-    label: "Ort. İşe Alım Süresi",
-    value: "28 gün",
-    icon: "work_history",
+    label: "Bugünkü Mülakat",
+    value: "4",
+    icon: "calendar_month",
     tone: "amber",
   },
 ] as const;
