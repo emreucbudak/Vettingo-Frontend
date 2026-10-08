@@ -36,7 +36,7 @@ export function CandidateDashboardPage() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
           <div className="space-y-6 md:col-span-8">
             <CandidateDashboardApplications applications={applications} isLoading={isLoading} />
-            <CandidateRecommendedJobs />
+            <CandidateRecommendedJobs userId={user?.Sub ?? ""} />
           </div>
           <div className="space-y-6 md:col-span-4">
             <CandidateUpcomingInterviews interviews={interviews} isLoading={isLoading} />
