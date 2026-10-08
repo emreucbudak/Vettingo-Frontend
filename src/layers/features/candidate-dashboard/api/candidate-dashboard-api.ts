@@ -91,3 +91,18 @@ export function getCandidateApplicationStatistics(signal?: AbortSignal) {
     "/api/gateway/job-applications/my/statistics", "GET", { signal, cache: "no-store" },
   );
 }
+
+export type CandidateDashboardStatistics = {
+  totalApplications: number;
+  inProgress: number;
+  offers: number;
+  rejected: number;
+};
+
+export function getCandidateDashboardStatistics(userId: string, signal?: AbortSignal) {
+  const query = new URLSearchParams({ userId });
+  return apiRequest<CandidateDashboardStatistics>(
+    `/api/gateway/job-applications/candidate/statistics?${query}`,
+    "GET", { signal, cache: "no-store" },
+  );
+}
