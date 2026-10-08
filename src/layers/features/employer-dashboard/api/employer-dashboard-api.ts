@@ -10,9 +10,10 @@ export type CompanyJobPosting = {
   status: "Draft" | "Active" | "Closed" | "Archived";
 };
 
-export function getCompanyJobPostings(signal?: AbortSignal) {
+export function getCompanyJobPostings(signal?: AbortSignal, limit?: number) {
+  const query = limit === undefined ? "" : `?limit=${limit}`;
   return apiRequest<CompanyJobPosting[]>(
-    "/api/gateway/job-postings/company", "GET", { signal, cache: "no-store" },
+    `/api/gateway/job-postings/company${query}`, "GET", { signal, cache: "no-store" },
   );
 }
 

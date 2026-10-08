@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { EmployerStatistics } from "@/features/employer-dashboard";
+import { CompanyJobPostingsOverview, EmployerStatistics } from "@/features/employer-dashboard";
+import { ROUTES } from "@/shared/config/routes";
 import { EmployerShell } from "@/widgets/employer/shell";
 import {
-  activeRequisitions,
   employerProfile,
   funnelStages,
   monthlyBars,
@@ -26,53 +26,6 @@ function MobileBrand() {
         <h1 className="text-xl font-bold text-[#091426]">Vettingo</h1>
       </div>
     </div>
-  );
-}
-
-function RequisitionsTable() {
-  return (
-    <section className="flex flex-col gap-4 lg:col-span-2">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium leading-6 text-[#0b1c30]">
-          Aktif İlanlar
-        </h3>
-        <a className="text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] hover:underline" href="#">
-          Tümünü Gör
-        </a>
-      </div>
-
-      <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
-        <div className="hidden grid-cols-12 gap-2 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c] md:grid">
-          <div className="col-span-7">Rol Unvanı</div>
-          <div className="col-span-2">Adaylar</div>
-          <div className="col-span-3 text-right">Durum</div>
-        </div>
-
-        <div className="divide-y divide-[#c5c6cd]">
-          {activeRequisitions.map((role) => (
-            <article
-              className="grid grid-cols-1 gap-3 px-6 py-3 transition-colors hover:bg-[#eff4ff] md:grid-cols-12 md:items-center md:gap-2"
-              key={role.requisition}
-            >
-              <div className="md:col-span-7">
-                <div className="text-sm font-medium leading-5 text-[#0b1c30]">
-                  {role.title}
-                </div>
-              </div>
-              <div className="text-sm leading-5 text-[#0b1c30] md:col-span-2">
-                {role.applicants}
-              </div>
-              <div className="flex items-center gap-2 md:col-span-3 md:justify-end">
-                <span className={`h-2 w-2 rounded-full ${role.active ? "bg-[#006c49]" : "bg-[#75777d]"}`} />
-                <span className="text-[11px] font-medium leading-4 text-[#45474c]">
-                  {role.status}
-                </span>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -182,7 +135,7 @@ export function EmployerDashboardPage() {
         <EmployerStatistics />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <RequisitionsTable />
+          <CompanyJobPostingsOverview allJobsHref={ROUTES.employerJobs} />
           <AiMatchesCard />
         </div>
 
