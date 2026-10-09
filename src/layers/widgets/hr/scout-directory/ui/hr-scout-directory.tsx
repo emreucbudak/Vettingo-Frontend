@@ -10,19 +10,20 @@ import {
   type HrScoutCandidate,
 } from "@/entities/hr-dashboard";
 import { HrAvatar } from "@/entities/hr-dashboard/ui";
+import { useCities } from "@/features/scout-filters";
 
 const PAGE_SIZE = 5;
 
 type ScoutFilters = {
   experience: string;
-  location: string;
+  cityId: string;
   query: string;
   workModel: string;
 };
 
 const emptyFilters: ScoutFilters = {
   experience: "all",
-  location: "",
+  cityId: "",
   query: "",
   workModel: "all",
 };
@@ -56,6 +57,8 @@ function ratingTone(rating: number) {
 }
 
 export function HrScoutDirectory() {
+  const { cities, error: citiesError } = useCities();
+  const citiesLoading = cities === null && !citiesError;
   const [draftFilters, setDraftFilters] = useState<ScoutFilters>(emptyFilters);
   const [filters, setFilters] = useState<ScoutFilters>(emptyFilters);
   const [page, setPage] = useState(1);
@@ -65,7 +68,8 @@ export function HrScoutDirectory() {
 
   const filteredCandidates = useMemo(() => {
     const query = normalize(filters.query);
-    const location = normalize(filters.location);
+    const selectedCity = cities?.find((city) => String(city.id) === filters.cityId);
+    const location = normalize(selectedCity?.cityName ?? "");
 
     return hrScoutCandidates.filter((candidate) => {
       const searchableText = normalize(
@@ -80,13 +84,13 @@ export function HrScoutDirectory() {
 
       return (
         (!query || searchableText.includes(query)) &&
-        (!location || normalize(candidate.location).includes(location)) &&
+        (!location || normalize(candidate.location) === location) &&
         (filters.workModel === "all" ||
           candidate.workModel === filters.workModel) &&
         matchesExperience(candidate, filters.experience)
       );
     });
-  }, [filters]);
+  }, [filters, cities]);
 
   const pageCount = Math.max(
     1,
@@ -161,15 +165,29 @@ export function HrScoutDirectory() {
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
                 Lokasyon
               </span>
-              <input
-                className={fieldClassName}
-                onChange={(event) =>
-                  updateFilter("location", event.target.value)
-                }
-                placeholder="Şehir ara"
-                type="search"
-                value={draftFilters.location}
-              />
+              <span className="relative block">
+                <select
+                  aria-busy={citiesLoading}
+                  className={`${selectFieldClassName} disabled:cursor-not-allowed disabled:opacity-60`}
+                  disabled={citiesLoading || citiesError || cities?.length === 0}
+                  onChange={(event) => updateFilter("cityId", event.target.value)}
+                  value={draftFilters.cityId}
+                >
+                  <option value="">
+                    {citiesLoading
+                      ? "Şehirler yükleniyor…"
+                      : citiesError
+                        ? "Şehirler yüklenemedi"
+                        : cities?.length === 0
+                          ? "Şehir bulunamadı"
+                          : "Tüm şehirler"}
+                  </option>
+                  {cities?.map((city) => (
+                    <option key={city.id} value={city.id}>{city.cityName}</option>
+                  ))}
+                </select>
+                <SelectChevron />
+              </span>
             </label>
           </div>
 
@@ -248,11 +266,12 @@ export function HrScoutDirectory() {
         </div>
 
         <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
-          <div className="hidden grid-cols-12 gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#45474c] xl:grid">
+          <div className="hidden grid-cols-[repeat(14,minmax(0,1fr))] gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#45474c] xl:grid">
             <span className="col-span-3">Aday</span>
             <span className="col-span-2">Güncel Rol</span>
             <span className="col-span-2">Yetkinlikler</span>
             <span className="col-span-2">Lokasyon</span>
+            <span className="col-span-2">Maaş</span>
             <span className="col-span-1">Rating</span>
             <span className="col-span-2 pr-8 text-right">Aksiyon</span>
           </div>
@@ -264,7 +283,7 @@ export function HrScoutDirectory() {
 
                 return (
                   <article
-                    className="grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] xl:grid-cols-12 xl:items-center xl:gap-3 xl:px-6"
+                    className="grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] xl:grid-cols-[repeat(14,minmax(0,1fr))] xl:items-center xl:gap-3 xl:px-6"
                     key={candidate.id}
                   >
                     <div className="flex items-center gap-3 xl:col-span-3">
@@ -304,6 +323,15 @@ export function HrScoutDirectory() {
                     <div className="xl:col-span-2">
                       <p className="text-sm font-medium text-[#0b1c30]">
                         {candidate.location} · {candidate.workModel}
+                      </p>
+                    </div>
+
+                    <div className="xl:col-span-2">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-[#75777d] xl:hidden">
+                        Maaş
+                      </p>
+                      <p className="mt-1 text-sm font-medium text-[#0b1c30] xl:mt-0">
+                        {candidate.expectedSalary || "Belirtilmedi"}
                       </p>
                     </div>
 

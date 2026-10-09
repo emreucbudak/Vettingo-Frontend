@@ -39,6 +39,22 @@ export function getEmployerApplicationStatistics(signal?: AbortSignal) {
   return apiRequest<EmployerApplicationStatistics>("/api/gateway/job-applications/statistics", "GET", { signal, cache: "no-store" });
 }
 
+export type CompanyApplicationStatistics = {
+  totalApplications: number;
+  underReview: number;
+  interviews: number;
+  offers: number;
+  rejected: number;
+};
+
+export function getCompanyApplicationStatistics(signal?: AbortSignal) {
+  return apiRequest<CompanyApplicationStatistics>(
+    "/api/gateway/job-applications/company/statistics",
+    "GET",
+    { signal, cache: "no-store" },
+  );
+}
+
 export type EmployerStats = EmployerJobStatistics & EmployerApplicationStatistics;
 
 export async function getStats(signal?: AbortSignal): Promise<EmployerStats> {
