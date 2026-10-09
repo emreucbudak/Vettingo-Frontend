@@ -1,7 +1,5 @@
 "use client";
 
-import { AppIcon } from "@/shared/ui/icon";
-
 import { useEffect, useState } from "react";
 import { getStats, type EmployerStats } from "../api/employer-dashboard-api";
 
@@ -17,9 +15,9 @@ export function EmployerJobStatistics() {
   }, []);
   const placeholder = error ? "—" : "Yükleniyor…";
   const items = [
-    { label: "Toplam İlan", value: statistics ? statistics.totalJobPostings.toLocaleString("tr-TR") : placeholder, icon: "list_alt" },
-    { label: "Aktif İlan", value: statistics ? statistics.activeJobPostings.toLocaleString("tr-TR") : placeholder, icon: "campaign" },
-    { label: "Toplam Başvuru", value: statistics ? statistics.totalApplications.toLocaleString("tr-TR") : placeholder, icon: "group" },
+    { label: "Toplam İlan", value: statistics ? statistics.totalJobPostings.toLocaleString("tr-TR") : placeholder },
+    { label: "Aktif İlan", value: statistics ? statistics.activeJobPostings.toLocaleString("tr-TR") : placeholder },
+    { label: "Toplam Başvuru", value: statistics ? statistics.totalApplications.toLocaleString("tr-TR") : placeholder },
     { label: "Aktif Başvuru", value: statistics ? statistics.activeApplications.toLocaleString("tr-TR") : placeholder },
   ];
 
@@ -28,14 +26,9 @@ export function EmployerJobStatistics() {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((item) => (
           <article className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-4" key={item.label}>
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-                {item.label}
-              </p>
-              {item.icon && (
-                <AppIcon className="text-[20px] text-[#45474c]">{item.icon}</AppIcon>
-              )}
-            </div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
+              {item.label}
+            </p>
             <p className="mt-3 text-2xl font-semibold text-[#0b1c30]" aria-live="polite">{item.value}</p>
           </article>
         ))}
