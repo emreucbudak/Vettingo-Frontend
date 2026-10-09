@@ -1,13 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CompanyJobPostingsOverview, getEmployerJobStatistics } from "@/features/employer-dashboard";
+import { CompanyJobPostingsOverview, getEmployerJobStatistics, useCompanyApplicationStatistics } from "@/features/employer-dashboard";
 import { useTodayInterviews } from "@/features/hr-interviews";
 import Link from "next/link";
-import {
-  funnelStages,
-  hrDashboardStats,
-} from "@/entities/hr-dashboard";
+import { hrDashboardStats } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
 import {
   HrAvatar,
@@ -57,24 +54,40 @@ function TodayInterviews() {
 }
 
 function FunnelPreview() {
+  const { statistics, error } = useCompanyApplicationStatistics();
+  const stages = [
+    { label: "Başvuru", metric: "totalApplications" },
+    { label: "İlk İnceleme", metric: "underReview" },
+    { label: "Mülakat", metric: "interviews" },
+    { label: "Teklif", metric: "offers" },
+    { label: "Red", metric: "rejected" },
+  ] as const;
+
   return (
-    <section className="mt-8 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6">
+    <section
+      aria-busy={statistics === null && !error}
+      className="mt-8 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+    >
       <HrSectionHeading
         actionHref={ROUTES.hrReports}
         actionLabel="Detaylı Rapor"
         title="İşe Alım İstatistikleri"
       />
       <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
-        {funnelStages.map((stage, index) => (
+        {stages.map((stage) => (
           <article
             className="relative overflow-hidden rounded border border-[#c5c6cd] bg-[#eff4ff] p-4"
             key={stage.label}
           >
             <div className="relative">
               <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
-                {index === 3 ? "Teknik Görüşme" : stage.label}
+                {stage.label}
               </p>
-              <p className="mt-3 text-2xl font-semibold text-[#0b1c30]">{stage.value}</p>
+              <p className="mt-3 text-2xl font-semibold text-[#0b1c30]" aria-live="polite">
+                {statistics
+                  ? statistics[stage.metric].toLocaleString("tr-TR")
+                  : error ? "—" : "Yükleniyor…"}
+              </p>
             </div>
           </article>
         ))}

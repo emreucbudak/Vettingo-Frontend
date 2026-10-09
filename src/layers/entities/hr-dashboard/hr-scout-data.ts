@@ -8,6 +8,7 @@ export type HrScoutCandidate = {
     | "İnsan Kaynakları"
     | "Pazarlama";
   company: string;
+  expectedSalary?: string | null;
   experienceYears: number;
   id: string;
   initials: string;
@@ -20,7 +21,7 @@ export type HrScoutCandidate = {
   workModel: "Hibrit" | "Ofis" | "Uzaktan";
 };
 
-export const hrScoutCandidates = [
+export const hrScoutCandidates: readonly HrScoutCandidate[] = [
   {
     id: "scout-101",
     name: "Derya Acar",
@@ -246,4 +247,4 @@ export const hrScoutCandidates = [
     source: "Geliştirici topluluğu",
     skills: [".NET", "C#", "Azure"],
   },
-] satisfies readonly HrScoutCandidate[];
+];
