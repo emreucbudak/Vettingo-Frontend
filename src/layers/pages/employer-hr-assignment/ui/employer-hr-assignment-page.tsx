@@ -83,39 +83,6 @@ export function EmployerHrAssignmentPage() {
               </div>
             </section>
 
-            <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6">
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                <div>
-                  <label className={labelClass} htmlFor="recruiter-role">Platform Rolü</label>
-                  <select
-                    className={inputClass}
-                    defaultValue="recruiter"
-                    id="recruiter-role"
-                    name="role"
-                  >
-                    <option value="recruiter">İşe Alım Uzmanı</option>
-                    <option value="senior-recruiter">Kıdemli İşe Alım Uzmanı</option>
-                    <option value="talent-manager">Talent Acquisition Manager</option>
-                    <option value="hr-business-partner">HR Business Partner</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={labelClass} htmlFor="recruiter-scope">Pozisyon Kapsamı</label>
-                  <select
-                    className={inputClass}
-                    defaultValue="assigned"
-                    id="recruiter-scope"
-                    name="scope"
-                  >
-                    <option value="assigned">Yalnızca atandığı ilanlar</option>
-                    <option value="department">Departman ilanları</option>
-                    <option value="all">Tüm açık pozisyonlar</option>
-                  </select>
-                </div>
-              </div>
-
-            </section>
-
             <section className="rounded border border-[#c5c6cd] bg-[#eff4ff] p-5 md:p-6">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
