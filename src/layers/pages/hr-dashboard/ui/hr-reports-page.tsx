@@ -1,5 +1,4 @@
-import { MdOutlineDomain } from "react-icons/md";
-import { departmentMetrics, funnelStages, monthlyHiring } from "@/entities/hr-dashboard";
+import { funnelStages, monthlyHiring } from "@/entities/hr-dashboard";
 import {
   HrSectionHeading,
   HrStatGrid,
@@ -84,7 +83,7 @@ function FunnelReport() {
   return (
     <section className="mt-8 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6">
       <HrSectionHeading
-        title="Dönüşüm Hunisi"
+        title="Sayısal İstatistikler"
       />
       <div className="space-y-3">
         {funnelStages.map((stage, index) => (
@@ -113,63 +112,6 @@ function FunnelReport() {
             </span>
           </article>
         ))}
-      </div>
-    </section>
-  );
-}
-
-function DepartmentTable() {
-  return (
-    <section className="mt-8">
-      <HrSectionHeading
-        title="Departman Performansı"
-      />
-      <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
-        <div className="hidden grid-cols-12 gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#45474c] lg:grid">
-          <span className="col-span-3">Departman</span>
-          <span className="col-span-2">Açık Rol</span>
-          <span className="col-span-2">Aday</span>
-          <span className="col-span-2">Ort. Süre</span>
-          <span className="col-span-3">Teklif Kabul</span>
-        </div>
-        <div className="divide-y divide-[#c5c6cd]">
-          {departmentMetrics.map((metric) => (
-            <article
-              className="grid grid-cols-2 gap-4 px-5 py-5 lg:grid-cols-12 lg:items-center lg:px-6"
-              key={metric.department}
-            >
-              <div className="col-span-2 flex items-center gap-3 lg:col-span-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-                  <MdOutlineDomain aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[19px]" />
-                </span>
-                <span className="text-sm font-semibold text-[#0b1c30]">{metric.department}</span>
-              </div>
-              <div className="lg:col-span-2">
-                <p className="text-lg font-semibold text-[#0b1c30]">{metric.openRoles}</p>
-                <p className="text-[10px] uppercase text-[#75777d] lg:hidden">Açık Rol</p>
-              </div>
-              <div className="lg:col-span-2">
-                <p className="text-lg font-semibold text-[#0b1c30]">{metric.candidates}</p>
-                <p className="text-[10px] uppercase text-[#75777d] lg:hidden">Aday</p>
-              </div>
-              <div className="lg:col-span-2">
-                <p className="text-sm font-medium text-[#45474c]">{metric.avgDays}</p>
-                <p className="text-[10px] uppercase text-[#75777d] lg:hidden">Ort. Süre</p>
-              </div>
-              <div className="col-span-2 lg:col-span-3">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#dce9ff]">
-                    <div
-                      className="h-full rounded-full bg-[#006c49]"
-                      style={{ width: `${metric.progress}%` }}
-                    />
-                  </div>
-                  <span className="text-xs font-semibold text-[#006c49]">{metric.offerRate}</span>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -212,7 +154,6 @@ export function HrReportsPage() {
         <SourceMixCard />
       </div>
       <FunnelReport />
-      <DepartmentTable />
     </main>
   );
 }
