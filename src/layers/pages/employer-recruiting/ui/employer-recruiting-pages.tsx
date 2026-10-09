@@ -103,8 +103,8 @@ export function EmployerApplicationsPage() {
           items={[
             { label: "Toplam Başvuru", value: "38" },
             { label: "İnceleniyor", value: "24" },
-            { label: "Görüşme", value: "11" },
-            { label: "Ortalama Rating", value: "89" },
+            { label: "Mülakat", value: "11" },
+            { label: "Teklif", value: "89" },
           ]}
         />
 

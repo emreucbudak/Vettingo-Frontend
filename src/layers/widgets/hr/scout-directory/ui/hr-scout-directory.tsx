@@ -14,7 +14,6 @@ import { HrAvatar } from "@/entities/hr-dashboard/ui";
 const PAGE_SIZE = 5;
 
 type ScoutFilters = {
-  category: string;
   experience: string;
   location: string;
   query: string;
@@ -22,7 +21,6 @@ type ScoutFilters = {
 };
 
 const emptyFilters: ScoutFilters = {
-  category: "all",
   experience: "all",
   location: "",
   query: "",
@@ -44,12 +42,11 @@ function normalize(value: string) {
 }
 
 function matchesExperience(candidate: HrScoutCandidate, filter: string) {
-  if (filter === "junior") return candidate.experienceYears <= 3;
-  if (filter === "mid") {
-    return candidate.experienceYears >= 4 && candidate.experienceYears <= 6;
-  }
-  if (filter === "senior") return candidate.experienceYears >= 7;
-  return true;
+  if (filter === "all") return true;
+  if (filter === "10+") return candidate.experienceYears >= 10;
+
+  const [minimum, maximum] = filter.split("-").map(Number);
+  return candidate.experienceYears >= minimum && candidate.experienceYears < maximum;
 }
 
 function ratingTone(rating: number) {
@@ -84,8 +81,6 @@ export function HrScoutDirectory() {
       return (
         (!query || searchableText.includes(query)) &&
         (!location || normalize(candidate.location).includes(location)) &&
-        (filters.category === "all" ||
-          candidate.category === filters.category) &&
         (filters.workModel === "all" ||
           candidate.workModel === filters.workModel) &&
         matchesExperience(candidate, filters.experience)
@@ -144,27 +139,19 @@ export function HrScoutDirectory() {
   return (
     <>
       <section className="mb-8 rounded border border-[#c5c6cd] bg-[#eff4ff] p-4 md:p-6">
-        <div className="mb-5">
-          <div>
-            <h2 className="text-lg font-semibold text-[#0b1c30]">
-              Yetenek Araması
-            </h2>
-          </div>
-        </div>
-
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
             <label className="block">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
-                Rol, yetkinlik veya aday
+                Rol
               </span>
               <span className="relative block">
                 <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[19px] text-[#75777d]" />
                 <input
                   className={`${fieldClassName} pl-10`}
                   onChange={(event) => updateFilter("query", event.target.value)}
-                  placeholder="Örn. React, ürün tasarımcısı, Derya"
-                  type="search"
+                  placeholder="Örn. Yazılım mühendisi, ürün tasarımcısı"
+                  type="text"
                   value={draftFilters.query}
                 />
               </span>
@@ -186,31 +173,7 @@ export function HrScoutDirectory() {
             </label>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_auto_auto] xl:items-end">
-            <label className="block">
-              <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
-                Uzmanlık alanı
-              </span>
-              <span className="relative block">
-                <select
-                  className={selectFieldClassName}
-                  onChange={(event) =>
-                    updateFilter("category", event.target.value)
-                  }
-                  value={draftFilters.category}
-                >
-                  <option value="all">Tüm alanlar</option>
-                  <option value="Mühendislik">Mühendislik</option>
-                  <option value="Ürün & Tasarım">Ürün & Tasarım</option>
-                  <option value="Veri">Veri</option>
-                  <option value="Satış">Satış</option>
-                  <option value="İnsan Kaynakları">İnsan Kaynakları</option>
-                  <option value="Pazarlama">Pazarlama</option>
-                </select>
-                <SelectChevron />
-              </span>
-            </label>
-
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_auto_auto] xl:items-end">
             <label className="block">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
                 Deneyim
@@ -224,15 +187,18 @@ export function HrScoutDirectory() {
                   value={draftFilters.experience}
                 >
                   <option value="all">Tüm seviyeler</option>
-                  <option value="junior">0–3 yıl</option>
-                  <option value="mid">4–6 yıl</option>
-                  <option value="senior">7+ yıl</option>
+                  <option value="0-2">0–2 yıl</option>
+                  <option value="2-4">2–4 yıl</option>
+                  <option value="4-6">4–6 yıl</option>
+                  <option value="6-8">6–8 yıl</option>
+                  <option value="8-10">8–10 yıl</option>
+                  <option value="10+">10+ yıl</option>
                 </select>
                 <SelectChevron />
               </span>
             </label>
 
-            <label className="block sm:col-span-2 xl:col-span-1">
+            <label className="block">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
                 Çalışma modeli
               </span>
