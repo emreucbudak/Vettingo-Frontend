@@ -43,7 +43,6 @@ export function HrInterviewAgenda() {
                   {item.day}
                 </span>
                 <span className="mt-0.5 block text-lg font-semibold">{item.date}</span>
-                <span className="mt-0.5 block text-[9px]">{item.count} görüşme</span>
               </button>
             ))}
           </div>
