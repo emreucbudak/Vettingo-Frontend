@@ -1,42 +1,69 @@
-import { MdOutlineArrowForward, MdOutlineGroup, MdOutlineLocationOn, MdOutlineRecordVoiceOver } from "react-icons/md";
+import { MdOutlineArrowForward, MdOutlineLocationOn, MdOutlineRecordVoiceOver } from "react-icons/md";
 import Link from "next/link";
+import { connection } from "next/server";
 import { interviews } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
 import {
   HrAvatar,
   HrSectionHeading,
-  HrStatusBadge,
 } from "@/entities/hr-dashboard/ui";
 
-const weekDays = [
-  { day: "Pzt", date: "10", count: 3 },
-  { day: "Sal", date: "11", count: 5 },
-  { day: "Çar", date: "12", count: 4, active: true },
-  { day: "Per", date: "13", count: 2 },
-  { day: "Cum", date: "14", count: 2 },
-] as const;
+function getCalendar(now: Date) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Istanbul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now).map((part) => [part.type, part.value]));
+  const today = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day)));
+  const dates = [-2, -1, 0, 1, 2].map((offset) => {
+    const date = new Date(today);
+    date.setUTCDate(date.getUTCDate() + offset);
+    return date;
+  });
+  const dayFormatter = new Intl.DateTimeFormat("tr-TR", { weekday: "short", timeZone: "UTC" });
+  const rangeFormatter = new Intl.DateTimeFormat("tr-TR", {
+    day: "numeric",
+    month: "long",
+    timeZone: "UTC",
+    ...(dates[0].getUTCFullYear() !== dates[4].getUTCFullYear() ? { year: "numeric" } : {}),
+  });
 
-export function HrInterviewAgenda() {
+  return {
+    days: dates.map((date, index) => ({
+      key: date.toISOString().slice(0, 10),
+      day: dayFormatter.format(date),
+      date: String(date.getUTCDate()),
+      active: index === 2,
+    })),
+    dateRange: rangeFormatter.formatRange(dates[0], dates[4]),
+  };
+}
+
+export async function HrInterviewAgenda() {
+  await connection();
+  const { days, dateRange } = getCalendar(new Date());
+
   return (
     <>
       <section className="mb-8 rounded border border-[#c5c6cd] bg-[#eff4ff] p-4 md:p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.07em] text-[#006c49]">
-              10–14 Ağustos
+              {dateRange}
             </p>
             <h2 className="mt-1 text-lg font-semibold text-[#0b1c30]">Haftalık Takvim</h2>
           </div>
           <div className="grid grid-cols-5 gap-2">
-            {weekDays.map((item) => (
+            {days.map((item) => (
               <button
-                aria-pressed={"active" in item && item.active}
+                aria-pressed={item.active}
                 className={`min-w-14 rounded border px-3 py-2 text-center transition-colors ${
-                  "active" in item && item.active
+                  item.active
                     ? "border-[#091426] bg-[#091426] text-white"
                     : "border-[#c5c6cd] bg-[#f8f9ff] text-[#45474c] hover:bg-[#dce9ff]"
                 }`}
-                key={item.day}
+                key={item.key}
                 type="button"
               >
                 <span className="block text-[10px] font-semibold uppercase tracking-[0.05em]">
@@ -52,8 +79,6 @@ export function HrInterviewAgenda() {
       <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
         <section>
           <HrSectionHeading
-            actionHref={ROUTES.hrCandidates}
-            actionLabel="Aday Havuzu"
             title="Bugünün Ajandası"
           />
           <div className="space-y-4">
@@ -64,9 +89,6 @@ export function HrInterviewAgenda() {
               >
                 <div className="border-b border-[#c5c6cd] pb-3 md:border-b-0 md:border-r md:pb-0 md:pr-4">
                   <p className="text-xl font-semibold text-[#091426]">{interview.time}</p>
-                  <p className="mt-1 text-[10px] uppercase tracking-[0.05em] text-[#75777d]">
-                    {interview.duration}
-                  </p>
                 </div>
                 <div className="flex min-w-0 items-start gap-3">
                   <HrAvatar initials={interview.initials} />
@@ -75,7 +97,6 @@ export function HrInterviewAgenda() {
                       <h2 className="text-sm font-semibold text-[#0b1c30]">
                         {interview.candidate}
                       </h2>
-                      <HrStatusBadge status={interview.status} />
                     </div>
                     <p className="mt-1 text-sm text-[#45474c]">{interview.role}</p>
                     <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-[#75777d]">
@@ -86,10 +107,6 @@ export function HrInterviewAgenda() {
                       <span className="inline-flex items-center gap-1">
                         <MdOutlineLocationOn aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
                         {interview.location}
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <MdOutlineGroup aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
-                        {interview.interviewers.join(", ")}
                       </span>
                     </div>
                   </div>
