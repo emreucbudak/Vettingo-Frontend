@@ -279,6 +279,43 @@ function AddProjects(){
         </div>
     )
 }
+function TargetSalaryDropdown(){
+    const [showTargetSalary, setShowTargetSalary] = useState<boolean>(false);
+    const openTargetSalary = () => {
+        const targetSalary = document.querySelector(".addTargetSalary");
+        if(showTargetSalary){
+            targetSalary!.classList.add("hidden");
+            setShowTargetSalary(false);
+        }
+        else {
+            targetSalary!.classList.remove("hidden");
+            setShowTargetSalary(true);
+        }
+    }
+    return(
+        <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" onClick={openTargetSalary} />
+    )
+}
+function AddTargetSalary(){
+    const [hasTargetSalary, setHasTargetSalary] = useState<boolean>(false);
+    return(
+        <div className="hidden h-[350px] xl:w-full  addTargetSalary  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
+            <p className="text-blue-400 flex flex-row text-md justify-end mr-3">
+                <button type="button" className="flex flex-row" disabled={hasTargetSalary} onClick={() => setHasTargetSalary(true)}>
+                    <IoAddOutline className="w-5 h-5 object-fit" /> Hedef Maaş Ekle
+                </button>
+            </p>
+            <div className="flex flex-col w-full  h-full">
+                {hasTargetSalary && (
+                    <div className="flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
+                        <input type="number" name="targetSalary" min={0} step={1} aria-label="Hedef Maaş" className="w-44 md:w-44  h-8 rounded-md bg-slate-200 xl:w-68 h-8 rounded-md bg-slate-200" placeholder="Hedef Maaş" />
+                        <FaTrash className="mt-1 text-red-400" onClick={() => setHasTargetSalary(false)} />
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
 export function CreateCvPage(){
     return (
         <CandidateShell>
@@ -313,6 +350,13 @@ export function CreateCvPage(){
                     </div>
                     <AddProjects/>
                     
+                </div>
+                <div>
+                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                        <p className="p-3 text-xl">Hedef Maaş</p>
+                        <TargetSalaryDropdown/>
+                    </div>
+                    <AddTargetSalary/>
                 </div>
 
                 </div>
