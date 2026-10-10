@@ -1,6 +1,7 @@
 import { MdOutlineAdd, MdOutlineAutoAwesome } from "react-icons/md";
 import { AppIcon } from "@/shared/ui/icon";
 import Link from "next/link";
+import { Fragment } from "react";
 import { EmployerJobStatistics } from "@/features/employer-dashboard";
 import { ROUTES } from "@/shared/config/routes";
 import { EmployerApplicationList } from "@/widgets/employer/application-list";
@@ -69,29 +70,39 @@ function StatStrip({
   );
 }
 
-export function EmployerJobsPage() {
-
+export function EmployerJobsPage({
+  embedded = false,
+  jobsHref = ROUTES.employerJobs,
+  newJobHref = ROUTES.newJob,
+  title = "İlanlar",
+}: {
+  embedded?: boolean;
+  jobsHref?: string;
+  newJobHref?: string;
+  title?: string;
+}) {
+  const Shell = embedded ? Fragment : EmployerShell;
   return (
-    <EmployerShell>
+    <Shell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
         <PageHeader
           action={
             <Link
               className="inline-flex w-full items-center justify-center gap-2 rounded bg-[#091426] px-6 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90 sm:w-auto"
-              href={ROUTES.newJob}
+              href={newJobHref}
             >
               <MdOutlineAdd aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
               Yeni İş İlanı
             </Link>
           }
-          title="İlanlarım"
+          title={title}
         />
 
         <EmployerJobStatistics />
 
-        <EmployerJobList />
+        <EmployerJobList jobsHref={jobsHref} />
       </main>
-    </EmployerShell>
+    </Shell>
   );
 }
 

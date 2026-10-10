@@ -2,7 +2,7 @@
 
 import { MdOutlineAdd, MdOutlineAddCircle, MdOutlineArrowForward, MdOutlineExpandMore } from "react-icons/md";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { RequirementDropdown } from "./requirement-dropdown";
 import { EmployerShell } from "@/widgets/employer/shell";
 import {
@@ -197,11 +197,12 @@ function AssistantSidebar() {
   );
 }
 
-export function JobRequisitionWizardPage() {
+export function JobRequisitionWizardPage({ embedded = false }: { embedded?: boolean }) {
+  const Shell = embedded ? Fragment : EmployerShell;
   const [activeStep, setActiveStep] = useState(1);
   const [reviewValues, setReviewValues] = useState<Record<string, string>>({});
   return (
-    <EmployerShell>
+    <Shell>
       <div className="flex flex-1 overflow-hidden">
         <main className="employer-dashboard-theme flex flex-1 justify-center overflow-y-auto bg-[#f8f9ff] p-4 md:p-8">
           <div className="grid w-full max-w-[1440px] grid-cols-1 gap-8 lg:grid-cols-12">
@@ -231,7 +232,7 @@ export function JobRequisitionWizardPage() {
           </div>
         </main>
       </div>
-    </EmployerShell>
+    </Shell>
   );
 }
 

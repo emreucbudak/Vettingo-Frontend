@@ -18,6 +18,7 @@ type ScoutFilters = {
   experience: string;
   cityId: string;
   query: string;
+  salaryRange: string;
   workModel: string;
 };
 
@@ -25,6 +26,7 @@ const emptyFilters: ScoutFilters = {
   experience: "all",
   cityId: "",
   query: "",
+  salaryRange: "all",
   workModel: "all",
 };
 
@@ -48,6 +50,22 @@ function matchesExperience(candidate: HrScoutCandidate, filter: string) {
 
   const [minimum, maximum] = filter.split("-").map(Number);
   return candidate.experienceYears >= minimum && candidate.experienceYears < maximum;
+}
+
+function matchesSalary(candidate: HrScoutCandidate, filter: string) {
+  if (filter === "all") return true;
+  if (filter === "unspecified") return !candidate.expectedSalary;
+  if (!candidate.expectedSalary) return false;
+
+  const amounts = candidate.expectedSalary.match(/\d[\d.]*/g);
+  if (!amounts) return false;
+
+  const salaryMinimum = Number(amounts[0].replaceAll(".", ""));
+  const salaryMaximum = Number((amounts[1] ?? amounts[0]).replaceAll(".", ""));
+  const [minimum, maximum] = filter.split("-");
+
+  return salaryMaximum >= Number(minimum) &&
+    (!maximum || salaryMinimum < Number(maximum));
 }
 
 function ratingTone(rating: number) {
@@ -87,7 +105,8 @@ export function HrScoutDirectory() {
         (!location || normalize(candidate.location) === location) &&
         (filters.workModel === "all" ||
           candidate.workModel === filters.workModel) &&
-        matchesExperience(candidate, filters.experience)
+        matchesExperience(candidate, filters.experience) &&
+        matchesSalary(candidate, filters.salaryRange)
       );
     });
   }, [filters, cities]);
@@ -191,7 +210,7 @@ export function HrScoutDirectory() {
             </label>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_auto_auto] xl:items-end">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_auto_auto] xl:items-end">
             <label className="block">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
                 Deneyim
@@ -232,6 +251,29 @@ export function HrScoutDirectory() {
                   <option value="Hibrit">Hibrit</option>
                   <option value="Uzaktan">Uzaktan</option>
                   <option value="Ofis">Ofis</option>
+                </select>
+                <SelectChevron />
+              </span>
+            </label>
+
+            <label className="block">
+              <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.06em] text-[#45474c]">
+                Maaş
+              </span>
+              <span className="relative block">
+                <select
+                  className={selectFieldClassName}
+                  onChange={(event) =>
+                    updateFilter("salaryRange", event.target.value)
+                  }
+                  value={draftFilters.salaryRange}
+                >
+                  <option value="all">Tüm maaşlar</option>
+                  <option value="0-50000">0 – 50.000 ₺</option>
+                  <option value="50000-100000">50.000 – 100.000 ₺</option>
+                  <option value="100000-150000">100.000 – 150.000 ₺</option>
+                  <option value="150000-">150.000 ₺ ve üzeri</option>
+                  <option value="unspecified">Belirtilmedi</option>
                 </select>
                 <SelectChevron />
               </span>
