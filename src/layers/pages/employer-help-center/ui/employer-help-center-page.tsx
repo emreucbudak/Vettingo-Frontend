@@ -55,7 +55,7 @@ const frequentlyAskedQuestions = [
   {
     question: 'Bir ilanı yayından kaldırmadan duraklatabilir miyim?',
     answer:
-      'İlanlarım sayfasındaki seçenekler menüsünden ilanı duraklatabilirsin. Duraklatılan ilan yeni başvuru almaz; mevcut başvurular ve değerlendirme geçmişi korunur.',
+      'İlanlar sayfasındaki seçenekler menüsünden ilanı duraklatabilirsin. Duraklatılan ilan yeni başvuru almaz; mevcut başvurular ve değerlendirme geçmişi korunur.',
   },
   {
     question: 'Önerilen bir yeteneği başvuru sürecine nasıl eklerim?',

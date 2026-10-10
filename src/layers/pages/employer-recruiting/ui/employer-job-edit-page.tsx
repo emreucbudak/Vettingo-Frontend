@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { MdOutlineAdd, MdOutlineArrowBack, MdOutlineClose } from "react-icons/md";
 import type { EmployerJob } from "@/entities/employer-recruiting/employer-recruiting-data";
 import { ROUTES } from "@/shared/config/routes";
@@ -12,7 +12,16 @@ type SkillField = { id: number; value: string };
 const fieldClass =
   "w-full rounded-lg border border-[#c5c6cd] bg-white px-4 py-3 text-sm leading-6 text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]";
 
-export function EmployerJobEditPage({ job }: { job: EmployerJob }) {
+export function EmployerJobEditPage({
+  job,
+  embedded = false,
+  jobsHref = ROUTES.employerJobs,
+}: {
+  job: Pick<EmployerJob, "title">;
+  embedded?: boolean;
+  jobsHref?: string;
+}) {
+  const Shell = embedded ? Fragment : EmployerShell;
   const [skills, setSkills] = useState<SkillField[]>([
     { id: 1, value: "" },
     { id: 2, value: "" },
@@ -26,14 +35,14 @@ export function EmployerJobEditPage({ job }: { job: EmployerJob }) {
   }
 
   return (
-    <EmployerShell>
+    <Shell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
         <Link
           className="mb-6 inline-flex items-center gap-2 rounded text-sm font-medium text-[#45474c] transition-colors hover:text-[#006c49] focus-visible:outline-[#006c49]"
-          href={ROUTES.employerJobs}
+          href={jobsHref}
         >
           <MdOutlineArrowBack aria-hidden="true" className="text-lg" />
-          İlanlarıma dön
+          İlanlara dön
         </Link>
 
         <header className="mb-7 border-b border-[#c5c6cd] pb-6">
@@ -98,6 +107,6 @@ export function EmployerJobEditPage({ job }: { job: EmployerJob }) {
           </section>
         </div>
       </main>
-    </EmployerShell>
+    </Shell>
   );
 }

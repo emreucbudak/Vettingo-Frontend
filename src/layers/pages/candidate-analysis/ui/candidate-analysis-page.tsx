@@ -30,7 +30,7 @@ type DetailKind = "application" | "talent";
 
 const employerNavigation = [
   { key: "dashboard", label: "Ana Sayfa", icon: "home", href: ROUTES.employer },
-  { key: "jobs", label: "İlanlarım", icon: "business_center", href: ROUTES.employerJobs },
+  { key: "jobs", label: "İlanlar", icon: "business_center", href: ROUTES.employerJobs },
   {
     key: "applications",
     label: "Başvurular",

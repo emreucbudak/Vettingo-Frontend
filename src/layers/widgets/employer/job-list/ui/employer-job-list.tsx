@@ -26,7 +26,7 @@ function StatusBadge({ status }: { status: CompanyJobPosting["status"] }) {
   );
 }
 
-function JobRow({ job }: { job: CompanyJobPosting }) {
+function JobRow({ job, jobsHref }: { job: CompanyJobPosting; jobsHref: string }) {
   return (
     <article className="grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] lg:grid-cols-[repeat(14,minmax(0,1fr))] lg:items-center lg:gap-3 lg:px-6">
       <div className="min-w-0 lg:col-span-4">
@@ -69,7 +69,7 @@ function JobRow({ job }: { job: CompanyJobPosting }) {
           <Link
             aria-label={`${job.title} ilanını düzenle`}
             className="inline-flex rounded p-2 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426]"
-            href={`${ROUTES.employerJobs}/${encodeURIComponent(job.id)}/post`}
+            href={`${jobsHref}/${encodeURIComponent(job.id)}/post`}
           >
             <MdOutlineEdit aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
           </Link>
@@ -79,7 +79,7 @@ function JobRow({ job }: { job: CompanyJobPosting }) {
   );
 }
 
-export function EmployerJobList() {
+export function EmployerJobList({ jobsHref = ROUTES.employerJobs }: { jobsHref?: string }) {
   const { postings, error } = useCompanyJobPostings();
   const loading = postings === null && !error;
 
@@ -113,7 +113,7 @@ export function EmployerJobList() {
             Henüz şirketinize ait bir ilan bulunmuyor.
           </p>
         ) : postings?.map((job) => (
-          <JobRow job={job} key={job.id} />
+          <JobRow job={job} jobsHref={jobsHref} key={job.id} />
         ))}
       </div>
     </section>
