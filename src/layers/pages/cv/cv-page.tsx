@@ -417,6 +417,18 @@ export function CreateCvPage(){
                                 <p>Amacı</p>
                             </div>
                         </div>
+                        <div>
+                            <label htmlFor="" className="font-bold">Hedef Maaş</label>
+                            <div className="border-t border-black w-xl"></div>
+                        </div>
+                        <div className="flex flex-row p-3 justify-between w-full">
+                            <div>
+                                <p>Hedef Maaş</p>
+                            </div>
+                            <div>
+                                <p>Maaşın tutarı</p>
+                            </div>
+                        </div>
                         
                     </div>
                 </div>
