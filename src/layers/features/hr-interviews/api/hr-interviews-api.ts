@@ -7,6 +7,23 @@ export type TodayInterview = {
   startedTime: string;
 };
 
+export type ScheduledInterview = TodayInterview & {
+  userId: string;
+  interviewDate: string;
+  chapter: string;
+  role: string;
+  whereIsMeeting: string;
+  meetingLink: string | null;
+};
+
+export function getInterviewsByDate(date: string, signal?: AbortSignal) {
+  return apiRequest<ScheduledInterview[]>(
+    `/api/gateway/interviews/company/by-date?${new URLSearchParams({ date })}`,
+    "GET",
+    { signal, cache: "no-store" },
+  );
+}
+
 export type InterviewStatistics = {
   totalInterviews: number;
   thisMonth: number;
