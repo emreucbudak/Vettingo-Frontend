@@ -279,6 +279,37 @@ function AddProjects(){
         </div>
     )
 }
+function TargetRole(){
+    const [showTargetRole, setShowTargetRole] = useState<boolean>(false);
+    const [hasTargetRole, setHasTargetRole] = useState<boolean>(false);
+    return(
+        <div>
+            <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                <p className="p-3 text-xl">Hedef Rol</p>
+                <button type="button" aria-label="Hedef rol alanını aç/kapat" aria-expanded={showTargetRole} onClick={() => setShowTargetRole(prev => !prev)}>
+                    <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" />
+                </button>
+            </div>
+            <div className={`${showTargetRole ? "" : "hidden "}h-[350px] xl:w-full  addTargetRole  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none`}>
+                <p className="text-blue-400 flex flex-row text-md justify-end mr-3">
+                    <button type="button" className="flex flex-row cursor-pointer disabled:cursor-not-allowed disabled:opacity-50" disabled={hasTargetRole} onClick={() => setHasTargetRole(true)}>
+                        <IoAddOutline className="w-5 h-5 object-fit" /> Hedef Rol Ekle
+                    </button>
+                </p>
+                <div className="flex flex-col w-full  h-full">
+                    {hasTargetRole && (
+                        <div className="flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
+                            <input type="text" name="targetRole" aria-label="Hedef Rol" className="w-44 md:w-44  h-8 rounded-md bg-slate-200 xl:w-68 h-8 rounded-md bg-slate-200" placeholder="Hedef Rol" />
+                            <button type="button" aria-label="Hedef rolü sil" onClick={() => setHasTargetRole(false)}>
+                                <FaTrash className="mt-1 text-red-400" />
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}
 function TargetSalaryDropdown(){
     const [showTargetSalary, setShowTargetSalary] = useState<boolean>(false);
     const openTargetSalary = () => {
@@ -321,6 +352,7 @@ export function CreateCvPage(){
         <CandidateShell>
             <section className="w-full h-max flex flex-row gap-x-4 ">
                 <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center flex flex-col     ">
+                <TargetRole/>
                 <div className="  ">
                     <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
                         <p className="p-3 text-xl">Yetenekler</p>
