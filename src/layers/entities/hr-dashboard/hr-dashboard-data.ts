@@ -56,25 +56,25 @@ export type HrUtilityKey = "help" | "settings";
 export const hrDashboardStats = [
   {
     label: "Açık İlan",
-    value: "18",
+    metric: "activeJobPostings",
     icon: "assignment",
     tone: "blue",
   },
   {
     label: "Bu Ayki Mülakat",
-    value: "74",
+    metric: "thisMonth",
     icon: "calendar_month",
     tone: "green",
   },
   {
     label: "Bu Haftaki Mülakat",
-    value: "16",
+    metric: "thisWeek",
     icon: "calendar_month",
     tone: "purple",
   },
   {
     label: "Bugünkü Mülakat",
-    value: "4",
+    metric: "today",
     icon: "calendar_month",
     tone: "amber",
   },

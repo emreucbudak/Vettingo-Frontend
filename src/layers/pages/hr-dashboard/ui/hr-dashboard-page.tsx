@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CompanyJobPostingsOverview, getEmployerJobStatistics, useCompanyApplicationStatistics } from "@/features/employer-dashboard";
-import { useTodayInterviews } from "@/features/hr-interviews";
+import { useInterviewStatistics, useTodayInterviews } from "@/features/hr-interviews";
 import Link from "next/link";
 import { hrDashboardStats } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
@@ -99,6 +99,7 @@ function FunnelPreview() {
 export function HrDashboardPage() {
   const [openJobCount, setOpenJobCount] = useState<number | null>(null);
   const [statisticsError, setStatisticsError] = useState(false);
+  const { statistics: interviewStatistics, error: interviewStatisticsError } = useInterviewStatistics();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -112,16 +113,25 @@ export function HrDashboardPage() {
     return () => controller.abort();
   }, []);
 
-  const statistics = hrDashboardStats.map((stat) =>
-    stat.label === "Açık İlan"
-      ? { ...stat, value: openJobCount !== null ? openJobCount.toLocaleString("tr-TR") : statisticsError ? "—" : "Yükleniyor…" }
-      : stat,
-  );
+  const statistics = hrDashboardStats.map((stat) => ({
+    ...stat,
+    value: stat.metric === "activeJobPostings"
+      ? openJobCount !== null ? openJobCount.toLocaleString("tr-TR") : statisticsError ? "—" : "Yükleniyor…"
+      : interviewStatistics
+        ? interviewStatistics[stat.metric].toLocaleString("tr-TR")
+        : interviewStatisticsError ? "—" : "Yükleniyor…",
+  }));
 
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <HrStatGrid items={statistics} showIcons={false} />
-      {statisticsError && (
+      <div
+        aria-label="İlan ve mülakat istatistikleri"
+        aria-busy={(openJobCount === null && !statisticsError) || (interviewStatistics === null && !interviewStatisticsError)}
+        aria-live="polite"
+      >
+        <HrStatGrid items={statistics} showIcons={false} />
+      </div>
+      {(statisticsError || interviewStatisticsError) && (
         <p className="-mt-5 mb-8 text-sm text-red-700" role="alert">
           İstatistikler çekilemedi, lütfen tekrar deneyiniz.
         </p>
