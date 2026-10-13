@@ -71,6 +71,20 @@ export function getCompanyHiringVolumes(signal?: AbortSignal) {
   );
 }
 
+export type CompanyCandidateSource = {
+  scout: number;
+  application: number;
+  candidateCount: number;
+};
+
+export function getCompanyCandidateSource(signal?: AbortSignal) {
+  return apiRequest<CompanyCandidateSource>(
+    "/api/gateway/analytics/company/candidate-source",
+    "GET",
+    { signal, cache: "no-store" },
+  );
+}
+
 export async function getStats(signal?: AbortSignal): Promise<EmployerStats> {
   const [jobs, applications] = await Promise.all([
     getEmployerJobStatistics(signal),
