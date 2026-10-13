@@ -1,47 +1,12 @@
 "use client";
 
-import { monthlyHiring } from "@/entities/hr-dashboard";
 import {
+  CompanyHiringVolumeChart,
   HrReportStatistics,
   useCompanyApplicationStatistics,
   type CompanyApplicationStatistics,
 } from "@/features/employer-dashboard";
 import { HrSectionHeading } from "@/entities/hr-dashboard/ui";
-
-function HiringTrendChart() {
-  return (
-    <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6 xl:col-span-2">
-      <HrSectionHeading
-        title="Aylık İşe Alım Hacmi"
-      />
-      <div className="mt-8 flex h-56 items-end gap-3 border-b border-l border-[#c5c6cd] px-3 pt-4 sm:gap-6 sm:px-6">
-        {monthlyHiring.map((month, index) => (
-          <div className="flex h-full flex-1 flex-col items-center justify-end gap-2" key={month.label}>
-            <span className="text-xs font-semibold text-[#0b1c30]">{month.value}</span>
-            <div
-              className={`w-full max-w-14 rounded-t transition-colors ${
-                index === monthlyHiring.length - 1
-                  ? "bg-[#006c49]"
-                  : "bg-[#dce9ff] hover:bg-[#9cb7e8]"
-              }`}
-              style={{ height: `${month.value}%` }}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="flex gap-3 px-3 pt-3 sm:gap-6 sm:px-6">
-        {monthlyHiring.map((month) => (
-          <span
-            className="flex-1 text-center text-[10px] font-semibold uppercase tracking-[0.05em] text-[#75777d]"
-            key={month.label}
-          >
-            {month.label}
-          </span>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 function SourceMixCard() {
   const sources = [
@@ -160,7 +125,7 @@ export function HrReportsPage() {
       <HrReportStatistics statistics={statistics} applicationStatisticsError={error} />
 
       <div className="grid grid-cols-1 gap-8 xl:grid-cols-3">
-        <HiringTrendChart />
+        <CompanyHiringVolumeChart />
         <SourceMixCard />
       </div>
       <FunnelReport statistics={statistics} error={error} />

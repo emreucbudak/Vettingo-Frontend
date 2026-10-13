@@ -9,3 +9,4 @@ export { CompanyJobPostingsTable, companyJobStatusLabels } from "./ui/company-jo
 export { CompanyJobPostingsOverview } from "./ui/company-job-postings-overview";
 export { getCompanyApplicationStatistics, type CompanyApplicationStatistics } from "./api/employer-dashboard-api";
 export { useCompanyApplicationStatistics } from "./model/use-company-application-statistics";
+export { CompanyHiringVolumeChart } from "./ui/company-hiring-volume-chart";
