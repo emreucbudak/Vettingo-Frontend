@@ -1,52 +1,13 @@
 "use client";
 
 import {
+  CompanyCandidateSourceCard,
   CompanyHiringVolumeChart,
   HrReportStatistics,
   useCompanyApplicationStatistics,
   type CompanyApplicationStatistics,
 } from "@/features/employer-dashboard";
 import { HrSectionHeading } from "@/entities/hr-dashboard/ui";
-
-function SourceMixCard() {
-  const sources = [
-    { label: "Doğrudan Başvuru", value: 46, color: "bg-[#091426]" },
-    { label: "Referans", value: 24, color: "bg-[#006c49]" },
-    { label: "Kariyer Platformları", value: 18, color: "bg-[#9cb7e8]" },
-    { label: "Yetenek Havuzu", value: 12, color: "bg-[#e0a62b]" },
-  ] as const;
-
-  return (
-    <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6">
-      <HrSectionHeading title="Aday Kaynakları" />
-      <div
-        aria-label="Aday kaynaklarının yüzdesel dağılımı"
-        className="relative mx-auto mt-4 h-40 w-40 rounded-full"
-        role="img"
-        style={{
-          background:
-            "conic-gradient(#091426 0 46%, #006c49 46% 70%, #9cb7e8 70% 88%, #e0a62b 88% 100%)",
-        }}
-      >
-        <div className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-[#f8f9ff]">
-          <span className="text-2xl font-semibold text-[#0b1c30]">428</span>
-          <span className="text-[10px] uppercase tracking-[0.05em] text-[#75777d]">Aday</span>
-        </div>
-      </div>
-      <div className="mt-6 space-y-3">
-        {sources.map((source) => (
-          <div className="flex items-center justify-between gap-3" key={source.label}>
-            <span className="flex items-center gap-2 text-xs text-[#45474c]">
-              <span className={`h-2.5 w-2.5 rounded-full ${source.color}`} />
-              {source.label}
-            </span>
-            <span className="text-xs font-semibold text-[#0b1c30]">%{source.value}</span>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 function FunnelReport({ statistics, error }: {
   statistics: CompanyApplicationStatistics | null;
@@ -126,7 +87,7 @@ export function HrReportsPage() {
 
       <div className="grid grid-cols-1 gap-8 xl:grid-cols-3">
         <CompanyHiringVolumeChart />
-        <SourceMixCard />
+        <CompanyCandidateSourceCard />
       </div>
       <FunnelReport statistics={statistics} error={error} />
     </main>
