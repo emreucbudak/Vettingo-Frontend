@@ -57,6 +57,20 @@ export function getCompanyApplicationStatistics(signal?: AbortSignal) {
 
 export type EmployerStats = EmployerJobStatistics & EmployerApplicationStatistics;
 
+export type CompanyHiringVolume = {
+  year: number;
+  month: number;
+  hireCount: number;
+};
+
+export function getCompanyHiringVolumes(signal?: AbortSignal) {
+  return apiRequest<CompanyHiringVolume[]>(
+    "/api/gateway/analytics/company/hiring-volume",
+    "GET",
+    { signal, cache: "no-store" },
+  );
+}
+
 export async function getStats(signal?: AbortSignal): Promise<EmployerStats> {
   const [jobs, applications] = await Promise.all([
     getEmployerJobStatistics(signal),
