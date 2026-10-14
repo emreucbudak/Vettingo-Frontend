@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { useEffect, useState } from "react";
 import { HrStatGrid } from "@/entities/hr-dashboard/ui";
 import { getEmployerJobStatistics, type CompanyApplicationStatistics } from "../api/employer-dashboard-api";
@@ -23,7 +25,7 @@ export function HrReportStatistics({ statistics, applicationStatisticsError }: {
     return () => controller.abort();
   }, []);
 
-  const applicationPlaceholder = applicationStatisticsError ? "—" : "Yükleniyor…";
+  const applicationPlaceholder = applicationStatisticsError ? "—" : <LoadingSkeleton className="h-9 w-20" />;
   // Submitted, UnderReview and Interview are the ongoing application stages.
   const inProgress = statistics
     ? statistics.totalApplications - statistics.offers - statistics.rejected
@@ -45,7 +47,7 @@ export function HrReportStatistics({ statistics, applicationStatisticsError }: {
             label: "Toplam İlan",
             value: totalJobPostings !== null
               ? totalJobPostings.toLocaleString("tr-TR")
-              : jobStatisticsError ? "—" : "Yükleniyor…",
+              : jobStatisticsError ? "—" : <LoadingSkeleton className="h-9 w-20" />,
             icon: "description",
             tone: "blue",
           },

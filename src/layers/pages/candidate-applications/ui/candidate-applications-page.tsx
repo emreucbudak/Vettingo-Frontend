@@ -1,5 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+import { useEffect, useState, type ReactNode } from "react";
 import { useCandidateDashboardData, getCandidateApplicationStatistics, type CandidateApplicationStatistics } from "@/features/candidate-dashboard";
 import { CandidateApplicationHistory } from "@/widgets/candidate/application-history";
 import { CandidateShell } from "@/widgets/candidate/shell";
@@ -10,7 +12,7 @@ function StatCard({
   value,
 }: {
   label: string;
-  value: number | string;
+  value: ReactNode;
 }) {
   return (
     <article className="rounded border border-[#c5c6cd] bg-white p-4">
@@ -46,7 +48,7 @@ export function CandidateApplicationsPage() {
   }, [candidateId]);
   const current = statsResult?.candidateId === candidateId ? statsResult : null;
   const statistics = current?.data;
-  const placeholder = current?.error ? "—" : "Yükleniyor…";
+  const placeholder = current?.error ? "—" : <LoadingSkeleton className="h-9 w-20" />;
 
   return (
     <CandidateShell>
@@ -77,7 +79,7 @@ export function CandidateApplicationsPage() {
               </h2>
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-              {isLoading ? "Yükleniyor" : error ? "—" : `${applications.length} başvuru`}
+              {isLoading ? <LoadingSkeleton className="h-4 w-24" /> : error ? "—" : `${applications.length} başvuru`}
             </span>
           </div>
           {!error && <CandidateApplicationHistory applications={applications} isLoading={isLoading} />}

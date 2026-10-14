@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { useEffect, useState } from "react";
 import { getStats, type EmployerStats } from "../api/employer-dashboard-api";
 
@@ -13,7 +15,7 @@ export function EmployerJobStatistics() {
       .catch(() => { if (!controller.signal.aborted) setError(true); });
     return () => controller.abort();
   }, []);
-  const placeholder = error ? "—" : "Yükleniyor…";
+  const placeholder = error ? "—" : <LoadingSkeleton />;
   const items = [
     { label: "Toplam İlan", value: statistics ? statistics.totalJobPostings.toLocaleString("tr-TR") : placeholder },
     { label: "Aktif İlan", value: statistics ? statistics.activeJobPostings.toLocaleString("tr-TR") : placeholder },

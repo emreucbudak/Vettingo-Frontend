@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import Link from "next/link";
 import { ROUTES } from "@/shared/config/routes";
 import { useCandidateRecommendedJobs } from "@/features/candidate-dashboard";
@@ -23,7 +25,7 @@ export function CandidateRecommendedJobs({ userId }: { userId: string }) {
       </div>
       <div className="overflow-hidden rounded border border-[#c5c6cd] bg-white">
         {isLoading ? (
-          <p className="p-4 text-sm text-[#45474c]" role="status">Önerilen fırsatlar yükleniyor…</p>
+          <p className="p-4 text-sm text-[#45474c]" role="status"><LoadingSkeleton className="h-24 w-full" /></p>
         ) : error ? (
           <p className="p-4 text-sm text-[#93000a]" role="alert">{error}</p>
         ) : jobs.length === 0 ? (

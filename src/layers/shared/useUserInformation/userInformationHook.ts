@@ -3,6 +3,7 @@
 import { decodeJwt } from "jose";
 import { useEffect, useState } from "react";
 import { getToken } from "../auth";
+import { beginDashboardRequest } from "../api/dashboard-loading";
 
 export interface User {
   Sub: string;
@@ -17,6 +18,7 @@ export function useUserInformation() {
 
   useEffect(() => {
     async function getInformation() {
+      const finishLoading = beginDashboardRequest();
       try {
         const payload = decodeJwt(await getToken());
         const currentUser: User = {
@@ -29,6 +31,8 @@ export function useUserInformation() {
         setUser(currentUser);
       } catch {
         setUser(undefined);
+      } finally {
+        finishLoading();
       }
     }
 

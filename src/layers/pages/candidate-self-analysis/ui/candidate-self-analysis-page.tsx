@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { MdOutlineDownload } from "react-icons/md";
 
 import { AppIcon } from "@/shared/ui/icon";
@@ -313,7 +315,7 @@ export function CandidateSelfAnalysisPage() {
 
             <p className="mt-5 text-sm leading-7 text-[#45474c]">
               {remoteAnalysis.isLoading
-                ? "Değerlendirme sonuçların yükleniyor..."
+                ? <LoadingSkeleton className="h-24 w-full" />
                 : summary}
             </p>
 

@@ -194,7 +194,7 @@ export function HrScoutDirectory() {
                 >
                   <option value="">
                     {citiesLoading
-                      ? "Şehirler yükleniyor…"
+                      ? "Tüm şehirler"
                       : citiesError
                         ? "Şehirler yüklenemedi"
                         : cities?.length === 0

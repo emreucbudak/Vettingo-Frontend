@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { MdOutlineEdit } from "react-icons/md";
 import Link from "next/link";
 import { ROUTES } from "@/shared/config/routes";
@@ -106,7 +108,7 @@ export function EmployerJobList({ jobsHref = ROUTES.employerJobs }: { jobsHref?:
           </div>
         ) : loading ? (
           <p className="px-6 py-10 text-center text-sm text-[#45474c]" role="status">
-            İlanlar yükleniyor…
+            <LoadingSkeleton className="h-20 w-full" />
           </p>
         ) : postings?.length === 0 ? (
           <p className="px-6 py-10 text-center text-sm text-[#45474c]" role="status">

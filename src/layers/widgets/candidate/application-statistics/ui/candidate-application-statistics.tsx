@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { useCandidateApplicationStatistics } from "@/features/candidate-dashboard";
 
 export function CandidateApplicationStatistics({ userId }: { userId: string }) {
@@ -21,7 +23,7 @@ export function CandidateApplicationStatistics({ userId }: { userId: string }) {
             <div className="rounded bg-[#f8f9ff] p-3" key={statistic.label}>
               <dt className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">{statistic.label}</dt>
               <dd className={`mt-2 text-2xl font-semibold ${statistic.color}`}>
-                {error ? "—" : isLoading ? "…" : statistic.value}
+                {error ? "—" : isLoading ? <LoadingSkeleton /> : statistic.value}
               </dd>
             </div>
           ))}

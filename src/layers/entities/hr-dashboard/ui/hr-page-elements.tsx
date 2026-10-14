@@ -52,7 +52,7 @@ export function HrStatGrid({
   showIcons?: boolean;
   items: readonly {
     label: string;
-    value: string;
+    value: ReactNode;
     helper?: string;
     icon: string;
     tone?: keyof typeof statToneClasses;

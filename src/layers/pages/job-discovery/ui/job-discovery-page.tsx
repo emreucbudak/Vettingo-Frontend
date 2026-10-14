@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { MdOutlineExpandMore, MdOutlineLocationOn, MdOutlineSearch, MdOutlineSearchOff } from "react-icons/md";
 
 import React, {useEffect, useState } from "react";
@@ -282,7 +284,7 @@ function JobList({
       <div className="mb-2 flex items-end justify-between border-b border-[#c5c6cd] pb-1">
         <h2 className="text-xl font-semibold leading-7 text-[#091426]">Arama Sonuçları</h2>
         <span className="text-[11px] font-medium uppercase tracking-wider text-[#45474c]">
-          {isLoading ? "Yükleniyor" : `${jobs.length} ilan`}
+          {isLoading ? <LoadingSkeleton className="h-4 w-20" /> : `${jobs.length} ilan`}
         </span>
       </div>
       {error ? (

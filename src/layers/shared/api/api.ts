@@ -1,5 +1,6 @@
 import { getRefreshToken } from "../auth/auth-token";
 import { getToken, setToken } from "../auth";
+import { beginDashboardRequest } from "./dashboard-loading";
 
 const gatewayUrl = "http://localhost:5135";
 
@@ -63,27 +64,32 @@ export async function apiRequest<T>(
   method: string,
   options?: RequestInit,
 ): Promise<T> {
-  const headers = new Headers(options?.headers);
-  const accessToken = await getToken();
+  const finishLoading = method.toUpperCase() === "GET" ? beginDashboardRequest() : () => {};
+  try {
+    const headers = new Headers(options?.headers);
+    const accessToken = await getToken();
 
-  headers.set("Authorization", `Bearer ${accessToken}`);
-  headers.set("Content-Type", "application/json");
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    headers.set("Content-Type", "application/json");
 
-  const response = await fetch(path, {
-    ...options,
-    headers,
-    method,
-  });
+    const response = await fetch(path, {
+      ...options,
+      headers,
+      method,
+    });
 
-  if (!response.ok) {
-    throw new Error(`API isteği başarısız oldu (${response.status}).`);
+    if (!response.ok) {
+      throw new Error(`API isteği başarısız oldu (${response.status}).`);
+    }
+
+    if (response.status === 204) {
+      return undefined as T;
+    }
+
+    return (await response.json()) as T;
+  } finally {
+    finishLoading();
   }
-
-  if (response.status === 204) {
-    return undefined as T;
-  }
-
-  return (await response.json()) as T;
 }
 
 export async function getNewJwtFromRefresh() {
