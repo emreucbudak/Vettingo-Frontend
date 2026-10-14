@@ -36,7 +36,7 @@
   text-decoration: none;
 }
 
-.headerNote, .footer { color: var(--nf-muted); font-size: 12px; }
+.footer { color: var(--nf-muted); font-size: 12px; }
 .main { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; padding: 24px 24px 64px; }
 .artwork { position: relative; display: grid; width: min(100%, 520px); height: 280px; place-items: center; }
 .orbit, .orbitInner { position: absolute; width: 450px; height: 240px; border: 1px solid var(--nf-line); border-radius: 50%; transform: rotate(-18deg); }
@@ -71,7 +71,6 @@
 
 @media (max-width: 600px) {
   .header { padding: 24px; }
-  .headerNote { display: none; }
   .main { padding-top: 10px; padding-bottom: 48px; }
   .artwork { height: 230px; }
   .orbit { width: 310px; height: 180px; }

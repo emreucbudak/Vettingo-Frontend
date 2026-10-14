@@ -10,7 +10,6 @@ export default function NotFound() {
         <Link className={styles.brand} href={ROUTES.home} aria-label="Vettingo ana sayfa">
           Vettingo
         </Link>
-        <span className={styles.headerNote}>Doğru yetenek. Doğru gelecek.</span>
       </header>
 
       <main className={styles.main}>
