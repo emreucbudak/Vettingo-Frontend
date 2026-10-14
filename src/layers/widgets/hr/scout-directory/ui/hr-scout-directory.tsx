@@ -30,7 +30,7 @@ export function HrScoutDirectory() {
   const { cities, error: citiesError } = useCities();
   const citiesLoading = cities === null && !citiesError;
   const [draftFilters, setDraftFilters] = useState<ScoutFilters>(emptyScoutFilters);
-  const { profiles, loading, error, search } = useScoutProfiles();
+  const { profiles, loading, error, hasSearched, search, reset } = useScoutProfiles();
   const [page, setPage] = useState(1);
   const [shortlistedIds, setShortlistedIds] = useState<Set<string>>(
     () => new Set(),
@@ -76,7 +76,7 @@ export function HrScoutDirectory() {
 
   function clearFilters() {
     setDraftFilters(emptyScoutFilters);
-    search({});
+    reset();
     setShortlistedIds(new Set());
     setPage(1);
   }
@@ -351,10 +351,12 @@ export function HrScoutDirectory() {
                 <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[25px]" />
               </span>
               <h3 className="mt-4 text-base font-semibold text-[#0b1c30]">
-                Eşleşen aday bulunamadı
+                {hasSearched ? "Eşleşen aday bulunamadı" : "Aday bulmak için arama yapın."}
               </h3>
               <p className="mt-1 text-sm text-[#45474c]">
-                Arama terimini veya filtreleri değiştirerek yeniden dene.
+                {hasSearched
+                  ? "Arama terimini veya filtreleri değiştirerek yeniden dene."
+                  : "Filtreleri belirleyip Aday Ara butonuna tıklayın."}
               </p>
             </div>
           )}
