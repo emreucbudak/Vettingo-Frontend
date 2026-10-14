@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { HrSectionHeading } from "@/entities/hr-dashboard/ui";
 import { getHiringVolumeHeight, getMonthAbbreviation } from "../model/hiring-volume";
 import { useCompanyHiringVolumes } from "../model/use-company-hiring-volumes";
@@ -55,7 +57,7 @@ export function CompanyHiringVolumeChart() {
         <p className={`mt-8 flex h-56 items-center justify-center text-sm ${error ? "text-red-700" : "text-[#75777d]"}`} role={error ? "alert" : "status"}>
           {error
             ? "İşe alım hacmi yüklenemedi, lütfen tekrar deneyiniz."
-            : volumes === null ? "Yükleniyor…" : "Henüz işe alım hacmi kaydı bulunmuyor."}
+            : volumes === null ? <LoadingSkeleton className="h-full w-full" /> : "Henüz işe alım hacmi kaydı bulunmuyor."}
         </p>
       )}
     </section>

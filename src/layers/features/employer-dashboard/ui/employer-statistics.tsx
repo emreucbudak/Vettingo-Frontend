@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { employerStats } from "@/entities/employer-dashboard";
 import { useEmployerJobStatistics } from "../model/use-employer-job-statistics";
 
@@ -12,7 +14,7 @@ export function EmployerStatistics() {
         {employerStats.map((stat) => {
           const value = statistics
             ? statistics[stat.metric].toLocaleString("tr-TR")
-            : error ? "—" : "Yükleniyor…";
+            : error ? "—" : <LoadingSkeleton className="h-10 w-20" />;
           return (
             <article className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-6" key={stat.label}>
               <h3 className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">

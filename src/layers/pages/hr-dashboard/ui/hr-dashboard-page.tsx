@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { useEffect, useState } from "react";
 import { CompanyJobPostingsOverview, getEmployerJobStatistics, useCompanyApplicationStatistics } from "@/features/employer-dashboard";
 import { useInterviewStatistics, useTodayInterviews } from "@/features/hr-interviews";
@@ -28,7 +30,7 @@ function TodayInterviews() {
             <p>Mülakatlar yüklenemedi.</p>
           </div>
         ) : interviews === null ? (
-          <p className="text-sm text-[#75777d]">Mülakatlar yükleniyor…</p>
+          <p className="text-sm text-[#75777d]"><LoadingSkeleton className="h-16 w-full" /></p>
         ) : interviews.length === 0 ? (
           <p className="text-sm text-[#75777d]">Bugün planlanmış mülakat bulunmuyor.</p>
         ) : interviews.map((interview) => (
@@ -86,7 +88,7 @@ function FunnelPreview() {
               <p className="mt-3 text-2xl font-semibold text-[#0b1c30]" aria-live="polite">
                 {statistics
                   ? statistics[stage.metric].toLocaleString("tr-TR")
-                  : error ? "—" : "Yükleniyor…"}
+                  : error ? "—" : <LoadingSkeleton className="h-9 w-20" />}
               </p>
             </div>
           </article>
@@ -116,10 +118,10 @@ export function HrDashboardPage() {
   const statistics = hrDashboardStats.map((stat) => ({
     ...stat,
     value: stat.metric === "activeJobPostings"
-      ? openJobCount !== null ? openJobCount.toLocaleString("tr-TR") : statisticsError ? "—" : "Yükleniyor…"
+      ? openJobCount !== null ? openJobCount.toLocaleString("tr-TR") : statisticsError ? "—" : <LoadingSkeleton className="h-9 w-20" />
       : interviewStatistics
         ? interviewStatistics[stat.metric].toLocaleString("tr-TR")
-        : interviewStatisticsError ? "—" : "Yükleniyor…",
+        : interviewStatisticsError ? "—" : <LoadingSkeleton className="h-9 w-20" />,
   }));
 
   return (

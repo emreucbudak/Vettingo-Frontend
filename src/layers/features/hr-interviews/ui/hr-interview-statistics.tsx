@@ -1,11 +1,13 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { HrStatGrid } from "@/entities/hr-dashboard/ui";
 import { useInterviewStatistics } from "../model/use-interview-statistics";
 
 export function HrInterviewStatistics() {
   const { statistics, error } = useInterviewStatistics();
-  const placeholder = error ? "—" : "Yükleniyor…";
+  const placeholder = error ? "—" : <LoadingSkeleton className="h-9 w-20" />;
 
   return (
     <div

@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { HrSectionHeading } from "@/entities/hr-dashboard/ui";
 import { useCompanyCandidateSource } from "../model/use-company-candidate-source";
 
@@ -60,7 +62,7 @@ export function CompanyCandidateSourceCard() {
           Aday kaynakları yüklenemedi, lütfen tekrar deneyiniz.
         </p>
       ) : source === null ? (
-        <p className="mt-4 text-sm text-[#75777d]" role="status">Yükleniyor…</p>
+        <p className="mt-4 text-sm text-[#75777d]" role="status"><LoadingSkeleton className="h-4 w-full" /></p>
       ) : total === 0 && source.candidateCount === 0 ? (
         <p className="mt-4 text-sm text-[#75777d]" role="status">Henüz aday kaynağı kaydı bulunmuyor.</p>
       ) : null}

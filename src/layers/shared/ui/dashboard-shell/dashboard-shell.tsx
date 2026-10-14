@@ -3,6 +3,7 @@
 import { MdClose, MdMenu, MdOutlineNotifications, MdOutlineSettings, MdPerson } from "react-icons/md";
 
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { DashboardDataBoundary } from "@/shared/ui/dashboard-loading/dashboard-data-boundary";
 
 type DashboardProfileIconProps = {
   className?: string;
@@ -146,7 +147,7 @@ export function DashboardShell({
           leading={topBarLeading}
           showSettings={showSettings}
         />
-        {children}
+        <DashboardDataBoundary>{children}</DashboardDataBoundary>
       </div>
       <div
         ref={menuRef}

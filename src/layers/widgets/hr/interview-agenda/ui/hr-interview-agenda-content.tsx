@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import { MdOutlineArrowForward, MdOutlineLocationOn, MdOutlineRecordVoiceOver } from "react-icons/md";
 import Link from "next/link";
 import { useState } from "react";
@@ -69,7 +71,7 @@ export function HrInterviewAgendaContent({ calendar }: { calendar: InterviewCale
                 <p className="text-sm text-red-700" role="alert">Mülakatlar yüklenemedi.</p>
               </div>
             ) : interviews === null ? (
-              <p className="rounded border border-[#c5c6cd] p-5 text-sm text-[#45474c]" role="status">Mülakatlar yükleniyor…</p>
+              <p className="rounded border border-[#c5c6cd] p-5 text-sm text-[#45474c]" role="status"><LoadingSkeleton className="h-16 w-full" /></p>
             ) : interviews.length === 0 ? (
               <p className="rounded border border-[#c5c6cd] p-5 text-sm text-[#45474c]" role="status">Seçilen gün için planlanmış mülakat bulunmuyor.</p>
             ) : interviews.map((interview) => (

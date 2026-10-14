@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import Link from "next/link";
 import { useCompanyJobPostings } from "@/features/employer-dashboard";
 import { EmployerJobEditPage } from "@/pages/employer-recruiting";
@@ -19,7 +21,7 @@ export function HrJobEditPage({ jobId }: { jobId: string }) {
         İlanlara dön
       </Link>
       <p className="mt-6 text-sm text-[#45474c]" role={error ? "alert" : "status"}>
-        {error ? "İlan yüklenemedi." : postings === null ? "İlan yükleniyor…" : "İlan bulunamadı."}
+        {error ? "İlan yüklenemedi." : postings === null ? <LoadingSkeleton className="h-40 w-full" /> : "İlan bulunamadı."}
       </p>
       {error && (
         <button className="mt-4 rounded bg-[#091426] px-4 py-2 text-sm font-semibold text-white" onClick={retry} type="button">

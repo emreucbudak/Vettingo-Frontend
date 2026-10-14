@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import {
   MdOutlineArrowBack,
   MdOutlineChevronRight,
@@ -120,7 +122,7 @@ function CandidateHeader({
           </h1>
           <span className="flex items-center gap-1 rounded-full bg-[#dcfce7] px-4 py-1 text-[11px] font-semibold leading-4 text-[#006c49]">
             <span className="h-2 w-2 rounded-full bg-[#10b981]" />
-            {isLoading ? "Rating yükleniyor" : `Vettingo Rating ${rating}/100`}
+            {isLoading ? <LoadingSkeleton className="h-4 w-24" /> : `Vettingo Rating ${rating}/100`}
           </span>
         </div>
         <p className="mb-4 text-lg font-medium leading-6 text-[#45474c]">{candidate.title}</p>
@@ -216,7 +218,7 @@ function ExecutiveSummaryCard({
         </p>
       ) : null}
       <p className="flex-1 text-sm leading-6 text-[#45474c]">
-        {isLoading ? "Aday değerlendirmeleri yükleniyor..." : summary}
+        {isLoading ? <LoadingSkeleton className="h-24 w-full" /> : summary}
       </p>
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <SummaryList

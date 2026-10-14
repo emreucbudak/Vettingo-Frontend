@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingSkeleton } from "@/shared/ui/dashboard-loading/loading-skeleton";
+
 import {
   CompanyCandidateSourceCard,
   CompanyHiringVolumeChart,
@@ -47,7 +49,7 @@ function FunnelReport({ statistics, error }: {
             <div>
               <p className="text-xs font-semibold text-[#0b1c30]">{stage.label}</p>
               <p className="mt-0.5 text-[10px] text-[#75777d]">
-                {statistics ? `${stage.value.toLocaleString("tr-TR")} aday` : error ? "—" : "Yükleniyor…"}
+                {statistics ? `${stage.value.toLocaleString("tr-TR")} aday` : error ? "—" : <LoadingSkeleton className="h-4 w-16" />}
               </p>
             </div>
             <div className="h-9 overflow-hidden rounded bg-[#eff4ff]">
