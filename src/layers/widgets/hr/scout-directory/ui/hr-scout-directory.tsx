@@ -4,31 +4,11 @@ import { MdOutlineChevronLeft, MdOutlineChevronRight, MdOutlineExpandMore, MdOut
 
 import { AppIcon } from "@/shared/ui/icon";
 
-import { useMemo, useState, type FormEvent } from "react";
-import {
-  hrScoutCandidates,
-  type HrScoutCandidate,
-} from "@/entities/hr-dashboard";
+import { useState, type FormEvent } from "react";
 import { HrAvatar } from "@/entities/hr-dashboard/ui";
-import { useCities } from "@/features/scout-filters";
+import { buildScoutSearchRequest, emptyScoutFilters, useCities, useScoutProfiles, type ScoutFilters } from "@/features/scout-filters";
 
 const PAGE_SIZE = 5;
-
-type ScoutFilters = {
-  experience: string;
-  cityId: string;
-  query: string;
-  salaryRange: string;
-  workModel: string;
-};
-
-const emptyFilters: ScoutFilters = {
-  experience: "all",
-  cityId: "",
-  query: "",
-  salaryRange: "all",
-  workModel: "all",
-};
 
 const fieldClassName =
   "w-full rounded border border-[#c5c6cd] bg-[#f8f9ff] px-3 py-2.5 text-sm text-[#0b1c30] outline-none transition-colors placeholder:text-[#75777d] focus:border-[#091426]";
@@ -40,34 +20,6 @@ function SelectChevron() {
   );
 }
 
-function normalize(value: string) {
-  return value.trim().toLocaleLowerCase("tr-TR");
-}
-
-function matchesExperience(candidate: HrScoutCandidate, filter: string) {
-  if (filter === "all") return true;
-  if (filter === "10+") return candidate.experienceYears >= 10;
-
-  const [minimum, maximum] = filter.split("-").map(Number);
-  return candidate.experienceYears >= minimum && candidate.experienceYears < maximum;
-}
-
-function matchesSalary(candidate: HrScoutCandidate, filter: string) {
-  if (filter === "all") return true;
-  if (filter === "unspecified") return !candidate.expectedSalary;
-  if (!candidate.expectedSalary) return false;
-
-  const amounts = candidate.expectedSalary.match(/\d[\d.]*/g);
-  if (!amounts) return false;
-
-  const salaryMinimum = Number(amounts[0].replaceAll(".", ""));
-  const salaryMaximum = Number((amounts[1] ?? amounts[0]).replaceAll(".", ""));
-  const [minimum, maximum] = filter.split("-");
-
-  return salaryMaximum >= Number(minimum) &&
-    (!maximum || salaryMinimum < Number(maximum));
-}
-
 function ratingTone(rating: number) {
   if (rating >= 90) return "bg-[#dcfce7] text-[#006c49]";
   if (rating >= 84) return "bg-[#dce9ff] text-[#091426]";
@@ -77,53 +29,34 @@ function ratingTone(rating: number) {
 export function HrScoutDirectory() {
   const { cities, error: citiesError } = useCities();
   const citiesLoading = cities === null && !citiesError;
-  const [draftFilters, setDraftFilters] = useState<ScoutFilters>(emptyFilters);
-  const [filters, setFilters] = useState<ScoutFilters>(emptyFilters);
+  const [draftFilters, setDraftFilters] = useState<ScoutFilters>(emptyScoutFilters);
+  const { profiles, loading, error, search } = useScoutProfiles();
   const [page, setPage] = useState(1);
   const [shortlistedIds, setShortlistedIds] = useState<Set<string>>(
     () => new Set(),
   );
 
-  const filteredCandidates = useMemo(() => {
-    const query = normalize(filters.query);
-    const selectedCity = cities?.find((city) => String(city.id) === filters.cityId);
-    const location = normalize(selectedCity?.cityName ?? "");
-
-    return hrScoutCandidates.filter((candidate) => {
-      const searchableText = normalize(
-        [
-          candidate.name,
-          candidate.role,
-          candidate.company,
-          candidate.category,
-          candidate.skills.join(" "),
-        ].join(" "),
-      );
-
-      return (
-        (!query || searchableText.includes(query)) &&
-        (!location || normalize(candidate.location) === location) &&
-        (filters.workModel === "all" ||
-          candidate.workModel === filters.workModel) &&
-        matchesExperience(candidate, filters.experience) &&
-        matchesSalary(candidate, filters.salaryRange)
-      );
-    });
-  }, [filters, cities]);
+  const candidates = (profiles ?? []).map((profile, index) => ({
+    ...profile,
+    // The response has no candidate ID; this key is scoped to the current results.
+    id: String(index),
+    name: `${profile.name} ${profile.surname}`.trim(),
+    initials: `${profile.name.trim().charAt(0)}${profile.surname.trim().charAt(0)}`.toLocaleUpperCase("tr-TR"),
+  }));
 
   const pageCount = Math.max(
     1,
-    Math.ceil(filteredCandidates.length / PAGE_SIZE),
+    Math.ceil(candidates.length / PAGE_SIZE),
   );
   const pageStart = (page - 1) * PAGE_SIZE;
-  const visibleCandidates = filteredCandidates.slice(
+  const visibleCandidates = candidates.slice(
     pageStart,
     pageStart + PAGE_SIZE,
   );
-  const visibleStart = filteredCandidates.length === 0 ? 0 : pageStart + 1;
+  const visibleStart = candidates.length === 0 ? 0 : pageStart + 1;
   const visibleEnd = Math.min(
     pageStart + PAGE_SIZE,
-    filteredCandidates.length,
+    candidates.length,
   );
 
   function updateFilter<Key extends keyof ScoutFilters>(
@@ -135,13 +68,16 @@ export function HrScoutDirectory() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setFilters(draftFilters);
+    const selectedCity = cities?.find((city) => String(city.id) === draftFilters.cityId);
+    search(buildScoutSearchRequest(draftFilters, selectedCity?.cityName));
+    setShortlistedIds(new Set());
     setPage(1);
   }
 
   function clearFilters() {
-    setDraftFilters(emptyFilters);
-    setFilters(emptyFilters);
+    setDraftFilters(emptyScoutFilters);
+    search({});
+    setShortlistedIds(new Set());
     setPage(1);
   }
 
@@ -273,18 +209,18 @@ export function HrScoutDirectory() {
                   <option value="50000-100000">50.000 – 100.000 ₺</option>
                   <option value="100000-150000">100.000 – 150.000 ₺</option>
                   <option value="150000-">150.000 ₺ ve üzeri</option>
-                  <option value="unspecified">Belirtilmedi</option>
                 </select>
                 <SelectChevron />
               </span>
             </label>
 
             <button
-              className="inline-flex h-[42px] items-center justify-center gap-2 rounded bg-[#091426] px-5 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#172d49]"
+              className="inline-flex h-[42px] items-center justify-center gap-2 rounded bg-[#091426] px-5 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#172d49] disabled:cursor-wait disabled:opacity-60"
+              disabled={loading}
               type="submit"
             >
               <MdOutlineSearch aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
-              Aday Ara
+              {loading ? "Aranıyor…" : "Aday Ara"}
             </button>
             <button
               className="inline-flex h-[42px] items-center justify-center gap-2 rounded border border-[#9aa6bc] bg-[#f8f9ff] px-4 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#dce9ff]"
@@ -298,16 +234,7 @@ export function HrScoutDirectory() {
       </section>
 
       <section>
-        <div className="mb-5 flex justify-end">
-          <p
-            aria-live="polite"
-            className="text-xs font-medium text-[#45474c]"
-          >
-            {filteredCandidates.length} uygun profil bulundu
-          </p>
-        </div>
-
-        <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
+        <div aria-busy={loading} className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
           <div className="hidden grid-cols-[repeat(14,minmax(0,1fr))] gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#45474c] xl:grid">
             <span className="col-span-3">Aday</span>
             <span className="col-span-2">Rol</span>
@@ -318,7 +245,15 @@ export function HrScoutDirectory() {
             <span className="col-span-2 pr-8 text-right">Aksiyon</span>
           </div>
 
-          {visibleCandidates.length > 0 ? (
+          {loading ? (
+            <div role="status" className="px-6 py-14 text-center text-sm text-[#45474c]">
+              Adaylar yükleniyor…
+            </div>
+          ) : error ? (
+            <div role="alert" className="px-6 py-14 text-center">
+              <p className="text-sm text-[#45474c]">{error}</p>
+            </div>
+          ) : visibleCandidates.length > 0 ? (
             <div className="divide-y divide-[#c5c6cd]">
               {visibleCandidates.map((candidate) => {
                 const isShortlisted = shortlistedIds.has(candidate.id);
@@ -367,7 +302,7 @@ export function HrScoutDirectory() {
                         Çalışma Tercihi
                       </p>
                       <p className="mt-1 text-sm font-medium text-[#0b1c30] xl:mt-0">
-                        {candidate.workModel === "Ofis" ? "Ofisten" : candidate.workModel}
+                        {candidate.workPreference === "Ofis" ? "Ofisten" : candidate.workPreference || "Belirtilmedi"}
                       </p>
                     </div>
 
@@ -376,7 +311,7 @@ export function HrScoutDirectory() {
                         Maaş
                       </p>
                       <p className="mt-1 text-sm font-medium text-[#0b1c30] xl:mt-0">
-                        {candidate.expectedSalary || "Belirtilmedi"}
+                        {candidate.salary.toLocaleString("tr-TR")} ₺
                       </p>
                     </div>
 
@@ -424,12 +359,12 @@ export function HrScoutDirectory() {
             </div>
           )}
 
-          <div className="flex flex-col gap-4 border-t border-[#c5c6cd] bg-[#eff4ff] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          {!loading && !error && candidates.length > 0 && <div className="flex flex-col gap-4 border-t border-[#c5c6cd] bg-[#eff4ff] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-[#45474c]">
               <span className="font-semibold text-[#0b1c30]">
                 {visibleStart}–{visibleEnd}
               </span>{" "}
-              / {filteredCandidates.length} aday
+              / {candidates.length} aday
             </p>
 
             <nav
@@ -479,7 +414,7 @@ export function HrScoutDirectory() {
                 <MdOutlineChevronRight aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[17px]" />
               </button>
             </nav>
-          </div>
+          </div>}
         </div>
       </section>
     </>
