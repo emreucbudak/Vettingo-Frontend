@@ -353,7 +353,7 @@ function AddTargetSalary(){
 export function CreateCvPage(){
     return (
         <CandidateShell>
-            <section className="w-full h-max flex flex-row gap-x-4 ">
+            <section className="w-full h-max flex flex-col xl:flex-row gap-x-4 ">
                 <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center flex flex-col     ">
                 <TargetRole/>
                 <div className="  ">
@@ -395,14 +395,14 @@ export function CreateCvPage(){
                 </div>
 
                 </div>
-                <div className=" b-2  w-3/6 h-screen p-4">
+                <div className=" b-2  w-screen xl:w-3/6 h-screen p-4">
                     <div className="b-2 border-slate-200 h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2">
                         <div className=" flex  w-md justify-center  pt-2 h-16  ">
                             <h2 className="text-4xl font-roboto-slab">Emre Üçbudak</h2>
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Eğitim</label>
-                            <div className="border-t border-black w-xl"></div>
+                            <div className="border-t border-black w-88 xl:w-xl"></div>
                         </div>
                         <div className="egitim flex flex-row justify-between p-3 w-full">
                             <div>
@@ -416,7 +416,7 @@ export function CreateCvPage(){
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Yetenekler</label>
-                            <div className="border-t border-black w-xl"></div>
+                            <div className="border-t border-black w-88 xl:w-xl"></div>
                         </div>
                         <div className="w-full justify-between p-3 flex flex-row">
                             <div>
@@ -428,7 +428,7 @@ export function CreateCvPage(){
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Tecrübe</label>
-                            <div className="border-t border-black w-xl"></div>                           
+                            <div className="border-t border-black w-88 xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 justify-between w-full">
                             <div>
@@ -442,7 +442,7 @@ export function CreateCvPage(){
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Projeler</label>
-                            <div className="border-t border-black w-xl"></div>                           
+                            <div className="border-t border-black w-88 xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 justify-between w-full">
                             <div>
@@ -454,7 +454,7 @@ export function CreateCvPage(){
                         </div>
                         <div>
                             <label htmlFor="" className="font-bold">Hedef Maaş</label>
-                            <div className="border-t border-black w-xl"></div>
+                            <div className="border-t border-black w-88 xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 justify-between w-full">
                             <div>
