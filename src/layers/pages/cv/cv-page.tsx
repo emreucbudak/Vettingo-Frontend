@@ -5,7 +5,7 @@ import { FaTrash } from "react-icons/fa";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
 
-const sectionHeaderClassName = "bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between";
+const sectionHeaderClassName = "bg-slate-200 flex flex-row w-92 max-sm:w-full md:w-lg md:ml-2 lg:w-3xl xl:w-xl rounded-md justify-between";
 
 type Input  = {
     ClassName : string,
@@ -105,7 +105,7 @@ export function AddSkills(){
             input1: input1,
             input2: input2,
             trashIcon: "mt-1 text-red-400",
-            div: "flex flex-row p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full"
+            div: "flex flex-row max-sm:flex-wrap p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full"
         }
         SetSkillList(prev => [...prev,skill]);
     }
@@ -144,7 +144,7 @@ function AddEducation(){
 
         }
         const skillList : SkillsList = {
-            div: "flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
+            div: "flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
             input1: input1,
             input2: input22,
             trashIcon: "mt-1 text-red-400"
@@ -193,7 +193,7 @@ function AddExperience(){
             PlaceHolder: "Rol"
         }
         const skillList : SkillsList = {
-            div: "flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
+            div: "flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
             input1:input1,
             input2:input2,
             trashIcon : "mt-1 text-red-400"
@@ -255,7 +255,7 @@ function AddProjects(){
             input1: input1,
             input2: input2,
             trashIcon: "mt-1 text-red-400",
-            div: "flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
+            div: "flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
         }
         setSkillList(prev => [...prev,skillList])
     }
@@ -288,7 +288,7 @@ function TargetRole(){
     return(
         <div>
             <div className={sectionHeaderClassName}>
-                <p className="p-3 text-xl">Hedef Rol</p>
+                <p className="p-3 text-base">Hedef Rol</p>
                 <button type="button" className="self-start" aria-label="Hedef rol alanını aç/kapat" aria-expanded={showTargetRole} onClick={() => setShowTargetRole(prev => !prev)}>
                     <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" />
                 </button>
@@ -301,7 +301,7 @@ function TargetRole(){
                 </p>
                 <div className="flex flex-col w-full  h-full">
                     {hasTargetRole && (
-                        <div className="flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
+                        <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
                             <input type="text" name="targetRole" aria-label="Hedef Rol" className="w-44 md:w-44  h-8 rounded-md bg-slate-200 xl:w-68 h-8 rounded-md bg-slate-200" placeholder="Hedef Rol" />
                             <button type="button" aria-label="Hedef rolü sil" onClick={() => setHasTargetRole(false)}>
                                 <FaTrash className="mt-1 text-red-400" />
@@ -341,7 +341,7 @@ function AddTargetSalary(){
             </p>
             <div className="flex flex-col w-full  h-full">
                 {hasTargetSalary && (
-                    <div className="flex flex-row gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
+                    <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
                         <input type="number" name="targetSalary" min={0} step={1} aria-label="Hedef Maaş" className="w-44 md:w-44  h-8 rounded-md bg-slate-200 xl:w-68 h-8 rounded-md bg-slate-200" placeholder="Hedef Maaş" />
                         <FaTrash className="mt-1 text-red-400" onClick={() => setHasTargetSalary(false)} />
                     </div>
@@ -353,12 +353,12 @@ function AddTargetSalary(){
 export function CreateCvPage(){
     return (
         <CandidateShell>
-            <section className="w-full h-max flex flex-col xl:flex-row gap-x-4 ">
-                <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center flex flex-col     ">
+            <section className="h-max max-sm:w-full max-sm:min-w-0 max-sm:[&_input]:min-w-0 max-sm:[&_input]:max-w-full flex flex-col xl:flex-row gap-x-4 ">
+                <div className="gap-y-2 max-sm:w-full max-sm:min-w-0 md:w-lg xl:w-3/6   h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center md:items-start xl:items-center flex flex-col     ">
                 <TargetRole/>
                 <div className="  ">
                     <div className={sectionHeaderClassName}>
-                        <p className="p-3 text-xl">Yetenekler</p>
+                        <p className="p-3 text-base">Yetenekler</p>
                         <ClickableDropdown   />
                     </div>
                     <AddSkills  />
@@ -366,21 +366,21 @@ export function CreateCvPage(){
                 </div>
                 <div className="gap-y-0">
                     <div className={sectionHeaderClassName}>
-                        <p className="p-3 text-xl">Eğitim</p>
+                        <p className="p-3 text-base">Eğitim</p>
                         <EducationalDropdown/>
                     </div>
                     <AddEducation/>
                 </div>
                 <div>
                     <div className={sectionHeaderClassName}>
-                        <p className="p-3 text-xl">Tecrübe</p>
+                        <p className="p-3 text-base">Tecrübe</p>
                         <ExperienceDropdown/>
                     </div>
                     <AddExperience/>
                 </div>
                 <div>
                     <div className={sectionHeaderClassName}>
-                        <p className="p-3 text-xl">Projeler</p>
+                        <p className="p-3 text-base">Projeler</p>
                         <ProjectsDropdown/>
                     </div>
                     <AddProjects/>
@@ -388,21 +388,21 @@ export function CreateCvPage(){
                 </div>
                 <div>
                     <div className={sectionHeaderClassName}>
-                        <p className="p-3 text-xl">Hedef Maaş</p>
+                        <p className="p-3 text-base">Hedef Maaş</p>
                         <TargetSalaryDropdown/>
                     </div>
                     <AddTargetSalary/>
                 </div>
 
                 </div>
-                <div className=" b-2  w-screen xl:w-3/6 h-screen p-4">
-                    <div className="b-2 border-slate-200 h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2">
-                        <div className=" flex  w-md justify-center  pt-2 h-16  ">
+                <div className=" b-2  w-screen max-sm:w-full md:w-full xl:w-3/6 h-screen p-4">
+                    <div className="b-2 border-slate-200 h-[650px] md:h-[550px] xl:h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2">
+                        <div className=" flex w-md max-sm:w-full justify-center pt-2 h-16 ">
                             <h2 className="text-4xl font-roboto-slab">Emre Üçbudak</h2>
                         </div>
-                        <div>
+                        <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Eğitim</label>
-                            <div className="border-t border-black w-88 xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
                         </div>
                         <div className="egitim flex flex-row justify-between p-3 w-full">
                             <div>
@@ -414,9 +414,9 @@ export function CreateCvPage(){
                                 <p>Bitiş Tarihi</p>
                             </div>
                         </div>
-                        <div>
+                        <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Yetenekler</label>
-                            <div className="border-t border-black w-88 xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
                         </div>
                         <div className="w-full justify-between p-3 flex flex-row">
                             <div>
@@ -426,9 +426,9 @@ export function CreateCvPage(){
                                 <p>Tecrübe Yılı</p>
                             </div>
                         </div>
-                        <div>
+                        <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Tecrübe</label>
-                            <div className="border-t border-black w-88 xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 justify-between w-full">
                             <div>
@@ -440,9 +440,9 @@ export function CreateCvPage(){
                                 <p>Bitiş</p>
                             </div>
                         </div>
-                        <div>
+                        <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Projeler</label>
-                            <div className="border-t border-black w-88 xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 justify-between w-full">
                             <div>
@@ -452,9 +452,9 @@ export function CreateCvPage(){
                                 <p>Amacı</p>
                             </div>
                         </div>
-                        <div>
+                        <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Hedef Maaş</label>
-                            <div className="border-t border-black w-88 xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 justify-between w-full">
                             <div>
