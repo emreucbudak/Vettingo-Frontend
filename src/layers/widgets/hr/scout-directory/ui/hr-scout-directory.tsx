@@ -310,9 +310,9 @@ export function HrScoutDirectory() {
         <div className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
           <div className="hidden grid-cols-[repeat(14,minmax(0,1fr))] gap-3 border-b border-[#c5c6cd] bg-[#eff4ff] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#45474c] xl:grid">
             <span className="col-span-3">Aday</span>
-            <span className="col-span-2">Güncel Rol</span>
+            <span className="col-span-2">Rol</span>
             <span className="col-span-2">Yetkinlikler</span>
-            <span className="col-span-2">Lokasyon</span>
+            <span className="col-span-2">Çalışma Tercihi</span>
             <span className="col-span-2">Maaş</span>
             <span className="col-span-1">Rating</span>
             <span className="col-span-2 pr-8 text-right">Aksiyon</span>
@@ -339,7 +339,7 @@ export function HrScoutDirectory() {
 
                     <div className="xl:col-span-2">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-[#75777d] xl:hidden">
-                        Güncel Rol
+                        Rol
                       </p>
                       <p className="mt-1 text-sm font-medium text-[#0b1c30] xl:mt-0">
                         {candidate.role}
@@ -363,8 +363,11 @@ export function HrScoutDirectory() {
                     </div>
 
                     <div className="xl:col-span-2">
-                      <p className="text-sm font-medium text-[#0b1c30]">
-                        {candidate.location} · {candidate.workModel}
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-[#75777d] xl:hidden">
+                        Çalışma Tercihi
+                      </p>
+                      <p className="mt-1 text-sm font-medium text-[#0b1c30] xl:mt-0">
+                        {candidate.workModel === "Ofis" ? "Ofisten" : candidate.workModel}
                       </p>
                     </div>
 
