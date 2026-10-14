@@ -4,6 +4,9 @@ import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
+
+const sectionHeaderClassName = "bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between";
+
 type Input  = {
     ClassName : string,
     PlaceHolder : string,
@@ -284,9 +287,9 @@ function TargetRole(){
     const [hasTargetRole, setHasTargetRole] = useState<boolean>(false);
     return(
         <div>
-            <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+            <div className={sectionHeaderClassName}>
                 <p className="p-3 text-xl">Hedef Rol</p>
-                <button type="button" aria-label="Hedef rol alanını aç/kapat" aria-expanded={showTargetRole} onClick={() => setShowTargetRole(prev => !prev)}>
+                <button type="button" className="self-start" aria-label="Hedef rol alanını aç/kapat" aria-expanded={showTargetRole} onClick={() => setShowTargetRole(prev => !prev)}>
                     <IoIosArrowDropdown className="w-6 h-6 mr-3 mt-3" />
                 </button>
             </div>
@@ -354,7 +357,7 @@ export function CreateCvPage(){
                 <div className="gap-y-2 xl:w-3/6 w-dvw  h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center flex flex-col     ">
                 <TargetRole/>
                 <div className="  ">
-                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                    <div className={sectionHeaderClassName}>
                         <p className="p-3 text-xl">Yetenekler</p>
                         <ClickableDropdown   />
                     </div>
@@ -362,21 +365,21 @@ export function CreateCvPage(){
   
                 </div>
                 <div className="gap-y-0">
-                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                    <div className={sectionHeaderClassName}>
                         <p className="p-3 text-xl">Eğitim</p>
                         <EducationalDropdown/>
                     </div>
                     <AddEducation/>
                 </div>
                 <div>
-                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                    <div className={sectionHeaderClassName}>
                         <p className="p-3 text-xl">Tecrübe</p>
                         <ExperienceDropdown/>
                     </div>
                     <AddExperience/>
                 </div>
                 <div>
-                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                    <div className={sectionHeaderClassName}>
                         <p className="p-3 text-xl">Projeler</p>
                         <ProjectsDropdown/>
                     </div>
@@ -384,7 +387,7 @@ export function CreateCvPage(){
                     
                 </div>
                 <div>
-                    <div className="bg-slate-200 flex flex-row md:w-lg lg:w-3xl xl:w-xl rounded-md justify-between">
+                    <div className={sectionHeaderClassName}>
                         <p className="p-3 text-xl">Hedef Maaş</p>
                         <TargetSalaryDropdown/>
                     </div>
