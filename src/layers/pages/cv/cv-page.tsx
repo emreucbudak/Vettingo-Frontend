@@ -1,22 +1,15 @@
 'use client'
 import { CandidateShell } from "@/widgets/candidate/shell";
-import { useState } from "react";
+import { useId, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useFieldArray, useForm, useFormContext, useWatch, type FieldPath } from "react-hook-form";
+import { z } from "zod";
 import { FaTrash } from "react-icons/fa";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
 
 const sectionHeaderClassName = "bg-slate-200 flex flex-row w-92 max-sm:w-full md:w-lg md:max-xl:ml-2 lg:w-3xl xl:w-xl rounded-md justify-between";
 
-type Input  = {
-    ClassName : string,
-    PlaceHolder : string,
-}
-type SkillsList = {
-    input1 : Input,
-    input2 : Input,
-    trashIcon : string,
-    div : string
-}
 type Education = {
     schoolName: string | null,
     departmentName: string | null,
@@ -60,6 +53,85 @@ type Experience = {
     role: string | null,
     startedDate: Date | null,
     finishedDate: Date | null
+}
+
+const requiredText = z.string().trim().min(1, "En az 1 karakter girin.");
+const requiredNumber = z.number({ error: "Geçerli bir sayı girin." })
+    .min(0, "Sayı 0 veya daha büyük olmalıdır.")
+    .nullable()
+    .refine(value => value !== null, "Bu alan zorunludur.");
+const requiredDate = z.iso.date({ error: "Geçerli bir tarih seçin." })
+    .transform(value => new Date(`${value}T00:00:00`));
+const educationLevels = ["Lise", "Lisans", "Ön Lisans", "Yüksek Lisans"] as const;
+
+const cvFormSchema = z.object({
+    targetRole: requiredText.nullable(),
+    skills: z.array(z.object({
+        skillName: requiredText,
+        skillExperienceYear: requiredNumber,
+    })),
+    educations: z.array(z.object({
+        schoolName: requiredText,
+        departmentName: requiredText,
+        educationLevel: z.enum(educationLevels, { error: "Eğitim seviyesi seçin." }),
+        startedDate: requiredDate,
+        finishedDate: requiredDate,
+    })),
+    experience: z.array(z.object({
+        companyName: requiredText,
+        role: requiredText,
+        startedDate: requiredDate,
+        finishedDate: requiredDate,
+    })),
+    projects: z.array(z.object({
+        projectName: requiredText,
+        purpose: requiredText,
+    })),
+    salary: z.object({
+        minSalary: requiredNumber,
+        maxSalary: requiredNumber,
+    }).nullable(),
+});
+
+type CvFormInput = z.input<typeof cvFormSchema>;
+type CvFormOutput = z.output<typeof cvFormSchema>;
+
+function toDateInputValue(value: Date | null) {
+    if (!value) return "";
+    return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(value.getDate()).padStart(2, "0")}`;
+}
+
+function CvInput({ name, label, widthClassName, type = "text", options }: {
+    name: FieldPath<CvFormInput>,
+    label: string,
+    widthClassName: string,
+    type?: "text" | "number" | "date",
+    options?: readonly string[],
+}) {
+    const id = useId();
+    const { register, getFieldState, formState } = useFormContext<CvFormInput, unknown, CvFormOutput>();
+    const { error } = getFieldState(name, formState);
+    const className = `w-full min-w-0 h-8 rounded-md bg-slate-200 ${error ? "outline outline-1 outline-red-500" : ""}`;
+    const registration = register(name, type === "number" ? {
+        setValueAs: (value: string | number | null) => value === "" || value === null ? null : Number(value),
+    } : {});
+
+    return (
+        <div className={`min-w-0 ${widthClassName}`}>
+            {options ? (
+                <select {...registration} id={id} aria-label={label} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} className={className}>
+                    {options.map(option => <option key={option} value={option}>{option}</option>)}
+                </select>
+            ) : (
+                <input {...registration} id={id} type={type} placeholder={label} aria-label={label} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} className={className} min={type === "number" ? 0 : undefined} step={type === "number" ? "any" : undefined} />
+            )}
+            {error && <p id={`${id}-error`} className="mt-1 text-xs text-red-600 break-words" role="alert">{error.message}</p>}
+        </div>
+    );
+}
+
+function DeleteRowButton({ label, onClick }: { label: string, onClick: () => void }) {
+    return <button type="button" aria-label={label} className="mt-1 self-start shrink-0 text-red-400" onClick={onClick}><FaTrash /></button>;
 }
 export function ClickableDropdown (){
    const [skill , setskill] = useState<boolean>(false);
@@ -115,137 +187,67 @@ function ExperienceDropdown(){
 }
 
 export function AddSkills(){
-    const[SkillList,SetSkillList] = useState<SkillsList[]>([]);
-    const OnDeleteInput = (ind : number) => {
-        const yeniDizi = SkillList.filter((_,index) => index !== ind );
-        SetSkillList(yeniDizi);
-    }
-    const AddSkills = () => {
-        const input1 : Input = {
-            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-60 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Yetenek Adı ",
-        }
-        const input2 : Input = {
-            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-60 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Tecrübe Yılı ",
-        }
-        const skill : SkillsList = {
-            input1: input1,
-            input2: input2,
-            trashIcon: "mt-1 text-red-400",
-            div: "flex flex-row max-sm:flex-wrap p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full"
-        }
-        SetSkillList(prev => [...prev,skill]);
-    }
+    const { control } = useFormContext<CvFormInput, unknown, CvFormOutput>();
+    const { fields, append, remove } = useFieldArray({ control, name: "skills" });
     return (
         <div className=" hidden h-[350px] w-full xl:w-full bg-white rounded-sm addSkills z-0 relative  overflow-y-scroll scrollbar-none   ">
-            <p className="text-blue-400 flex flex-row text-md justify-end mr-3  " onClick={AddSkills}> <IoAddOutline className="w-5 h-5 object-fit" /> Yetenek Ekle</p>
+            <div className="text-blue-400 flex flex-row text-md justify-end mr-3">
+                <button type="button" className="flex flex-row" onClick={() => append({ skillName: "", skillExperienceYear: null })}><IoAddOutline className="w-5 h-5 object-fit" /> Yetenek Ekle</button>
+            </div>
             <div className="w-full xl:w-full formArea  flex flex-col  ">
-                {
-                    SkillList.map((value,index) => (
-                        <div className={value.div} key={index}>
-                            <input type="text" className={value.input1.ClassName}  placeholder={value.input1.PlaceHolder}/>
-                            <input type="text" className={value.input2.ClassName}  placeholder={value.input2.PlaceHolder}/>
-                            <FaTrash className={value.trashIcon} onClick={e => OnDeleteInput(index)}/>
-                        </div>
-                    ))
-                }
+                {fields.map((field, index) => (
+                    <div className="flex flex-row max-sm:flex-wrap p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                        <CvInput name={`skills.${index}.skillName`} label="Yetenek Adı" widthClassName="w-40 md:w-40 xl:w-60" />
+                        <CvInput name={`skills.${index}.skillExperienceYear`} label="Tecrübe Yılı" type="number" widthClassName="w-40 md:w-40 xl:w-60" />
+                        <DeleteRowButton label="Yeteneği sil" onClick={() => remove(index)} />
+                    </div>
+                ))}
             </div>
         </div>
     )
 }
 
 function AddEducation(){
-    const [educations, setEducations] = useState<SkillsList[]>([]);
-    const onDeleteInput = (ind:number) => {
-        const newEducations = educations.filter((_,index) => index !== ind);
-        setEducations(newEducations);
-    }
-    const addNewEducation = () => {
-        const input1 : Input = {
-            ClassName: "w-12 md:w-20  h-8 rounded-md bg-slate-200 xl:w-24 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Okul"
-        }
-        const input22: Input = {
-            ClassName: "w-12 md:w-20  h-8 rounded-md bg-slate-200 xl:w-24 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Bölüm"
-
-        }
-        const skillList : SkillsList = {
-            div: "flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
-            input1: input1,
-            input2: input22,
-            trashIcon: "mt-1 text-red-400"
-        }
-        setEducations(prev => [...prev,skillList]);
-    }
+    const { control } = useFormContext<CvFormInput, unknown, CvFormOutput>();
+    const { fields, append, remove } = useFieldArray({ control, name: "educations" });
     return (
         <div className="hidden h-[350px] xl:w-full  addEducation  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
-            <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={addNewEducation}><IoAddOutline className="w-5 h-5 object-fit" /> Eğitim Ekle</p>
+            <div className="text-blue-400 flex flex-row text-md justify-end mr-3">
+                <button type="button" className="flex flex-row" onClick={() => append({ schoolName: "", departmentName: "", educationLevel: "Lise", startedDate: "", finishedDate: "" })}><IoAddOutline className="w-5 h-5 object-fit" /> Eğitim Ekle</button>
+            </div>
             <div className="flex flex-col w-full  h-full">
-                {
-                    educations.map((value , index) => {
-                        return <div className={value.div} key={index}>
-                            <input type="text" className={value.input1.ClassName} placeholder={value.input1.PlaceHolder} />
-                            <input type="text" name="" id="" className={value.input2.ClassName} placeholder={value.input2.PlaceHolder}/>
-                            <select name="educationLevel" required id="" className="w-20 bg-slate-200 rounded-md">
-                                <option value="Lise">Lise</option>
-                                <option value="Lisans">Lisans</option>
-                                <option value="Ön Lisans">Ön Lisans</option>
-                                <option value="Yüksek Lisans">Yüksek Lisans</option>
-                            </select>
-                            <input type="date" name="startDate" className="w-16 bg-slate-200 rounded-md"/>
-                            <input type="date" name="finishedDate" className="w-16 bg-slate-200 rounded-md"/>
-                            <FaTrash className={value.trashIcon} onClick={e => onDeleteInput(index)}/>
-                        </div>
-                    })
-                }
-            
+                {fields.map((field, index) => (
+                    <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                        <CvInput name={`educations.${index}.schoolName`} label="Okul" widthClassName="w-12 md:w-20 xl:w-24" />
+                        <CvInput name={`educations.${index}.departmentName`} label="Bölüm" widthClassName="w-12 md:w-20 xl:w-24" />
+                        <CvInput name={`educations.${index}.educationLevel`} label="Eğitim seviyesi" options={educationLevels} widthClassName="w-20" />
+                        <CvInput name={`educations.${index}.startedDate`} label="Eğitim başlangıç tarihi" type="date" widthClassName="w-16" />
+                        <CvInput name={`educations.${index}.finishedDate`} label="Eğitim bitiş tarihi" type="date" widthClassName="w-16" />
+                        <DeleteRowButton label="Eğitimi sil" onClick={() => remove(index)} />
+                    </div>
+                ))}
             </div>           
         </div>
     )
 }
 function AddExperience(){
-    const [skillList , setSkillList] = useState<SkillsList[]>([]);
-    const onDeleteInput = (ind : number) => {
-        const newExperienceList = skillList.filter((_,index) => index !== ind)
-        setSkillList(newExperienceList);
-    }
-    const NewExperience = () => {
-        const input1 : Input = {
-            ClassName: "w-40 max-sm:w-16 md:w-40  h-8 rounded-md bg-slate-200 xl:w-32 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Şirket"
-        }
-        const input2 : Input = {
-            ClassName: "w-40 max-sm:w-16 md:w-40  h-8 rounded-md bg-slate-200 xl:w-32 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Rol"
-        }
-        const skillList : SkillsList = {
-            div: "flex flex-row gap-x-1 max-sm:gap-x-0 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
-            input1:input1,
-            input2:input2,
-            trashIcon : "mt-1 text-red-400"
-        }
-        setSkillList(e => [...e,skillList]);
-
-
-    }
+    const { control } = useFormContext<CvFormInput, unknown, CvFormOutput>();
+    const { fields, append, remove } = useFieldArray({ control, name: "experience" });
     return (
         <div className="hidden h-[350px] xl:w-full  addExperience  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
-            <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={NewExperience}><IoAddOutline className="w-5 h-5 object-fit" /> Tecrübe Ekle</p>
+            <div className="text-blue-400 flex flex-row text-md justify-end mr-3">
+                <button type="button" className="flex flex-row" onClick={() => append({ companyName: "", role: "", startedDate: "", finishedDate: "" })}><IoAddOutline className="w-5 h-5 object-fit" /> Tecrübe Ekle</button>
+            </div>
             <div className="flex flex-col w-full  h-full">
-                {
-                    skillList.map((value,index) => {
-                        return <div className={value.div} key={index}>
-                            <input type="text" className={value.input1.ClassName} placeholder={value.input1.PlaceHolder} />
-                            <input type="text" className={value.input2.ClassName} placeholder={value.input2.PlaceHolder} />
-                            <input type="date" className="bg-slate-200 rounded-md w-28 max-sm:w-16 " placeholder="Başlangıç Tarihi" />
-                            <input type="date" className="bg-slate-200 rounded-md w-28 max-sm:w-16" />
-                            <FaTrash className={value.trashIcon} onClick={e => onDeleteInput(index)}/>
-
-                        </div>
-                    })
-                }
+                {fields.map((field, index) => (
+                    <div className="flex flex-row gap-x-1 max-sm:gap-x-0 p-4 justify-around border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                        <CvInput name={`experience.${index}.companyName`} label="Şirket" widthClassName="w-40 max-sm:w-16 md:w-40 xl:w-32" />
+                        <CvInput name={`experience.${index}.role`} label="Rol" widthClassName="w-40 max-sm:w-16 md:w-40 xl:w-32" />
+                        <CvInput name={`experience.${index}.startedDate`} label="Tecrübe başlangıç tarihi" type="date" widthClassName="w-28 max-sm:w-16" />
+                        <CvInput name={`experience.${index}.finishedDate`} label="Tecrübe bitiş tarihi" type="date" widthClassName="w-28 max-sm:w-16" />
+                        <DeleteRowButton label="Tecrübeyi sil" onClick={() => remove(index)} />
+                    </div>
+                ))}
             </div>
         </div>
     )
@@ -269,50 +271,29 @@ function ProjectsDropdown(){
     )
 }
 function AddProjects(){
-    const [skillList , setSkillList] = useState<SkillsList[]>([]);
-    const addProjects = () => {
-        const input1 : Input = {
-            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-64 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Proje Adı"
-        }
-        const input2 : Input = {
-            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-64 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Amacı"
-        }
-        const skillList : SkillsList = {
-            input1: input1,
-            input2: input2,
-            trashIcon: "mt-1 text-red-400",
-            div: "flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
-        }
-        setSkillList(prev => [...prev,skillList])
-    }
-    const DeleteAddProjects = (ind : number) => {
-        const addProjects = skillList.filter((value,index) => index !== ind)
-        setSkillList(addProjects)
-    }
+    const { control } = useFormContext<CvFormInput, unknown, CvFormOutput>();
+    const { fields, append, remove } = useFieldArray({ control, name: "projects" });
     return(
         <div className="hidden h-[350px] xl:w-full  addProjects  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
-            <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={addProjects} ><IoAddOutline className="w-5 h-5 object-fit" />Proje Ekle</p>
+            <div className="text-blue-400 flex flex-row text-md justify-end mr-3">
+                <button type="button" className="flex flex-row" onClick={() => append({ projectName: "", purpose: "" })}><IoAddOutline className="w-5 h-5 object-fit" />Proje Ekle</button>
+            </div>
             <div className="flex flex-col w-full  h-full">
-                {
-                    skillList.map((value,index) => {
-                        return <div className={value.div} key={index}>
-                            <input type="text" className={value.input1.ClassName} placeholder={value.input1.PlaceHolder} />
-                            <input type="text" className={value.input2.ClassName} placeholder={value.input2.PlaceHolder} />
-                            <FaTrash className={value.trashIcon} onClick={e => DeleteAddProjects(index)}/>
-
-                        </div>
-                    })
-                }
-
+                {fields.map((field, index) => (
+                    <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                        <CvInput name={`projects.${index}.projectName`} label="Proje Adı" widthClassName="w-40 md:w-40 xl:w-64" />
+                        <CvInput name={`projects.${index}.purpose`} label="Amacı" widthClassName="w-40 md:w-40 xl:w-64" />
+                        <DeleteRowButton label="Projeyi sil" onClick={() => remove(index)} />
+                    </div>
+                ))}
             </div>
         </div>
     )
 }
 function TargetRole(){
     const [showTargetRole, setShowTargetRole] = useState<boolean>(false);
-    const [hasTargetRole, setHasTargetRole] = useState<boolean>(false);
+    const { control, setValue, clearErrors } = useFormContext<CvFormInput, unknown, CvFormOutput>();
+    const hasTargetRole = useWatch({ control, name: "targetRole" }) !== null;
     return(
         <div>
             <div className={sectionHeaderClassName}>
@@ -323,17 +304,18 @@ function TargetRole(){
             </div>
             <div className={`${showTargetRole ? "" : "hidden "}h-[350px] xl:w-full  addTargetRole  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none`}>
                 <p className="text-blue-400 flex flex-row text-md justify-end mr-3">
-                    <button type="button" className="flex flex-row cursor-pointer disabled:cursor-not-allowed disabled:opacity-50" disabled={hasTargetRole} onClick={() => setHasTargetRole(true)}>
+                    <button type="button" className="flex flex-row cursor-pointer disabled:cursor-not-allowed disabled:opacity-50" disabled={hasTargetRole} onClick={() => setValue("targetRole", "", { shouldDirty: true })}>
                         <IoAddOutline className="w-5 h-5 object-fit" /> Hedef Rol Ekle
                     </button>
                 </p>
                 <div className="flex flex-col w-full  h-full">
                     {hasTargetRole && (
                         <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
-                            <input type="text" name="targetRole" aria-label="Hedef Rol" className="w-44 md:w-44  h-8 rounded-md bg-slate-200 xl:w-68 h-8 rounded-md bg-slate-200" placeholder="Hedef Rol" />
-                            <button type="button" aria-label="Hedef rolü sil" onClick={() => setHasTargetRole(false)}>
-                                <FaTrash className="mt-1 text-red-400" />
-                            </button>
+                            <CvInput name="targetRole" label="Hedef Rol" widthClassName="w-44 md:w-44 xl:w-68" />
+                            <DeleteRowButton label="Hedef rolü sil" onClick={() => {
+                                setValue("targetRole", null, { shouldDirty: true, shouldValidate: true });
+                                clearErrors("targetRole");
+                            }} />
                         </div>
                     )}
                 </div>
@@ -359,20 +341,24 @@ function TargetSalaryDropdown(){
     )
 }
 function AddTargetSalary(){
-    const [hasTargetSalary, setHasTargetSalary] = useState<boolean>(false);
+    const { control, setValue, clearErrors } = useFormContext<CvFormInput, unknown, CvFormOutput>();
+    const hasTargetSalary = useWatch({ control, name: "salary" }) !== null;
     return(
         <div className="hidden h-[350px] xl:w-full  addTargetSalary  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
             <p className="text-blue-400 flex flex-row text-md justify-end mr-3">
-                <button type="button" className="flex flex-row" disabled={hasTargetSalary} onClick={() => setHasTargetSalary(true)}>
+                <button type="button" className="flex flex-row" disabled={hasTargetSalary} onClick={() => setValue("salary", { minSalary: null, maxSalary: null }, { shouldDirty: true })}>
                     <IoAddOutline className="w-5 h-5 object-fit" /> Hedef Maaş Ekle
                 </button>
             </p>
             <div className="flex flex-col w-full  h-full">
                 {hasTargetSalary && (
                     <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
-                        <input type="number" name="targetSalaryMin" min={0} step={1} aria-label="Minimum maaş" className="min-w-0 flex-1 h-8 rounded-md bg-slate-200" placeholder="Min Maaş" />
-                        <input type="number" name="targetSalaryMax" min={0} step={1} aria-label="Maksimum maaş" className="min-w-0 flex-1 h-8 rounded-md bg-slate-200" placeholder="Max Maaş" />
-                        <FaTrash className="mt-1 text-red-400" onClick={() => setHasTargetSalary(false)} />
+                        <CvInput name="salary.minSalary" label="Min Maaş" type="number" widthClassName="flex-1" />
+                        <CvInput name="salary.maxSalary" label="Max Maaş" type="number" widthClassName="flex-1" />
+                        <DeleteRowButton label="Hedef maaşı sil" onClick={() => {
+                            setValue("salary", null, { shouldDirty: true, shouldValidate: true });
+                            clearErrors("salary");
+                        }} />
                     </div>
                 )}
             </div>
@@ -380,8 +366,39 @@ function AddTargetSalary(){
     )
 }
 export function CreateCvPage(){
+    const form = useForm<CvFormInput, unknown, CvFormOutput>({
+        resolver: zodResolver(cvFormSchema),
+        mode: "onTouched",
+        reValidateMode: "onChange",
+        defaultValues: {
+            targetRole: cv.targetRole,
+            skills: cv.skills?.map(skill => ({
+                skillName: skill.skillName ?? "",
+                skillExperienceYear: skill.skillExperienceYear,
+            })) ?? [],
+            educations: cv.educations?.map(education => ({
+                schoolName: education.schoolName ?? "",
+                departmentName: education.departmentName ?? "",
+                educationLevel: "Lise",
+                startedDate: toDateInputValue(education.startedDate),
+                finishedDate: toDateInputValue(education.finishedDate),
+            })) ?? [],
+            experience: cv.experience?.map(experience => ({
+                companyName: experience.companyName ?? "",
+                role: experience.role ?? "",
+                startedDate: toDateInputValue(experience.startedDate),
+                finishedDate: toDateInputValue(experience.finishedDate),
+            })) ?? [],
+            projects: cv.projects?.map(project => ({
+                projectName: project.projectName ?? "",
+                purpose: project.purpose ?? "",
+            })) ?? [],
+            salary: cv.salary,
+        },
+    });
     return (
         <CandidateShell>
+            <FormProvider {...form}>
             <section className="h-max max-sm:w-full max-sm:min-w-0 max-sm:[&_input]:min-w-0 max-sm:[&_input]:max-w-full flex flex-col xl:flex-row gap-x-4 ">
                 <div className="gap-y-2 max-sm:w-full max-sm:min-w-0 md:w-lg lg:w-3xl lg:ml-2 xl:w-3/6   h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center md:items-start xl:items-center flex flex-col     ">
                 <TargetRole/>
@@ -498,6 +515,7 @@ export function CreateCvPage(){
                 </div>
 
             </section>
+            </FormProvider>
         </CandidateShell>
     )
 }
