@@ -354,7 +354,7 @@ export function CreateCvPage(){
     return (
         <CandidateShell>
             <section className="h-max max-sm:w-full max-sm:min-w-0 max-sm:[&_input]:min-w-0 max-sm:[&_input]:max-w-full flex flex-col xl:flex-row gap-x-4 ">
-                <div className="gap-y-2 max-sm:w-full max-sm:min-w-0 md:w-lg xl:w-3/6   h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center md:items-start xl:items-center flex flex-col     ">
+                <div className="gap-y-2 max-sm:w-full max-sm:min-w-0 md:w-lg lg:w-3xl lg:ml-2 xl:w-3/6   h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center md:items-start xl:items-center flex flex-col     ">
                 <TargetRole/>
                 <div className="  ">
                     <div className={sectionHeaderClassName}>
@@ -402,9 +402,9 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Eğitim</label>
-                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="egitim flex flex-row justify-between p-3 w-full">
+                        <div className="egitim flex flex-row justify-between p-3 lg:px-12 w-full">
                             <div>
                                 <p>Okul Adı</p>
                                 <p>Bölüm Adı</p>
@@ -416,9 +416,9 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Yetenekler</label>
-                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="w-full justify-between p-3 flex flex-row">
+                        <div className="w-full justify-between p-3 lg:px-12 flex flex-row">
                             <div>
                                 <p>Yetenek Adı</p>
                             </div>
@@ -428,9 +428,9 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Tecrübe</label>
-                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 justify-between w-full">
                             <div>
                                 <h4>Şirket Adı</h4>
                                 <p>Rol</p>
@@ -442,9 +442,9 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Projeler</label>
-                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 justify-between w-full">
                             <div>
                                 <p>Proje Adı</p>
                             </div>
@@ -454,9 +454,9 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Hedef Maaş</label>
-                            <div className="border-t border-black w-84 max-sm:w-full xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 justify-between w-full">
                             <div>
                                 <p>Hedef Maaş</p>
                             </div>
