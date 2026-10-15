@@ -5,7 +5,7 @@ import { FaTrash } from "react-icons/fa";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
 
-const sectionHeaderClassName = "bg-slate-200 flex flex-row w-92 max-sm:w-full md:w-lg md:ml-2 lg:w-3xl xl:w-xl rounded-md justify-between";
+const sectionHeaderClassName = "bg-slate-200 flex flex-row w-92 max-sm:w-full md:w-lg md:max-xl:ml-2 lg:w-3xl xl:w-xl rounded-md justify-between";
 
 type Input  = {
     ClassName : string,
@@ -342,7 +342,8 @@ function AddTargetSalary(){
             <div className="flex flex-col w-full  h-full">
                 {hasTargetSalary && (
                     <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
-                        <input type="number" name="targetSalary" min={0} step={1} aria-label="Hedef Maaş" className="w-44 md:w-44  h-8 rounded-md bg-slate-200 xl:w-68 h-8 rounded-md bg-slate-200" placeholder="Hedef Maaş" />
+                        <input type="number" name="targetSalaryMin" min={0} step={1} aria-label="Minimum maaş" className="min-w-0 flex-1 h-8 rounded-md bg-slate-200" placeholder="Min Maaş" />
+                        <input type="number" name="targetSalaryMax" min={0} step={1} aria-label="Maksimum maaş" className="min-w-0 flex-1 h-8 rounded-md bg-slate-200" placeholder="Max Maaş" />
                         <FaTrash className="mt-1 text-red-400" onClick={() => setHasTargetSalary(false)} />
                     </div>
                 )}
@@ -404,7 +405,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Eğitim</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="egitim flex flex-row justify-between p-3 lg:px-12 w-full">
+                        <div className="egitim flex flex-row justify-between p-3 lg:px-12 xl:px-0 w-full">
                             <div>
                                 <p>Okul Adı</p>
                                 <p>Bölüm Adı</p>
@@ -418,7 +419,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Yetenekler</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="w-full justify-between p-3 lg:px-12 flex flex-row">
+                        <div className="w-full justify-between p-3 lg:px-12 xl:px-0 flex flex-row">
                             <div>
                                 <p>Yetenek Adı</p>
                             </div>
@@ -430,7 +431,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Tecrübe</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 xl:px-0 justify-between w-full">
                             <div>
                                 <h4>Şirket Adı</h4>
                                 <p>Rol</p>
@@ -444,7 +445,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Projeler</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 xl:px-0 justify-between w-full">
                             <div>
                                 <p>Proje Adı</p>
                             </div>
@@ -456,7 +457,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Hedef Maaş</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 xl:px-0 justify-between w-full">
                             <div>
                                 <p>Hedef Maaş</p>
                             </div>
