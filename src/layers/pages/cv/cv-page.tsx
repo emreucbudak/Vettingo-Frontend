@@ -185,15 +185,15 @@ function AddExperience(){
     }
     const NewExperience = () => {
         const input1 : Input = {
-            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-32 h-8 rounded-md bg-slate-200",
-            PlaceHolder: "Şirket Adı"
+            ClassName: "w-40 max-sm:w-16 md:w-40  h-8 rounded-md bg-slate-200 xl:w-32 h-8 rounded-md bg-slate-200",
+            PlaceHolder: "Şirket"
         }
         const input2 : Input = {
-            ClassName: "w-40 md:w-40  h-8 rounded-md bg-slate-200 xl:w-32 h-8 rounded-md bg-slate-200",
+            ClassName: "w-40 max-sm:w-16 md:w-40  h-8 rounded-md bg-slate-200 xl:w-32 h-8 rounded-md bg-slate-200",
             PlaceHolder: "Rol"
         }
         const skillList : SkillsList = {
-            div: "flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
+            div: "flex flex-row gap-x-1 max-sm:gap-x-0 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full",
             input1:input1,
             input2:input2,
             trashIcon : "mt-1 text-red-400"
@@ -204,15 +204,15 @@ function AddExperience(){
     }
     return (
         <div className="hidden h-[350px] xl:w-full  addExperience  bg-white  relative rounded-sm overflow-y-scroll scrollbar-none">
-            <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={NewExperience}><IoAddOutline className="w-5 h-5 object-fit" /> Eğitim Ekle</p>
+            <p className="text-blue-400 flex flex-row text-md justify-end mr-3" onClick={NewExperience}><IoAddOutline className="w-5 h-5 object-fit" /> Tecrübe Ekle</p>
             <div className="flex flex-col w-full  h-full">
                 {
                     skillList.map((value,index) => {
                         return <div className={value.div} key={index}>
                             <input type="text" className={value.input1.ClassName} placeholder={value.input1.PlaceHolder} />
                             <input type="text" className={value.input2.ClassName} placeholder={value.input2.PlaceHolder} />
-                            <input type="date" className="bg-slate-200 rounded-md w-28 " placeholder="Başlangıç Tarihi" />
-                            <input type="date" className="bg-slate-200 rounded-md w-28" />
+                            <input type="date" className="bg-slate-200 rounded-md w-28 max-sm:w-16 " placeholder="Başlangıç Tarihi" />
+                            <input type="date" className="bg-slate-200 rounded-md w-28 max-sm:w-16" />
                             <FaTrash className={value.trashIcon} onClick={e => onDeleteInput(index)}/>
 
                         </div>
@@ -397,7 +397,7 @@ export function CreateCvPage(){
 
                 </div>
                 <div className=" b-2  w-screen max-sm:w-full md:w-full xl:w-3/6 h-screen p-4">
-                    <div className="b-2 border-slate-200 h-[650px] md:h-[550px] xl:h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2">
+                    <div className="b-2 border-slate-200 h-[650px] md:h-[550px] xl:h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2 overflow-scroll scrollbar-none">
                         <div className=" flex w-md max-sm:w-full justify-center pt-2 h-16 ">
                             <h2 className="text-4xl font-roboto-slab">Emre Üçbudak</h2>
                         </div>
@@ -405,7 +405,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Eğitim</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="egitim flex flex-row justify-between p-3 lg:px-12 xl:px-0 w-full">
+                        <div className="egitim flex flex-row justify-between p-3 lg:px-12 xl:px-2 w-full">
                             <div>
                                 <p>Okul Adı</p>
                                 <p>Bölüm Adı</p>
@@ -419,7 +419,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Yetenekler</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="w-full justify-between p-3 lg:px-12 xl:px-0 flex flex-row">
+                        <div className="w-full justify-between p-3 lg:px-12 xl:px-2 flex flex-row">
                             <div>
                                 <p>Yetenek Adı</p>
                             </div>
@@ -431,7 +431,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Tecrübe</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 xl:px-0 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
                             <div>
                                 <h4>Şirket Adı</h4>
                                 <p>Rol</p>
@@ -445,7 +445,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Projeler</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 xl:px-0 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
                             <div>
                                 <p>Proje Adı</p>
                             </div>
@@ -457,7 +457,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Hedef Maaş</label>
                             <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 xl:px-0 justify-between w-full">
+                        <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
                             <div>
                                 <p>Hedef Maaş</p>
                             </div>
