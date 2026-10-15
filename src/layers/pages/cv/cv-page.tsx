@@ -1,18 +1,20 @@
 'use client'
 import { CandidateShell } from "@/widgets/candidate/shell";
-import { useId, useState } from "react";
+import { createContext, useContext, useId, useState, type ReactNode } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useFieldArray, useForm, useFormContext, useWatch, type FieldPath } from "react-hook-form";
 import { z } from "zod";
-import { FaTrash } from "react-icons/fa";
+import { FaCheck, FaTrash } from "react-icons/fa";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
 
-const sectionHeaderClassName = "bg-slate-200 flex flex-row w-92 max-sm:w-full md:w-lg md:max-xl:ml-2 lg:w-3xl xl:w-xl rounded-md justify-between";
+const sectionClassName = "min-w-0 max-w-full w-92 max-sm:w-full md:w-lg md:max-xl:ml-2 md:max-xl:max-w-[calc(100%_-_0.5rem)] lg:w-3xl xl:w-xl";
+const sectionHeaderClassName = "bg-slate-200 flex flex-row w-full rounded-md justify-between";
 
 type Education = {
     schoolName: string | null,
     departmentName: string | null,
+    educationLevel: (typeof educationLevels)[number] | null,
     startedDate: Date | null,
     finishedDate: Date | null
 }
@@ -39,7 +41,7 @@ type Cv = {
     salary: Salary | null
 }
 
-const cv: Cv = {
+const initialCv: Cv = {
     targetRole: null,
     skills: null,
     educations: null,
@@ -96,6 +98,56 @@ const cvFormSchema = z.object({
 type CvFormInput = z.input<typeof cvFormSchema>;
 type CvFormOutput = z.output<typeof cvFormSchema>;
 
+type CvArraySection = "skills" | "educations" | "experience" | "projects";
+type CvRowLocation =
+    | { section: CvArraySection, rowId: string, index: number, rowOrder: string[] }
+    | { section: "targetRole" }
+    | { section: "salary" };
+type CvPreviewState = {
+    cv: Cv,
+    rowIds: Record<CvArraySection, string[]>,
+};
+
+const CvActionsContext = createContext<{
+    confirmRow: (location: CvRowLocation) => Promise<void>,
+    removeRow: (location: CvRowLocation) => void,
+} | null>(null);
+
+function saveCvArrayRow<K extends CvArraySection>(state: CvPreviewState, section: K, rowId: string, value: NonNullable<Cv[K]>[number], rowOrder: string[]): CvPreviewState {
+    const existingRows = state.cv[section] as Array<NonNullable<Cv[K]>[number]> | null;
+    const savedRows = new Map(state.rowIds[section].map((id, index) => [id, existingRows![index]]));
+    savedRows.set(rowId, value);
+    const rowIds = rowOrder.filter(id => savedRows.has(id));
+    const rows = rowIds.map(id => savedRows.get(id)!);
+    return {
+        cv: { ...state.cv, [section]: rows },
+        rowIds: { ...state.rowIds, [section]: rowIds },
+    };
+}
+
+function removeCvArrayRow(state: CvPreviewState, section: CvArraySection, rowId: string): CvPreviewState {
+    const index = state.rowIds[section].indexOf(rowId);
+    if (index === -1) return state;
+    const rows = (state.cv[section] ?? []).filter((_, rowIndex) => rowIndex !== index);
+    return {
+        cv: { ...state.cv, [section]: rows.length ? rows : null },
+        rowIds: { ...state.rowIds, [section]: state.rowIds[section].filter(id => id !== rowId) },
+    };
+}
+
+function CvPreviewRow({ left, right }: { left: ReactNode, right: ReactNode }) {
+    return (
+        <div className="flex flex-row shrink-0 gap-x-4 p-3 lg:px-12 xl:px-2 justify-between w-full">
+            <div className="min-w-0 break-words">{left}</div>
+            <div className="min-w-0 break-words text-right">{right}</div>
+        </div>
+    );
+}
+
+function formatCvDate(value: Date | null) {
+    return value?.toLocaleDateString("tr-TR") ?? "";
+}
+
 function toDateInputValue(value: Date | null) {
     if (!value) return "";
     return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(value.getDate()).padStart(2, "0")}`;
@@ -130,8 +182,36 @@ function CvInput({ name, label, widthClassName, type = "text", options }: {
     );
 }
 
-function DeleteRowButton({ label, onClick }: { label: string, onClick: () => void }) {
-    return <button type="button" aria-label={label} className="mt-1 self-start shrink-0 text-red-400" onClick={onClick}><FaTrash /></button>;
+function CvRowActions(props: CvRowLocation & { label: string, onClick: () => void }) {
+    const actions = useContext(CvActionsContext);
+    const [isConfirming, setIsConfirming] = useState(false);
+    const confirmLabels = {
+        targetRole: "Hedef rolü onayla",
+        skills: "Yeteneği onayla",
+        educations: "Eğitimi onayla",
+        experience: "Tecrübeyi onayla",
+        projects: "Projeyi onayla",
+        salary: "Hedef maaşı onayla",
+    };
+    if (!actions) throw new Error("CV satır işlemleri CV formunun içinde kullanılmalıdır.");
+
+    const confirm = async () => {
+        setIsConfirming(true);
+        try {
+            await actions.confirmRow(props);
+        } finally {
+            setIsConfirming(false);
+        }
+    };
+    return (
+        <div className="mt-1 self-start shrink-0 flex items-center gap-x-2">
+            <button type="button" aria-label={confirmLabels[props.section]} className="text-green-500 disabled:opacity-50" disabled={isConfirming} onClick={confirm}><FaCheck className="w-4 h-4" /></button>
+            <button type="button" aria-label={props.label} className="text-red-400" disabled={isConfirming} onClick={() => {
+                actions.removeRow(props);
+                props.onClick();
+            }}><FaTrash className="w-4 h-4" /></button>
+        </div>
+    );
 }
 export function ClickableDropdown (){
    const [skill , setskill] = useState<boolean>(false);
@@ -199,7 +279,7 @@ export function AddSkills(){
                     <div className="flex flex-row max-sm:flex-wrap p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
                         <CvInput name={`skills.${index}.skillName`} label="Yetenek Adı" widthClassName="w-40 md:w-40 xl:w-60" />
                         <CvInput name={`skills.${index}.skillExperienceYear`} label="Tecrübe Yılı" type="number" widthClassName="w-40 md:w-40 xl:w-60" />
-                        <DeleteRowButton label="Yeteneği sil" onClick={() => remove(index)} />
+                        <CvRowActions section="skills" rowId={field.id} index={index} rowOrder={fields.map(row => row.id)} label="Yeteneği sil" onClick={() => remove(index)} />
                     </div>
                 ))}
             </div>
@@ -223,7 +303,7 @@ function AddEducation(){
                         <CvInput name={`educations.${index}.educationLevel`} label="Eğitim seviyesi" options={educationLevels} widthClassName="w-20" />
                         <CvInput name={`educations.${index}.startedDate`} label="Eğitim başlangıç tarihi" type="date" widthClassName="w-16" />
                         <CvInput name={`educations.${index}.finishedDate`} label="Eğitim bitiş tarihi" type="date" widthClassName="w-16" />
-                        <DeleteRowButton label="Eğitimi sil" onClick={() => remove(index)} />
+                        <CvRowActions section="educations" rowId={field.id} index={index} rowOrder={fields.map(row => row.id)} label="Eğitimi sil" onClick={() => remove(index)} />
                     </div>
                 ))}
             </div>           
@@ -245,7 +325,7 @@ function AddExperience(){
                         <CvInput name={`experience.${index}.role`} label="Rol" widthClassName="w-40 max-sm:w-16 md:w-40 xl:w-32" />
                         <CvInput name={`experience.${index}.startedDate`} label="Tecrübe başlangıç tarihi" type="date" widthClassName="w-28 max-sm:w-16" />
                         <CvInput name={`experience.${index}.finishedDate`} label="Tecrübe bitiş tarihi" type="date" widthClassName="w-28 max-sm:w-16" />
-                        <DeleteRowButton label="Tecrübeyi sil" onClick={() => remove(index)} />
+                        <CvRowActions section="experience" rowId={field.id} index={index} rowOrder={fields.map(row => row.id)} label="Tecrübeyi sil" onClick={() => remove(index)} />
                     </div>
                 ))}
             </div>
@@ -283,7 +363,7 @@ function AddProjects(){
                     <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
                         <CvInput name={`projects.${index}.projectName`} label="Proje Adı" widthClassName="w-40 md:w-40 xl:w-64" />
                         <CvInput name={`projects.${index}.purpose`} label="Amacı" widthClassName="w-40 md:w-40 xl:w-64" />
-                        <DeleteRowButton label="Projeyi sil" onClick={() => remove(index)} />
+                        <CvRowActions section="projects" rowId={field.id} index={index} rowOrder={fields.map(row => row.id)} label="Projeyi sil" onClick={() => remove(index)} />
                     </div>
                 ))}
             </div>
@@ -295,7 +375,7 @@ function TargetRole(){
     const { control, setValue, clearErrors } = useFormContext<CvFormInput, unknown, CvFormOutput>();
     const hasTargetRole = useWatch({ control, name: "targetRole" }) !== null;
     return(
-        <div>
+        <div className={sectionClassName}>
             <div className={sectionHeaderClassName}>
                 <p className="p-3 text-base">Hedef Rol</p>
                 <button type="button" className="self-start" aria-label="Hedef rol alanını aç/kapat" aria-expanded={showTargetRole} onClick={() => setShowTargetRole(prev => !prev)}>
@@ -312,7 +392,7 @@ function TargetRole(){
                     {hasTargetRole && (
                         <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
                             <CvInput name="targetRole" label="Hedef Rol" widthClassName="w-44 md:w-44 xl:w-68" />
-                            <DeleteRowButton label="Hedef rolü sil" onClick={() => {
+                            <CvRowActions section="targetRole" label="Hedef rolü sil" onClick={() => {
                                 setValue("targetRole", null, { shouldDirty: true, shouldValidate: true });
                                 clearErrors("targetRole");
                             }} />
@@ -355,7 +435,7 @@ function AddTargetSalary(){
                     <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
                         <CvInput name="salary.minSalary" label="Min Maaş" type="number" widthClassName="flex-1" />
                         <CvInput name="salary.maxSalary" label="Max Maaş" type="number" widthClassName="flex-1" />
-                        <DeleteRowButton label="Hedef maaşı sil" onClick={() => {
+                        <CvRowActions section="salary" label="Hedef maaşı sil" onClick={() => {
                             setValue("salary", null, { shouldDirty: true, shouldValidate: true });
                             clearErrors("salary");
                         }} />
@@ -366,6 +446,11 @@ function AddTargetSalary(){
     )
 }
 export function CreateCvPage(){
+    const [preview, setPreview] = useState<CvPreviewState>({
+        cv: initialCv,
+        rowIds: { skills: [], educations: [], experience: [], projects: [] },
+    });
+    const cv = preview.cv;
     const form = useForm<CvFormInput, unknown, CvFormOutput>({
         resolver: zodResolver(cvFormSchema),
         mode: "onTouched",
@@ -379,7 +464,7 @@ export function CreateCvPage(){
             educations: cv.educations?.map(education => ({
                 schoolName: education.schoolName ?? "",
                 departmentName: education.departmentName ?? "",
-                educationLevel: "Lise",
+                educationLevel: education.educationLevel ?? "Lise",
                 startedDate: toDateInputValue(education.startedDate),
                 finishedDate: toDateInputValue(education.finishedDate),
             })) ?? [],
@@ -396,13 +481,45 @@ export function CreateCvPage(){
             salary: cv.salary,
         },
     });
+
+    const confirmRow = async (location: CvRowLocation) => {
+        if (location.section === "targetRole") {
+            if (!await form.trigger("targetRole", { shouldFocus: true })) return;
+            const result = cvFormSchema.shape.targetRole.safeParse(form.getValues("targetRole"));
+            if (result.success && result.data !== null) {
+                setPreview(previous => ({ ...previous, cv: { ...previous.cv, targetRole: result.data } }));
+            }
+        } else if (location.section === "salary") {
+            if (!await form.trigger("salary", { shouldFocus: true })) return;
+            const result = cvFormSchema.shape.salary.safeParse(form.getValues("salary"));
+            if (result.success && result.data !== null) {
+                setPreview(previous => ({ ...previous, cv: { ...previous.cv, salary: result.data } }));
+            }
+        } else {
+            const { section, index, rowId, rowOrder } = location;
+            if (!await form.trigger(`${section}.${index}`, { shouldFocus: true })) return;
+            const result = cvFormSchema.shape[section].element.safeParse(form.getValues(`${section}.${index}`));
+            if (result.success) {
+                setPreview(previous => saveCvArrayRow(previous, section, rowId, result.data, rowOrder));
+            }
+        }
+    };
+
+    const removeRow = (location: CvRowLocation) => {
+        if (location.section === "targetRole" || location.section === "salary") {
+            setPreview(previous => ({ ...previous, cv: { ...previous.cv, [location.section]: null } }));
+        } else {
+            setPreview(previous => removeCvArrayRow(previous, location.section, location.rowId));
+        }
+    };
     return (
         <CandidateShell>
             <FormProvider {...form}>
+            <CvActionsContext.Provider value={{ confirmRow, removeRow }}>
             <section className="h-max max-sm:w-full max-sm:min-w-0 max-sm:[&_input]:min-w-0 max-sm:[&_input]:max-w-full flex flex-col xl:flex-row gap-x-4 ">
                 <div className="gap-y-2 max-sm:w-full max-sm:min-w-0 md:w-lg lg:w-3xl lg:ml-2 xl:w-3/6   h-full flex flex-col pt-2 xl:p-8   overflow-hidden sm:items-center md:items-start xl:items-center flex flex-col     ">
                 <TargetRole/>
-                <div className="  ">
+                <div className={sectionClassName}>
                     <div className={sectionHeaderClassName}>
                         <p className="p-3 text-base">Yetenekler</p>
                         <ClickableDropdown   />
@@ -410,21 +527,21 @@ export function CreateCvPage(){
                     <AddSkills  />
   
                 </div>
-                <div className="gap-y-0">
+                <div className={`${sectionClassName} gap-y-0`}>
                     <div className={sectionHeaderClassName}>
                         <p className="p-3 text-base">Eğitim</p>
                         <EducationalDropdown/>
                     </div>
                     <AddEducation/>
                 </div>
-                <div>
+                <div className={sectionClassName}>
                     <div className={sectionHeaderClassName}>
                         <p className="p-3 text-base">Tecrübe</p>
                         <ExperienceDropdown/>
                     </div>
                     <AddExperience/>
                 </div>
-                <div>
+                <div className={sectionClassName}>
                     <div className={sectionHeaderClassName}>
                         <p className="p-3 text-base">Projeler</p>
                         <ProjectsDropdown/>
@@ -432,7 +549,7 @@ export function CreateCvPage(){
                     <AddProjects/>
                     
                 </div>
-                <div>
+                <div className={sectionClassName}>
                     <div className={sectionHeaderClassName}>
                         <p className="p-3 text-base">Hedef Maaş</p>
                         <TargetSalaryDropdown/>
@@ -442,79 +559,66 @@ export function CreateCvPage(){
 
                 </div>
                 <div className=" b-2  w-screen max-sm:w-full md:w-full xl:w-3/6 h-screen p-4">
-                    <div className="b-2 border-slate-200 h-[650px] md:max-xl:h-[750px] xl:h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2 overflow-scroll scrollbar-none">
-                        <div className=" flex w-md max-sm:w-full justify-center pt-2 h-16 ">
+                    <div aria-label="CV önizlemesi" role="region" className="b-2 border-slate-200 h-[650px] md:max-xl:h-[750px] xl:h-[650px] bg-white rounded-md flex flex-col items-center mt-2 overflow-scroll scrollbar-none [&>div]:shrink-0">
+                        <div className="flex w-md max-sm:w-full flex-col items-center justify-center pt-2 min-h-16">
                             <h2 className="text-4xl font-roboto-slab">Emre Üçbudak</h2>
+                            {cv.targetRole && <p className="max-w-full break-words text-center">{cv.targetRole}</p>}
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Eğitim</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="egitim flex flex-row justify-between p-3 lg:px-12 xl:px-2 w-full">
-                            <div>
-                                <p>Okul Adı</p>
-                                <p>Bölüm Adı</p>
-                            </div>
-                            <div>
-                                <p>Başlangıç Tarihi</p>
-                                <p>Bitiş Tarihi</p>
-                            </div>
-                        </div>
+                        {cv.educations?.length ? cv.educations.map((education, index) => (
+                            <CvPreviewRow key={preview.rowIds.educations[index]} left={<>
+                                <p>{education.schoolName}</p>
+                                <p>{education.departmentName}</p>
+                                <p>{education.educationLevel}</p>
+                            </>} right={<>
+                                <p>{formatCvDate(education.startedDate)}</p>
+                                <p>{formatCvDate(education.finishedDate)}</p>
+                            </>} />
+                        )) : <CvPreviewRow left={<><p>Okul Adı</p><p>Bölüm Adı</p></>} right={<><p>Başlangıç Tarihi</p><p>Bitiş Tarihi</p></>} />}
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Yetenekler</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="w-full justify-between p-3 lg:px-12 xl:px-2 flex flex-row">
-                            <div>
-                                <p>Yetenek Adı</p>
-                            </div>
-                            <div>
-                                <p>Tecrübe Yılı</p>
-                            </div>
-                        </div>
+                        {cv.skills?.length ? cv.skills.map((skill, index) => (
+                            <CvPreviewRow key={preview.rowIds.skills[index]} left={<p>{skill.skillName}</p>} right={<p>{skill.skillExperienceYear} yıl</p>} />
+                        )) : <CvPreviewRow left={<p>Yetenek Adı</p>} right={<p>Tecrübe Yılı</p>} />}
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Tecrübe</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
-                            <div>
-                                <h4>Şirket Adı</h4>
-                                <p>Rol</p>
-                            </div>
-                            <div>
-                                <p>Başlangıç</p>
-                                <p>Bitiş</p>
-                            </div>
-                        </div>
+                        {cv.experience?.length ? cv.experience.map((experience, index) => (
+                            <CvPreviewRow key={preview.rowIds.experience[index]} left={<>
+                                <h4>{experience.companyName}</h4>
+                                <p>{experience.role}</p>
+                            </>} right={<>
+                                <p>{formatCvDate(experience.startedDate)}</p>
+                                <p>{formatCvDate(experience.finishedDate)}</p>
+                            </>} />
+                        )) : <CvPreviewRow left={<><h4>Şirket Adı</h4><p>Rol</p></>} right={<><p>Başlangıç</p><p>Bitiş</p></>} />}
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Projeler</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
-                            <div>
-                                <p>Proje Adı</p>
-                            </div>
-                            <div>
-                                <p>Amacı</p>
-                            </div>
-                        </div>
+                        {cv.projects?.length ? cv.projects.map((project, index) => (
+                            <CvPreviewRow key={preview.rowIds.projects[index]} left={<p>{project.projectName}</p>} right={<p>{project.purpose}</p>} />
+                        )) : <CvPreviewRow left={<p>Proje Adı</p>} right={<p>Amacı</p>} />}
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Hedef Maaş</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
-                            <div>
-                                <p>Hedef Maaş</p>
-                            </div>
-                            <div>
-                                <p>Maaşın tutarı</p>
-                            </div>
-                        </div>
+                        {cv.salary ? <CvPreviewRow
+                            left={<p>Min Maaş: {cv.salary.minSalary?.toLocaleString("tr-TR")}</p>}
+                            right={<p>Max Maaş: {cv.salary.maxSalary?.toLocaleString("tr-TR")}</p>}
+                        /> : <CvPreviewRow left={<p>Hedef Maaş</p>} right={<p>Maaşın tutarı</p>} />}
                         
                     </div>
                 </div>
 
             </section>
+            </CvActionsContext.Provider>
             </FormProvider>
         </CandidateShell>
     )

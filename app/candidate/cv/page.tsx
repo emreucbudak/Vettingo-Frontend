@@ -1,5 +1,5 @@
 
-import { CreateCvPage } from "@/pages/cv/cv-page";
+import { CreateCvPage } from "@/pages/cv";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
