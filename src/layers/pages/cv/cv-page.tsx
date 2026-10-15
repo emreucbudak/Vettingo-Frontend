@@ -18,20 +18,48 @@ type SkillsList = {
     div : string
 }
 type Education = {
-    schoolName: string,
-    departmentName: string,
-    startedDate: string,
-    finishedDate: string
+    schoolName: string | null,
+    departmentName: string | null,
+    startedDate: Date | null,
+    finishedDate: Date | null
 }
 type Skills = {
-    skillName: string,
-    skillExperienceYear: string
+    skillName: string | null,
+    skillExperienceYear: number | null
 }
+type Projects = {
+    projectName: string | null,
+    purpose: string | null
+}
+
+type Salary = {
+    minSalary: number | null,
+    maxSalary: number | null
+}
+
+type Cv = {
+    targetRole: string | null,
+    skills: Skills[] | null,
+    educations: Education[] | null,
+    experience: Experience[] | null,
+    projects: Projects[] | null,
+    salary: Salary | null
+}
+
+const cv: Cv = {
+    targetRole: null,
+    skills: null,
+    educations: null,
+    experience: null,
+    projects: null,
+    salary: null
+}
+
 type Experience = {
-    companyName: string,
-    role : string,
-    startedDate: string,
-    finishedDate: string
+    companyName: string | null,
+    role: string | null,
+    startedDate: Date | null,
+    finishedDate: Date | null
 }
 export function ClickableDropdown (){
    const [skill , setskill] = useState<boolean>(false);
@@ -397,13 +425,13 @@ export function CreateCvPage(){
 
                 </div>
                 <div className=" b-2  w-screen max-sm:w-full md:w-full xl:w-3/6 h-screen p-4">
-                    <div className="b-2 border-slate-200 h-[650px] md:h-[550px] xl:h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2 overflow-scroll scrollbar-none">
+                    <div className="b-2 border-slate-200 h-[650px] md:max-xl:h-[750px] xl:h-[650px] bg-white rounded-md flex  flex-col items-center  mt-2 overflow-scroll scrollbar-none">
                         <div className=" flex w-md max-sm:w-full justify-center pt-2 h-16 ">
                             <h2 className="text-4xl font-roboto-slab">Emre Üçbudak</h2>
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Eğitim</label>
-                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
                         <div className="egitim flex flex-row justify-between p-3 lg:px-12 xl:px-2 w-full">
                             <div>
@@ -417,7 +445,7 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Yetenekler</label>
-                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
                         <div className="w-full justify-between p-3 lg:px-12 xl:px-2 flex flex-row">
                             <div>
@@ -429,7 +457,7 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Tecrübe</label>
-                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
                             <div>
@@ -443,7 +471,7 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Projeler</label>
-                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
                             <div>
@@ -455,7 +483,7 @@ export function CreateCvPage(){
                         </div>
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Hedef Maaş</label>
-                            <div className="border-t border-black w-84 max-sm:w-full lg:w-2xl xl:w-xl"></div>
+                            <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
                         <div className="flex flex-row p-3 lg:px-12 xl:px-2 justify-between w-full">
                             <div>
