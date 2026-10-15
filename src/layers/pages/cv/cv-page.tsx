@@ -559,6 +559,11 @@ export function CreateCvPage(){
 
                 </div>
                 <div className=" b-2  w-screen max-sm:w-full md:w-full xl:w-3/6 h-screen p-4">
+                    <div className="flex justify-end">
+                        <button type="button" className="rounded-md bg-black px-4 py-2 text-white cursor-pointer hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
+                            CV’yi Kaydet
+                        </button>
+                    </div>
                     <div aria-label="CV önizlemesi" role="region" className="b-2 border-slate-200 h-[650px] md:max-xl:h-[750px] xl:h-[650px] bg-white rounded-md flex flex-col items-center mt-2 overflow-scroll scrollbar-none [&>div]:shrink-0">
                         <div className="flex w-md max-sm:w-full flex-col items-center justify-center pt-2 min-h-16">
                             <h2 className="text-4xl font-roboto-slab">Emre Üçbudak</h2>
@@ -568,7 +573,7 @@ export function CreateCvPage(){
                             <label htmlFor="" className="font-bold">Eğitim</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        {cv.educations?.length ? cv.educations.map((education, index) => (
+                        {cv.educations?.map((education, index) => (
                             <CvPreviewRow key={preview.rowIds.educations[index]} left={<>
                                 <p>{education.schoolName}</p>
                                 <p>{education.departmentName}</p>
@@ -577,19 +582,19 @@ export function CreateCvPage(){
                                 <p>{formatCvDate(education.startedDate)}</p>
                                 <p>{formatCvDate(education.finishedDate)}</p>
                             </>} />
-                        )) : <CvPreviewRow left={<><p>Okul Adı</p><p>Bölüm Adı</p></>} right={<><p>Başlangıç Tarihi</p><p>Bitiş Tarihi</p></>} />}
+                        ))}
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Yetenekler</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        {cv.skills?.length ? cv.skills.map((skill, index) => (
+                        {cv.skills?.map((skill, index) => (
                             <CvPreviewRow key={preview.rowIds.skills[index]} left={<p>{skill.skillName}</p>} right={<p>{skill.skillExperienceYear} yıl</p>} />
-                        )) : <CvPreviewRow left={<p>Yetenek Adı</p>} right={<p>Tecrübe Yılı</p>} />}
+                        ))}
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Tecrübe</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        {cv.experience?.length ? cv.experience.map((experience, index) => (
+                        {cv.experience?.map((experience, index) => (
                             <CvPreviewRow key={preview.rowIds.experience[index]} left={<>
                                 <h4>{experience.companyName}</h4>
                                 <p>{experience.role}</p>
@@ -597,22 +602,22 @@ export function CreateCvPage(){
                                 <p>{formatCvDate(experience.startedDate)}</p>
                                 <p>{formatCvDate(experience.finishedDate)}</p>
                             </>} />
-                        )) : <CvPreviewRow left={<><h4>Şirket Adı</h4><p>Rol</p></>} right={<><p>Başlangıç</p><p>Bitiş</p></>} />}
+                        ))}
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Projeler</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        {cv.projects?.length ? cv.projects.map((project, index) => (
+                        {cv.projects?.map((project, index) => (
                             <CvPreviewRow key={preview.rowIds.projects[index]} left={<p>{project.projectName}</p>} right={<p>{project.purpose}</p>} />
-                        )) : <CvPreviewRow left={<p>Proje Adı</p>} right={<p>Amacı</p>} />}
+                        ))}
                         <div className="max-sm:w-full">
                             <label htmlFor="" className="font-bold">Hedef Maaş</label>
                             <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
                         </div>
-                        {cv.salary ? <CvPreviewRow
+                        {cv.salary && <CvPreviewRow
                             left={<p>Min Maaş: {cv.salary.minSalary?.toLocaleString("tr-TR")}</p>}
                             right={<p>Max Maaş: {cv.salary.maxSalary?.toLocaleString("tr-TR")}</p>}
-                        /> : <CvPreviewRow left={<p>Hedef Maaş</p>} right={<p>Maaşın tutarı</p>} />}
+                        />}
                         
                     </div>
                 </div>
