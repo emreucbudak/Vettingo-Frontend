@@ -16,10 +16,9 @@ export type PersonalizedJobPostingDto = {
   publishedDate: string;
 };
 
-export function getLatestPersonalizedJobPostings(userId: string, signal?: AbortSignal) {
-  const query = new URLSearchParams({ userId });
+export function getLatestPersonalizedJobPostings(signal?: AbortSignal) {
   return apiRequest<PersonalizedJobPostingDto[]>(
-    `${candidateApiPaths.recommendedJobs}?${query}`, "GET", { signal, cache: "no-store" },
+    candidateApiPaths.recommendedJobs, "GET", { signal, cache: "no-store" },
   );
 }
 
