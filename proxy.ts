@@ -42,5 +42,5 @@ export async function proxy(request:NextRequest) {
 
 }
 export const config = {
-    matcher: ['/candidate/:path*','/employer/:path*']
+    matcher: ['/employer/:path*','/candidate/:path*','/hr/:path*']
 }
