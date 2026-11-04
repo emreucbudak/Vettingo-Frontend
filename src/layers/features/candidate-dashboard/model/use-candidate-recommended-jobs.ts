@@ -21,7 +21,7 @@ export function useCandidateRecommendedJobs(userId: string) {
 
     async function load() {
       try {
-        const jobs = await getLatestPersonalizedJobPostings(userId, controller.signal);
+        const jobs = await getLatestPersonalizedJobPostings(controller.signal);
         if (!controller.signal.aborted) {
           setState({ userId, jobs, error: null });
         }
