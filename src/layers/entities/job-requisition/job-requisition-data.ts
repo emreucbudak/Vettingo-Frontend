@@ -7,7 +7,8 @@
 export const requisitionSteps = [
   { label: "Rol Tanımı", value: "1", active: true },
   { label: "Gereksinimler", value: "2", active: false },
-  { label: "İnceleme ve Yayın", value: "3", active: false },
+  { label: "İş İlan Akışı", value: "3", active: false },
+  { label: "İnceleme ve Yayın", value: "4", active: false },
 ] as const;
 
 export const requisitionForm = {
