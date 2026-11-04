@@ -13,16 +13,21 @@ export function CandidateCvReminderCard({ userId }: CandidateCvReminderCardProps
 
   useEffect(() => {
     if (!userId) return;
+    let active = true;
 
     async function load() {
       try {
-        setHasCv(await getCandidateHasCv(userId));
+        const exists = await getCandidateHasCv();
+        if (active) setHasCv(exists);
       } catch {
-        setHasCv(null);
+        if (active) setHasCv(null);
       }
     }
 
     void load();
+    return () => {
+      active = false;
+    };
   }, [userId]);
 
   if (!userId || hasCv !== false) {
