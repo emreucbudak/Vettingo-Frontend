@@ -17,7 +17,7 @@ export function CandidateCvReminderCard({ userId }: CandidateCvReminderCardProps
 
     async function load() {
       try {
-        const exists = await getCandidateHasCv(userId);
+        const exists = await getCandidateHasCv();
         if (active) setHasCv(exists);
       } catch {
         if (active) setHasCv(null);
