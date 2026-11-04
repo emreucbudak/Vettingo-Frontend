@@ -135,13 +135,13 @@ function ReviewCard({ values }: { values: Record<string, string> }) {
 function ActionRow({ activeStep, onBack }: { activeStep: number; onBack: () => void }) {
   return (
     <div className="mt-4 flex justify-end gap-2">
-      {activeStep > 1 && (
+      {activeStep > 1 && activeStep !== 3 && (
         <button className="rounded-lg border border-[#c5c6cd] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#0b1c30] transition-colors hover:bg-[#eff4ff]" onClick={onBack} type="button">
           Geri
         </button>
       )}
-      {activeStep < 3 && <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="submit">
-        Devam Et
+      {activeStep < requisitionSteps.length && <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="submit">
+        {activeStep === 3 ? "Sonraki adıma geç" : "Devam Et"}
         <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
       </button>}
     </div>
@@ -211,11 +211,11 @@ export function JobRequisitionWizardPage({ embedded = false }: { embedded?: bool
               <Stepper activeStep={activeStep} />
               <form className="flex flex-col gap-6" onSubmit={(event) => {
                 event.preventDefault();
-                if (activeStep === 2) {
+                if (activeStep === 3) {
                   const data = new FormData(event.currentTarget);
                   setReviewValues(Object.fromEntries(Array.from(data.entries(), ([name, value]) => [name, String(value)])));
                 }
-                setActiveStep((step) => Math.min(step + 1, 3));
+                setActiveStep((step) => Math.min(step + 1, requisitionSteps.length));
               }}>
                 <div className={activeStep === 1 ? "flex flex-col gap-6" : "hidden"}>
                   <CoreDetailsCard />
@@ -224,11 +224,16 @@ export function JobRequisitionWizardPage({ embedded = false }: { embedded?: bool
                 <div className={activeStep === 2 ? "block" : "hidden"}>
                   <RequirementsCard />
                 </div>
-                {activeStep === 3 && <ReviewCard values={reviewValues} />}
+                {activeStep === 3 && (
+                  <section className="rounded-lg border border-[#c5c6cd] bg-white p-6 shadow-sm">
+                    <h2 className="text-lg font-medium leading-6 text-[#091426]">İş İlan Akışı</h2>
+                  </section>
+                )}
+                {activeStep === 4 && <ReviewCard values={reviewValues} />}
                 <ActionRow activeStep={activeStep} onBack={() => setActiveStep((step) => Math.max(step - 1, 1))} />
               </form>
             </section>
-            <AssistantSidebar />
+            {activeStep !== 3 && <AssistantSidebar />}
           </div>
         </main>
       </div>
