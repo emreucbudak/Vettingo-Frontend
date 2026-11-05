@@ -153,12 +153,13 @@ function toDateInputValue(value: Date | null) {
     return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(value.getDate()).padStart(2, "0")}`;
 }
 
-function CvInput({ name, label, widthClassName, type = "text", options }: {
+function CvInput({ name, label, widthClassName, type = "text", options, showLabel = false }: {
     name: FieldPath<CvFormInput>,
     label: string,
     widthClassName: string,
     type?: "text" | "number" | "date",
     options?: readonly string[],
+    showLabel?: boolean,
 }) {
     const id = useId();
     const { register, getFieldState, formState } = useFormContext<CvFormInput, unknown, CvFormOutput>();
@@ -170,6 +171,7 @@ function CvInput({ name, label, widthClassName, type = "text", options }: {
 
     return (
         <div className={`min-w-0 ${widthClassName}`}>
+            {showLabel && <label htmlFor={id} className="mb-1 block text-sm font-medium">{label}</label>}
             {options ? (
                 <select {...registration} id={id} aria-label={label} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} className={className}>
                     {options.map(option => <option key={option} value={option}>{option}</option>)}
@@ -186,12 +188,12 @@ function CvRowActions(props: CvRowLocation & { label: string, onClick: () => voi
     const actions = useContext(CvActionsContext);
     const [isConfirming, setIsConfirming] = useState(false);
     const confirmLabels = {
-        targetRole: "Hedef rolü onayla",
-        skills: "Yeteneği onayla",
-        educations: "Eğitimi onayla",
-        experience: "Tecrübeyi onayla",
-        projects: "Projeyi onayla",
-        salary: "Hedef maaşı onayla",
+        targetRole: "Hedef rolü kaydet",
+        skills: "Yeteneği kaydet",
+        educations: "Eğitimi kaydet",
+        experience: "Tecrübeyi kaydet",
+        projects: "Projeyi kaydet",
+        salary: "Hedef maaşı kaydet",
     };
     if (!actions) throw new Error("CV satır işlemleri CV formunun içinde kullanılmalıdır.");
 
@@ -204,12 +206,12 @@ function CvRowActions(props: CvRowLocation & { label: string, onClick: () => voi
         }
     };
     return (
-        <div className="mt-1 self-start shrink-0 flex items-center gap-x-2">
-            <button type="button" aria-label={confirmLabels[props.section]} className="text-green-500 disabled:opacity-50" disabled={isConfirming} onClick={confirm}><FaCheck className="w-4 h-4" /></button>
-            <button type="button" aria-label={props.label} className="text-red-400" disabled={isConfirming} onClick={() => {
+        <div className="mt-1 self-start shrink-0 flex w-full items-center gap-x-2">
+            <button type="button" aria-label={confirmLabels[props.section]} className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-green-600 px-3 py-2 text-sm font-medium text-white cursor-pointer hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50" disabled={isConfirming} onClick={confirm}><FaCheck aria-hidden="true" className="w-4 h-4" />Kaydet</button>
+            <button type="button" aria-label={props.label} className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-red-500 px-3 py-2 text-sm font-medium text-white cursor-pointer hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50" disabled={isConfirming} onClick={() => {
                 actions.removeRow(props);
                 props.onClick();
-            }}><FaTrash className="w-4 h-4" /></button>
+            }}><FaTrash aria-hidden="true" className="w-4 h-4" />Sil</button>
         </div>
     );
 }
@@ -276,9 +278,9 @@ export function AddSkills(){
             </div>
             <div className="w-full xl:w-full formArea  flex flex-col  ">
                 {fields.map((field, index) => (
-                    <div className="flex flex-row max-sm:flex-wrap p-4 justify-around gap-x-2 border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
-                        <CvInput name={`skills.${index}.skillName`} label="Yetenek Adı" widthClassName="w-40 md:w-40 xl:w-60" />
-                        <CvInput name={`skills.${index}.skillExperienceYear`} label="Tecrübe Yılı" type="number" widthClassName="w-40 md:w-40 xl:w-60" />
+                    <div className="flex flex-col gap-y-3 p-4 border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                        <CvInput name={`skills.${index}.skillName`} label="Yetenek Adı" widthClassName="w-full" showLabel />
+                        <CvInput name={`skills.${index}.skillExperienceYear`} label="Tecrübe Yılı" type="number" widthClassName="w-full" showLabel />
                         <CvRowActions section="skills" rowId={field.id} index={index} rowOrder={fields.map(row => row.id)} label="Yeteneği sil" onClick={() => remove(index)} />
                     </div>
                 ))}
@@ -297,12 +299,12 @@ function AddEducation(){
             </div>
             <div className="flex flex-col w-full  h-full">
                 {fields.map((field, index) => (
-                    <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
-                        <CvInput name={`educations.${index}.schoolName`} label="Okul" widthClassName="w-12 md:w-20 xl:w-24" />
-                        <CvInput name={`educations.${index}.departmentName`} label="Bölüm" widthClassName="w-12 md:w-20 xl:w-24" />
-                        <CvInput name={`educations.${index}.educationLevel`} label="Eğitim seviyesi" options={educationLevels} widthClassName="w-20" />
-                        <CvInput name={`educations.${index}.startedDate`} label="Eğitim başlangıç tarihi" type="date" widthClassName="w-16" />
-                        <CvInput name={`educations.${index}.finishedDate`} label="Eğitim bitiş tarihi" type="date" widthClassName="w-16" />
+                    <div className="flex flex-col gap-y-3 p-4 border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                        <CvInput name={`educations.${index}.schoolName`} label="Okul" widthClassName="w-full" showLabel />
+                        <CvInput name={`educations.${index}.departmentName`} label="Bölüm" widthClassName="w-full" showLabel />
+                        <CvInput name={`educations.${index}.educationLevel`} label="Eğitim seviyesi" options={educationLevels} widthClassName="w-full" showLabel />
+                        <CvInput name={`educations.${index}.startedDate`} label="Eğitim başlangıç tarihi" type="date" widthClassName="w-full" showLabel />
+                        <CvInput name={`educations.${index}.finishedDate`} label="Eğitim bitiş tarihi" type="date" widthClassName="w-full" showLabel />
                         <CvRowActions section="educations" rowId={field.id} index={index} rowOrder={fields.map(row => row.id)} label="Eğitimi sil" onClick={() => remove(index)} />
                     </div>
                 ))}
@@ -320,11 +322,11 @@ function AddExperience(){
             </div>
             <div className="flex flex-col w-full  h-full">
                 {fields.map((field, index) => (
-                    <div className="flex flex-row gap-x-1 max-sm:gap-x-0 p-4 justify-around border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
-                        <CvInput name={`experience.${index}.companyName`} label="Şirket" widthClassName="w-40 max-sm:w-16 md:w-40 xl:w-32" />
-                        <CvInput name={`experience.${index}.role`} label="Rol" widthClassName="w-40 max-sm:w-16 md:w-40 xl:w-32" />
-                        <CvInput name={`experience.${index}.startedDate`} label="Tecrübe başlangıç tarihi" type="date" widthClassName="w-28 max-sm:w-16" />
-                        <CvInput name={`experience.${index}.finishedDate`} label="Tecrübe bitiş tarihi" type="date" widthClassName="w-28 max-sm:w-16" />
+                    <div className="flex flex-col gap-y-3 p-4 border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                        <CvInput name={`experience.${index}.companyName`} label="Şirket" widthClassName="w-full" showLabel />
+                        <CvInput name={`experience.${index}.role`} label="Rol" widthClassName="w-full" showLabel />
+                        <CvInput name={`experience.${index}.startedDate`} label="Tecrübe başlangıç tarihi" type="date" widthClassName="w-full" showLabel />
+                        <CvInput name={`experience.${index}.finishedDate`} label="Tecrübe bitiş tarihi" type="date" widthClassName="w-full" showLabel />
                         <CvRowActions section="experience" rowId={field.id} index={index} rowOrder={fields.map(row => row.id)} label="Tecrübeyi sil" onClick={() => remove(index)} />
                     </div>
                 ))}
@@ -360,9 +362,9 @@ function AddProjects(){
             </div>
             <div className="flex flex-col w-full  h-full">
                 {fields.map((field, index) => (
-                    <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
-                        <CvInput name={`projects.${index}.projectName`} label="Proje Adı" widthClassName="w-40 md:w-40 xl:w-64" />
-                        <CvInput name={`projects.${index}.purpose`} label="Amacı" widthClassName="w-40 md:w-40 xl:w-64" />
+                    <div className="flex flex-col gap-y-3 p-4 border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                        <CvInput name={`projects.${index}.projectName`} label="Proje Adı" widthClassName="w-full" showLabel />
+                        <CvInput name={`projects.${index}.purpose`} label="Amacı" widthClassName="w-full" showLabel />
                         <CvRowActions section="projects" rowId={field.id} index={index} rowOrder={fields.map(row => row.id)} label="Projeyi sil" onClick={() => remove(index)} />
                     </div>
                 ))}
@@ -390,8 +392,8 @@ function TargetRole(){
                 </p>
                 <div className="flex flex-col w-full  h-full">
                     {hasTargetRole && (
-                        <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
-                            <CvInput name="targetRole" label="Hedef Rol" widthClassName="w-44 md:w-44 xl:w-68" />
+                        <div className="flex flex-col gap-y-3 p-4 border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
+                            <CvInput name="targetRole" label="Hedef Rol" widthClassName="w-full" showLabel />
                             <CvRowActions section="targetRole" label="Hedef rolü sil" onClick={() => {
                                 setValue("targetRole", null, { shouldDirty: true, shouldValidate: true });
                                 clearErrors("targetRole");
@@ -432,9 +434,9 @@ function AddTargetSalary(){
             </p>
             <div className="flex flex-col w-full  h-full">
                 {hasTargetSalary && (
-                    <div className="flex flex-row max-sm:flex-wrap gap-x-1 p-4 justify-around  border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
-                        <CvInput name="salary.minSalary" label="Min Maaş" type="number" widthClassName="flex-1" />
-                        <CvInput name="salary.maxSalary" label="Max Maaş" type="number" widthClassName="flex-1" />
+                    <div className="flex flex-col gap-y-3 p-4 border-2 border-slate-200 rounded-md md:w-lg xl:w-full">
+                        <CvInput name="salary.minSalary" label="Min Maaş" type="number" widthClassName="w-full" showLabel />
+                        <CvInput name="salary.maxSalary" label="Max Maaş" type="number" widthClassName="w-full" showLabel />
                         <CvRowActions section="salary" label="Hedef maaşı sil" onClick={() => {
                             setValue("salary", null, { shouldDirty: true, shouldValidate: true });
                             clearErrors("salary");
