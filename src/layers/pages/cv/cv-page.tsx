@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useFieldArray, useForm, useFormContext, useWatch, type FieldPath } from "react-hook-form";
 import { z } from "zod";
 import { FaCheck, FaTrash } from "react-icons/fa";
-import { IoIosArrowDropdown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowDropdown } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
 
 const sectionClassName = "min-w-0 max-w-full w-92 max-sm:w-full md:w-lg md:max-xl:ml-2 md:max-xl:max-w-[calc(100%_-_0.5rem)] lg:w-3xl xl:w-xl";
@@ -38,7 +38,8 @@ type Cv = {
     educations: Education[] | null,
     experience: Experience[] | null,
     projects: Projects[] | null,
-    salary: Salary | null
+    salary: Salary | null,
+    certifications: CvFormOutput["certifications"] | null
 }
 
 const initialCv: Cv = {
@@ -47,7 +48,8 @@ const initialCv: Cv = {
     educations: null,
     experience: null,
     projects: null,
-    salary: null
+    salary: null,
+    certifications: null
 }
 
 type Experience = {
@@ -65,6 +67,7 @@ const requiredNumber = z.number({ error: "Geçerli bir sayı girin." })
 const requiredDate = z.iso.date({ error: "Geçerli bir tarih seçin." })
     .transform(value => new Date(`${value}T00:00:00`));
 const educationLevels = ["Lise", "Lisans", "Ön Lisans", "Yüksek Lisans"] as const;
+const certificationIssuers = ["AWS", "BTK Akademi", "Cisco", "Coursera", "Google", "Microsoft", "Scrum Alliance", "Udemy", "Diğer"] as const;
 
 const cvFormSchema = z.object({
     targetRole: requiredText.nullable(),
@@ -93,12 +96,16 @@ const cvFormSchema = z.object({
         minSalary: requiredNumber,
         maxSalary: requiredNumber,
     }).nullable(),
+    certifications: z.array(z.object({
+        name: requiredText,
+        issuer: z.string().pipe(z.enum(certificationIssuers, { error: "Veren kurum seçin." })),
+    })),
 });
 
 type CvFormInput = z.input<typeof cvFormSchema>;
 type CvFormOutput = z.output<typeof cvFormSchema>;
 
-type CvArraySection = "skills" | "educations" | "experience" | "projects";
+type CvArraySection = "skills" | "educations" | "experience" | "projects" | "certifications";
 type CvRowLocation =
     | { section: CvArraySection, rowId: string, index: number, rowOrder: string[] }
     | { section: "targetRole" }
@@ -153,12 +160,14 @@ function toDateInputValue(value: Date | null) {
     return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(value.getDate()).padStart(2, "0")}`;
 }
 
-function CvInput({ name, label, widthClassName, type = "text", options, showLabel = false }: {
+function CvInput({ name, label, widthClassName, type = "text", options, selectPlaceholder, insetSelectArrow = false, showLabel = false }: {
     name: FieldPath<CvFormInput>,
     label: string,
     widthClassName: string,
     type?: "text" | "number" | "date",
     options?: readonly string[],
+    selectPlaceholder?: string,
+    insetSelectArrow?: boolean,
     showLabel?: boolean,
 }) {
     const id = useId();
@@ -173,9 +182,13 @@ function CvInput({ name, label, widthClassName, type = "text", options, showLabe
         <div className={`min-w-0 ${widthClassName}`}>
             {showLabel && <label htmlFor={id} className="mb-1 block text-sm font-medium">{label}</label>}
             {options ? (
-                <select {...registration} id={id} aria-label={label} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} className={className}>
-                    {options.map(option => <option key={option} value={option}>{option}</option>)}
-                </select>
+                <span className={insetSelectArrow ? "relative block" : "contents"}>
+                    <select {...registration} id={id} aria-label={label} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} className={insetSelectArrow ? `${className} appearance-none pr-6 forced-colors:appearance-auto` : className}>
+                        {selectPlaceholder && <option value="" disabled>{selectPlaceholder}</option>}
+                        {options.map(option => <option key={option} value={option}>{option}</option>)}
+                    </select>
+                    {insetSelectArrow && <IoIosArrowDown aria-hidden="true" className="pointer-events-none absolute top-1/2 right-2 size-3.5 -translate-y-1/2 forced-colors:hidden" />}
+                </span>
             ) : (
                 <input {...registration} id={id} type={type} placeholder={label} aria-label={label} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} className={className} min={type === "number" ? 0 : undefined} step={type === "number" ? "any" : undefined} />
             )}
@@ -194,6 +207,7 @@ function CvRowActions(props: CvRowLocation & { label: string, onClick: () => voi
         experience: "Tecrübeyi kaydet",
         projects: "Projeyi kaydet",
         salary: "Hedef maaşı kaydet",
+        certifications: "Sertifikayı kaydet",
     };
     if (!actions) throw new Error("CV satır işlemleri CV formunun içinde kullanılmalıdır.");
 
@@ -447,10 +461,45 @@ function AddTargetSalary(){
         </div>
     )
 }
+function Certifications() {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const panelId = useId();
+    const { control } = useFormContext<CvFormInput, unknown, CvFormOutput>();
+    const { fields, append, remove } = useFieldArray({ control, name: "certifications" });
+    const rowOrder = fields.map(field => field.id);
+
+    return (
+        <div className={sectionClassName}>
+            <div className={sectionHeaderClassName}>
+                <p className="p-3 text-base">Sertifikalar</p>
+                <button type="button" className="self-start cursor-pointer" aria-label="Sertifikalar alanını aç/kapat" aria-expanded={isExpanded} aria-controls={panelId} onClick={() => setIsExpanded(previous => !previous)}>
+                    <IoIosArrowDropdown aria-hidden="true" className="w-6 h-6 mr-3 mt-3" />
+                </button>
+            </div>
+            <div id={panelId} hidden={!isExpanded} className="h-[350px] xl:w-full bg-white relative rounded-sm overflow-y-scroll scrollbar-none">
+                <div className="text-blue-400 flex flex-row text-md justify-end mr-3">
+                    <button type="button" className="flex flex-row cursor-pointer" onClick={() => append({ name: "", issuer: "" })}>
+                        <IoAddOutline aria-hidden="true" className="w-5 h-5 object-fit" /> Sertifika Ekle
+                    </button>
+                </div>
+                <div className="flex flex-col w-full">
+                    {fields.map((field, index) => (
+                        <div className="flex flex-col gap-y-3 p-4 border-2 border-slate-200 rounded-md md:w-lg xl:w-full" key={field.id}>
+                            <CvInput name={`certifications.${index}.name`} label="Sertifika Adı" widthClassName="w-full" showLabel />
+                            <CvInput name={`certifications.${index}.issuer`} label="Veren Kurum" options={certificationIssuers} selectPlaceholder="Kurum seçin" widthClassName="w-full" insetSelectArrow showLabel />
+                            <CvRowActions section="certifications" rowId={field.id} index={index} rowOrder={rowOrder} label="Sertifikayı sil" onClick={() => remove(index)} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export function CreateCvPage(){
     const [preview, setPreview] = useState<CvPreviewState>({
         cv: initialCv,
-        rowIds: { skills: [], educations: [], experience: [], projects: [] },
+        rowIds: { skills: [], educations: [], experience: [], projects: [], certifications: [] },
     });
     const cv = preview.cv;
     const form = useForm<CvFormInput, unknown, CvFormOutput>({
@@ -481,6 +530,7 @@ export function CreateCvPage(){
                 purpose: project.purpose ?? "",
             })) ?? [],
             salary: cv.salary,
+            certifications: cv.certifications ?? [],
         },
     });
 
@@ -558,6 +608,7 @@ export function CreateCvPage(){
                     </div>
                     <AddTargetSalary/>
                 </div>
+                <Certifications />
 
                 </div>
                 <div className=" b-2  w-screen max-sm:w-full md:w-full xl:w-3/6 h-screen p-4">
@@ -620,6 +671,13 @@ export function CreateCvPage(){
                             left={<p>Min Maaş: {cv.salary.minSalary?.toLocaleString("tr-TR")}</p>}
                             right={<p>Max Maaş: {cv.salary.maxSalary?.toLocaleString("tr-TR")}</p>}
                         />}
+                        <div className="max-sm:w-full">
+                            <h3 className="font-bold">Sertifikalar</h3>
+                            <div className="border-t border-black w-84 max-sm:w-84 max-sm:ml-2 lg:w-2xl xl:w-xl"></div>
+                        </div>
+                        {cv.certifications?.map((certification, index) => (
+                            <CvPreviewRow key={preview.rowIds.certifications[index]} left={<p>{certification.name}</p>} right={<p>{certification.issuer}</p>} />
+                        ))}
                         
                     </div>
                 </div>
