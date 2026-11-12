@@ -3,6 +3,7 @@
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { getDashboardPendingRequests, subscribeDashboardLoading } from "@/shared/api/dashboard-loading";
+import { ROUTES } from "@/shared/config/routes";
 import { DashboardPageSkeleton } from "./dashboard-page-skeleton";
 
 function PageDataBoundary({ children, pathname }: { children: ReactNode; pathname: string }) {
@@ -43,5 +44,8 @@ function PageDataBoundary({ children, pathname }: { children: ReactNode; pathnam
 
 export function DashboardDataBoundary({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  if (pathname === ROUTES.employerNewExam || pathname === ROUTES.hrNewExam) {
+    return children;
+  }
   return <PageDataBoundary key={pathname} pathname={pathname}>{children}</PageDataBoundary>;
 }
