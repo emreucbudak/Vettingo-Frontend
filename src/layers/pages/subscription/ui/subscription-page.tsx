@@ -40,40 +40,34 @@ function PlanCard({
 
   return (
     <article
-      className={`relative flex min-h-[420px] flex-col rounded-[28px] border-2 bg-white p-6 transition duration-200 sm:p-7 ${
+      className={`relative flex min-h-[420px] flex-col rounded-[28px] border bg-white p-6 transition duration-200 sm:p-7 ${
         isSelected
           ? "border-[#6f42e8] shadow-[0_20px_55px_rgba(111,66,232,0.17)]"
           : "border-[#e3e5e9] shadow-[0_14px_36px_rgba(9,20,38,0.06)]"
       }`}
     >
-      <div className="flex min-h-7 items-start justify-between gap-3">
-        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#091426]">
+      <header className="flex items-baseline justify-between gap-4">
+        <h2 className="min-w-0 flex-1 wrap-anywhere text-2xl font-bold leading-tight tracking-[-0.02em] text-[#091426]">
           {plan.name}
         </h2>
-      </div>
 
-      <p className="mt-1.5 min-h-10 text-sm leading-5 text-[#72767e]">
-        {plan.description}
-      </p>
-
-      <div className="mt-6 flex items-center gap-2.5">
-        <div className="flex items-start text-[#091426]">
-          <span className="mt-1 text-lg font-semibold">$</span>
-          <span className="text-[40px] font-bold leading-none tracking-[-0.04em]">
-            {formatPrice(price)}
-          </span>
+        <div className="max-w-[55%] text-right">
+          <p className="wrap-anywhere text-2xl font-bold leading-none tracking-[-0.04em] text-[#091426] tabular-nums sm:text-3xl">
+            ${formatPrice(price)}
+          </p>
+          <p className="mt-1.5 text-xs leading-4 text-[#5d626b]">
+            {price === 0
+              ? "Her zaman ücretsiz"
+              : `Kullanıcı / ay, ${
+                  billingPeriod === "annual" ? "yıllık" : "aylık"
+                } faturalandırılır`}
+          </p>
         </div>
-      </div>
+      </header>
 
-      <p className="mt-2 text-xs leading-5 text-[#5d626b]">
-        {price === 0
-          ? "Her zaman ücretsiz"
-          : `Kullanıcı / ay, ${
-              billingPeriod === "annual" ? "yıllık" : "aylık"
-            } faturalandırılır`}
-      </p>
+      <hr className="my-5 border-0 border-t border-[#e3e5e9]" />
 
-      <ul className="mt-6 space-y-3.5" aria-label={`${plan.name} özellikleri`}>
+      <ul className="mb-6 space-y-3.5" aria-label={`${plan.name} özellikleri`}>
         {plan.features.map((feature) => (
           <li
             className="flex items-start gap-2.5 text-sm leading-5 text-[#34373d]"
