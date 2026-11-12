@@ -5,5 +5,5 @@ import { EmployerShell } from "@/widgets/employer/shell";
 export const metadata: Metadata = { title: "Sınavlar | Vettingo" };
 
 export default function EmployerExamsRoute() {
-  return <EmployerShell><ExamsPage /></EmployerShell>;
+  return <EmployerShell><ExamsPage isEmployer /></EmployerShell>;
 }
