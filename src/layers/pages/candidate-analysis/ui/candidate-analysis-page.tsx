@@ -35,7 +35,7 @@ const employerNavigation = [
   { key: "jobs", label: "İlanlar", icon: "business_center", href: ROUTES.employerJobs },
   {
     key: "applications",
-    label: "Başvurular",
+    label: "Adaylar",
     icon: "assignment_ind",
     href: ROUTES.employerApplications,
   },

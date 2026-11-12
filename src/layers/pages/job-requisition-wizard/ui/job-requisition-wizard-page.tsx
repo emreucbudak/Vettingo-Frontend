@@ -207,7 +207,7 @@ export function JobRequisitionWizardPage({ embedded = false }: { embedded?: bool
         <main className="employer-dashboard-theme flex flex-1 justify-center overflow-y-auto bg-[#f8f9ff] p-4 md:p-8">
           <div className="grid w-full max-w-[1440px] grid-cols-1 gap-8 lg:grid-cols-12">
             <section className="flex flex-col gap-6 lg:col-span-8">
-              <PageIntro />
+              {embedded && <PageIntro />}
               <Stepper activeStep={activeStep} />
               <form className="flex flex-col gap-6" onSubmit={(event) => {
                 event.preventDefault();

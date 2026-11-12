@@ -1,5 +1,4 @@
 import { MdOutlineAdd, MdOutlineAutoAwesome } from "react-icons/md";
-import { AppIcon } from "@/shared/ui/icon";
 import Link from "next/link";
 import { Fragment } from "react";
 import { EmployerJobStatistics } from "@/features/employer-dashboard";
@@ -37,36 +36,6 @@ function PageHeader({
       </div>
       {action}
     </header>
-  );
-}
-
-function StatStrip({
-  items,
-}: {
-  items: readonly { label: string; value: string; helper?: string; icon?: string }[];
-}) {
-  return (
-    <section className="mb-7 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {items.map((item) => (
-        <article
-          className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-4"
-          key={item.label}
-        >
-          <div className="flex items-center justify-between">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#45474c]">
-              {item.label}
-            </p>
-            {item.icon ? (
-              <AppIcon className="text-[20px] text-[#45474c]">{item.icon}</AppIcon>
-            ) : null}
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-[#0b1c30]">{item.value}</p>
-          {item.helper ? (
-            <p className="mt-1 text-[11px] font-medium text-[#006c49]">{item.helper}</p>
-          ) : null}
-        </article>
-      ))}
-    </section>
   );
 }
 
@@ -110,15 +79,6 @@ export function EmployerApplicationsPage() {
   return (
     <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-        <StatStrip
-          items={[
-            { label: "Toplam Başvuru", value: "38" },
-            { label: "İnceleniyor", value: "24" },
-            { label: "Mülakat", value: "11" },
-            { label: "Teklif", value: "89" },
-          ]}
-        />
-
         <EmployerApplicationList />
       </main>
     </EmployerShell>
