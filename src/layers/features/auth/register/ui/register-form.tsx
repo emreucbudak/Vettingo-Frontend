@@ -37,8 +37,6 @@ const leadingIconClass =
 
 const employerRegistrationTokenStorageKey =
   "vettingo:employer-registration-token";
-const candidateRegistrationTokenStorageKey =
-  "vettingo:candidate-registration-token";
 
 function SelectChevron() {
   return <MdExpandMore aria-hidden="true" focusable="false" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#45474c]" />;
@@ -105,15 +103,11 @@ export function RegisterForm() {
           employerRegistrationTokenStorageKey,
           registrationResult.token,
         );
-        router.replace(ROUTES.subscription);
-        return;
       }
 
-      sessionStorage.setItem(
-        candidateRegistrationTokenStorageKey,
-        registrationResult.token,
+      router.replace(
+        `${ROUTES.verifyEmail}?accountType=${registrationResult.accountType}`,
       );
-      router.replace(ROUTES.candidateSubscription);
     } catch (error) {
       setError("root", {
         type: "server",
