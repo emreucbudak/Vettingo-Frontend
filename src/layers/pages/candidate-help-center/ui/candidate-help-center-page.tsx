@@ -48,6 +48,11 @@ const frequentlyAskedQuestions = [
       "İşler sayfasından ilan ayrıntılarını inceleyebilir ve başvuru adımını başlatabilirsin. Başvurun tamamlandığında ilan Aday Paneli içindeki Başvurular bölümünde görünür.",
   },
   {
+    question: "Vettingo, aday bilgilerini toplamak için açılan ilanlara karşı beni nasıl korur?",
+    answer:
+      "İşe alım sürecinin son aşamasında size gönderilen teklifi kabul edene kadar hiçbir kişisel bilginiz işverenle paylaşılmaz.",
+  },
+  {
     question: "Mülakat veya değerlendirme bağlantım çalışmıyor, ne yapmalıyım?",
     answer:
       "Önce bağlantının tarih ve saatini kontrol et. Sorun devam ederse destek ekibiyle ekran görüntüsü ve hata ayrıntılarını paylaşabilirsin.",
