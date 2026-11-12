@@ -147,14 +147,7 @@ function Skeleton({ className = "" }: {
 
 export function HrCandidatesSkeleton() {
   return <SkeletonPage label="HR aday havuzu">
-    <StatCards />
-    <section className="mb-6 rounded border border-[#c5c6cd] bg-[#eff4ff] p-4 md:p-5">
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(240px,1fr)_repeat(3,minmax(150px,auto))]">
-        {Array.from({ length: 4 }, (_, index) => <Skeleton className="h-10 w-full" key={index} />)}
-      </div>
-    </section>
-    <SectionTitle />
-    <TableSkeleton avatar columns={[4, 4, 2, 1, 1]} breakpoint="xl" />
+    <TableSkeleton columns={[3, 3, 2, 2, 2]} />
   </SkeletonPage>;
 }
 
