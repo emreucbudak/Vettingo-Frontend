@@ -21,18 +21,23 @@ export default function Loading() {
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }, (_, index) => (
             <div
-              className="min-h-[420px] rounded-[28px] border-2 border-[#e3e5e9] bg-white p-7"
+              className="flex min-h-[420px] flex-col rounded-[28px] border border-[#e3e5e9] bg-white p-6 sm:p-7"
               key={index}
             >
-              <Skeleton className="h-8 w-24" />
-              <Skeleton className="mt-3 h-4 w-4/5" />
-              <Skeleton className="mt-8 h-10 w-36" />
-              <div className="mt-8 space-y-4">
+              <div className="flex items-start justify-between gap-4">
+                <Skeleton className="h-7 w-24" />
+                <div className="flex flex-col items-end gap-1.5">
+                  <Skeleton className="h-6 w-16 sm:h-8" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+              </div>
+              <div className="my-5 border-t border-[#e3e5e9]" />
+              <div className="mb-6 space-y-4">
                 {Array.from({ length: 4 }, (_, featureIndex) => (
                   <Skeleton className="h-4 w-full" key={featureIndex} />
                 ))}
               </div>
-              <Skeleton className="mt-10 h-12 w-full rounded-xl" />
+              <Skeleton className="mt-auto h-12 w-full rounded-xl" />
             </div>
           ))}
         </div>
