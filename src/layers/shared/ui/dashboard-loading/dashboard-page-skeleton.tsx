@@ -291,8 +291,7 @@ export function HrSettingsSkeleton() {
 
 export function EmployerApplicationsSkeleton() {
   return <SkeletonPage label="İşveren başvuruları">
-    <StatCards compact />
-    <TableSkeleton avatar columns={[3, 3, 2, 2, 2, 2]} />
+    <TableSkeleton columns={[3, 3, 2, 2, 2]} />
   </SkeletonPage>;
 }
 
@@ -760,14 +759,16 @@ export function JobEditSkeleton() {
   </SkeletonPage>;
 }
 
-export function NewJobSkeleton() {
+export function NewJobSkeleton({ showIntro = false }: { showIntro?: boolean }) {
   return <SkeletonPage label="Yeni iş ilanı sayfası">
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
       <section className="space-y-6 lg:col-span-8">
-        <div>
-          <Skeleton className="h-10 w-72" />
-          <Skeleton className="mt-2 h-6 w-full max-w-xl" />
-        </div>
+        {showIntro && (
+          <div>
+            <Skeleton className="h-10 w-72" />
+            <Skeleton className="mt-2 h-6 w-full max-w-xl" />
+          </div>
+        )}
         <div className="flex gap-3">
           {[0, 1, 2].map(step => <Skeleton className="h-8 w-28" key={step} />)}
         </div>
@@ -793,7 +794,7 @@ export function NewJobSkeleton() {
 const skeletons = [
   { route: "/employer/jobs/[id]/post", component: JobEditSkeleton },
   { route: "/hr/jobs/[id]/post", component: JobEditSkeleton },
-  { route: "/hr/jobs/new", component: NewJobSkeleton },
+  { route: "/hr/jobs/new", component: () => <NewJobSkeleton showIntro /> },
   { route: "/jobs/new", component: NewJobSkeleton },
   { route: "/candidate/cv", component: CandidateCvSkeleton },
   { route: "/employer/company", component: EmployerCompanySkeleton },
