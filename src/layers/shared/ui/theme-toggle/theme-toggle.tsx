@@ -1,8 +1,9 @@
 "use client";
 
-import { AppIcon } from "@/shared/ui/icon";
-
+import { usePathname } from "next/navigation";
 import { useEffect, useSyncExternalStore } from "react";
+import { ROUTES } from "@/shared/config/routes";
+import { AppIcon } from "@/shared/ui/icon";
 
 const STORAGE_KEY = "vettingo-theme";
 const THEME_CHANGE_EVENT = "vettingo-theme-change";
@@ -32,12 +33,17 @@ function saveTheme(theme: ThemePreference) {
 }
 
 export function ThemeToggle() {
+  const pathname = usePathname();
   const theme = useSyncExternalStore(subscribeToThemeChanges, getStoredTheme, () => "light");
   const isDark = theme === "dark";
 
   useEffect(() => {
     document.documentElement.classList.toggle("theme-dark", isDark);
   }, [isDark]);
+
+  if (pathname === ROUTES.employerNewExam || pathname === ROUTES.hrNewExam) {
+    return null;
+  }
 
   return (
     <button
