@@ -38,6 +38,11 @@ const frequentlyAskedQuestions = [
       'Başvurular ekranında deneyim, yetenek, lokasyon ve değerlendirme durumu gibi ölçütleri birlikte kullanabilir; sık kullandığın görünümleri kaydedebilirsin.',
   },
   {
+    question: 'Mülakat sonucunu girmeyi unutursam ne olur?',
+    answer:
+      'Mülakat sonucunu girmezseniz aday otomatik olarak başarısız sayılır ve adayla olan bağlantınızı kaybedersiniz.',
+  },
+  {
     question: 'Yetenekler bölümündeki eşleşme skoru neyi gösterir?',
     answer:
       'Eşleşme skoru; adayın deneyimini, yeteneklerini ve ilan gereksinimlerini birlikte değerlendirir. Skor bir karar yerine inceleme sürecini destekleyen karşılaştırmalı bir göstergedir.',

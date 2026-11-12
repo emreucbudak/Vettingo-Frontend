@@ -328,6 +328,11 @@ export const hrFaqs = [
       "Mülakatlar sayfasındaki panel hazırlığı ve bekleyen değerlendirmeler alanı, açık geri bildirimleri tek yerde gösterir.",
   },
   {
+    question: "Mülakat sonucunu girmeyi unutursam ne olur?",
+    answer:
+      "Mülakat sonucunu girmezseniz aday otomatik olarak başarısız sayılır ve adayla olan bağlantınızı kaybedersiniz.",
+  },
+  {
     question: "Raporlar hangi dönemi kapsıyor?",
     answer:
       "Raporlar sayfası varsayılan olarak son altı aylık işe alım hunisini ve departman performansını örnek verilerle sunar.",
