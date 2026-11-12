@@ -4,6 +4,7 @@ import {
   type SubscriptionAccountType,
   type SubscriptionPlan,
 } from "@/entities/subscription";
+import { ROUTES } from "@/shared/config/routes";
 
 export type { SubscriptionAccountType } from "@/entities/subscription";
 
@@ -37,8 +38,8 @@ export function getPaymentPageData(
     amountInMinorUnits: totalPrice * 100,
     backHref:
       accountType === "candidate"
-        ? "/subscription/candidate"
-        : "/subscription",
+        ? ROUTES.register
+        : ROUTES.subscription,
     billingPeriod: selection.billingPeriod,
     plan: selection.plan,
     totalPrice,

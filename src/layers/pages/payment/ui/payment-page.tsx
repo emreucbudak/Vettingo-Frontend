@@ -4,6 +4,7 @@ import { MdOutlineArrowBack, MdOutlineCheck, MdOutlineLock } from "react-icons/m
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ROUTES } from "@/shared/config/routes";
 import {
   getPaymentPageData,
   type PaymentPageData,
@@ -43,22 +44,24 @@ export function PaymentPage({
   }
 
   if (paymentData === null) {
+    const isCandidate = accountType === "candidate";
     const backHref =
-      accountType === "candidate" ? "/subscription/candidate" : "/subscription";
+      isCandidate ? ROUTES.register : ROUTES.subscription;
 
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#f8f9ff] px-4">
         <div className="max-w-md rounded-2xl border border-[#e0e2e7] bg-white p-8 text-center shadow-[0_20px_55px_rgba(9,20,38,0.08)]">
           <h1 className="text-xl font-bold text-[#091426]">Plan seçimi bulunamadı</h1>
           <p className="mt-3 text-sm leading-6 text-[#5d626b]">
-            Ödeme sayfasına devam etmek için backend’den yüklenen planlardan
-            birini seçmelisiniz.
+            {isCandidate
+              ? "Aday hesabınızı kayıt sayfasından oluşturabilirsiniz."
+              : "Ödeme sayfasına devam etmek için backend’den yüklenen planlardan birini seçmelisiniz."}
           </p>
           <Link
             className="mt-6 inline-flex rounded-xl bg-[#6f42e8] px-5 py-3 text-sm font-bold text-white"
             href={backHref}
           >
-            Planlara dön
+            {isCandidate ? "Kayıt sayfasına git" : "Planlara dön"}
           </Link>
         </div>
       </main>
@@ -114,7 +117,7 @@ function PaymentPageContent({
             href={backHref}
           >
             <MdOutlineArrowBack aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-lg" />
-            Planlara dön
+            {accountType === "candidate" ? "Kayıt sayfasına git" : "Planlara dön"}
           </Link>
 
           <div className="mt-5 grid items-start gap-7 lg:grid-cols-[minmax(0,0.88fr)_minmax(480px,1.12fr)]">
