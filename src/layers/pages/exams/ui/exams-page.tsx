@@ -100,7 +100,7 @@ function ExamActionDialog({
   );
 }
 
-export function ExamsPage() {
+export function ExamsPage({ isEmployer = false }: { isEmployer?: boolean }) {
   const [exams, setExams] = useState<readonly Exam[]>(exampleExams);
   const [action, setAction] = useState<ExamAction | null>(null);
   const [message, setMessage] = useState("");
@@ -136,7 +136,7 @@ export function ExamsPage() {
       <section aria-labelledby="exams-title" className="overflow-hidden rounded border border-[#c5c6cd] bg-[#f8f9ff]">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#c5c6cd] px-5 py-5 md:px-6">
           <div className="flex items-center gap-3">
-            <h1 id="exams-title" className="text-lg font-semibold text-[#0b1c30]">Sınavlarımız</h1>
+            <h1 id="exams-title" className="text-lg font-semibold text-[#0b1c30]">{isEmployer ? "Sınavlar" : "Sınavlarımız"}</h1>
             <span className="rounded-full border border-[#c5c6cd] bg-[#eff4ff] px-3 py-1 text-xs font-medium text-[#45474c]">{exams.length} sınav</span>
           </div>
           <button type="button" onClick={startCreateExam} className="ml-auto inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#20334d] focus-visible:outline-2 focus-visible:outline-offset-2">
@@ -160,9 +160,11 @@ export function ExamsPage() {
                 <tr key={exam.id} className="transition-colors hover:bg-[#eff4ff]">
                   <th scope="row" className="px-6 py-5 font-semibold text-[#0b1c30]">
                     <div className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]">
-                        <MdOutlineAssignment aria-hidden="true" className="text-xl" />
-                      </span>
+                      {!isEmployer && (
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]">
+                          <MdOutlineAssignment aria-hidden="true" className="text-xl" />
+                        </span>
+                      )}
                       <span className="break-words [overflow-wrap:anywhere]">{exam.name}</span>
                     </div>
                   </th>
@@ -188,7 +190,9 @@ export function ExamsPage() {
             </tbody>
           </table>
         </div>
-        <p className="border-t border-[#c5c6cd] px-6 py-3 text-xs text-[#75777d]">Örnek sınav listesi</p>
+        {!isEmployer && (
+          <p className="border-t border-[#c5c6cd] px-6 py-3 text-xs text-[#75777d]">Örnek sınav listesi</p>
+        )}
       </section>
       <p role="status" className="mt-4 text-sm text-[#006c49]">{message}</p>
       {action && <ExamActionDialog action={action} onClose={() => setAction(null)} onSave={saveExam} onDelete={deleteExam} />}
