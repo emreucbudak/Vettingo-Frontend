@@ -413,6 +413,7 @@ function TestimonialsSection() {
 export function LandingPage() {
   return (
     <PublicSiteShell
+      copyright="© 2026 Vettingo. Tüm hakları saklıdır."
       homeHref={ROUTES.landing}
       productName={landingPage.productName}
     >
