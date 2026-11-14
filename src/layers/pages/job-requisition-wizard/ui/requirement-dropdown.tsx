@@ -8,11 +8,11 @@ type RequirementRow = { id: string; value: string; detail: string };
 const fieldClass = "w-full rounded-lg border border-[#c5c6cd] bg-white px-4 py-2 text-sm text-[#0b1c30] outline-none focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
 const departments = ["Bilgisayar Mühendisliği", "Yazılım Mühendisliği", "Elektrik-Elektronik Mühendisliği", "Endüstri Mühendisliği", "Makine Mühendisliği", "İşletme", "İktisat", "Matematik", "İstatistik", "Psikoloji", "Diğer"];
 
-export function RequirementDropdown({ label, addLabel, name, options }: {
+export function RequirementDropdown({ label, addLabel, name, options = [] }: {
   label: string;
   addLabel: string;
   name: "education" | "skills";
-  options: readonly string[];
+  options?: readonly string[];
 }) {
   const isEducation = name === "education";
   const [rows, setRows] = useState<RequirementRow[]>([]);
@@ -117,8 +117,7 @@ export function RequirementDropdown({ label, addLabel, name, options }: {
             <>
               <div>
                 <label className="mb-2 block text-sm font-semibold" htmlFor="skill-drawer-name">Yetenek Adı</label>
-                <input className={fieldClass} id="skill-drawer-name" list="skill-suggestions" onChange={(event) => setSkill(event.target.value)} placeholder="Yetenek adını yazın" value={skill} />
-                <datalist id="skill-suggestions">{options.map((option) => <option key={option} value={option} />)}</datalist>
+                <input className={fieldClass} id="skill-drawer-name" onChange={(event) => setSkill(event.target.value)} placeholder="Yetenek adını yazın" type="text" value={skill} />
               </div>
               <div>
                 <label className="mb-2 block text-sm font-semibold" htmlFor="skill-drawer-years">Tecrübe Yılı</label>
