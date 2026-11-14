@@ -12,6 +12,7 @@ import {
 import { Fragment, useId, useRef, useState } from "react";
 import { RequirementDropdown } from "./requirement-dropdown";
 import { EmployerShell } from "@/widgets/employer/shell";
+import { exampleExams } from "@/entities/exam";
 import {
   assistantInsights,
   requisitionForm,
@@ -115,9 +116,31 @@ function RequirementsCard() {
 }
 
 const stageOptions = ["Sınav", "Mülakat"] as const;
+const startDateField = { key: "startDate", label: "Başlangıç Tarihi", type: "date" } as const;
+const endDateField = { key: "endDate", label: "Bitiş Tarihi", type: "date" } as const;
+const examFields = [startDateField, endDateField] as const;
+const interviewFields = [
+  { key: "duration", label: "Mülakat Süresi (dakika)", type: "number" },
+  startDateField,
+  { key: "startTime", label: "Başlangıç Saati", type: "time" },
+  endDateField,
+  { key: "endTime", label: "Bitiş Saati", type: "time" },
+  { key: "link", label: "Mülakat Linki", type: "url" },
+] as const;
 
 type StageType = (typeof stageOptions)[number];
-type JobStage = { id: string; type: StageType; name: string; detail: string };
+type StageFieldValues = Partial<Record<(typeof interviewFields)[number]["key"], string>>;
+type JobStage = {
+  id: string;
+  type: StageType;
+  name: string;
+  fields?: StageFieldValues;
+};
+
+type FixedStage = { id: string; name: string; type?: never };
+
+const applicationStage: FixedStage = { id: "application", name: "Aday Başvuru" };
+const offerStage: FixedStage = { id: "offer", name: "Teklif" };
 
 function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
   stages: readonly JobStage[];
@@ -127,22 +150,32 @@ function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const [selectedStage, setSelectedStage] = useState<StageType | null>(null);
-  const [stageName, setStageName] = useState("");
-  const [stageDetail, setStageDetail] = useState("");
-  const validDetail = selectedStage !== "Sınav" || !stageDetail ||
-    (Number.isInteger(Number(stageDetail)) && Number(stageDetail) > 0);
+  const [examId, setExamId] = useState("");
+  const [interviewName, setInterviewName] = useState("");
+  const [fieldValues, setFieldValues] = useState<StageFieldValues>({});
+  const stageName = selectedStage === "Sınav"
+    ? exampleExams.find((exam) => exam.id === examId)?.name ?? ""
+    : interviewName.trim();
 
   function selectStage(stage: StageType | null) {
     setSelectedStage(stage);
-    setStageName("");
-    setStageDetail("");
+    setExamId("");
+    setInterviewName("");
+    setFieldValues({});
   }
 
   function addStage() {
-    if (!selectedStage || !stageName.trim() || !validDetail) return;
+    if (!selectedStage || !stageName) return;
+    const dialog = dialogRef.current;
+    if (!dialog || !Array.from(dialog.querySelectorAll("input")).every((input) => input.reportValidity())) return;
 
-    onAddStage({ id: crypto.randomUUID(), type: selectedStage, name: stageName.trim(), detail: stageDetail });
-    dialogRef.current?.close();
+    onAddStage({
+      id: crypto.randomUUID(),
+      type: selectedStage,
+      name: stageName,
+      fields: fieldValues,
+    });
+    dialog.close();
   }
 
   return (
@@ -159,31 +192,43 @@ function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
         </button>
       </div>
 
-      {stages.length > 0 && (
-        <ol aria-label="İlan aşamaları" className="mt-4 space-y-2">
-          {stages.map((stage, index) => (
-            <li className="flex items-center gap-3 rounded-lg border border-[#c5c6cd] px-4 py-3 text-sm font-medium text-[#0b1c30]" key={stage.id ?? index}>
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eff4ff] text-xs font-semibold">
-                {index + 1}
-              </span>
-              <div className="min-w-0 flex-1 break-words">
-                <p>{stage.name}</p>
-                <p className="mt-1 text-xs font-normal text-[#45474c]">
-                  {stage.type}{stage.detail && (stage.type === "Sınav" ? ` · ${stage.detail} dk` : ` · ${stage.detail}`)}
-                </p>
-              </div>
+      <ol aria-label="İlan aşamaları" className="mt-4 space-y-2">
+        {[applicationStage, ...stages, offerStage].map((stage, index) => (
+          <li className="flex items-center gap-3 rounded-lg border border-[#c5c6cd] px-4 py-3 text-sm font-medium text-[#0b1c30]" key={stage.id ?? index}>
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eff4ff] text-xs font-semibold">
+              {index + 1}
+            </span>
+            <div className="min-w-0 flex-1 break-words">
+              <p>{stage.type === "Mülakat" ? `${stage.name} Mülakatı` : stage.name}</p>
+              {stage.type && (
+                <>
+                  {stage.type === "Sınav" && (
+                    <p className="mt-1 text-xs font-normal text-[#45474c]">{stage.type}</p>
+                  )}
+                  {(stage.type === "Sınav" ? examFields : interviewFields).map(({ key, label }) => {
+                    const value = stage.fields?.[key];
+                    return value ? (
+                      <p className="mt-1 text-xs font-normal text-[#45474c]" key={key}>
+                        {label} · {value}
+                      </p>
+                    ) : null;
+                  })}
+                </>
+              )}
+            </div>
+            {stage.type && (
               <button
                 aria-label={`${index + 1}. aşamayı kaldır`}
                 className="shrink-0 rounded bg-red-100 p-2 text-red-700 hover:bg-red-200 focus-visible:outline-[#091426]"
-                onClick={() => onRemoveStage(index)}
+                onClick={() => onRemoveStage(index - 1)}
                 type="button"
               >
                 <MdOutlineDeleteOutline aria-hidden="true" className="text-xl" />
               </button>
-            </li>
-          ))}
-        </ol>
-      )}
+            )}
+          </li>
+        ))}
+      </ol>
 
       <dialog
         aria-labelledby={titleId}
@@ -214,7 +259,7 @@ function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
             const panelId = `${titleId}-stage-${index}`;
 
             return (
-              <div className={`rounded-lg border bg-white ${isOpen ? "border-[#091426]" : "border-[#c5c6cd]"}`} key={label}>
+              <div className="rounded-lg border border-[#c5c6cd] bg-white" key={label}>
                 <button
                   aria-controls={panelId}
                   aria-expanded={isOpen}
@@ -229,24 +274,43 @@ function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
                   {isOpen && (
                     <div className="space-y-4 border-t border-[#c5c6cd] p-3">
                       <label className="block text-sm font-medium">
-                        {label} Adı
-                        <input className={`mt-1 ${inputClass}`} onChange={(event) => setStageName(event.target.value)} type="text" value={stageName} />
+                        {label === "Sınav" ? "Sınav" : "Mülakat Aşama Adı"}
+                        {label === "Sınav" ? (
+                          <span className="relative mt-1 block">
+                            <select
+                              className={`${inputClass} appearance-none pr-10`}
+                              onChange={(event) => setExamId(event.target.value)}
+                              value={examId}
+                            >
+                              <option value="" disabled>Sınav seçin</option>
+                              {exampleExams.map((exam) => (
+                                <option key={exam.id} value={exam.id}>{exam.name}</option>
+                              ))}
+                            </select>
+                            <MdOutlineExpandMore
+                              aria-hidden="true"
+                              className="pointer-events-none absolute right-[7px] top-1/2 -translate-y-1/2 text-[18px] text-[#0b1c30]"
+                            />
+                          </span>
+                        ) : (
+                          <input className={`mt-1 ${inputClass}`} onChange={(event) => setInterviewName(event.target.value)} type="text" value={interviewName} />
+                        )}
                       </label>
-                      {label === "Sınav" ? (
-                        <label className="block text-sm font-medium">
-                          Süre (dakika)
-                          <input className={`mt-1 ${inputClass}`} aria-invalid={!validDetail} min={1} onChange={(event) => setStageDetail(event.target.value)} type="number" value={stageDetail} />
+                      {(label === "Sınav" ? examFields : interviewFields).map(({ key, label, type }) => (
+                        <label className="block text-sm font-medium" key={key}>
+                          {label}
+                          <input
+                            className={`mt-1 min-w-0 ${inputClass}`}
+                            min={type === "number" ? 1 : undefined}
+                            onChange={(event) => {
+                              const { value } = event.currentTarget;
+                              setFieldValues((values) => ({ ...values, [key]: value }));
+                            }}
+                            type={type}
+                            value={fieldValues[key] ?? ""}
+                          />
                         </label>
-                      ) : (
-                        <label className="block text-sm font-medium">
-                          Mülakat Biçimi
-                          <select className={`mt-1 ${inputClass}`} onChange={(event) => setStageDetail(event.target.value)} value={stageDetail}>
-                            <option value="">Biçim seçin</option>
-                            <option>Çevrim içi</option>
-                            <option>Yüz yüze</option>
-                          </select>
-                        </label>
-                      )}
+                      ))}
                     </div>
                   )}
                 </div>
@@ -257,7 +321,7 @@ function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
         <div className="mt-6 flex justify-end border-t border-[#c5c6cd] pt-4">
           <button
             className="rounded-lg bg-[#091426] px-5 py-2 text-xs font-semibold uppercase text-white hover:bg-[#1e293b] disabled:opacity-50"
-            disabled={!selectedStage || !stageName.trim() || !validDetail}
+            disabled={!selectedStage || !stageName}
             onClick={addStage}
             type="button"
           >
@@ -301,10 +365,20 @@ function ActionRow({ activeStep, onBack }: { activeStep: number; onBack: () => v
           Geri
         </button>
       )}
-      {activeStep < requisitionSteps.length && <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="submit">
-        {activeStep === 3 ? "Sonraki adıma geç" : "Devam Et"}
-        <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
-      </button>}
+      {activeStep < requisitionSteps.length ? (
+        <button className="flex items-center gap-1 rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#1e293b]" type="submit">
+          {activeStep === 3 ? "Sonraki adıma geç" : "Devam Et"}
+          <MdOutlineArrowForward aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
+        </button>
+      ) : (
+        <button
+          className="rounded-lg bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white disabled:cursor-not-allowed disabled:opacity-60"
+          disabled
+          type="button"
+        >
+          Yayınla
+        </button>
+      )}
     </div>
   );
 }
