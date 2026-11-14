@@ -803,6 +803,7 @@ const skeletons = [
   { route: "/hr/help-center", component: HrHelpCenterSkeleton },
   { route: "/employer/scout", component: EmployerScoutSkeleton },
   { route: "/candidate/jobs", component: CandidateJobsSkeleton },
+  { route: "/hr/candidates/[id]", component: EmployerApplicationsDetailSkeleton },
   { route: "/hr/candidates", component: HrCandidatesSkeleton },
   { route: "/hr/interviews", component: HrInterviewsSkeleton },
   { route: "/employer/jobs", component: EmployerJobsSkeleton },

@@ -10,8 +10,8 @@ export function HrCandidatePipeline() {
     targetRole: candidate.role,
     status: candidate.stage,
     rating: candidate.rating,
-    detailHref: ROUTES.hrInterviews,
-    detailLabel: `${candidate.name} için mülakatları aç`,
+    detailHref: `${ROUTES.hrCandidates}/${candidate.id}`,
+    detailLabel: `${candidate.name} aday detayını aç`,
   }));
 
   return <CandidateApplicationList candidates={rows} />;

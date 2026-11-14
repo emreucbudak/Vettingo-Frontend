@@ -35,7 +35,7 @@ const employerNavigation = [
   {
     key: "applications",
     label: "Adaylar",
-    icon: "assignment_ind",
+    icon: "groups",
     href: ROUTES.employerApplications,
   },
   { key: "talents", label: "Yetenekler", icon: "auto_awesome", href: ROUTES.employerTalents },
@@ -94,13 +94,19 @@ function CandidateHeader({
 }) {
   return (
     <section className="mb-8 flex flex-col items-start gap-6 rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 md:flex-row md:items-center">
-      <Image
-        alt={`${candidate.name} profil fotoğrafı`}
-        className="h-24 w-24 rounded-full border-2 border-[#dce9ff] object-cover"
-        height={96}
-        src={candidate.photoUrl}
-        width={96}
-      />
+      {candidate.photoUrl ? (
+        <Image
+          alt={`${candidate.name} profil fotoğrafı`}
+          className="h-24 w-24 rounded-full border-2 border-[#dce9ff] object-cover"
+          height={96}
+          src={candidate.photoUrl}
+          width={96}
+        />
+      ) : (
+        <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-2 border-[#dce9ff] bg-[#eff4ff] text-[#45474c]">
+          <AppIcon className="text-4xl">person</AppIcon>
+        </div>
+      )}
 
       <div className="flex-1">
         <div className="mb-1 flex flex-wrap items-center gap-4">
@@ -120,7 +126,7 @@ function CandidateHeader({
             { icon: "location_on", label: candidate.location },
             { icon: "mail", label: candidate.email },
             { icon: "work_history", label: candidate.experience },
-          ].map((item) => (
+          ].filter((item) => item.label).map((item) => (
             <div className="flex items-center gap-1" key={item.icon}>
               <AppIcon className="text-[18px]">{item.icon}</AppIcon>
               {item.label}
@@ -487,9 +493,11 @@ function AnalysisShell({ detailKind, children }: { detailKind: DetailKind; child
 export function CandidateAnalysisPage({
   candidate,
   detailKind,
+  embedded = false,
 }: {
   candidate: CandidateAnalysisProfile;
   detailKind: DetailKind;
+  embedded?: boolean;
 }) {
   const profile = candidate;
   const rating = profile.rating;
@@ -503,8 +511,7 @@ export function CandidateAnalysisPage({
     <RatingCard attributes={ratingAttributes} detailKind={detailKind} isLoading={isLoading} rating={rating} />
   );
 
-  return (
-    <AnalysisShell detailKind={detailKind}>
+  const content = (
       <main className="candidate-analysis-theme mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
         {isTalent ? <BreadcrumbActions candidate={profile} /> : null}
         <CandidateHeader
@@ -548,6 +555,7 @@ export function CandidateAnalysisPage({
           )) : null}
         </div>
       </main>
-    </AnalysisShell>
   );
+
+  return embedded ? content : <AnalysisShell detailKind={detailKind}>{content}</AnalysisShell>;
 }

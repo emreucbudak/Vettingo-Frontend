@@ -17,7 +17,7 @@ export const hrNavigationItems = [
   },
   {
     key: "candidates",
-    label: "Aday Havuzu",
+    label: "Adaylar",
     icon: "groups",
     href: ROUTES.hrCandidates,
   },
