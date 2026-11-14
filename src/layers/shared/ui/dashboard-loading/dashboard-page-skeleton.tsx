@@ -290,10 +290,6 @@ export function EmployerApplicationsSkeleton() {
 
 export function EmployerApplicationsDetailSkeleton() {
   return (<main aria-busy="true" aria-label="Başvuru detayı yükleniyor" className="candidate-analysis-theme mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8" role="status">
-    <header className="mb-6 flex items-center justify-between">
-      <Skeleton className="h-4 w-40" />
-      <Skeleton className="h-10 w-32" />
-    </header>
     <section className="mb-8 rounded border border-[#c5c6cd] bg-white p-6">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
         <Skeleton className="h-20 w-20 rounded-full" />
@@ -308,14 +304,16 @@ export function EmployerApplicationsDetailSkeleton() {
         <Skeleton className="h-20 w-24" />
       </div>
     </section>
-    <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <Skeleton className="h-72 border border-[#c5c6cd] bg-white lg:col-span-2" />
       <Skeleton className="h-72 border border-[#c5c6cd] bg-white" />
-      <Skeleton className="h-72 border border-[#c5c6cd] bg-white" />
-    </div>
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <Skeleton className="h-72 border border-[#c5c6cd] bg-white" />
-      <Skeleton className="h-72 border border-[#c5c6cd] bg-white" />
+      <div className="flex flex-col gap-6">
+        <Skeleton className="h-40 border border-[#c5c6cd] bg-white" />
+        <Skeleton className="h-24 border border-[#c5c6cd] bg-white" />
+      </div>
+      <Skeleton className="h-[74px] border border-[#c5c6cd] bg-white lg:col-span-2" />
+      <Skeleton className="h-20 border border-[#c5c6cd] bg-white" />
+      <Skeleton className="h-20 border border-[#c5c6cd] bg-white" />
     </div>
     <span className="sr-only">
       Başvuru detayı yükleniyor...
