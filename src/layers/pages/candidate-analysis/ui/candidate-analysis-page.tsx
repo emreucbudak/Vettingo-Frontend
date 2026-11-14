@@ -23,8 +23,7 @@ import {
 import { analysisUtilityItems } from "@/entities/candidate-analysis";
 import { ROUTES } from "@/shared/config/routes";
 import { DashboardShell } from "@/shared/ui/dashboard-shell";
-import { EmployerDashboardFooter, EmployerSidebar } from "@/widgets/employer/shell";
-import { CandidateShell } from "@/widgets/candidate/shell";
+import { EmployerDashboardFooter, EmployerShell, EmployerSidebar } from "@/widgets/employer/shell";
 import type { ReactNode } from "react";
 
 
@@ -50,33 +49,20 @@ function getNavigationItems(detailKind: DetailKind) {
   }));
 }
 
-function BreadcrumbActions({
-  candidate,
-  detailKind,
-}: {
-  candidate: CandidateAnalysisProfile;
-  detailKind: DetailKind;
-}) {
-  const isTalent = detailKind === "talent";
-  const collectionLabel = isTalent ? "Yetenekler" : "Başvurular";
-  const collectionHref = isTalent ? ROUTES.employerTalents : ROUTES.employerApplications;
-
+function BreadcrumbActions({ candidate }: { candidate: CandidateAnalysisProfile }) {
   return (
-    <div className={`mb-6 flex flex-col gap-4 lg:flex-row lg:items-center ${isTalent ? "lg:justify-between" : "items-end lg:justify-end"}`}>
-      {isTalent ? (
+    <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-wrap items-center gap-2 text-sm leading-5 text-[#45474c]">
-        <Link className="transition-colors hover:text-[#091426]" href={collectionHref}>
-          {collectionLabel}
+        <Link className="transition-colors hover:text-[#091426]" href={ROUTES.employerTalents}>
+          Yetenekler
         </Link>
         <MdOutlineChevronRight aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
         <span>{candidate.targetRole}</span>
         <MdOutlineChevronRight aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
         <span className="font-semibold text-[#0b1c30]">{candidate.name}</span>
       </div>
-      ) : null}
 
       <div className="flex flex-col gap-3 sm:flex-row">
-        {isTalent ? (
         <button
           className="flex items-center justify-center gap-2 rounded border border-[#75777d] bg-[#f8f9ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-[#091426] transition-colors hover:bg-[#eff4ff]"
           type="button"
@@ -84,12 +70,11 @@ function BreadcrumbActions({
           <MdOutlineDownload aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
           PDF Dışa Aktar
         </button>
-        ) : null}
         <button
           className="rounded bg-[#091426] px-4 py-2 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-opacity hover:opacity-90"
           type="button"
         >
-          {isTalent ? "İletişime Geç" : "Mülakat Planla"}
+          İletişime Geç
         </button>
       </div>
     </div>
@@ -98,10 +83,12 @@ function BreadcrumbActions({
 
 function CandidateHeader({
   candidate,
+  detailKind,
   isLoading,
   rating,
 }: {
   candidate: CandidateAnalysisProfile;
+  detailKind: DetailKind;
   isLoading: boolean;
   rating: number;
 }) {
@@ -120,10 +107,12 @@ function CandidateHeader({
           <h1 className="text-3xl font-semibold leading-10 tracking-[-0.02em] text-[#0b1c30]">
             {candidate.name}
           </h1>
-          <span className="flex items-center gap-1 rounded-full bg-[#dcfce7] px-4 py-1 text-[11px] font-semibold leading-4 text-[#006c49]">
-            <span className="h-2 w-2 rounded-full bg-[#10b981]" />
-            {isLoading ? <LoadingSkeleton className="h-4 w-24" /> : `Vettingo Rating ${rating}/100`}
-          </span>
+          {detailKind === "talent" ? (
+            <span className="flex items-center gap-1 rounded-full bg-[#dcfce7] px-4 py-1 text-[11px] font-semibold leading-4 text-[#006c49]">
+              <span className="h-2 w-2 rounded-full bg-[#10b981]" />
+              {isLoading ? <LoadingSkeleton className="h-4 w-24" /> : `Vettingo Rating ${rating}/100`}
+            </span>
+          ) : null}
         </div>
         <p className="mb-4 text-lg font-medium leading-6 text-[#45474c]">{candidate.title}</p>
         <div className="flex flex-wrap gap-6 text-sm leading-5 text-[#45474c]">
@@ -280,27 +269,37 @@ function RoleSuitabilityCard({
 
 function RatingCard({
   attributes,
+  detailKind,
   isLoading,
   rating,
 }: {
   attributes: readonly CandidateRatingAttribute[];
+  detailKind: DetailKind;
   isLoading: boolean;
   rating: number;
 }) {
+  const isTalent = detailKind === "talent";
+
   return (
     <section className="rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6">
       <div className="mb-4 flex items-start justify-between gap-3 border-b border-[#c5c6cd] pb-4">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#006c49]">
-            Vettingo Rating
-          </p>
-          <h2 className="mt-1 text-lg font-medium text-[#0b1c30]">Aday Özellikleri</h2>
+          {isTalent ? (
+            <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#006c49]">
+              Vettingo Rating
+            </p>
+          ) : null}
+          <h2 className="mt-1 text-lg font-medium text-[#0b1c30]">
+            {isTalent ? "Aday Özellikleri" : "Aday Ratingi"}
+          </h2>
         </div>
         <div className="rounded bg-[#091426] px-3 py-2 text-center text-white">
           <span className="block text-3xl font-bold leading-none">{isLoading ? "—" : rating}</span>
-          <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.08em] text-[#dce9ff]">
-            / 100
-          </span>
+          {isTalent ? (
+            <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.08em] text-[#dce9ff]">
+              / 100
+            </span>
+          ) : null}
         </div>
       </div>
       <div className="space-y-3">
@@ -309,18 +308,20 @@ function RatingCard({
         ) : (
           attributes.slice(0, 6).map((attribute) => (
             <div key={attribute.label}>
-              <div className="mb-1 flex items-center justify-between gap-3">
+              <div className={`flex items-center justify-between gap-3 ${isTalent ? "mb-1" : ""}`}>
                 <span className="text-[11px] font-semibold uppercase tracking-[0.04em] text-[#45474c]">
                   {attribute.label}
                 </span>
                 <span className="text-sm font-bold text-[#0b1c30]">{attribute.value}</span>
               </div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-[#d3e4fe]">
-                <div
-                  className="h-full rounded-full bg-[#006c49]"
-                  style={{ width: `${attribute.value}%` }}
-                />
-              </div>
+              {isTalent ? (
+                <div className="h-1.5 overflow-hidden rounded-full bg-[#d3e4fe]">
+                  <div
+                    className="h-full rounded-full bg-[#006c49]"
+                    style={{ width: `${attribute.value}%` }}
+                  />
+                </div>
+              ) : null}
             </div>
           ))
         )}
@@ -330,10 +331,12 @@ function RatingCard({
 }
 
 function ExperienceCard({ candidate, detailKind }: { candidate: CandidateAnalysisProfile; detailKind: DetailKind }) {
+  const isTalent = detailKind === "talent";
+
   return (
-    <section className="rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6">
+    <section className={`rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 ${isTalent ? "" : "lg:col-span-2"}`}>
       <div className="mb-6 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
-        {detailKind === "talent" ? <MdOutlineWork aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" /> : null}
+        {isTalent ? <MdOutlineWork aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" /> : null}
         <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Profesyonel Deneyim</h2>
       </div>
       <div className="relative space-y-8 before:absolute before:inset-y-0 before:left-[11px] before:w-[2px] before:bg-[#d3e4fe]">
@@ -350,17 +353,21 @@ function ExperienceCard({ candidate, detailKind }: { candidate: CandidateAnalysi
             <p className="text-xs font-semibold uppercase tracking-[0.05em] text-[#45474c]">
               {item.company} · {item.period}
             </p>
-            <p className="my-2 text-sm leading-5 text-[#45474c]">{item.description}</p>
-            <div className="flex flex-wrap gap-1">
-              {item.tags.map((tag) => (
-                <span
-                  className="rounded border border-[#c5c6cd] bg-[#eff4ff] px-2 py-1 text-[10px] font-semibold text-[#45474c]"
-                  key={tag}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {isTalent ? (
+              <>
+                <p className="my-2 text-sm leading-5 text-[#45474c]">{item.description}</p>
+                <div className="flex flex-wrap gap-1">
+                  {item.tags.map((tag) => (
+                    <span
+                      className="rounded border border-[#c5c6cd] bg-[#eff4ff] px-2 py-1 text-[10px] font-semibold text-[#45474c]"
+                      key={tag}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </>
+            ) : null}
           </article>
         ))}
       </div>
@@ -376,6 +383,7 @@ function CandidateContextCard({
   detailKind: DetailKind;
 }) {
   const isTalent = detailKind === "talent";
+  const cardClassName = "rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6";
   const talentSignals = [
     { icon: "event_available", label: "Müsaitlik", value: candidate.availability ?? "Görüşmede" },
     { icon: "location_on", label: "Çalışma Tercihi", value: candidate.workingPreference ?? candidate.location },
@@ -383,7 +391,7 @@ function CandidateContextCard({
   ];
 
   return (
-    <section className="flex flex-col gap-6 rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6">
+    <div className={`flex flex-col gap-6 ${isTalent ? cardClassName : ""}`}>
       {isTalent ? (
         <div>
           <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
@@ -404,7 +412,7 @@ function CandidateContextCard({
         </div>
       ) : null}
 
-      <div>
+      <section className={isTalent ? undefined : cardClassName}>
         <div className="mb-5 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
           {isTalent ? <MdOutlineSchool aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" /> : null}
           <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Eğitim</h2>
@@ -423,9 +431,9 @@ function CandidateContextCard({
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
-      <div className="mt-auto">
+      <section className={isTalent ? "mt-auto" : cardClassName}>
         <div className="mb-4 flex items-center gap-2 border-b border-[#c5c6cd] pb-2">
           {isTalent ? <MdOutlineWorkspacePremium aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[#091426]" /> : null}
           <h2 className="text-lg font-medium leading-6 text-[#0b1c30]">Sertifikalar</h2>
@@ -440,14 +448,14 @@ function CandidateContextCard({
             </span>
           ))}
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
 
 function AnalysisShell({ detailKind, children }: { detailKind: DetailKind; children: ReactNode }) {
   if (detailKind === "application") {
-    return <CandidateShell>{children}</CandidateShell>;
+    return <EmployerShell>{children}</EmployerShell>;
   }
 
   return (
@@ -490,43 +498,54 @@ export function CandidateAnalysisPage({
   const strengths = profile.strengths;
   const risks = profile.risks;
   const isLoading = false;
+  const isTalent = detailKind === "talent";
+  const ratingCard = (
+    <RatingCard attributes={ratingAttributes} detailKind={detailKind} isLoading={isLoading} rating={rating} />
+  );
 
   return (
     <AnalysisShell detailKind={detailKind}>
       <main className="candidate-analysis-theme mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
-        <BreadcrumbActions candidate={profile} detailKind={detailKind} />
+        {isTalent ? <BreadcrumbActions candidate={profile} /> : null}
         <CandidateHeader
           candidate={profile}
+          detailKind={detailKind}
           isLoading={isLoading}
           rating={rating}
         />
 
-        <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <ExecutiveSummaryCard
-            detailKind={detailKind}
-            isLoading={isLoading}
-            profile={profile}
-            risks={risks}
-            strengths={strengths}
-            summary={summary}
-          />
-          <RoleSuitabilityCard
-            candidate={profile}
-            isLoading={isLoading}
-          />
-          <RatingCard
-            attributes={ratingAttributes}
-            isLoading={isLoading}
-            rating={rating}
-          />
-        </div>
+        {isTalent ? (
+          <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <ExecutiveSummaryCard
+              detailKind={detailKind}
+              isLoading={isLoading}
+              profile={profile}
+              risks={risks}
+              strengths={strengths}
+              summary={summary}
+            />
+            <RoleSuitabilityCard candidate={profile} isLoading={isLoading} />
+            {ratingCard}
+          </div>
+        ) : null}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <ExperienceCard candidate={profile} detailKind={detailKind} />
+          {isTalent ? null : ratingCard}
           <CandidateContextCard
             candidate={profile}
             detailKind={detailKind}
           />
+          {detailKind === "application" ? ["Projeler", "Yetenekler", "Diller"].map((title) => (
+            <section
+              className={`rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 ${title === "Projeler" ? "lg:col-span-2" : ""}`}
+              key={title}
+            >
+              <h2 className="border-b border-[#c5c6cd] pb-2 text-lg font-medium leading-6 text-[#0b1c30]">
+                {title}
+              </h2>
+            </section>
+          )) : null}
         </div>
       </main>
     </AnalysisShell>
