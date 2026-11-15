@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { MdCheck, MdOutlineAdd, MdOutlineDelete } from "react-icons/md";
+import { TrueFalseAnswer } from "../model/question-types";
 
 const questionTypes = [
   { value: "multiple-choice", label: "Çoktan Seçmeli" },
@@ -15,13 +16,13 @@ const panelClass = "rounded-lg border border-[#c5c6cd] bg-white p-5 md:p-6";
 const fieldClass = "block w-full rounded border border-[#c5c6cd] bg-white px-3 py-2.5 text-sm outline-none focus:border-[#091426] focus:ring-1 focus:ring-[#091426]";
 const optionLetters = ["A", "B", "C", "D", "E"];
 const trueFalseOptions = [
-  { value: "true", label: "Doğru" },
-  { value: "false", label: "Yanlış" },
+  { value: TrueFalseAnswer.True, label: "Doğru" },
+  { value: TrueFalseAnswer.False, label: "Yanlış" },
 ];
 
 function AnswerCheck({ name, value, label, showLabel = false }: {
   name: string;
-  value: string;
+  value: string | TrueFalseAnswer;
   label: string;
   showLabel?: boolean;
 }) {
