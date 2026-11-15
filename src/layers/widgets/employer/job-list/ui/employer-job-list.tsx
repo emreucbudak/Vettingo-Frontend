@@ -28,11 +28,23 @@ function StatusBadge({ status }: { status: CompanyJobPosting["status"] }) {
   );
 }
 
-function JobRow({ job, jobsHref }: { job: CompanyJobPosting; jobsHref: string }) {
+function JobRow({ job, jobsHref, candidatesHref }: {
+  job: CompanyJobPosting;
+  jobsHref: string;
+  candidatesHref: string;
+}) {
   return (
-    <article className="grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] lg:grid-cols-[repeat(14,minmax(0,1fr))] lg:items-center lg:gap-3 lg:px-6">
+    <article className="relative grid grid-cols-1 gap-4 px-5 py-5 transition-colors hover:bg-[#eff4ff] lg:grid-cols-[repeat(14,minmax(0,1fr))] lg:items-center lg:gap-3 lg:px-6">
       <div className="min-w-0 lg:col-span-4">
-        <h2 className="text-base font-semibold leading-6 text-[#0b1c30]">{job.title}</h2>
+        <h2 className="text-base font-semibold leading-6 text-[#0b1c30]">
+          <Link
+            href={candidatesHref}
+            aria-label={`${job.title} – Aday tablosunu aç`}
+            className="after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            {job.title}
+          </Link>
+        </h2>
       </div>
       <div className="grid grid-cols-2 gap-3 lg:contents">
         <div className="lg:col-span-2">
@@ -70,7 +82,7 @@ function JobRow({ job, jobsHref }: { job: CompanyJobPosting; jobsHref: string })
           </p>
           <Link
             aria-label={`${job.title} ilanını düzenle`}
-            className="inline-flex rounded p-2 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426]"
+            className="relative z-10 inline-flex rounded p-2 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426]"
             href={`${jobsHref}/${encodeURIComponent(job.id)}/post`}
           >
             <MdOutlineEdit aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[18px]" />
@@ -81,7 +93,10 @@ function JobRow({ job, jobsHref }: { job: CompanyJobPosting; jobsHref: string })
   );
 }
 
-export function EmployerJobList({ jobsHref = ROUTES.employerJobs }: { jobsHref?: string }) {
+export function EmployerJobList({ jobsHref = ROUTES.employerJobs, candidatesHref }: {
+  jobsHref?: string;
+  candidatesHref: string;
+}) {
   const { postings, error } = useCompanyJobPostings();
   const loading = postings === null && !error;
 
@@ -115,7 +130,7 @@ export function EmployerJobList({ jobsHref = ROUTES.employerJobs }: { jobsHref?:
             Henüz şirketinize ait bir ilan bulunmuyor.
           </p>
         ) : postings?.map((job) => (
-          <JobRow job={job} jobsHref={jobsHref} key={job.id} />
+          <JobRow job={job} jobsHref={jobsHref} candidatesHref={candidatesHref} key={job.id} />
         ))}
       </div>
     </section>

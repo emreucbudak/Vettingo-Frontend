@@ -43,9 +43,10 @@ const frequentlyAskedQuestions = [
       'Mülakat sonucunu girmezseniz aday otomatik olarak başarısız sayılır ve adayla olan bağlantınızı kaybedersiniz.',
   },
   {
-    question: 'Yetenekler bölümündeki eşleşme skoru neyi gösterir?',
+    question: 'Scout bölümündeki Rating neyi gösterir?',
     answer:
-      'Eşleşme skoru; adayın deneyimini, yeteneklerini ve ilan gereksinimlerini birlikte değerlendirir. Skor bir karar yerine inceleme sürecini destekleyen karşılaştırmalı bir göstergedir.',
+      'Rating, Scout’ta aday profillerini karşılaştırmaya yardımcı olan bir puandır. Adayın deneyimini ve yetkinliklerini ilan gereksinimleriyle birlikte değerlendir.',
+    href: ROUTES.employerScout,
   },
   {
     question: 'Ekip üyelerine farklı erişim yetkileri verebilir miyim?',
@@ -125,6 +126,11 @@ function FrequentlyAskedQuestions() {
             </summary>
             <p className='border-t border-[#c5c6cd] px-5 py-4 text-sm leading-6 text-[#45474c] md:px-6'>
               {item.answer}
+              {'href' in item && (
+                <Link className='ml-2 font-semibold text-[#006c49] underline' href={item.href}>
+                  Scout’u aç
+                </Link>
+              )}
             </p>
           </details>
         ))}

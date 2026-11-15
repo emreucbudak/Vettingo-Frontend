@@ -11,6 +11,7 @@ export default function HrJobsRoute() {
     <EmployerJobsPage
       embedded
       jobsHref={ROUTES.hrJobs}
+      candidatesHref={ROUTES.hrCandidates}
       newJobHref={ROUTES.hrNewJob}
       title="İlanlar"
     />

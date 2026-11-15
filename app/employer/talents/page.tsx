@@ -1,10 +1,6 @@
-import type { Metadata } from "next";
-import { EmployerTalentsPage } from "@/pages/employer-recruiting";
-
-export const metadata: Metadata = {
-  title: "Yetenekler | Vettingo",
-};
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/shared/config/routes";
 
 export default function EmployerTalentsRoute() {
-  return <EmployerTalentsPage />;
+  redirect(ROUTES.employerScout);
 }

@@ -42,11 +42,13 @@ function PageHeader({
 export function EmployerJobsPage({
   embedded = false,
   jobsHref = ROUTES.employerJobs,
+  candidatesHref = ROUTES.employerApplications,
   newJobHref = ROUTES.newJob,
   title = "İlanlar",
 }: {
   embedded?: boolean;
   jobsHref?: string;
+  candidatesHref?: string;
   newJobHref?: string;
   title?: string;
 }) {
@@ -69,7 +71,7 @@ export function EmployerJobsPage({
 
         <EmployerJobStatistics />
 
-        <EmployerJobList jobsHref={jobsHref} />
+        <EmployerJobList jobsHref={jobsHref} candidatesHref={candidatesHref} />
       </main>
     </Shell>
   );

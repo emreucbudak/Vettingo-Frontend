@@ -16,12 +16,6 @@ export const hrNavigationItems = [
     href: ROUTES.hrScout,
   },
   {
-    key: "candidates",
-    label: "Adaylar",
-    icon: "groups",
-    href: ROUTES.hrCandidates,
-  },
-  {
     key: "interviews",
     label: "Mülakatlar",
     icon: "calendar_month",
@@ -313,9 +307,9 @@ export const monthlyHiring = [
 
 export const hrFaqs = [
   {
-    question: "Yeni işe alım talebi nasıl oluşturulur?",
+    question: "Yeni iş ilanı nasıl oluşturulur?",
     answer:
-      "İşe Alım Talepleri sayfasındaki Yeni Talep düğmesi, pozisyon ihtiyacını ve onay akışını başlatan tasarım alanına götürür.",
+      "İlanlar sayfasındaki Yeni İş İlanı düğmesine tıkla. Açılan formda pozisyon bilgilerini ve ilan gereksinimlerini doldur.",
   },
   {
     question: "Aday havuzunda hangi bilgiler görünür?",

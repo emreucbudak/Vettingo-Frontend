@@ -6,7 +6,9 @@ import { AppIcon } from "@/shared/ui/icon";
 
 import { useState, type FormEvent } from "react";
 import { HrAvatar } from "@/entities/hr-dashboard/ui";
-import { buildScoutSearchRequest, emptyScoutFilters, useCities, useScoutProfiles, type ScoutFilters } from "@/features/scout-filters";
+import { buildScoutSearchRequest, emptyScoutFilters, type ScoutFilters } from "../model/scout-search-request";
+import { useCities } from "../model/use-cities";
+import { useScoutProfiles } from "../model/use-scout-profiles";
 
 const PAGE_SIZE = 5;
 
@@ -26,7 +28,7 @@ function ratingTone(rating: number) {
   return "bg-[#eff4ff] text-[#45474c]";
 }
 
-export function HrScoutDirectory() {
+export function ScoutDirectory() {
   const { cities, error: citiesError } = useCities();
   const citiesLoading = cities === null && !citiesError;
   const [draftFilters, setDraftFilters] = useState<ScoutFilters>(emptyScoutFilters);
