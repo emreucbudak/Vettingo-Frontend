@@ -24,7 +24,7 @@ export function HrSidebar({ mobile = false, navigationItems, utilityItems, onNav
       ) : null}
       <div className={mobile
         ? "flex flex-col gap-2 px-4 py-6"
-        : "flex flex-1 flex-col justify-center gap-1 px-4 py-3 [@media(max-height:640px)]:gap-0.5 [@media(max-height:640px)]:py-1"}>
+        : "flex flex-1 flex-col justify-center gap-2 px-4 py-3 [@media(max-height:640px)]:gap-0.5 [@media(max-height:640px)]:py-1"}>
         {navigationItems.map((item) => (
           <DashboardSidebarLink compact={!mobile} item={item} key={item.label} onNavigate={onNavigate} />
         ))}
