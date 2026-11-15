@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { NewExamPage } from "@/pages/exams";
 
 export const metadata: Metadata = { title: "Sınav Soruları" };
 
 export default function HrNewExamRoute() {
-  return <main aria-label="Sınav soruları" className="flex-1" />;
+  return <NewExamPage />;
 }
