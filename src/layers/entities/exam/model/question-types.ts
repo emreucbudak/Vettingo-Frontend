@@ -15,8 +15,7 @@ export type TrueFalseOptions = {
 };
 
 export type TrueFalseQuestionType = QuestionTypes & {
-  type: "true-false";
-  trueFalseOptions: TrueFalseOptions;
+  trueFalseOptions: TrueFalseOptions[];
 };
 
 export type MultipleChoiceOption = {
@@ -26,6 +25,5 @@ export type MultipleChoiceOption = {
 };
 
 export type MultipleChoiceQuestionType = QuestionTypes & {
-  type: "multiple-choice";
   options: MultipleChoiceOption[];
 };
