@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { HrExamSelectionProvider } from "@/pages/exams";
 import { HrShell } from "@/widgets/hr/shell";
 
 export const metadata: Metadata = {
@@ -11,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function HrLayout({ children }: { children: ReactNode }) {
-  return <HrShell>{children}</HrShell>;
+  return (
+    <HrExamSelectionProvider>
+      <HrShell>{children}</HrShell>
+    </HrExamSelectionProvider>
+  );
 }

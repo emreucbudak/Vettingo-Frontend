@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { ExamsPage } from "@/pages/exams";
-import { ROUTES } from "@/shared/config/routes";
+import { HrExamsPage } from "@/pages/exams";
 
 export const metadata: Metadata = { title: "Sınavlar" };
 
 export default function HrExamsRoute() {
-  return <ExamsPage examsHref={ROUTES.hrExams} newExamHref={ROUTES.hrNewExam} />;
+  return <HrExamsPage />;
 }
