@@ -5,5 +5,5 @@ import { ROUTES } from "@/shared/config/routes";
 export const metadata: Metadata = { title: "Sınavlar" };
 
 export default function HrExamsRoute() {
-  return <ExamsPage newExamHref={ROUTES.hrNewExam} />;
+  return <ExamsPage examsHref={ROUTES.hrExams} newExamHref={ROUTES.hrNewExam} />;
 }

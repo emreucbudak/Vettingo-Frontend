@@ -5,25 +5,18 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { MdClose, MdOutlineAdd, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import { exampleExams, type Exam } from "@/entities/exam";
 
-type ExamAction = { type: "edit" | "delete"; exam: Exam };
-
-function ExamActionDialog({
-  action,
+function DeleteExamDialog({
+  exam,
   onClose,
-  onSave,
   onDelete,
 }: {
-  action: ExamAction;
+  exam: Exam;
   onClose: () => void;
-  onSave: (exam: Exam) => void;
   onDelete: (exam: Exam) => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const descriptionId = useId();
-  const [name, setName] = useState(action.exam.name);
-  const [questionCount, setQuestionCount] = useState(String(action.exam.questionCount));
-  const editing = action.type === "edit";
 
   useEffect(() => {
     dialogRef.current?.showModal();
@@ -31,12 +24,7 @@ function ExamActionDialog({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (editing) {
-      if (!name.trim()) return;
-      onSave({ ...action.exam, name: name.trim(), questionCount: Number(questionCount) });
-    } else {
-      onDelete(action.exam);
-    }
+    onDelete(exam);
     dialogRef.current?.close();
   }
 
@@ -44,55 +32,26 @@ function ExamActionDialog({
     <dialog
       ref={dialogRef}
       aria-labelledby={titleId}
-      aria-describedby={editing ? undefined : descriptionId}
+      aria-describedby={descriptionId}
       onClose={onClose}
       className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 text-[#0b1c30] shadow-xl backdrop:bg-[#091426]/40"
     >
       <div className="mb-6 flex items-center justify-between gap-4">
-        <h2 id={titleId} className="text-xl font-semibold">{editing ? "Sınavı düzenle" : "Sınavı sil"}</h2>
+        <h2 id={titleId} className="text-xl font-semibold">Sınavı sil</h2>
         <button type="button" onClick={() => dialogRef.current?.close()} aria-label="Pencereyi kapat" className="rounded p-2 hover:bg-[#eff4ff] focus-visible:outline-2 focus-visible:outline-offset-2">
           <MdClose aria-hidden="true" className="text-xl" />
         </button>
       </div>
       <form onSubmit={handleSubmit}>
-        {editing ? (
-          <div className="space-y-5">
-            <label className="block text-sm font-medium">
-              Sınav adı
-              <input
-                required
-                maxLength={150}
-                pattern=".*\S.*"
-                title="Sınav adı boş bırakılamaz."
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                className="mt-2 block w-full rounded border border-[#c5c6cd] bg-white px-3 py-2.5 font-normal outline-none focus:border-[#091426] focus:ring-1 focus:ring-[#091426]"
-              />
-            </label>
-            <label className="block text-sm font-medium">
-              Soru sayısı
-              <input
-                required
-                type="number"
-                min={1}
-                step={1}
-                value={questionCount}
-                onChange={(event) => setQuestionCount(event.target.value)}
-                className="mt-2 block w-full rounded border border-[#c5c6cd] bg-white px-3 py-2.5 font-normal outline-none focus:border-[#091426] focus:ring-1 focus:ring-[#091426]"
-              />
-            </label>
-          </div>
-        ) : (
-          <p id={descriptionId} className="break-words text-sm leading-6 text-[#45474c]">
-            <strong className="font-semibold text-[#0b1c30]">{action.exam.name}</strong> sınavını silmek istediğinize emin misiniz?
-          </p>
-        )}
+        <p id={descriptionId} className="break-words text-sm leading-6 text-[#45474c]">
+          <strong className="font-semibold text-[#0b1c30]">{exam.name}</strong> sınavını silmek istediğinize emin misiniz?
+        </p>
         <div className="mt-7 flex justify-end gap-3">
           <button type="button" onClick={() => dialogRef.current?.close()} className="rounded border border-[#c5c6cd] px-4 py-2.5 text-sm font-semibold hover:bg-[#eff4ff] focus-visible:outline-2 focus-visible:outline-offset-2">
             Vazgeç
           </button>
-          <button type="submit" className={`rounded px-4 py-2.5 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 ${editing ? "bg-[#091426] hover:bg-[#20334d]" : "bg-red-700 hover:bg-red-800"}`}>
-            {editing ? "Kaydet" : "Sınavı sil"}
+          <button type="submit" className="rounded bg-red-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-800 focus-visible:outline-2 focus-visible:outline-offset-2">
+            Sınavı sil
           </button>
         </div>
       </form>
@@ -100,15 +59,10 @@ function ExamActionDialog({
   );
 }
 
-export function ExamsPage({ newExamHref }: { newExamHref: string }) {
+export function ExamsPage({ examsHref, newExamHref }: { examsHref: string; newExamHref: string }) {
   const [exams, setExams] = useState<readonly Exam[]>(exampleExams);
-  const [action, setAction] = useState<ExamAction | null>(null);
+  const [examToDelete, setExamToDelete] = useState<Exam | null>(null);
   const [message, setMessage] = useState("");
-
-  function saveExam(updated: Exam) {
-    setExams((current) => current.map((exam) => exam.id === updated.id ? updated : exam));
-    setMessage(`${updated.name} güncellendi.`);
-  }
 
   function deleteExam(deleted: Exam) {
     setExams((current) => current.filter((exam) => exam.id !== deleted.id));
@@ -148,10 +102,10 @@ export function ExamsPage({ newExamHref }: { newExamHref: string }) {
                   <td className="px-6 py-5 text-center text-[#45474c]">{exam.questionCount} soru</td>
                   <td className="px-6 py-5">
                     <div className="flex items-center justify-center gap-2">
-                      <button type="button" aria-label={`${exam.name} sınavını düzenle`} title="Düzenle" onClick={() => setAction({ type: "edit", exam })} className="rounded p-2.5 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426] focus-visible:outline-2 focus-visible:outline-offset-2">
+                      <Link href={`${examsHref}/${encodeURIComponent(exam.id)}/update`} aria-label={`${exam.name} sınavını düzenle`} title="Düzenle" className="rounded p-2.5 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426] focus-visible:outline-2 focus-visible:outline-offset-2">
                         <MdOutlineEdit aria-hidden="true" className="text-xl" />
-                      </button>
-                      <button type="button" aria-label={`${exam.name} sınavını sil`} title="Sil" onClick={() => setAction({ type: "delete", exam })} className="rounded p-2.5 text-[#45474c] transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-2 focus-visible:outline-offset-2">
+                      </Link>
+                      <button type="button" aria-label={`${exam.name} sınavını sil`} title="Sil" onClick={() => setExamToDelete(exam)} className="rounded p-2.5 text-[#45474c] transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-2 focus-visible:outline-offset-2">
                         <MdOutlineDelete aria-hidden="true" className="text-xl" />
                       </button>
                     </div>
@@ -166,7 +120,7 @@ export function ExamsPage({ newExamHref }: { newExamHref: string }) {
         </div>
       </section>
       <p role="status" className="mt-4 text-sm text-[#006c49]">{message}</p>
-      {action && <ExamActionDialog action={action} onClose={() => setAction(null)} onSave={saveExam} onDelete={deleteExam} />}
+      {examToDelete && <DeleteExamDialog exam={examToDelete} onClose={() => setExamToDelete(null)} onDelete={deleteExam} />}
     </main>
   );
 }

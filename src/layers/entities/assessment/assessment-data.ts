@@ -2,6 +2,7 @@ export const assessmentOverview = {
   durationInSeconds: 45 * 60,
   currentQuestion: 4,
   totalQuestions: 20,
+  passingScore: 70,
   completedQuestions: 3,
 } as const;
 
