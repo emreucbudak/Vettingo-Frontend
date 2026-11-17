@@ -5,6 +5,8 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { MdClose, MdOutlineAdd, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import { exampleExams, type Exam } from "@/entities/exam";
 
+const editExamClassName = "rounded p-2.5 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426] focus-visible:outline-2 focus-visible:outline-offset-2";
+
 function DeleteExamDialog({
   exam,
   onClose,
@@ -59,7 +61,15 @@ function DeleteExamDialog({
   );
 }
 
-export function ExamsPage({ examsHref, newExamHref }: { examsHref: string; newExamHref: string }) {
+export function ExamsPage({
+  examsHref,
+  newExamHref,
+  onEditExam,
+}: {
+  examsHref: string;
+  newExamHref: string;
+  onEditExam?: (exam: Exam) => void;
+}) {
   const [exams, setExams] = useState<readonly Exam[]>(exampleExams);
   const [examToDelete, setExamToDelete] = useState<Exam | null>(null);
   const [message, setMessage] = useState("");
@@ -102,9 +112,15 @@ export function ExamsPage({ examsHref, newExamHref }: { examsHref: string; newEx
                   <td className="px-6 py-5 text-center text-[#45474c]">{exam.questionCount} soru</td>
                   <td className="px-6 py-5">
                     <div className="flex items-center justify-center gap-2">
-                      <Link href={`${examsHref}/${encodeURIComponent(exam.id)}/update`} aria-label={`${exam.name} sınavını düzenle`} title="Düzenle" className="rounded p-2.5 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426] focus-visible:outline-2 focus-visible:outline-offset-2">
-                        <MdOutlineEdit aria-hidden="true" className="text-xl" />
-                      </Link>
+                      {onEditExam ? (
+                        <button type="button" onClick={() => onEditExam(exam)} aria-label={`${exam.name} sınavını düzenle`} title="Düzenle" className={editExamClassName}>
+                          <MdOutlineEdit aria-hidden="true" className="text-xl" />
+                        </button>
+                      ) : (
+                        <Link href={`${examsHref}/${encodeURIComponent(exam.id)}/update`} aria-label={`${exam.name} sınavını düzenle`} title="Düzenle" className={editExamClassName}>
+                          <MdOutlineEdit aria-hidden="true" className="text-xl" />
+                        </Link>
+                      )}
                       <button type="button" aria-label={`${exam.name} sınavını sil`} title="Sil" onClick={() => setExamToDelete(exam)} className="rounded p-2.5 text-[#45474c] transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-2 focus-visible:outline-offset-2">
                         <MdOutlineDelete aria-hidden="true" className="text-xl" />
                       </button>

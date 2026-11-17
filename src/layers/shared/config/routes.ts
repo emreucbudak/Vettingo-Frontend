@@ -36,6 +36,7 @@ export const ROUTES = {
   hrJobs: "/hr/jobs",
   hrExams: "/hr/exams",
   hrNewExam: "/hr/exams/new",
+  hrUpdateExam: "/hr/exams/update",
   hrNewJob: "/hr/jobs/new",
   hrScout: "/hr/scout",
   hrCandidates: "/hr/candidates",
