@@ -10,6 +10,7 @@ export const ROUTES = {
   candidate: "/candidate",
   candidateMyCandidate: "/candidate/mycandidate",
   candidateJobs: "/candidate/jobs",
+  candidatePersonalizedJobPostings: "/personalized-job-postings",
   candidateApplications: "/candidate/applications",
   candidateHelpCenter: "/candidate/help-center",
   candidateSettings: "/candidate/settings",

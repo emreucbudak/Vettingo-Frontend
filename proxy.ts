@@ -1,5 +1,6 @@
 import { decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
+import { ROUTES } from "@/shared/config/routes";
 interface User {
     Role:string
     exp: number
@@ -21,7 +22,7 @@ export async function proxy(request:NextRequest) {
         }
          return NextResponse.next();
     }
-    if(pathname.startsWith("/candidate")) {
+    if(pathname.startsWith("/candidate") || pathname === ROUTES.candidatePersonalizedJobPostings) {
         const claim = await decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
         if (claim.Role!== "candidate" || expire === true) {
@@ -42,5 +43,5 @@ export async function proxy(request:NextRequest) {
 
 }
 export const config = {
-    matcher: ['/employer/:path*','/candidate/:path*','/hr/:path*']
+    matcher: ['/employer/:path*','/candidate/:path*','/hr/:path*','/personalized-job-postings']
 }
