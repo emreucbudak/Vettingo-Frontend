@@ -3,7 +3,7 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineAdd } from "react-icons/md";
-import type { Exam } from "@/entities/exam";
+import { ExamFieldError, type Exam } from "@/entities/exam";
 import { UpdateExamSettingsCard } from "@/features/update-exam-settings";
 import { multipleChoiceLetters, UpdateMultipleChoiceQuestionCard } from "@/features/update-multiple-choice-question";
 import { UpdateTrueFalseQuestionCard } from "@/features/update-true-false-question";
@@ -40,20 +40,9 @@ export function ExamUpdateWidget({ exam }: { exam: Exam }) {
     }, { shouldFocus: false });
   }
 
-  const validationError = errors.title?.message
-    ?? errors.durationMinutes?.message
-    ?? errors.passingScore?.message
-    ?? errors.questions?.root?.message
-    ?? errors.questions?.message
-    ?? fields.map((_, index) => {
-      const error = errors.questions?.[index];
-      if (!error) return undefined;
-      const message = error.questionText?.message
-        ?? error.weight?.message
-        ?? error.correctAnswer?.message
-        ?? "Soru seçeneklerini kontrol edin.";
-      return `Soru ${index + 1}: ${message}`;
-    }).find(Boolean);
+  const questionListError = fields.length === 0
+    ? errors.questions?.root?.message ?? errors.questions?.message
+    : undefined;
 
   return (
     <form noValidate onSubmit={handleSubmit(() => {})} className="space-y-4">
@@ -66,12 +55,14 @@ export function ExamUpdateWidget({ exam }: { exam: Exam }) {
           Sınavı Güncelle
         </button>
       </div>
-      {validationError && <p className="text-sm text-red-700" role="alert">{validationError}</p>}
       {isSubmitSuccessful && <p className="text-sm text-emerald-700" role="status">Form doğrulandı.</p>}
       <UpdateExamSettingsCard
         titleInput={register("title")}
         durationInput={register("durationMinutes", { valueAsNumber: true })}
         passingScoreInput={register("passingScore", { valueAsNumber: true })}
+        titleError={errors.title?.message}
+        durationError={errors.durationMinutes?.message}
+        passingScoreError={errors.passingScore?.message}
       />
       <div className="grid grid-cols-2 gap-2">
         {questionTypes.map(({ value, label }) => (
@@ -86,6 +77,7 @@ export function ExamUpdateWidget({ exam }: { exam: Exam }) {
           </button>
         ))}
       </div>
+      <ExamFieldError message={questionListError} />
       {fields.map((question, index) => {
         const cardProps = {
           questionId: `update-question-${question.id}`,
@@ -93,6 +85,7 @@ export function ExamUpdateWidget({ exam }: { exam: Exam }) {
           questionInput: register(`questions.${index}.questionText`),
           weightInput: register(`questions.${index}.weight`, { valueAsNumber: true }),
           answerInput: register(`questions.${index}.correctAnswer`),
+          errors: errors.questions?.[index],
           onDelete: () => remove(index),
         };
 
@@ -101,7 +94,9 @@ export function ExamUpdateWidget({ exam }: { exam: Exam }) {
             key={question.id}
             {...cardProps}
             registerOption={(optionIndex) =>
-              register(`questions.${index}.options.${optionIndex}.optionText`)
+              register(`questions.${index}.options.${optionIndex}.optionText`, {
+                deps: `questions.${index}.correctAnswer`,
+              })
             }
           />
         ) : (

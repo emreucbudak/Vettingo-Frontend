@@ -8,6 +8,7 @@ export type {
   MultipleChoiceQuestionType,
 } from "./model/question-types";
 export { AnswerCheck } from "./ui/answer-check";
+export { ExamFieldError } from "./ui/exam-field-error";
 export {
   ExamQuestionCardLayout,
   examQuestionFieldClass,
