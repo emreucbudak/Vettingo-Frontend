@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineAdd } from "react-icons/md";
+import { ExamFieldError } from "@/entities/exam";
 import { ExamSettingsCard } from "@/features/exam-settings";
 import { MultipleChoiceQuestionCard, multipleChoiceLetters } from "@/features/multiple-choice-question";
 import { TrueFalseQuestionCard } from "@/features/true-false-question";
@@ -58,26 +59,12 @@ export function ExamEditorWidget() {
     }
   }
 
-  const validationError = errors.title?.message
-    ?? errors.durationMinutes?.message
-    ?? errors.passingScore?.message
-    ?? errors.questions?.root?.message
-    ?? errors.questions?.message
-    ?? fields.map((_, index) => {
-      const error = errors.questions?.[index];
-      if (!error) return undefined;
-      const message = error.questionText?.message
-        ?? error.weight?.message
-        ?? error.correctAnswer?.message
-        ?? "Soru seçeneklerini kontrol edin.";
-      return `Soru ${index + 1}: ${message}`;
-    }).find(Boolean);
-  const feedback = validationError
-    ? { type: "error", message: validationError }
-    : saveFeedback;
+  const questionListError = fields.length === 0
+    ? errors.questions?.root?.message ?? errors.questions?.message
+    : undefined;
 
   return (
-    <form noValidate onSubmit={handleSubmit(saveExam)} className="space-y-4">
+    <form noValidate onSubmit={handleSubmit(saveExam, () => setSaveFeedback(null))} className="space-y-4">
       <div className="flex justify-end">
         <button
           type="submit"
@@ -87,18 +74,21 @@ export function ExamEditorWidget() {
           {isSubmitting ? "Kaydediliyor…" : "Sınavı Kaydet"}
         </button>
       </div>
-      {feedback && (
+      {saveFeedback && (
         <p
-          role={feedback.type === "error" ? "alert" : "status"}
-          className={feedback.type === "error" ? "text-sm text-red-700" : "text-sm text-emerald-700"}
+          role={saveFeedback.type === "error" ? "alert" : "status"}
+          className={saveFeedback.type === "error" ? "text-sm text-red-700" : "text-sm text-emerald-700"}
         >
-          {feedback.message}
+          {saveFeedback.message}
         </p>
       )}
       <ExamSettingsCard
         titleInput={register("title")}
         durationInput={register("durationMinutes", { valueAsNumber: true })}
         passingScoreInput={register("passingScore", { valueAsNumber: true })}
+        titleError={errors.title?.message}
+        durationError={errors.durationMinutes?.message}
+        passingScoreError={errors.passingScore?.message}
       />
       <div className="grid grid-cols-2 gap-2">
         {questionTypes.map(({ value, label }) => (
@@ -113,6 +103,7 @@ export function ExamEditorWidget() {
           </button>
         ))}
       </div>
+      <ExamFieldError message={questionListError} />
       {fields.map((question, index) => {
         const cardProps = {
           questionId: `question-${question.id}`,
@@ -120,6 +111,7 @@ export function ExamEditorWidget() {
           questionInput: register(`questions.${index}.questionText`),
           weightInput: register(`questions.${index}.weight`, { valueAsNumber: true }),
           answerInput: register(`questions.${index}.correctAnswer`),
+          errors: errors.questions?.[index],
           onDelete: () => remove(index),
         };
 
@@ -128,7 +120,9 @@ export function ExamEditorWidget() {
             key={question.id}
             {...cardProps}
             registerOption={(optionIndex) =>
-              register(`questions.${index}.options.${optionIndex}.optionText`)
+              register(`questions.${index}.options.${optionIndex}.optionText`, {
+                deps: `questions.${index}.correctAnswer`,
+              })
             }
           />
         ) : (
