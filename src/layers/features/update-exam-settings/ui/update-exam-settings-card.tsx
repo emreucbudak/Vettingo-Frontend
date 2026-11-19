@@ -20,7 +20,7 @@ export function UpdateExamSettingsCard({
         id="update-exam-name"
         type="text"
         required
-        maxLength={150}
+        maxLength={2000}
         placeholder="Sınav adını girin"
         className={examQuestionFieldClass}
       />
@@ -48,7 +48,6 @@ export function UpdateExamSettingsCard({
             type="number"
             required
             min={0}
-            max={100}
             className={examQuestionFieldClass}
           />
         </div>
