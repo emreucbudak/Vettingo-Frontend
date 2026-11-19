@@ -1,11 +1,13 @@
 "use client";
 
 import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineAdd } from "react-icons/md";
 import type { Exam } from "@/entities/exam";
 import { UpdateExamSettingsCard } from "@/features/update-exam-settings";
 import { multipleChoiceLetters, UpdateMultipleChoiceQuestionCard } from "@/features/update-multiple-choice-question";
 import { UpdateTrueFalseQuestionCard } from "@/features/update-true-false-question";
+import { examUpdateFormSchema, type ExamUpdateFormValues } from "../model/question-schemas";
 
 const questionTypes = [
   { value: "multiple-choice", label: "Çoktan Seçmeli" },
@@ -14,21 +16,14 @@ const questionTypes = [
 
 type QuestionType = (typeof questionTypes)[number]["value"];
 
-type ExamUpdateFormValues = {
-  title: string;
-  durationMinutes: number;
-  passingScore: number;
-  questions: {
-    type: QuestionType;
-    questionText: string;
-    weight: number;
-    correctAnswer: string;
-    options: { optionText: string }[];
-  }[];
-};
-
 export function ExamUpdateWidget({ exam }: { exam: Exam }) {
-  const { control, register } = useForm<ExamUpdateFormValues>({
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<ExamUpdateFormValues>({
+    resolver: zodResolver(examUpdateFormSchema),
     defaultValues: { title: exam.name, questions: [] },
   });
   const { fields, append, remove } = useFieldArray({ control, name: "questions" });
@@ -45,17 +40,34 @@ export function ExamUpdateWidget({ exam }: { exam: Exam }) {
     }, { shouldFocus: false });
   }
 
+  const validationError = errors.title?.message
+    ?? errors.durationMinutes?.message
+    ?? errors.passingScore?.message
+    ?? errors.questions?.root?.message
+    ?? errors.questions?.message
+    ?? fields.map((_, index) => {
+      const error = errors.questions?.[index];
+      if (!error) return undefined;
+      const message = error.questionText?.message
+        ?? error.weight?.message
+        ?? error.correctAnswer?.message
+        ?? "Soru seçeneklerini kontrol edin.";
+      return `Soru ${index + 1}: ${message}`;
+    }).find(Boolean);
+
   return (
-    <form onSubmit={(event) => event.preventDefault()} className="space-y-4">
+    <form noValidate onSubmit={handleSubmit(() => {})} className="space-y-4">
       <div className="flex justify-end">
         <button
           type="submit"
-          disabled
+          disabled={isSubmitting}
           className="rounded bg-[#091426] px-3 py-2 text-sm font-semibold text-white enabled:hover:bg-[#20334d] disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           Sınavı Güncelle
         </button>
       </div>
+      {validationError && <p className="text-sm text-red-700" role="alert">{validationError}</p>}
+      {isSubmitSuccessful && <p className="text-sm text-emerald-700" role="status">Form doğrulandı.</p>}
       <UpdateExamSettingsCard
         titleInput={register("title")}
         durationInput={register("durationMinutes", { valueAsNumber: true })}
