@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import {
-  getLatestPersonalizedJobPostings,
+  getPersonalizedJobPostings,
   type PersonalizedJobPostingDto,
 } from "../api/candidate-dashboard-api";
 
@@ -21,7 +21,7 @@ export function useCandidateRecommendedJobs(userId: string) {
 
     async function load() {
       try {
-        const jobs = await getLatestPersonalizedJobPostings(controller.signal);
+        const jobs = await getPersonalizedJobPostings(controller.signal);
         if (!controller.signal.aborted) {
           setState({ userId, jobs, error: null });
         }
