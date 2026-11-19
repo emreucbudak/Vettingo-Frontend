@@ -1,31 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineAdd } from "react-icons/md";
-import { TrueFalseAnswer } from "@/entities/exam";
-import type { Exam } from "@/features/exam-editor";
 import { ExamSettingsCard } from "@/features/exam-settings";
 import { MultipleChoiceQuestionCard, multipleChoiceLetters } from "@/features/multiple-choice-question";
 import { TrueFalseQuestionCard } from "@/features/true-false-question";
+import { createExam } from "../api/create-exam";
+import { examFormSchema, type ExamFormValues, type ValidatedExam } from "../model/exam-form-schema";
 
 const questionTypes = [
-  { value: "multiple-choice", label: "Çoktan Seçmeli" },
   { value: "true-false", label: "Doğru / Yanlış" },
+  { value: "multiple-choice", label: "Çoktan Seçmeli" },
 ] as const;
 
 type QuestionType = (typeof questionTypes)[number]["value"];
-type ExamFormValues = Pick<Exam, "title" | "durationMinutes" | "passingScore"> & {
-  questions: {
-    type: QuestionType;
-    questionText: string;
-    weight: number;
-    correctAnswer: string;
-    options: { optionText: string }[];
-  }[];
-};
 
 export function ExamEditorWidget() {
-  const { control, register, handleSubmit } = useForm<ExamFormValues>({
+  const [saveFeedback, setSaveFeedback] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ExamFormValues, unknown, ValidatedExam>({
+    resolver: zodResolver(examFormSchema),
     defaultValues: { title: "", questions: [] },
   });
   const { fields, append, remove } = useFieldArray({ control, name: "questions" });
@@ -42,55 +45,56 @@ export function ExamEditorWidget() {
     }, { shouldFocus: false });
   }
 
-  function saveExam({ questions, ...settings }: ExamFormValues) {
-    const exam: Exam = {
-      ...settings,
-      multipleChoiceQuestions: [],
-      trueFalseQuestions: [],
-    };
-
-    questions.forEach((question, index) => {
-      const details = {
-        questionText: question.questionText,
-        weight: question.weight,
-        displayOrder: index + 1,
-      };
-
-      if (question.type === "multiple-choice") {
-        exam.multipleChoiceQuestions.push({
-          ...details,
-          options: question.options.map(({ optionText }, optionIndex) => ({
-            optionText,
-            isCorrect: multipleChoiceLetters[optionIndex] === question.correctAnswer,
-            order: optionIndex + 1,
-          })),
-        });
-      } else {
-        exam.trueFalseQuestions.push({
-          ...details,
-          trueFalseOptions: [TrueFalseAnswer.True, TrueFalseAnswer.False].map(
-            (value) => ({
-              value,
-              isCorrect: String(value) === question.correctAnswer,
-            }),
-          ),
-        });
-      }
-    });
-
-
+  async function saveExam(exam: ValidatedExam) {
+    setSaveFeedback(null);
+    try {
+      await createExam(exam);
+      setSaveFeedback({ type: "success", message: "Sınav kaydedildi." });
+    } catch (error) {
+      setSaveFeedback({
+        type: "error",
+        message: error instanceof Error ? error.message : "Sınav kaydedilemedi.",
+      });
+    }
   }
 
+  const validationError = errors.title?.message
+    ?? errors.durationMinutes?.message
+    ?? errors.passingScore?.message
+    ?? errors.questions?.root?.message
+    ?? errors.questions?.message
+    ?? fields.map((_, index) => {
+      const error = errors.questions?.[index];
+      if (!error) return undefined;
+      const message = error.questionText?.message
+        ?? error.weight?.message
+        ?? error.correctAnswer?.message
+        ?? "Soru seçeneklerini kontrol edin.";
+      return `Soru ${index + 1}: ${message}`;
+    }).find(Boolean);
+  const feedback = validationError
+    ? { type: "error", message: validationError }
+    : saveFeedback;
+
   return (
-    <form onSubmit={handleSubmit(saveExam)} className="space-y-4">
+    <form noValidate onSubmit={handleSubmit(saveExam)} className="space-y-4">
       <div className="flex justify-end">
         <button
           type="submit"
-          className="rounded bg-[#091426] px-3 py-2 text-sm font-semibold text-white hover:bg-[#20334d] focus-visible:outline-2 focus-visible:outline-offset-2"
+          disabled={isSubmitting}
+          className="rounded bg-[#091426] px-3 py-2 text-sm font-semibold text-white hover:bg-[#20334d] focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-60"
         >
-          Sınavı Kaydet
+          {isSubmitting ? "Kaydediliyor…" : "Sınavı Kaydet"}
         </button>
       </div>
+      {feedback && (
+        <p
+          role={feedback.type === "error" ? "alert" : "status"}
+          className={feedback.type === "error" ? "text-sm text-red-700" : "text-sm text-emerald-700"}
+        >
+          {feedback.message}
+        </p>
+      )}
       <ExamSettingsCard
         titleInput={register("title")}
         durationInput={register("durationMinutes", { valueAsNumber: true })}

@@ -21,7 +21,7 @@ export function ExamSettingsCard({
         id="exam-name"
         type="text"
         required
-        maxLength={150}
+        maxLength={100}
         placeholder="Sınav adını girin"
         className={fieldClass}
       />
@@ -48,8 +48,7 @@ export function ExamSettingsCard({
             id="exam-passing-score"
             type="number"
             required
-            min={0}
-            max={100}
+            min={1}
             className={fieldClass}
           />
         </div>
