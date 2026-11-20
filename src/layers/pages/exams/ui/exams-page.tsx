@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { MdClose, MdOutlineAdd, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import type { Exam } from "@/entities/exam";
+import { deleteExam } from "../api/delete-exam";
 import { getCompanyExams } from "../api/get-company-exams";
 
 const editExamClassName = "rounded p-2.5 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426] focus-visible:outline-2 focus-visible:outline-offset-2";
@@ -20,20 +21,31 @@ function DeleteExamDialog({
 }: {
   exam: Exam;
   onClose: () => void;
-  onDelete: (exam: Exam) => void;
+  onDelete: (examId: string) => Promise<void>;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const descriptionId = useId();
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     dialogRef.current?.showModal();
   }, []);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    onDelete(exam);
-    dialogRef.current?.close();
+  async function handleDeleteClick(examId: string) {
+    if (isDeleting) return;
+
+    setIsDeleting(true);
+    setError("");
+    try {
+      await onDelete(examId);
+      dialogRef.current?.close();
+    } catch {
+      setError("Sınav silinemedi. Lütfen tekrar deneyin.");
+    } finally {
+      setIsDeleting(false);
+    }
   }
 
   return (
@@ -41,28 +53,30 @@ function DeleteExamDialog({
       ref={dialogRef}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
+      onCancel={(event) => {
+        if (isDeleting) event.preventDefault();
+      }}
       onClose={onClose}
       className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] p-6 text-[#0b1c30] shadow-xl backdrop:bg-[#091426]/40"
     >
       <div className="mb-6 flex items-center justify-between gap-4">
         <h2 id={titleId} className="text-xl font-semibold">Sınavı sil</h2>
-        <button type="button" onClick={() => dialogRef.current?.close()} aria-label="Pencereyi kapat" className="rounded p-2 hover:bg-[#eff4ff] focus-visible:outline-2 focus-visible:outline-offset-2">
+        <button type="button" disabled={isDeleting} onClick={() => dialogRef.current?.close()} aria-label="Pencereyi kapat" className="rounded p-2 hover:bg-[#eff4ff] focus-visible:outline-2 focus-visible:outline-offset-2">
           <MdClose aria-hidden="true" className="text-xl" />
         </button>
       </div>
-      <form onSubmit={handleSubmit}>
-        <p id={descriptionId} className="break-words text-sm leading-6 text-[#45474c]">
-          <strong className="font-semibold text-[#0b1c30]">{exam.name}</strong> sınavını silmek istediğinize emin misiniz?
-        </p>
-        <div className="mt-7 flex justify-end gap-3">
-          <button type="button" onClick={() => dialogRef.current?.close()} className="rounded border border-[#c5c6cd] px-4 py-2.5 text-sm font-semibold hover:bg-[#eff4ff] focus-visible:outline-2 focus-visible:outline-offset-2">
-            Vazgeç
-          </button>
-          <button type="submit" className="rounded bg-red-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-800 focus-visible:outline-2 focus-visible:outline-offset-2">
-            Sınavı sil
-          </button>
-        </div>
-      </form>
+      <p id={descriptionId} className="break-words text-sm leading-6 text-[#45474c]">
+        <strong className="font-semibold text-[#0b1c30]">{exam.name}</strong> sınavını silmek istediğinize emin misiniz?
+      </p>
+      {error && <p role="alert" className="mt-3 text-sm text-red-700">{error}</p>}
+      <div className="mt-7 flex justify-end gap-3">
+        <button type="button" disabled={isDeleting} onClick={() => dialogRef.current?.close()} className="rounded border border-[#c5c6cd] px-4 py-2.5 text-sm font-semibold hover:bg-[#eff4ff] focus-visible:outline-2 focus-visible:outline-offset-2">
+          Vazgeç
+        </button>
+        <button type="button" disabled={isDeleting} onClick={() => handleDeleteClick(exam.id)} className="rounded bg-red-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-800 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50">
+          {isDeleting ? "Siliniyor…" : "Sınavı sil"}
+        </button>
+      </div>
     </dialog>
   );
 }
@@ -99,9 +113,11 @@ export function ExamsPage({
     return () => controller.abort();
   }, []);
 
-  function deleteExam(deleted: Exam) {
-    setExams((current) => current.filter((exam) => exam.id !== deleted.id));
-    setMessage(`${deleted.name} silindi.`);
+  async function handleDeleteExam(examId: string) {
+    const exam = exams.find((item) => item.id === examId);
+    await deleteExam(examId);
+    setExams((current) => current.filter((item) => item.id !== examId));
+    setMessage(`${exam?.name ?? "Sınav"} silindi.`);
   }
 
   return (
@@ -161,7 +177,7 @@ export function ExamsPage({
         </div>
       </section>
       <p role="status" className="mt-4 text-sm text-[#006c49]">{message}</p>
-      {examToDelete && <DeleteExamDialog exam={examToDelete} onClose={() => setExamToDelete(null)} onDelete={deleteExam} />}
+      {examToDelete && <DeleteExamDialog exam={examToDelete} onClose={() => setExamToDelete(null)} onDelete={handleDeleteExam} />}
     </main>
   );
 }
