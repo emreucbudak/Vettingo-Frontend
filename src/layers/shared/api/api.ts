@@ -6,8 +6,6 @@ const gatewayUrl = "http://localhost:5135";
 
 const authPath = "/auth";
 
-export const accessTokenRefreshedEvent = "vettingo:access-token-refreshed";
-
 interface Auth {
   email: string;
   password: string;
@@ -115,9 +113,6 @@ export async function getNewJwtFromRefresh() {
   const newTokens = (await response.json()) as Tokens;
 
   await setToken(newTokens.accessToken, newTokens.refreshToken);
-  if (typeof window !== "undefined") {
-    window.dispatchEvent(new Event(accessTokenRefreshedEvent));
-  }
 }
 
 export async function candidateTempRegister(
