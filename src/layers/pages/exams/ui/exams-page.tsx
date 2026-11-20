@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { MdClose, MdOutlineAdd, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import type { Exam } from "@/entities/exam";
+import { accessTokenRefreshedEvent } from "@/shared/api";
+import { getToken } from "@/shared/auth";
 import { deleteExam } from "../api/delete-exam";
 import { getCompanyExams } from "../api/get-company-exams";
 
@@ -81,26 +83,59 @@ function DeleteExamDialog({
   );
 }
 
-export function ExamsPage({
-  examsHref,
-  newExamHref,
-  onEditExam,
-}: {
+type ExamsPageProps = {
   examsHref: string;
   newExamHref: string;
   onEditExam?: (exam: Exam) => void;
-}) {
+};
+
+export function ExamsPage(props: ExamsPageProps) {
+  const [accessToken, setAccessToken] = useState<string | null>();
+
+  useEffect(() => {
+    let latestRead = 0;
+
+    function readAccessToken() {
+      const read = ++latestRead;
+      void getToken()
+        .catch(() => null)
+        .then((token) => {
+          if (read === latestRead) setAccessToken(token);
+        });
+    }
+
+    window.addEventListener(accessTokenRefreshedEvent, readAccessToken);
+    readAccessToken();
+    return () => {
+      latestRead += 1;
+      window.removeEventListener(accessTokenRefreshedEvent, readAccessToken);
+    };
+  }, []);
+
+  return <ExamsTable key={accessToken} accessToken={accessToken} {...props} />;
+}
+
+function ExamsTable({
+  accessToken,
+  examsHref,
+  newExamHref,
+  onEditExam,
+}: ExamsPageProps & { accessToken: string | null | undefined }) {
   const [exams, setExams] = useState<readonly Exam[]>([]);
-  const [listStatus, setListStatus] = useState<keyof typeof examListMessages>("loading");
+  const [listStatus, setListStatus] = useState<keyof typeof examListMessages>(
+    accessToken === null ? "error" : "loading",
+  );
   const [examToDelete, setExamToDelete] = useState<Exam | null>(null);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    if (!accessToken) return;
+
     const controller = new AbortController();
 
-    async function loadExams() {
+    async function loadExams(token: string) {
       try {
-        const companyExams = await getCompanyExams(controller.signal);
+        const companyExams = await getCompanyExams(token, controller.signal);
         if (controller.signal.aborted) return;
         setExams(companyExams);
         setListStatus("loaded");
@@ -109,9 +144,9 @@ export function ExamsPage({
       }
     }
 
-    void loadExams();
+    void loadExams(accessToken);
     return () => controller.abort();
-  }, []);
+  }, [accessToken]);
 
   async function handleDeleteExam(examId: string) {
     const exam = exams.find((item) => item.id === examId);
