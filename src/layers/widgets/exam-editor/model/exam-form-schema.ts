@@ -11,7 +11,7 @@ const questionFormSchema = multipleChoiceQuestionSchema
   .pick({ questionText: true, weight: true })
   .extend({
     type: z.enum(["multiple-choice", "true-false"]),
-    correctAnswer: z.string().nullish(),
+    correctAnswer: z.string(),
     options: z.array(z.object({
       optionText: z.string().trim().max(2000, "Seçenek en fazla 2000 karakter olabilir."),
     })).max(multipleChoiceLetters.length),
