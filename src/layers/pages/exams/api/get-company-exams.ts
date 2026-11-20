@@ -10,8 +10,9 @@ type CompanyExamResponse = {
   createdAt: string;
 };
 
-export async function getCompanyExams(signal: AbortSignal): Promise<Exam[]> {
+export async function getCompanyExams(accessToken: string, signal: AbortSignal): Promise<Exam[]> {
   const exams = await apiRequest<CompanyExamResponse[]>("/api/gateway/exams/company", "GET", {
+    accessToken,
     signal,
     cache: "no-store",
   });

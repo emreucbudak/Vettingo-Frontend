@@ -6,6 +6,8 @@ const gatewayUrl = "http://localhost:5135";
 
 const authPath = "/auth";
 
+export const accessTokenRefreshedEvent = "vettingo:access-token-refreshed";
+
 interface Auth {
   email: string;
   password: string;
@@ -62,18 +64,19 @@ export async function getJWTToken(
 export async function apiRequest<T>(
   path: string,
   method: string,
-  options?: RequestInit,
+  options?: RequestInit & { accessToken?: string },
 ): Promise<T> {
   const finishLoading = method.toUpperCase() === "GET" ? beginDashboardRequest() : () => {};
   try {
-    const headers = new Headers(options?.headers);
-    const accessToken = await getToken();
+    const { accessToken, ...requestOptions } = options ?? {};
+    const headers = new Headers(requestOptions.headers);
+    const token = accessToken ?? (await getToken());
 
-    headers.set("Authorization", `Bearer ${accessToken}`);
+    headers.set("Authorization", `Bearer ${token}`);
     headers.set("Content-Type", "application/json");
 
     const response = await fetch(path, {
-      ...options,
+      ...requestOptions,
       headers,
       method,
     });
@@ -112,6 +115,9 @@ export async function getNewJwtFromRefresh() {
   const newTokens = (await response.json()) as Tokens;
 
   await setToken(newTokens.accessToken, newTokens.refreshToken);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(accessTokenRefreshedEvent));
+  }
 }
 
 export async function candidateTempRegister(
