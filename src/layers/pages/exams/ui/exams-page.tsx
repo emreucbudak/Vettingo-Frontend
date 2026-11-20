@@ -3,9 +3,15 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { MdClose, MdOutlineAdd, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
-import { exampleExams, type Exam } from "@/entities/exam";
+import type { Exam } from "@/entities/exam";
+import { getCompanyExams } from "../api/get-company-exams";
 
 const editExamClassName = "rounded p-2.5 text-[#45474c] transition-colors hover:bg-[#dce9ff] hover:text-[#091426] focus-visible:outline-2 focus-visible:outline-offset-2";
+const examListMessages = {
+  loading: "Sınavlar yükleniyor…",
+  loaded: "Henüz sınav bulunmuyor.",
+  error: "Sınav listesi yüklenemedi.",
+};
 
 function DeleteExamDialog({
   exam,
@@ -70,9 +76,28 @@ export function ExamsPage({
   newExamHref: string;
   onEditExam?: (exam: Exam) => void;
 }) {
-  const [exams, setExams] = useState<readonly Exam[]>(exampleExams);
+  const [exams, setExams] = useState<readonly Exam[]>([]);
+  const [listStatus, setListStatus] = useState<keyof typeof examListMessages>("loading");
   const [examToDelete, setExamToDelete] = useState<Exam | null>(null);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadExams() {
+      try {
+        const companyExams = await getCompanyExams(controller.signal);
+        if (controller.signal.aborted) return;
+        setExams(companyExams);
+        setListStatus("loaded");
+      } catch {
+        if (!controller.signal.aborted) setListStatus("error");
+      }
+    }
+
+    void loadExams();
+    return () => controller.abort();
+  }, []);
 
   function deleteExam(deleted: Exam) {
     setExams((current) => current.filter((exam) => exam.id !== deleted.id));
@@ -129,7 +154,7 @@ export function ExamsPage({
                 </tr>
               ))}
               {exams.length === 0 && (
-                <tr><td colSpan={4} className="px-6 py-16 text-center text-[#45474c]">Henüz sınav bulunmuyor.</td></tr>
+                <tr><td colSpan={4} className="px-6 py-16 text-center text-[#45474c]">{examListMessages[listStatus]}</td></tr>
               )}
             </tbody>
           </table>

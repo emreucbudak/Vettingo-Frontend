@@ -12,7 +12,7 @@ import {
 import { Fragment, useId, useRef, useState } from "react";
 import { RequirementDropdown } from "./requirement-dropdown";
 import { EmployerShell } from "@/widgets/employer/shell";
-import { exampleExams } from "@/entities/exam";
+import type { Exam } from "@/entities/exam";
 import {
   assistantInsights,
   requisitionForm,
@@ -141,6 +141,7 @@ type FixedStage = { id: string; name: string; type?: never };
 
 const applicationStage: FixedStage = { id: "application", name: "Aday Başvuru" };
 const offerStage: FixedStage = { id: "offer", name: "Teklif" };
+const exams: readonly Exam[] = [];
 
 function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
   stages: readonly JobStage[];
@@ -154,7 +155,7 @@ function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
   const [interviewName, setInterviewName] = useState("");
   const [fieldValues, setFieldValues] = useState<StageFieldValues>({});
   const stageName = selectedStage === "Sınav"
-    ? exampleExams.find((exam) => exam.id === examId)?.name ?? ""
+    ? exams.find((exam) => exam.id === examId)?.name ?? ""
     : interviewName.trim();
 
   function selectStage(stage: StageType | null) {
@@ -282,8 +283,8 @@ function JobFlowCard({ stages, onAddStage, onRemoveStage }: {
                               onChange={(event) => setExamId(event.target.value)}
                               value={examId}
                             >
-                              <option value="" disabled>Sınav seçin</option>
-                              {exampleExams.map((exam) => (
+                              <option value="" disabled>{exams.length ? "Sınav seçin" : "Henüz sınav bulunmuyor."}</option>
+                              {exams.map((exam) => (
                                 <option key={exam.id} value={exam.id}>{exam.name}</option>
                               ))}
                             </select>
