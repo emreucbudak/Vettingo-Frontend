@@ -17,7 +17,7 @@ export async function proxy(request:NextRequest) {
         if(pathname.startsWith("/employer")){
         const claim =  decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
-        if(claim.Role !== "company" ||  expire === true) {
+        if(claim.Role !== "Company" ||  expire === true) {
              return NextResponse.redirect(new URL("/login", request.url));
         }
          return NextResponse.next();
@@ -25,7 +25,7 @@ export async function proxy(request:NextRequest) {
     if(pathname.startsWith("/candidate") || pathname === ROUTES.candidatePersonalizedJobPostings) {
         const claim = await decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000;
-        if (claim.Role!== "candidate" || expire === true) {
+        if (claim.Role!== "Candidate" || expire === true) {
              return NextResponse.redirect(new URL("/login", request.url));
         }
          return NextResponse.next();
@@ -34,7 +34,7 @@ export async function proxy(request:NextRequest) {
     if(pathname.startsWith("/hr")){
         const claim = await decodeJwt(token) as User;
         const expire = Date.now() >= claim.exp *1000
-        if(claim.Role!=="hr" || expire === true){
+        if(claim.Role!=="Human Resources" || expire === true){
             return NextResponse.redirect(new URL("/login",request.url));
         }
         return NextResponse.next();

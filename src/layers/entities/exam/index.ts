@@ -1,4 +1,4 @@
-export { exampleExams, type Exam } from "./exam-data";
+export type { Exam } from "./exam-data";
 export { TrueFalseAnswer } from "./model/question-types";
 export type {
   QuestionTypes,
