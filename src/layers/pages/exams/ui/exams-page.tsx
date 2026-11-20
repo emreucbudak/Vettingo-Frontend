@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { MdClose, MdOutlineAdd, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import type { Exam } from "@/entities/exam";
-import { accessTokenRefreshedEvent } from "@/shared/api";
 import { getToken } from "@/shared/auth";
 import { deleteExam } from "../api/delete-exam";
 import { getCompanyExams } from "../api/get-company-exams";
@@ -83,50 +82,24 @@ function DeleteExamDialog({
   );
 }
 
-type ExamsPageProps = {
-  examsHref: string;
-  newExamHref: string;
-  onEditExam?: (exam: Exam) => void;
-};
-
-export function ExamsPage(props: ExamsPageProps) {
-  const [accessToken, setAccessToken] = useState<string | null>();
-
-  useEffect(() => {
-    let latestRead = 0;
-
-    function readAccessToken() {
-      const read = ++latestRead;
-      void getToken()
-        .catch(() => null)
-        .then((token) => {
-          if (read === latestRead) setAccessToken(token);
-        });
-    }
-
-    window.addEventListener(accessTokenRefreshedEvent, readAccessToken);
-    readAccessToken();
-    return () => {
-      latestRead += 1;
-      window.removeEventListener(accessTokenRefreshedEvent, readAccessToken);
-    };
-  }, []);
-
-  return <ExamsTable key={accessToken} accessToken={accessToken} {...props} />;
-}
-
-function ExamsTable({
-  accessToken,
+export function ExamsPage({
   examsHref,
   newExamHref,
   onEditExam,
-}: ExamsPageProps & { accessToken: string | null | undefined }) {
+}: {
+  examsHref: string;
+  newExamHref: string;
+  onEditExam?: (exam: Exam) => void;
+}) {
+  const [accessToken, setAccessToken] = useState<string>();
   const [exams, setExams] = useState<readonly Exam[]>([]);
-  const [listStatus, setListStatus] = useState<keyof typeof examListMessages>(
-    accessToken === null ? "error" : "loading",
-  );
+  const [listStatus, setListStatus] = useState<keyof typeof examListMessages>("loading");
   const [examToDelete, setExamToDelete] = useState<Exam | null>(null);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    void getToken().then(setAccessToken, () => setListStatus("error"));
+  }, []);
 
   useEffect(() => {
     if (!accessToken) return;
