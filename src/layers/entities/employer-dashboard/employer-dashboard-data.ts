@@ -1,4 +1,6 @@
-﻿export const employerProfile = {
+﻿import { ROUTES } from "@/shared/config/routes";
+
+export const employerProfile = {
   companyLabel: 'Vettingo',
   edition: '',
   logoUrl:
@@ -9,6 +11,7 @@
 
 export const employerNavigationItems = [
   { label: 'Ana Sayfa', icon: 'home', active: true, href: '/employer' },
+  { label: 'Bildirimler', icon: 'notifications', href: ROUTES.employerNotifications },
   { label: 'Şirket', icon: 'apartment', href: '/employer/company' },
   { label: 'İlanlar', icon: 'business_center', href: '/employer/jobs' },
   { label: 'Sınavlar', icon: 'assignment', href: '/employer/exams' },

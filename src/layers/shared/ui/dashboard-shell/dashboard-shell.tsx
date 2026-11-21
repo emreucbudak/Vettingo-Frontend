@@ -1,100 +1,16 @@
 "use client";
 
-import { MdClose, MdMenu, MdOutlineNotifications, MdOutlineSettings, MdPerson } from "react-icons/md";
+import { MdClose, MdMenu } from "react-icons/md";
 
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { DashboardDataBoundary } from "@/shared/ui/dashboard-loading/dashboard-data-boundary";
 
-type DashboardProfileIconProps = {
-  className?: string;
-};
-
-export function DashboardProfileIcon({ className = "" }: DashboardProfileIconProps) {
-  return (
-    <div
-      aria-label="Kullanıcı profili"
-      className={`${className} flex h-9 w-9 items-center justify-center rounded-full border border-[#c5c6cd] bg-[#eff4ff] text-[#45474c]`}
-      role="img"
-    >
-      <MdPerson aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[22px]" />
-    </div>
-  );
-}
-
-function DashboardTopBar({
-  beforeActions,
-  menuId,
-  menuOpen,
-  onOpenMenu,
-  leading,
-  showSettings,
-}: {
-  beforeActions?: ReactNode;
-  menuId: string;
-  menuOpen: boolean;
-  onOpenMenu: () => void;
-  leading?: ReactNode;
-  showSettings: boolean;
-}) {
-  return (
-    <header
-      className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-[#c5c6cd] bg-[#f8f9ff] px-4 text-[#091426] md:px-6"
-    >
-      <div className="flex items-center gap-3 md:gap-4">
-        <button
-          aria-label="Menüyü aç"
-          aria-controls={menuId}
-          aria-expanded={menuOpen}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[#091426] hover:bg-[#eff4ff] md:hidden"
-          onClick={onOpenMenu}
-          type="button"
-        >
-          <MdMenu aria-hidden="true" className="text-2xl" />
-        </button>
-        {leading}
-      </div>
-
-      <div className="flex items-center gap-3 md:gap-4">
-        {beforeActions}
-        <div className="flex items-center gap-2">
-          <button
-            aria-label="Bildirimler"
-            className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-            type="button"
-          >
-            <MdOutlineNotifications aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
-          </button>
-          {showSettings ? (
-            <button
-              aria-label="Ayarlar"
-              className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-              type="button"
-            >
-              <MdOutlineSettings aria-hidden="true" focusable="false"  className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
-            </button>
-          ) : null}
-        </div>
-        <DashboardProfileIcon className="ml-1" />
-      </div>
-    </header>
-  );
-}
-
 type DashboardShellProps = {
-  beforeTopBarActions?: ReactNode;
   children: ReactNode;
   renderSidebar: (props: { mobile: boolean; onNavigate?: () => void }) => ReactNode;
-  showSettings?: boolean;
-  topBarLeading?: ReactNode;
 };
 
-export function DashboardShell({
-  beforeTopBarActions,
-  children,
-  renderSidebar,
-  showSettings = false,
-  topBarLeading,
-}: DashboardShellProps) {
+export function DashboardShell({ children, renderSidebar }: DashboardShellProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -139,14 +55,16 @@ export function DashboardShell({
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
       {renderSidebar({ mobile: false })}
       <div className="flex min-h-screen min-w-0 flex-col md:ml-60">
-        <DashboardTopBar
-          beforeActions={beforeTopBarActions}
-          menuId={menuId}
-          menuOpen={menuOpen}
-          onOpenMenu={() => setMenuOpen(true)}
-          leading={topBarLeading}
-          showSettings={showSettings}
-        />
+        <button
+          aria-label="Menüyü aç"
+          aria-controls={menuId}
+          aria-expanded={menuOpen}
+          className="sticky top-3 z-30 mt-3 ml-4 flex size-11 shrink-0 items-center justify-center self-start rounded-lg border border-[#c5c6cd] bg-[#f8f9ff] text-[#091426] hover:bg-[#eff4ff] focus-visible:outline-2 focus-visible:outline-offset-2 md:hidden"
+          onClick={() => setMenuOpen(true)}
+          type="button"
+        >
+          <MdMenu aria-hidden="true" className="text-2xl" />
+        </button>
         <DashboardDataBoundary>{children}</DashboardDataBoundary>
       </div>
       <div
