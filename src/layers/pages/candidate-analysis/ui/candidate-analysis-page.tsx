@@ -31,6 +31,7 @@ type DetailKind = "application" | "talent";
 
 const employerNavigation = [
   { key: "dashboard", label: "Ana Sayfa", icon: "home", href: ROUTES.employer },
+  { key: "notifications", label: "Bildirimler", icon: "notifications", href: ROUTES.employerNotifications },
   { key: "jobs", label: "İlanlar", icon: "business_center", href: ROUTES.employerJobs },
   {
     key: "applications",
@@ -53,7 +54,8 @@ function BreadcrumbActions({ candidate }: { candidate: CandidateAnalysisProfile 
   return (
     <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-wrap items-center gap-2 text-sm leading-5 text-[#45474c]">
-        <Link className="transition-colors hover:text-[#091426]" href={ROUTES.employerTalents}>
+        <Link className="inline-flex items-center gap-2 transition-colors hover:text-[#091426]" href={ROUTES.employerTalents}>
+          <MdOutlineArrowBack aria-hidden="true" className="text-base" />
           Yetenekler
         </Link>
         <MdOutlineChevronRight aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] text-[16px]" />
@@ -474,15 +476,6 @@ function AnalysisShell({ detailKind, children }: { detailKind: DetailKind; child
           onNavigate={onNavigate}
         />
       )}
-      topBarLeading={
-        <Link
-          aria-label="Listeye dön"
-          className="rounded-full p-2 text-[#45474c] transition-colors hover:bg-[#eff4ff]"
-          href={ROUTES.employerTalents}
-        >
-          <MdOutlineArrowBack aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em]" />
-        </Link>
-      }
     >
       {children}
       <EmployerDashboardFooter />

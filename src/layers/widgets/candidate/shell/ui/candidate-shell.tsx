@@ -11,6 +11,7 @@ import {
 
 const candidateNavigationItems = [
   { label: "Ana Sayfa", icon: "home", href: ROUTES.candidate },
+  { label: "Bildirimler", icon: "notifications", href: ROUTES.candidateNotifications },
   {
     label: "Başvurular",
     icon: "assignment_ind",

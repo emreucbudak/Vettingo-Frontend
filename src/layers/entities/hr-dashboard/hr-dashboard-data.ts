@@ -7,6 +7,12 @@ export const hrProfile = {
 
 export const hrNavigationItems = [
   { key: "dashboard", label: "Ana Sayfa", icon: "home", href: ROUTES.hr },
+  {
+    key: "notifications",
+    label: "Bildirimler",
+    icon: "notifications",
+    href: ROUTES.hrNotifications,
+  },
   { key: "jobs", label: "İlanlar", icon: "business_center", href: ROUTES.hrJobs },
   { key: "exams", label: "Sınavlar", icon: "assignment", href: ROUTES.hrExams },
   {
