@@ -2,7 +2,7 @@ import { MdOutlineArrowForward, MdOutlineExpandMore } from "react-icons/md";
 import Link from "next/link";
 import { hrFaqs } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
-import { SettingsSectionNav } from "@/shared/ui/settings-section-nav";
+import { SettingsSections } from "@/shared/ui/settings-sections";
 import {
   HrSectionHeading,
 } from "@/entities/hr-dashboard/ui";
@@ -13,83 +13,81 @@ const inputClass =
 const labelClass =
   "mb-2 block text-[11px] font-semibold uppercase tracking-[0.06em] text-[#45474c]";
 
+function HrProfileSection() {
+  return (
+    <section
+      aria-label="Profil"
+      className="scroll-mt-20 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+      id="hr-profile-section"
+    >
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div>
+          <label className={labelClass} htmlFor="hr-first-name">
+            İsim
+          </label>
+          <input
+            className={inputClass}
+            autoComplete="given-name"
+            defaultValue="Deniz"
+            id="hr-first-name"
+            type="text"
+          />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="hr-last-name">
+            Soyisim
+          </label>
+          <input
+            className={inputClass}
+            autoComplete="family-name"
+            defaultValue="Öztürk"
+            id="hr-last-name"
+            type="text"
+          />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="hr-email">
+            Ekip E-postası
+          </label>
+          <input
+            className={`${inputClass} scroll-mt-28`}
+            defaultValue="hr@vettingo.com"
+            id="hr-email"
+            type="email"
+          />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="hr-timezone">
+            Saat Dilimi
+          </label>
+          <select className={inputClass} defaultValue="istanbul" id="hr-timezone">
+            <option value="istanbul">Europe/Istanbul (UTC+3)</option>
+            <option value="london">Europe/London</option>
+            <option value="berlin">Europe/Berlin</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="mt-6 flex justify-end">
+        <button className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70" type="button">
+          Güncelle
+        </button>
+      </div>
+    </section>
+  );
+}
+
 export function HrSettingsPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-      <SettingsSectionNav
-        profileId="hr-profile-section"
-        passwordId="hr-password-form"
-        emailId="hr-email"
+      <SettingsSections
+        sections={[
+          { id: "profile", label: "Profil", content: <HrProfileSection /> },
+          { id: "password", label: "Şifre Değiştir", content: <HrPasswordForm /> },
+          { id: "email", label: "E-mail Güncelle" },
+          { id: "two-step-login", label: "2 Aşamalı Giriş Açma" },
+        ]}
       />
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
-        <div className="space-y-6">
-          <section
-            aria-label="Profil"
-            className="scroll-mt-20 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
-            id="hr-profile-section"
-          >
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              <div>
-                <label className={labelClass} htmlFor="hr-first-name">
-                  İsim
-                </label>
-                <input
-                  className={inputClass}
-                  autoComplete="given-name"
-                  defaultValue="Deniz"
-                  id="hr-first-name"
-                  type="text"
-                />
-              </div>
-              <div>
-                <label className={labelClass} htmlFor="hr-last-name">
-                  Soyisim
-                </label>
-                <input
-                  className={inputClass}
-                  autoComplete="family-name"
-                  defaultValue="Öztürk"
-                  id="hr-last-name"
-                  type="text"
-                />
-              </div>
-              <div>
-                <label className={labelClass} htmlFor="hr-email">
-                  Ekip E-postası
-                </label>
-                <input
-                  className={`${inputClass} scroll-mt-28`}
-                  defaultValue="hr@vettingo.com"
-                  id="hr-email"
-                  type="email"
-                />
-              </div>
-              <div>
-                <label className={labelClass} htmlFor="hr-timezone">
-                  Saat Dilimi
-                </label>
-                <select className={inputClass} defaultValue="istanbul" id="hr-timezone">
-                  <option value="istanbul">Europe/Istanbul (UTC+3)</option>
-                  <option value="london">Europe/London</option>
-                  <option value="berlin">Europe/Berlin</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="mt-6 flex justify-end">
-              <button className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70" type="button">
-                Güncelle
-              </button>
-            </div>
-          </section>
-
-
-        </div>
-
-        <aside className="space-y-6">
-          <HrPasswordForm />
-        </aside>
-      </div>
     </main>
   );
 }

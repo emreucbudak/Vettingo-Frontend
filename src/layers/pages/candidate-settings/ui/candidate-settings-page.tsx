@@ -11,7 +11,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { apiRequest } from "@/shared/api";
-import { SettingsSectionNav } from "@/shared/ui/settings-section-nav";
+import { SettingsSections } from "@/shared/ui/settings-sections";
 import { useUserInformation } from "@/shared/useUserInformation";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import {
@@ -359,28 +359,30 @@ function CandidateSettingsContent({
         aria-busy={isLoading}
         className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8"
       >
-        <SettingsSectionNav
-          profileId="candidate-profile-form"
-          passwordId="candidate-password-form"
-          emailId="candidate-email"
+        <SettingsSections
+          sections={[
+            {
+              id: "profile",
+              label: "Profil",
+              content: (
+                <>
+                  {error && (
+                    <div
+                      className="mb-6 rounded border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]"
+                      role="alert"
+                    >
+                      {error}
+                    </div>
+                  )}
+                  <ProfileForm onSave={onProfileChange} profile={profile} />
+                </>
+              ),
+            },
+            { id: "password", label: "Şifre Değiştir", content: <AccountSettingsForm /> },
+            { id: "email", label: "E-mail Güncelle" },
+            { id: "two-step-login", label: "2 Aşamalı Giriş Açma" },
+          ]}
         />
-
-        {error ? (
-          <div
-            className="mb-6 rounded border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]"
-            role="alert"
-          >
-            {error}
-          </div>
-        ) : null}
-
-        <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
-          <ProfileForm onSave={onProfileChange} profile={profile} />
-
-          <aside className="space-y-6">
-            <AccountSettingsForm />
-          </aside>
-        </div>
       </main>
     </CandidateShell>
   );
