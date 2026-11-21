@@ -6,6 +6,7 @@ import { useState } from "react";
 import { changePassword } from "@/features/auth/change-password";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { SettingsSectionNav } from "@/shared/ui/settings-section-nav";
 import { EmployerShell } from "@/widgets/employer/shell";
 import {
   employerPasswordSchema,
@@ -24,29 +25,6 @@ const saveButtonClass =
 const companySelectClass = `${inputClass} appearance-none pr-10`;
 
 type SavedSection = "company" | "account" | "security" | null;
-
-function SectionHeader({
-  title,
-  showUpdate = false,
-  updateLabel = "Güncelle",
-  disabled = false,
-}: {
-  title: string;
-  showUpdate?: boolean;
-  updateLabel?: string;
-  disabled?: boolean;
-}) {
-  return (
-    <div className="mb-6 flex items-center justify-between gap-3 border-b border-[#c5c6cd] pb-5">
-      <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">{title}</h2>
-      {showUpdate && (
-        <button className={`${saveButtonClass} shrink-0`} disabled={disabled} type="submit">
-          {updateLabel}
-        </button>
-      )}
-    </div>
-  );
-}
 
 export function EmployerSettingsPage() {
   const [savedSection, setSavedSection] = useState<SavedSection>(null);
@@ -88,14 +66,20 @@ export function EmployerSettingsPage() {
   return (
     <EmployerShell>
       <main className="employer-dashboard-theme mx-auto w-full max-w-[1440px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
+        <SettingsSectionNav
+          profileId="employer-profile-form"
+          companySectionId="employer-company-form"
+          passwordId="employer-password-form"
+          emailId="account-email"
+        />
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
           <div className="space-y-6">
             <form
-              className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+              aria-label="Profil"
+              className="scroll-mt-20 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+              id="employer-profile-form"
               onSubmit={(event) => handleSectionSubmit("account", event)}
             >
-              <SectionHeader showUpdate title="Profil" />
-
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
                   <label className={labelClass} htmlFor="account-first-name">
@@ -131,7 +115,7 @@ export function EmployerSettingsPage() {
                   </label>
                   <input
                     autoComplete="email"
-                    className={inputClass}
+                    className={`${inputClass} scroll-mt-28`}
                     defaultValue="ik@vettingo.com"
                     id="account-email"
                     name="email"
@@ -154,15 +138,19 @@ export function EmployerSettingsPage() {
                 </div>
               </div>
 
-
+              <div className="mt-6 flex justify-end">
+                <button className={`${saveButtonClass} shrink-0`} type="submit">
+                  Güncelle
+                </button>
+              </div>
             </form>
 
             <form
-              className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+              aria-label="Şirket Bilgileri"
+              className="scroll-mt-20 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+              id="employer-company-form"
               onSubmit={(event) => handleSectionSubmit("company", event)}
             >
-              <SectionHeader showUpdate title="Şirket Bilgileri" />
-
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
                   <label className={labelClass} htmlFor="company-name">
@@ -254,25 +242,24 @@ export function EmployerSettingsPage() {
                 </div>
               </div>
 
-
+              <div className="mt-6 flex justify-end">
+                <button className={`${saveButtonClass} shrink-0`} type="submit">
+                  Güncelle
+                </button>
+              </div>
             </form>
           </div>
 
           <aside className="space-y-6">
             <form
               aria-busy={isPasswordSubmitting}
-              className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+              aria-label="Şifre Değiştir"
+              className="scroll-mt-20 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+              id="employer-password-form"
               noValidate
               onChange={() => { setSavedSection(null); setPasswordError(null); }}
               onSubmit={handlePasswordSubmit(onPasswordSubmit)}
             >
-              <SectionHeader
-                disabled={isPasswordSubmitting}
-                showUpdate
-                title="Şifreni Değiştir"
-                updateLabel={isPasswordSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
-              />
-
               <div className="space-y-5">
                 <div>
                   <label className={labelClass} htmlFor="current-password">
@@ -379,6 +366,16 @@ export function EmployerSettingsPage() {
                   Değişiklikler kaydedildi.
                 </p>
                 {passwordError && <p className="mt-3 text-sm text-[#8c1d18]" role="alert">{passwordError}</p>}
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  className={`${saveButtonClass} shrink-0`}
+                  disabled={isPasswordSubmitting}
+                  type="submit"
+                >
+                  {isPasswordSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
+                </button>
               </div>
             </form>
           </aside>
