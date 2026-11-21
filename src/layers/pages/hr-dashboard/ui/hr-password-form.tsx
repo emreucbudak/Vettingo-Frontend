@@ -97,23 +97,13 @@ export function HrPasswordForm() {
   return (
     <form
       aria-busy={isSubmitting}
-      className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+      aria-label="Şifre Değiştir"
+      className="scroll-mt-20 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+      id="hr-password-form"
       noValidate
       onChange={() => { setIsSaved(false); setSubmitError(null); }}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="mb-6 flex items-center justify-between gap-3 border-b border-[#c5c6cd] pb-5">
-        <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
-          Şifre Değiştir
-        </h2>
-        <button
-          className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
-          disabled={isSubmitting}
-          type="submit"
-        >
-          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
-        </button>
-      </div>
       <div className="space-y-5">
         <PasswordField
           autoComplete="current-password"
@@ -152,6 +142,16 @@ export function HrPasswordForm() {
           <MdOutlineCheckCircle aria-hidden="true" focusable="false" className="inline-block h-[1em] w-[1em] shrink-0 align-[-0.125em] mt-0.5 text-[18px]" />
           Şifre bilgilerin güncellendi.
         </p>
+      </div>
+
+      <div className="mt-6 flex justify-end">
+        <button
+          className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
+        </button>
       </div>
     </form>
   );

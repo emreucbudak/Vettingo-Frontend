@@ -1,9 +1,8 @@
 import { MdOutlineArrowForward, MdOutlineExpandMore } from "react-icons/md";
-import { AppIcon } from "@/shared/ui/icon";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { hrFaqs } from "@/entities/hr-dashboard";
 import { ROUTES } from "@/shared/config/routes";
+import { SettingsSectionNav } from "@/shared/ui/settings-section-nav";
 import {
   HrSectionHeading,
 } from "@/entities/hr-dashboard/ui";
@@ -14,52 +13,20 @@ const inputClass =
 const labelClass =
   "mb-2 block text-[11px] font-semibold uppercase tracking-[0.06em] text-[#45474c]";
 
-function SettingsSection({
-  action,
-  children,
-  description,
-  icon,
-  title,
-}: {
-  action?: ReactNode;
-  children: ReactNode;
-  description?: string;
-  icon?: string;
-  title: string;
-}) {
-  return (
-    <section className="rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6">
-      <div className="mb-6 flex items-center gap-3 border-b border-[#c5c6cd] pb-5">
-        {icon ? (
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#dce9ff] text-[#091426]">
-            <AppIcon className="text-[21px]">{icon}</AppIcon>
-          </span>
-        ) : null}
-        <div className="min-w-0 flex-1">
-          <h2 className="text-lg font-semibold text-[#0b1c30]">{title}</h2>
-          {description ? (
-            <p className="mt-1 text-sm leading-5 text-[#45474c]">{description}</p>
-          ) : null}
-        </div>
-        {action}
-      </div>
-      {children}
-    </section>
-  );
-}
-
 export function HrSettingsPage() {
   return (
     <main className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
+      <SettingsSectionNav
+        profileId="hr-profile-section"
+        passwordId="hr-password-form"
+        emailId="hr-email"
+      />
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <div className="space-y-6">
-          <SettingsSection
-            action={
-              <button className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70" type="button">
-                Güncelle
-              </button>
-            }
-            title="Profil"
+          <section
+            aria-label="Profil"
+            className="scroll-mt-20 rounded border border-[#c5c6cd] bg-[#f8f9ff] p-5 md:p-6"
+            id="hr-profile-section"
           >
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div>
@@ -91,7 +58,7 @@ export function HrSettingsPage() {
                   Ekip E-postası
                 </label>
                 <input
-                  className={inputClass}
+                  className={`${inputClass} scroll-mt-28`}
                   defaultValue="hr@vettingo.com"
                   id="hr-email"
                   type="email"
@@ -108,7 +75,13 @@ export function HrSettingsPage() {
                 </select>
               </div>
             </div>
-          </SettingsSection>
+
+            <div className="mt-6 flex justify-end">
+              <button className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70" type="button">
+                Güncelle
+              </button>
+            </div>
+          </section>
 
 
         </div>

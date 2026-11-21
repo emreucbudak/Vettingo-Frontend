@@ -11,6 +11,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { apiRequest } from "@/shared/api";
+import { SettingsSectionNav } from "@/shared/ui/settings-section-nav";
 import { useUserInformation } from "@/shared/useUserInformation";
 import { CandidateShell } from "@/widgets/candidate/shell";
 import {
@@ -77,7 +78,7 @@ function ProfileInput({
         aria-describedby={error ? errorId : undefined}
         aria-invalid={Boolean(error)}
         autoComplete={autoComplete}
-        className={`${inputClass} ${error ? "border-[#ba1a1a]" : ""}`}
+        className={`${inputClass} scroll-mt-28 ${error ? "border-[#ba1a1a]" : ""}`}
         id={`candidate-${name}`}
         placeholder={placeholder}
         type={type}
@@ -130,24 +131,12 @@ function ProfileForm({ onSave, profile }: ProfileFormProps) {
   return (
     <form
       aria-busy={isSubmitting}
-      className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
+      aria-label="Profil"
+      className="scroll-mt-20 rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
       id="candidate-profile-form"
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="mb-6 flex items-center justify-between gap-4 border-b border-[#c5c6cd] pb-5">
-        <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
-          Profil
-        </h2>
-        <button
-          className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
-          disabled={isSubmitting}
-          type="submit"
-        >
-          {isSubmitting ? "Güncelleniyor…" : "Güncelle"}
-        </button>
-      </div>
-
       <div className="grid grid-cols-1 gap-x-5 gap-y-8 md:grid-cols-2">
         <ProfileInput
           autoComplete="given-name"
@@ -182,6 +171,15 @@ function ProfileForm({ onSave, profile }: ProfileFormProps) {
         />
       </div>
 
+      <div className="mt-6 flex justify-end">
+        <button
+          className="inline-flex items-center justify-center gap-2 rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {isSubmitting ? "Güncelleniyor…" : "Güncelle"}
+        </button>
+      </div>
     </form>
   );
 }
@@ -218,24 +216,13 @@ function AccountSettingsForm() {
   return (
     <form
       aria-busy={isSubmitting}
-      className="rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
+      aria-label="Şifre Değiştir"
+      className="scroll-mt-20 rounded border border-[#c5c6cd] bg-white p-5 md:p-6"
+      id="candidate-password-form"
       noValidate
       onChange={() => { setIsSaved(false); setSubmitError(null); }}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="mb-6 flex items-center justify-between gap-3 border-b border-[#c5c6cd] pb-5">
-        <h2 className="text-lg font-semibold leading-6 text-[#0b1c30]">
-          Şifre Değiştir
-        </h2>
-        <button
-          className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
-          disabled={isSubmitting}
-          type="submit"
-        >
-          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
-        </button>
-      </div>
-
       <div className="space-y-5">
         <div>
           <label className={labelClass} htmlFor="candidate-current-password">
@@ -339,6 +326,16 @@ function AccountSettingsForm() {
         </p>
         {submitError && <p className="mt-3 text-sm text-[#8c1d18]" role="alert">{submitError}</p>}
       </div>
+
+      <div className="mt-6 flex justify-end">
+        <button
+          className="inline-flex shrink-0 items-center justify-center rounded bg-[#091426] px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-white transition-colors hover:bg-[#213145] disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {isSubmitting ? "Güncelleniyor…" : "Şifreyi Güncelle"}
+        </button>
+      </div>
     </form>
   );
 }
@@ -362,6 +359,12 @@ function CandidateSettingsContent({
         aria-busy={isLoading}
         className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8"
       >
+        <SettingsSectionNav
+          profileId="candidate-profile-form"
+          passwordId="candidate-password-form"
+          emailId="candidate-email"
+        />
+
         {error ? (
           <div
             className="mb-6 rounded border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]"
