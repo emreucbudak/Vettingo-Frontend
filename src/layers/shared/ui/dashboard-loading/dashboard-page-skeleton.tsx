@@ -85,18 +85,35 @@ function FormFields({ count = 4, singleColumn = false }: {
   </div>;
 }
 
-function FormCard({ children, password = false, white = false }: {
-  children?: ReactNode;
-  password?: boolean;
+function SettingsSkeleton({ label, className, company = false, white = false }: {
+  label: string;
+  className?: string;
+  company?: boolean;
   white?: boolean;
 }) {
-  return <section className={"rounded border border-[#c5c6cd] p-5 md:p-6 " + (white ? "bg-white" : "bg-[#f8f9ff]")}>
-    <div className="mb-6 flex items-center justify-between gap-4 border-b border-[#c5c6cd] pb-5">
-      <Skeleton className="h-6 w-36" />
-      <Skeleton className="h-10 w-28" />
-    </div>
-    {children ?? <FormFields count={password ? 3 : 4} singleColumn={password} />}
-  </section>;
+  const tabWidths = [
+    "w-14 sm:w-20",
+    ...(company ? ["w-28 sm:w-36"] : []),
+    "w-28 sm:w-36",
+    "w-28 sm:w-36",
+    "w-36 sm:w-44",
+  ];
+
+  return (
+    <SkeletonPage label={label} className={className}>
+      <div aria-hidden="true" className="mx-auto mb-6 flex w-fit max-w-full items-center gap-1 overflow-hidden rounded-full border border-[#c5c6cd] bg-white p-1.5 shadow-sm">
+        {tabWidths.map((width, index) => (
+          <Skeleton className={`h-9 shrink-0 rounded-full sm:h-10 ${width}`} key={index} />
+        ))}
+      </div>
+      <section aria-hidden="true" className={`mx-auto w-full max-w-3xl rounded border border-[#c5c6cd] p-5 md:p-6 ${white ? "bg-white" : "bg-[#f8f9ff]"}`}>
+        <FormFields />
+        <div className="mt-6 flex justify-end">
+          <Skeleton className="h-10 w-28" />
+        </div>
+      </section>
+    </SkeletonPage>
+  );
 }
 
 function HelpCenter({ label, faqCount }: {
@@ -272,14 +289,7 @@ export function HrReportsSkeleton() {
 }
 
 export function HrSettingsSkeleton() {
-  return <SkeletonPage label="HR ayarları" className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8">
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
-      <FormCard />
-      <aside>
-        <FormCard password />
-      </aside>
-    </div>
-  </SkeletonPage>;
+  return <SettingsSkeleton label="HR ayarları" className="employer-dashboard-theme mx-auto w-full max-w-[1200px] flex-1 bg-[#f8f9ff] p-4 md:p-8" />;
 }
 
 export function EmployerApplicationsSkeleton() {
@@ -409,29 +419,7 @@ export function EmployerScoutSkeleton() {
 }
 
 export function EmployerSettingsSkeleton() {
-  return <SkeletonPage label="İşveren ayarları">
-    <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
-      <div className="space-y-6">
-        <FormCard />
-        <FormCard>
-          <FormFields />
-          <div className="mt-5 space-y-5">
-            <div>
-              <Skeleton className="mb-2 h-4 w-32" />
-              <Skeleton className="h-32 w-full" />
-            </div>
-            <div>
-              <Skeleton className="mb-2 h-4 w-32" />
-              <Skeleton className="h-24 w-full" />
-            </div>
-          </div>
-        </FormCard>
-      </div>
-      <aside>
-        <FormCard password />
-      </aside>
-    </div>
-  </SkeletonPage>;
+  return <SettingsSkeleton label="İşveren ayarları" company />;
 }
 
 export function EmployerTalentsSkeleton() {
@@ -663,14 +651,7 @@ export function CandidateMycandidateSkeleton() {
 }
 
 export function CandidateSettingsSkeleton() {
-  return <SkeletonPage label="Aday ayarları" className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8">
-    <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
-      <FormCard white />
-      <aside>
-        <FormCard white password />
-      </aside>
-    </div>
-  </SkeletonPage>;
+  return <SettingsSkeleton label="Aday ayarları" className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8" white />;
 }
 
 export function CandidateCvSkeleton() {
